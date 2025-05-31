@@ -1,0 +1,21 @@
+{
+    "resource_pack_name": "XBlockFire",
+    "texture_name": "atlas.items",
+	"texture_data": {
+        "flashbang_item": {
+			"textures": "textures/items/flashbang_item"
+		},
+		"smoke_grenade_item": {
+			"textures": "textures/items/smoke_grenade_item"
+		},
+        "glock17": {
+            "textures": "textures/items/glock17"
+        },
+        "wire_stripper": {
+            "textures": "textures/items/wire_stripper"
+        },
+        "c4": {
+            "textures": "textures/items/c4"
+        }
+	}
+}
