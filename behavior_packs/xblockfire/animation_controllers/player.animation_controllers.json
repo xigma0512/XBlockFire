@@ -1,0 +1,30 @@
+{
+	"format_version": "1.10.0",
+	"animation_controllers": {
+		"controller.animation.player.reload": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+                    "on_entry": [
+                        "/event entity @s remove_reloading"
+					],
+					"transitions": [
+                        {
+                            "reload": "q.is_sneaking&&q.is_alive&&v.attack_time"
+                        }
+					]
+				},
+				"reload": {
+					"on_entry": [
+                        "/event entity @s add_reloading"
+					],
+					"transitions": [
+						{
+							"default": "!v.attack_time"
+						}
+					]
+				}
+			}
+		}
+    }
+}
