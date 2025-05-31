@@ -1,9 +1,9 @@
 {
     "format_version": 2,
     "header": {
-        "name": "BlockFire",
+        "name": "XBlockFire",
         "description": "FPS Game In MCBE!!!",
-        "uuid": "3adbd2b2-161a-40f3-95e5-cecd2c636643",
+        "uuid": "c0b3637a-e214-4d7e-881b-6b2ecf9b209b",
         "version": [
             1,
             0,
@@ -17,25 +17,19 @@
     },
     "modules": [
         {
-            "description": "Script resources",
-            "language": "javascript",
-            "type": "script",
-            "uuid": "eba0466d-a13a-4715-af83-a5330873ab5b",
+            "description": "Resource Pack",
+            "type": "resources",
+            "uuid": "503fe660-142b-46a2-8fec-34a54e944720",
             "version": [
                 1,
                 0,
                 0
-            ],
-            "entry": "scripts/main.js"
+            ]
         }
     ],
     "dependencies": [
         {
-            "module_name": "@minecraft/server",
-            "version": "2.0.0-beta"
-        },
-        {
-            "uuid": "c0b3637a-e214-4d7e-881b-6b2ecf9b209b",
+            "uuid": "3adbd2b2-161a-40f3-95e5-cecd2c636643",
             "version": [
                 1,
                 0,
