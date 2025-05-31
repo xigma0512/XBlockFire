@@ -1,0 +1,20 @@
+{
+	"format_version": "1.10.0",
+	"minecraft:client_entity": {
+		"description": {
+			"identifier": "xblockfire:flashbang",
+			"materials": {
+				"default": "entity_alphatest"
+			},
+			"textures": {
+				"default": "textures/models/grenade/flashbang"
+			},
+			"geometry": {
+				"default": "geometry.flashbang"
+			},
+			"render_controllers": [
+				"controller.render.flashbang"
+			]
+		}
+	}
+}
