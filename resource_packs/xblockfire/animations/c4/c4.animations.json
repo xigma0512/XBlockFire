@@ -1,0 +1,24 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"animation.c4.fpp_hold": {
+			"loop": true,
+			"bones": {
+				"ALL": {
+					"rotation": [10.08493, 60.4927, -49.50211],
+					"position": [-4.65, 29.25, -10.75]
+				}
+			}
+		},
+		"animation.c4.tpp_hold": {
+			"loop": true,
+			"bones": {
+				"ALL": {
+					"rotation": [0, 0, 360],
+					"position": [0, 21, -4],
+					"scale": 1
+				}
+			}
+		}
+	}
+}
