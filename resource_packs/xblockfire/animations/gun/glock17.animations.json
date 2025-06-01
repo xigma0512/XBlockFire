@@ -2,7 +2,7 @@
     "format_version": "1.8.0",
     "animations": {
         "animation.glock17.fpp_hold": {
-            "loop": "hold_on_last_frame",
+            "loop": true,
             "bones": {
                 "main2": {
                     "rotation": [
@@ -19,7 +19,7 @@
             }
         },
         "animation.glock17.tpp_hold": {
-            "loop": "hold_on_last_frame",
+            "loop": true,
             "bones": {
                 "main2": {
                     "rotation": [
@@ -37,7 +37,6 @@
             }
         },
         "animation.glock17.reload": {
-            "loop": "hold_on_last_frame",
             "animation_length": 2.15,
             "blend_weight": 1,
             "bones": {
