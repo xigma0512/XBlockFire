@@ -1,3 +1,5 @@
+import { EquipmentSlot, Player } from "@minecraft/server";
+
 function randomUUID() {
     let d = new Date().getTime();
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
@@ -7,4 +9,8 @@ function randomUUID() {
     });
 }
 
-export { randomUUID };
+function getPlayerHandItem(player: Player) {
+    return player.getComponent('equippable')!.getEquipmentSlot(EquipmentSlot.Mainhand).getItem();
+}
+
+export { randomUUID, getPlayerHandItem };
