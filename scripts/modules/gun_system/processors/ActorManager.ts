@@ -1,34 +1,39 @@
 import { entity_dynamic_property, set_entity_dynamic_property } from "../../../utils/Property";
-import { IActor } from "../actors/Actor";
+import { ActorType } from "../actors/Actor";
 
-import { Entity, ItemStack, world } from "@minecraft/server";
+import { system, world } from "@minecraft/server";
+import { Entity, ItemStack } from "@minecraft/server"; 
 
 export class ActorManager {
-    private static _entities = new Map<string, IActor>();
-    private static _items = new Map<string, IActor>();
+    private static _entities = new Map<string, ActorType>();
+    private static _items = new Map<string, ActorType>();
 
-    static setActor(target: Entity | ItemStack, actor: IActor): ResultType<void> {
+    static setActor(target: Entity | ItemStack, actor: ActorType): ResultType<void> {
         if (target instanceof Entity) {
             this._entities.set(target.id, actor);
+            addRemoveActorListener(actor.uuid);
             return { success: true }
         }
         
         if (target instanceof ItemStack) {
             set_entity_dynamic_property(target, 'id', actor.uuid);
             this._items.set(actor.uuid, actor);
+            addRemoveActorListener(actor.uuid);
             return { success: true }
         }
 
         return { success: false, err: `無效的目標類型` }
     }
 
-    static removeActor(id: string): ResultType<void> {
-        this._entities.delete(id);
-        this._items.delete(id);
+    static removeActor(actorId: string): ResultType<void> {
+        this._entities.forEach((actor, entityId) => {
+            if (actor.uuid === actorId) this._entities.delete(entityId);
+        });
+        this._items.delete(actorId);
         return { success: true }
     }
 
-    static getActor(target: Entity | ItemStack): ResultType<IActor> {
+    static getActor(target: Entity | ItemStack): ResultType<ActorType> {
         if (target instanceof Entity) {
             const actor = this._entities.get(target.id);
             if (actor) return { success: true, ret: actor }
@@ -50,10 +55,18 @@ export class ActorManager {
     }
 }
 
-world.beforeEvents.entityRemove.subscribe(ev => {
-    const entity = ev.removedEntity;
-    const { success, ret, err } = ActorManager.getActor(entity);
-    if (!success) return;
-    
-    ActorManager.removeActor(ret!.uuid);
-});
+function addRemoveActorListener(targetActorId: string) {   
+    const callback = world.beforeEvents.entityRemove.subscribe(ev => {        
+        const entity = ev.removedEntity;
+        system.run(() => {
+            const { success, ret, err } = ActorManager.getActor(entity);
+            if (!success) return;
+
+            const actor = ret!;
+            if (actor.uuid !== targetActorId) return;
+            
+            ActorManager.removeActor(actor.uuid);
+            world.beforeEvents.entityRemove.unsubscribe(callback);
+        });
+    });
+}
