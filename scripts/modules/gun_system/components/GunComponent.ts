@@ -1,3 +1,4 @@
+import { FireModeEnum } from "../types/Enums";
 import { Component } from "./Component";
 
 type ComponentDataType = {
