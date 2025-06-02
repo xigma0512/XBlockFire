@@ -67,6 +67,13 @@
             "initial_state": "tpp_default",
             "states": {
                 "tpp_default": {
+                    "transitions": [
+                        { 
+                            "hold": "1"
+                        }
+                    ]
+                },
+                "hold": {
                     "animations": [
                         "tpp_hold"
                     ]

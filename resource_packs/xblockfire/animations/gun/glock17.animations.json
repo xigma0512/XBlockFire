@@ -37,6 +37,7 @@
             }
         },
         "animation.glock17.reload": {
+            "loop": "hold_on_last_frame",
             "animation_length": 2.15,
             "blend_weight": 1,
             "bones": {
@@ -442,6 +443,7 @@
             }
         },
         "animation.glock17.inspect": {
+            "loop": "hold_on_last_frame",
             "animation_length": 4.2667,
             "bones": {
                 "main": {
@@ -756,6 +758,7 @@
             }
         },
         "animation.glock17.reloadempty": {
+            "loop": "hold_on_last_frame",
             "animation_length": 2.8,
             "bones": {
                 "main": {
