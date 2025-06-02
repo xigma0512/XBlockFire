@@ -11,14 +11,12 @@ export class ActorManager {
     static setActor(target: Entity | ItemStack, actor: ActorType): ResultType<void> {
         if (target instanceof Entity) {
             this._entities.set(target.id, actor);
-            addRemoveActorListener(actor.uuid);
             return { success: true }
         }
         
         if (target instanceof ItemStack) {
             set_entity_dynamic_property(target, 'id', actor.uuid);
             this._items.set(actor.uuid, actor);
-            addRemoveActorListener(actor.uuid);
             return { success: true }
         }
 
@@ -55,18 +53,13 @@ export class ActorManager {
     }
 }
 
-function addRemoveActorListener(targetActorId: string) {   
-    const callback = world.beforeEvents.entityRemove.subscribe(ev => {        
-        const entity = ev.removedEntity;
-        system.run(() => {
-            const { success, ret, err } = ActorManager.getActor(entity);
-            if (!success) return;
-
-            const actor = ret!;
-            if (actor.uuid !== targetActorId) return;
-            
-            ActorManager.removeActor(actor.uuid);
-            world.beforeEvents.entityRemove.unsubscribe(callback);
-        });
+/* Event */
+world.beforeEvents.entityRemove.subscribe(ev => {        
+    const entity = ev.removedEntity;
+    system.run(() => {
+        const { success, ret, err } = ActorManager.getActor(entity);
+        if (!success) return;
+        const actor = ret!;
+        ActorManager.removeActor(actor.uuid);
     });
-}
+});
