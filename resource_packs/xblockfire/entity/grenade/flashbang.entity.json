@@ -13,7 +13,7 @@
 				"default": "geometry.flashbang"
 			},
 			"render_controllers": [
-				"controller.render.flashbang"
+				"controller.render.default"
 			]
 		}
 	}

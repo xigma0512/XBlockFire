@@ -13,12 +13,8 @@
                 "default": "geometry.planted_bomb"
             },
             "render_controllers": [
-                "controller.render.planted_bomb"
-            ],
-            "spawn_egg": {
-                "base_color": "#000000",
-                "overlay_color": "#FFFFFF"
-            }
+				"controller.render.default"
+            ]
         }
     }
 }
