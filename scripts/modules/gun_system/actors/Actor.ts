@@ -2,13 +2,9 @@ import { Component, ComponentTypes } from "../components/Component";
 
 import { randomUUID } from "../../../utils/Utils";
 import { Entity, ItemStack } from "@minecraft/server";
+import { ActorManager } from "../processors/ActorManager";
 
-export declare class IActor {
-    readonly typeId: string;
-    readonly uuid: string;
-    hasComponent(componentId: keyof ComponentTypes): boolean;
-    getComponent<T extends keyof ComponentTypes>(componentId: T): ComponentTypes[T] | undefined;
-}
+export type ActorType = EntityActor | ItemActor;
 
 class Actor {
     readonly typeId: string;
@@ -34,6 +30,8 @@ export class EntityActor extends Actor {
     constructor(typeId: string, entity: Entity) {
         super(typeId);
         this.entity = entity;
+
+        ActorManager.setActor(entity, this);
     }
 }
 
@@ -42,6 +40,8 @@ export class ItemActor extends Actor {
     constructor(typeId: string, item: ItemStack) {
         super(typeId);
         this.item = item;
+
+        ActorManager.setActor(item, this);
     }
 
     protected setItem() {
