@@ -25,6 +25,31 @@
 					]
 				}
 			}
+		},
+        "controller.animation.player.movement": {
+			"initial_state": "not_moving",
+			"states": {
+				"not_moving": {
+                    "on_entry": [
+                        "/event entity @s remove_moving"
+					],
+					"transitions": [
+                        {
+                            "moving": "q.is_moving&&q.is_alive"
+                        }
+					]
+				},
+				"moving": {
+					"on_entry": [
+                        "/event entity @s add_moving"
+					],
+					"transitions": [
+						{
+							"not_moving": "!q.is_moving || !q.is_alive"
+						}
+					]
+				}
+			}
 		}
     }
 }

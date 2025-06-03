@@ -10,7 +10,8 @@ type EntityDynamicPropertyList = {
 type ScoreBoardPropertyList = {
 }
 
-type EntityNativePropertyList = { 
+type EntityNativePropertyList = {
+    'player:is_moving': boolean;
 }
 
 type WorldPropertyId = keyof WorldPropertyList;

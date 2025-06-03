@@ -1,4 +1,5 @@
-import { EquipmentSlot, Player } from "@minecraft/server";
+import { Player, VanillaEntityIdentifier } from "@minecraft/server";
+import { EquipmentSlot, DimensionLocation } from "@minecraft/server";
 
 function randomUUID() {
     let d = new Date().getTime();
@@ -13,4 +14,8 @@ function getPlayerHandItem(player: Player) {
     return player.getComponent('equippable')!.getEquipmentSlot(EquipmentSlot.Mainhand).getItem();
 }
 
-export { randomUUID, getPlayerHandItem };
+function spawnDummyEntity(dimLocation: DimensionLocation) {
+    return dimLocation.dimension.spawnEntity('xblockfire:dummy' as VanillaEntityIdentifier, dimLocation);
+}
+
+export { randomUUID, getPlayerHandItem, spawnDummyEntity };

@@ -6,8 +6,9 @@ import { FireModeEnum, GunTypeEnum } from "../../types/Enums";
 
 import { ItemLockMode, ItemStack } from "@minecraft/server";
 import { GunFireComponent } from "../../components/gun/GunFireComponent";
-import { GunRecoilComponent } from "../../components/gun/GunAnimationComponent";
+import { GunRecoilComponent } from "../../components/gun/GunRecoilComponent";
 import { GunReloadComponent } from "../../components/gun/GunReloadComponent";
+import { GunOffsetComponent } from "../../components/gun/GunOffsetComponent";
 
 export class Glock17 extends ItemActor {
 
@@ -49,7 +50,11 @@ export class Glock17 extends ItemActor {
                 {
                     reload_time: 30
                 }
-            ));
+            )).set('gun_offset', new GunOffsetComponent({
+                scope: 0.3,
+                hipfire: 2,
+                movement: 3
+            }));
 
         this.setItem();
     }
