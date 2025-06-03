@@ -8,6 +8,7 @@ import { BulletComponent } from "./BulletComponent";
 import { DamageComponent } from "./DamageComponent";
 import { ItemComponent } from "./ItemComponent";
 import { MagazineComponent } from "./MagazineComponent";
+import { ProjectileReboundComponent } from "./ProjectileReboundComponent";
 
 export type ComponentTypes = {
     'gun': GunComponent;
@@ -20,6 +21,7 @@ export type ComponentTypes = {
     'magazine': MagazineComponent;
     'entity': EntityComponent;
     'bullet': BulletComponent;
+    'projectile_rebound': ProjectileReboundComponent;
 }
 
 export class Component {
