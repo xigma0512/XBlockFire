@@ -1,6 +1,6 @@
 import { Component } from "../Component";
 
-type ReloadDataType = {
+type ComponentDataType = {
     reload_time: number;
 }
 
@@ -8,7 +8,7 @@ export class GunReloadComponent extends Component {
     
     readonly reload_time: number;
 
-    constructor(data: ReloadDataType) {
+    constructor(data: ComponentDataType) {
         super('gun_reload');
         
         this.reload_time = data.reload_time;

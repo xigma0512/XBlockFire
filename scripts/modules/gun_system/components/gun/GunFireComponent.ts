@@ -1,8 +1,7 @@
-// types/Enums.ts (保持不變)
 import { FireModeEnum } from "../../types/Enums";
 import { Component } from "../Component";
 
-type FiringDataType = {
+type ComponentDataType = {
     fire_mode: FireModeEnum;
     release_to_fire: boolean;
     bullet_spread: number;
@@ -15,7 +14,7 @@ export class GunFireComponent extends Component {
     readonly bullet_spread: number;
     readonly fire_rate: number;
 
-    constructor(data: FiringDataType) {
+    constructor(data: ComponentDataType) {
         super('gun_fire');
         
         this.fire_mode = data.fire_mode;
