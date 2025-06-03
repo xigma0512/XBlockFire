@@ -1,3 +1,5 @@
+import { EntityComponent } from "./EntityComponent";
+import { BulletComponent } from "./BulletComponent";
 import { DamageComponent } from "./DamageComponent";
 import { GunComponent } from "./GunComponent";
 import { ItemComponent } from "./ItemComponent";
@@ -8,6 +10,8 @@ export type ComponentTypes = {
     'gun': GunComponent;
     'item': ItemComponent;
     'magazine': MagazineComponent;
+    'entity': EntityComponent;
+    'bullet': BulletComponent;
 }
 
 export class Component {
