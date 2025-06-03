@@ -1,8 +1,8 @@
-import { FireModeEnum, GunTypeEnum } from "../../types/Enums";
+import { GunTypeEnum } from "../../types/Enums";
 import { Component } from "../Component";
 
 type ComponentDataType = {
-    gunTypeEnum: GunTypeEnum;
+    gunTypeId: GunTypeEnum;
 }
 
 export class GunComponent extends Component {
@@ -12,7 +12,7 @@ export class GunComponent extends Component {
     constructor(data: ComponentDataType) {
         super('gun');
 
-        this.gunTypeId = data.gunTypeEnum;
+        this.gunTypeId = data.gunTypeId;
     }
 
 }
