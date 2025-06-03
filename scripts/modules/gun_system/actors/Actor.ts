@@ -26,12 +26,27 @@ class Actor {
 }
 
 export class EntityActor extends Actor {
-    readonly entity: Entity;
+    
+    // readonly entity: Entity;
+    private _entity: Entity;
+    get entity() { return this._entity; };
+
     constructor(typeId: string, entity: Entity) {
         super(typeId);
-        this.entity = entity;
+        this._entity = entity;
 
         ActorManager.setActor(entity, this);
+    }
+
+    protected setEntity() {
+        const entityComp = this.getComponent('entity')!;
+        const dimension = this._entity.dimension;
+        const location = this.entity.location;
+        
+        this._entity.remove();
+
+        this._entity = dimension.spawnEntity(entityComp.entityTypeId, location, entityComp.spawnOptions);
+        ActorManager.setActor(this.entity, this);
     }
 }
 
