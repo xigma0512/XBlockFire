@@ -1,5 +1,5 @@
 import { GunComponent } from "./gun/GunComponent";
-import { GunRecoilComponent } from "./gun/GunAnimationComponent";
+import { GunRecoilComponent } from "./gun/GunRecoilComponent";
 import { GunFireComponent } from "./gun/GunFireComponent";
 import { GunReloadComponent } from "./gun/GunReloadComponent";
 import { EntityComponent } from "./EntityComponent";
