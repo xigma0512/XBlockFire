@@ -1,5 +1,5 @@
 import { VanillaEntityIdentifier } from "@minecraft/server";
-import { Component } from "./Component";
+import { Component } from "../Component";
 
 type ComponentDataType = {
     flightSpeed: number,

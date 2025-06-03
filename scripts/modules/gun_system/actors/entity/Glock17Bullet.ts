@@ -1,6 +1,6 @@
 import { EntityActor } from "../Actor";
-import { DamageComponent } from "../../components/DamageComponent";
-import { BulletComponent } from "../../components/BulletComponent";
+import { BulletComponent } from "../../components/bullet/BulletComponent";
+import { BulletDamageComponent } from "../../components/bullet/BulletDamageComponent";
 import { EntityComponent } from "../../components/EntityComponent";
 
 import { Entity, VanillaEntityIdentifier } from "@minecraft/server";
@@ -20,7 +20,7 @@ export class Glock17Bullet extends EntityActor {
             .set('bullet', new BulletComponent({
                 flightSpeed: 1000
             }))
-            .set('damage', new DamageComponent({
+            .set('bullet_damage', new BulletDamageComponent({
                 near: { head: 10, body: 5, legs: 3 },
                 medium: { head: 8, body: 4, legs: 2 },
                 far: { head: 6, body: 3, legs: 1 }
