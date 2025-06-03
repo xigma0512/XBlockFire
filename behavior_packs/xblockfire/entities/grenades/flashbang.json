@@ -6,16 +6,21 @@
 			"is_spawnable": false,
 			"is_summonable": true,
 			"is_experimental": false,
-			"runtime_identifier": "snowball"
+			"runtime_identifier": "snowball",
+            "properties": {
+                "grenade:throwing_type": {
+                    "client_sync": true,
+                    "type": "int",
+                    "range": [0, 1],
+                    "default": 0
+                }
+            }
 		},
         "component_groups": {
             "despawn": {
                 "minecraft:instant_despawn": {}
             },
             "overhand_throw": {
-                "minecraft:mark_variant": {
-                    "value": 0
-                },
                 "minecraft:projectile": {
                     "on_hit": {
                         "stick_in_ground": {
@@ -34,9 +39,6 @@
                 }
             },
             "underhand_throw": {
-                "minecraft:mark_variant": {
-                    "value": 1
-                },
                 "minecraft:projectile": {
                     "on_hit": {
                         "stick_in_ground": {
@@ -99,6 +101,9 @@
                     "component_groups": [
                         "overhand_throw"
                     ]
+                },
+                "set_property": {
+                    "grenade:throwing_type": 0
                 }
             },
             "set_underhand": {
@@ -106,6 +111,9 @@
                     "component_groups": [
                         "underhand_throw"
                     ]
+                },
+                "set_property": {
+                    "grenade:throwing_type": 1
                 }
             },
             "explode_sound": {
