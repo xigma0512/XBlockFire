@@ -11,8 +11,14 @@
                 "grenade:throwing_type": {
                     "client_sync": true,
                     "type": "int",
-                    "range": [0, 1],
+                    "range": [0, 2],
                     "default": 0
+                },
+                "grenade:type": {
+                    "client_sync": true,
+                    "type": "int",
+                    "range": [1, 2],
+                    "default": 1
                 }
             }
 		},
