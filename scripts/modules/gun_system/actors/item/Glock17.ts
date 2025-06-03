@@ -1,7 +1,7 @@
 import { ItemActor } from "../Actor";
 import { GunComponent } from "../../components/gun/GunComponent";
 import { ItemComponent } from "../../components/ItemComponent";
-import { MagazineComponent } from "../../components/MagazineComponent";
+import { GunMagazineComponent } from "../../components/gun/GunMagazineComponent";
 import { FireModeEnum, GunTypeEnum } from "../../types/Enums";
 
 import { ItemLockMode, ItemStack } from "@minecraft/server";
@@ -25,14 +25,14 @@ export class Glock17 extends ItemActor {
                     canPlaceOn: [],
                     canDestroy: []
                 }
-            )).set('magazine', new MagazineComponent(
-                {
-                    ammo: 100,
-                    count: 3
-                }
             )).set('gun', new GunComponent(
                 {
                     gunTypeId: GunTypeEnum.Glock17
+                }
+            )).set('gun_magazine', new GunMagazineComponent(
+                {
+                    ammo: 100,
+                    count: 3
                 }
             )).set('gun_fire', new GunFireComponent(
                 {

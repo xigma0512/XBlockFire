@@ -21,7 +21,7 @@ class GunFireSystem {
     }
 
     startFiring(player: Player, gunActor: ItemActor) {
-        const magazineComp = gunActor.getComponent('magazine')!;
+        const magazineComp = gunActor.getComponent('gun_magazine')!;
         if (magazineComp.ammo <= 0) return;
         
         const gunFireComp = gunActor.getComponent('gun_fire')!;
@@ -78,7 +78,7 @@ class GunFireSystem {
     }
 
     private fire(player: Player, gunActor: ItemActor) {
-        const magazineComp = gunActor.getComponent('magazine')!;
+        const magazineComp = gunActor.getComponent('gun_magazine')!;
         if (magazineComp.ammo === 0) return;
         
         magazineComp.ammo --;

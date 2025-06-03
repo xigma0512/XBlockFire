@@ -1,4 +1,4 @@
-import { Component } from "./Component";
+import { Component } from "../Component";
 
 type ComponentDataType = {
     near: IDamageTable,
@@ -6,14 +6,14 @@ type ComponentDataType = {
     far: IDamageTable
 }
 
-export class DamageComponent extends Component {
+export class BulletDamageComponent extends Component {
     
     readonly near: IDamageTable;
     readonly medium: IDamageTable;
     readonly far: IDamageTable;
 
     constructor(data: ComponentDataType) {
-        super('damage');
+        super('bullet_damage');
 
         this.near = data.near;
         this.medium = data.medium;

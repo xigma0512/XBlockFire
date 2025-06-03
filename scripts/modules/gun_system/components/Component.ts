@@ -3,11 +3,13 @@ import { GunRecoilComponent } from "./gun/GunRecoilComponent";
 import { GunFireComponent } from "./gun/GunFireComponent";
 import { GunReloadComponent } from "./gun/GunReloadComponent";
 import { GunOffsetComponent } from "./gun/GunOffsetComponent";
+import { GunMagazineComponent } from "./gun/GunMagazineComponent";
+
+import { BulletComponent } from "./bullet/BulletComponent";
+import { BulletDamageComponent } from "./bullet/BulletDamageComponent";
+
 import { EntityComponent } from "./EntityComponent";
-import { BulletComponent } from "./BulletComponent";
-import { DamageComponent } from "./DamageComponent";
 import { ItemComponent } from "./ItemComponent";
-import { MagazineComponent } from "./MagazineComponent";
 import { ProjectileReboundComponent } from "./ProjectileReboundComponent";
 import { GrenadeComponent } from "./GrenadeComponent";
 
@@ -17,11 +19,13 @@ export type ComponentTypes = {
     'gun_recoil': GunRecoilComponent;
     'gun_reload': GunReloadComponent;
     'gun_offset': GunOffsetComponent
-    'damage': DamageComponent;
-    'item': ItemComponent;
-    'magazine': MagazineComponent;
-    'entity': EntityComponent;
+    'gun_magazine': GunMagazineComponent;
+    
     'bullet': BulletComponent;
+    'bullet_damage': BulletDamageComponent;
+
+    'item': ItemComponent;
+    'entity': EntityComponent;
     'projectile_rebound': ProjectileReboundComponent;
     'grenade': GrenadeComponent;
 }
