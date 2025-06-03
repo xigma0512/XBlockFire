@@ -8,12 +8,11 @@
             "is_summonable": false,
             "scripts": {
                 "animate": [
-                    "reload"
+                    "reload_controller"
                 ]
             },
             "animations": {
-                "reload": "controller.animation.player.reload"
-            },
+                "reload_controller": "controller.animation.player.reload"            },
             "properties": {
                 "player:is_reloading": {
                     "client_sync": true,
@@ -94,19 +93,6 @@
                         }
                     ]
                 }
-            },
-            "fire": {
-                "minecraft:spawn_entity": {
-                    "entities": [
-                        {
-                            "spawn_entity": "xblockfire:bullet",
-                            "num_to_spawn": 1,
-                            "min_wait_time": 0,
-                            "max_wait_time": 0,
-                            "single_use": true
-                        }
-                    ]
-                }
             }
         },
         "components": {
@@ -160,13 +146,6 @@
                 "queue_command": {
                     "command": [
                         "clear @s xblockfire:flashbang_item 0 1"
-                    ]
-                }
-            },
-            "fire": {
-                "add": {
-                    "component_groups": [
-                        "fire"
                     ]
                 }
             },
