@@ -1,4 +1,4 @@
-import { BulletActorTable } from "./BulletTypeTable";
+import { BulletActorTable } from "../../types/ActorTypeTables";
 import { spawnDummyEntity } from "../../../../utils/Utils";
 import { GunTypeEnum } from "../../types/Enums";
 
