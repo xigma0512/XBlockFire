@@ -1,4 +1,5 @@
 import { Entity, ItemStack, world } from "@minecraft/server"
+import { GrenadeTypeEnum } from "../modules/gun_system/types/Enums"
 
 type WorldPropertyList = {
 }
@@ -13,6 +14,7 @@ type ScoreBoardPropertyList = {
 type EntityNativePropertyList = {
     'player:is_moving': boolean;
     'grenade:throwing_type': number;
+    'grenade:type': GrenadeTypeEnum;
 }
 
 type WorldPropertyId = keyof WorldPropertyList;
