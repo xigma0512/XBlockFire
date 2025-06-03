@@ -4,7 +4,7 @@ import { entity_native_property } from "../../../../utils/Property";
 
 import { Vector3Builder, Vector3Utils } from "@minecraft/math";
 import { Entity, Player, system, world } from "@minecraft/server";
-import { Vector3 } from "@minecraft/server";
+import { Vector3, Direction } from "@minecraft/server";
 
 abstract class GrenadeHandler {
     readonly entityActor: EntityActor;
@@ -14,10 +14,15 @@ abstract class GrenadeHandler {
     }
     
     execute() {
-        const grenadeComp = this.entityActor.getComponent('grenade')!;
+        const grenadeComp = this.entityActor.getComponent('grenade');
+        if (!grenadeComp) return;
         for (const event of grenadeComp.executeEvent ?? []) {
             this.entityActor.entity.triggerEvent(event);
         }
+        system.runTimeout(() => {
+            GrenadeSystem.instance.removeHandler(this.entityActor.entity);
+            this.entityActor.entity.remove();
+        }, 2);
     }
 }
 
@@ -42,7 +47,6 @@ class SmokeGrenadeHandler extends GrenadeHandler {
         const duration = 300;
         system.runTimeout(() => {
             system.clearRun(generatingSmoke);
-            GrenadeSystem.instance.removeHandler(this.entityActor.entity);
         }, duration);
 
         super.execute();
@@ -50,6 +54,12 @@ class SmokeGrenadeHandler extends GrenadeHandler {
 }
 
 class FlashbangHandler extends GrenadeHandler {
+
+    private readonly BlindLevels = [
+        { min: 0, max: 50, duration: 1.8, fadeOut: 4.5 },
+        { min: 50, max: 75, duration: 1, fadeOut: 3.7 },
+        { min: 75, max: 135, duration: 0.75, fadeOut: 2.5 },
+    ];
 
     constructor(actor: EntityActor) {
         super(actor);
@@ -87,12 +97,6 @@ class FlashbangHandler extends GrenadeHandler {
 
     private getBlindLevel(player: Player) {
 
-        const BlindLevels = [
-            { min: 0, max: 50, duration: 1.8, fadeOut: 4.5 },
-            { min: 50, max: 75, duration: 1, fadeOut: 3.7 },
-            { min: 75, max: 135, duration: 0.75, fadeOut: 2.5 },
-        ];
-
         const flatten = (vec: Vector3) => new Vector3Builder(vec.x, 0, vec.z);
 
         const entityLocation2d = flatten(this.entityActor.entity.location);
@@ -104,7 +108,7 @@ class FlashbangHandler extends GrenadeHandler {
         const rad = Math.acos(dot / (viewDirection2d.magnitude() * connect.magnitude()));
         const deg = rad * (180 / Math.PI);
         
-        for (const level of BlindLevels) {
+        for (const level of this.BlindLevels) {
             if (deg >= level.min && deg <= level.max) {
                 return { duration: level.duration, fadeOut: level.fadeOut };
             }
@@ -162,6 +166,38 @@ const handlerRegister = world.afterEvents.entitySpawn.subscribe(ev => {
 
     if (grenade.typeId === 'xblockfire:flashbang') GrenadeSystem.instance.setHandler(grenade, new FlashbangHandler(grenadeActor));
     if (grenade.typeId === 'xblockfire:smoke_grenade') GrenadeSystem.instance.setHandler(grenade, new SmokeGrenadeHandler(grenadeActor));
+});
 
-    console.warn('hi')
+const bounces = new WeakMap<Entity, number>();
+const grenadeRebound = world.afterEvents.projectileHitBlock.subscribe(ev => {
+    
+    const projectile = ev.projectile;
+    if (!projectile.matches({families: ['grenade']})) return;
+
+    const MirroredVector = {
+        [Direction.Down]: {x:1,y:-1,z:1},
+        [Direction.Up]: {x:1,y:-1,z:1},
+        [Direction.West]: {x:-1,y:1,z:1},
+        [Direction.East]: {x:-1,y:1,z:1},
+        [Direction.North]: {x:1,y:1,z:-1},
+        [Direction.South]: {x:1,y:1,z:-1},
+    };
+
+    const handler = GrenadeSystem.instance.getHandler(projectile);
+    if (handler === undefined) return;
+
+    if (!bounces.has(projectile)) bounces.set(projectile, 1);
+    
+    const count = bounces.get(projectile)!;
+    const hitBlockInfo = ev.getBlockHit();
+    projectile.teleport(Vector3Utils.add(hitBlockInfo.block.location, Vector3Utils.scale(hitBlockInfo.faceLocation, 1.001)));
+
+    bounces.set(projectile, count + 1);
+    
+    const projReboundComp = handler.entityActor.getComponent('projectile_rebound')!;
+    const bounceFactor = projReboundComp.bounceFactor;
+    
+    const reboundVector = Vector3Utils.multiply(Vector3Utils.scale(ev.hitVector, Math.pow(bounceFactor, count)), MirroredVector[hitBlockInfo.face]);
+    if (Vector3Utils.magnitude(reboundVector) <= 0.01) return;
+    projectile.getComponent('projectile')!.shoot(reboundVector);
 });
