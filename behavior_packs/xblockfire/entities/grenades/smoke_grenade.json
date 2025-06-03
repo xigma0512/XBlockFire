@@ -110,14 +110,14 @@
                     ]
                 }
             },
-            "execute": {
+            "explode_sound": {
                 "queue_command": {
                     "command": [
                         "playsound xigmaguns.smoke_explode @a ~~~ 3 1"
                     ]
                 }
             },
-            "throwing": {
+            "throwing_sound": {
                 "queue_command": {
                     "command": [
                         "playsound xigmaguns.throwing_smoke @a ~~~ 1 1"
