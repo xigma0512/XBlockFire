@@ -12,6 +12,7 @@ type ScoreBoardPropertyList = {
 
 type EntityNativePropertyList = {
     'player:is_moving': boolean;
+    'grenade:throwing_type': number;
 }
 
 type WorldPropertyId = keyof WorldPropertyList;
