@@ -32,7 +32,7 @@ export class Glock17 extends ItemActor {
                 }
             )).set('gun', new GunComponent(
                 {
-                    gunTypeEnum: GunTypeEnum.Glock17
+                    gunTypeId: GunTypeEnum.Glock17
                 }
             )).set('gun_fire', new GunFireComponent(
                 {

@@ -1,7 +1,7 @@
 import { GrenadeTypeEnum, GunTypeEnum } from "./Enums";
 
 import { Glock17Bullet } from "../actors/entity/Glock17Bullet";
-import { Flashbang } from "../actors/entity/flashbang";
+import { Flashbang } from "../actors/entity/Flashbang";
 import { SmokeGrenade } from "../actors/entity/SmokeGrenade";
 
 export const BulletActorTable = {
