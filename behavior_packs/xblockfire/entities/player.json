@@ -8,13 +8,21 @@
             "is_summonable": false,
             "scripts": {
                 "animate": [
-                    "reload_controller"
+                    "reload_controller",
+                    "movement_controller"
                 ]
             },
             "animations": {
-                "reload_controller": "controller.animation.player.reload"            },
+                "reload_controller": "controller.animation.player.reload",            
+                "movement_controller": "controller.animation.player.movement"            
+            },
             "properties": {
                 "player:is_reloading": {
+                    "client_sync": true,
+                    "type": "bool",
+                    "default": false
+                },
+                "player:is_moving": {
                     "client_sync": true,
                     "type": "bool",
                     "default": false
@@ -157,6 +165,16 @@
             "remove_reloading": {
                 "set_property": {
                     "player:is_reloading": false
+                }
+            },
+            "add_moving": {
+                "set_property": {
+                    "player:is_moving": true
+                }
+            },
+            "remove_moving": {
+                "set_property": {
+                    "player:is_moving": false
                 }
             }
         }
