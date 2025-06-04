@@ -1,31 +1,112 @@
 {
 	"format_version": "1.10.0",
 	"animation_controllers": {
-		"controller.animation.player.reload": {
-			"initial_state": "default",
+        "controller.animation.player.secondary_weapon.reload": {
+            "initial_state": "idle",
 			"states": {
-				"default": {
+				"idle": {
                     "on_entry": [
-                        "/event entity @s remove_reloading"
+                        "/event entity @s property:state.reload.idle"
 					],
 					"transitions": [
                         {
-                            "reload": "q.is_sneaking&&q.is_alive&&v.attack_time"
+                            "reloading": "q.is_sneaking&&v.attack_time&&q.is_alive&&q.property('player:state.reload') != 'reloading'&&q.equipped_item_all_tags('slot.weapon.mainhand', 'xblockfire:secondary_weapon')"
                         }
 					]
 				},
-				"reload": {
+				"reloading": {
 					"on_entry": [
-                        "/event entity @s add_reloading"
+                        "/event entity @s property:state.reload.reloading",
+                        "/event entity @s trigger:reloading"
 					],
 					"transitions": [
-						{
-							"default": "!v.attack_time"
-						}
+                        {
+                            "success": "q.property('player:state.reload') == 'success'"
+                        },
+                        {
+                            "fail": "!q.equipped_item_all_tags('slot.weapon.mainhand', 'xblockfire:secondary_weapon')||!q.is_alive"
+                        },
+                        {
+                            "fail": "q.property('player:state.reload') == 'fail'"
+                        }
 					]
-				}
+				},
+                "success": {
+                    "on_entry": [
+                        "/event entity @s property:state.reload.success"
+                    ],
+                    "transitions": [
+                        {
+                            "idle": "1"
+                        }
+                    ]
+                },
+                "fail": {
+                    "on_entry": [
+                        "/event entity @s property:state.reload.fail",
+                        "/event entity @s trigger:reload_fail"
+                    ],
+                    "transitions": [
+                        {
+                            "idle": "!v.attack_time"
+                        }
+                    ]
+                }
 			}
-		},
+        },
+        "controller.animation.player.main_weapon.reload": {
+            "initial_state": "idle",
+			"states": {
+				"idle": {
+                    "on_entry": [
+                        "/event entity @s property:state.reload.idle"
+					],
+					"transitions": [
+                        {
+                            "reloading": "q.is_sneaking&&v.attack_time&&q.is_alive&&q.property('player:state.reload') != 'reloading'&&q.equipped_item_all_tags('slot.weapon.mainhand', 'xblockfire:main_weapon')"
+                        }
+					]
+				},
+				"reloading": {
+					"on_entry": [
+                        "/event entity @s property:state.reload.reloading",
+                        "/event entity @s trigger:reloading"
+					],
+					"transitions": [
+                        {
+                            "success": "q.property('player:state.reload') == 'success'"
+                        },
+                        {
+                            "fail": "!q.equipped_item_all_tags('slot.weapon.mainhand', 'xblockfire:main_weapon')||!q.is_alive"
+                        },
+                        {
+                            "fail": "q.property('player:state.reload') == 'fail'"
+                        }
+					]
+				},
+                "success": {
+                    "on_entry": [
+                        "/event entity @s property:state.reload.success"
+                    ],
+                    "transitions": [
+                        {
+                            "idle": "1"
+                        }
+                    ]
+                },
+                "fail": {
+                    "on_entry": [
+                        "/event entity @s property:state.reload.fail",
+                        "/event entity @s trigger:reload_fail"
+                    ],
+                    "transitions": [
+                        {
+                            "idle": "!v.attack_time"
+                        }
+                    ]
+                }
+			}
+        },
         "controller.animation.player.movement": {
 			"initial_state": "not_moving",
 			"states": {

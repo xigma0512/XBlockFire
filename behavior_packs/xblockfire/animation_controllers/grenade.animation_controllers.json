@@ -23,7 +23,7 @@
 				},
                 "throw": {
                     "on_entry": [
-                        "/event entity @s throwing_flashbang"
+                        "/event entity @s event:throwing_flashbang"
 					],
 					"transitions": [
                         {
@@ -55,7 +55,7 @@
 				},
                 "throw": {
                     "on_entry": [
-                        "/event entity @s throwing_smoke_grenade"
+                        "/event entity @s event:throwing_smoke_grenade"
 					],
 					"transitions": [
                         {

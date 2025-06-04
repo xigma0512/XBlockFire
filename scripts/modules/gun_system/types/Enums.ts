@@ -11,3 +11,5 @@ export const enum GrenadeTypeEnum {
     'Flashbang' = 0,
     'SmokeGrenade'
 }
+
+export type GunReloadStateEnum = 'idle' | 'reloading' | 'success' | 'fail' 

@@ -27,7 +27,7 @@
                     ],
                     "transitions": [
                         {
-                            "reload": "c.owning_entity->q.property('player:is_reloading')"
+                            "reload": "c.owning_entity->q.property('player:state.reload') == 'reloading'"
                         }
                     ]
                 },
