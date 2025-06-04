@@ -158,6 +158,7 @@ class GrenadeSystem {
 }
 
 const handlerRegister = world.afterEvents.entitySpawn.subscribe(ev => {
+    if (!ev.entity.isValid) return;
     if (!ev.entity.matches({families: ['grenade']})) return;
 
     const grenade = ev.entity;
