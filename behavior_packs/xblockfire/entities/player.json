@@ -26,7 +26,7 @@
                 "player:state.reload": {
                     "client_sync": true,
                     "type": "enum",
-                    "values": [ "idle", "reloading", "success", "fail" ],
+                    "values": [ "idle", "pre_reload", "reloading", "success", "fail" ],
                     "default": "idle"
                 },
                 "player:is_moving": {
@@ -164,11 +164,14 @@
                     ]
                 }
             },
-            "trigger:reloading": {},
-            "trigger:reload_fail": {},
             "property:state.reload.idle": {
                 "set_property": {
                     "player:state.reload": "idle"
+                }
+            },
+            "property:state.reload.pre_reload": {
+                "set_property": {
+                    "player:state.reload": "pre_reload"
                 }
             },
             "property:state.reload.reloading": {

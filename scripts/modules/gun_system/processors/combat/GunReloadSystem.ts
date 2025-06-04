@@ -2,6 +2,7 @@ import { ActorManager } from "../ActorManager";
 import { ItemActor } from "../../actors/Actor";
 import { set_entity_native_property, entity_native_property } from "../../../../utils/Property";
 import { getPlayerHandItem, progressBar } from "../../../../utils/Utils";
+
 import { Player, system, world } from "@minecraft/server";
 
 class GunReloadSystem {
@@ -14,23 +15,28 @@ class GunReloadSystem {
     }
 
     playerReload() {
-        const handItem = getPlayerHandItem(this.player);
-        if (!handItem) return this.failure();
-
-        const actorResult = ActorManager.getActor(handItem);
-        if (!actorResult.success) return this.failure();
-
-        const actor = actorResult.ret! as ItemActor;
-        if (!this.canReload(actor)) return this.failure();
-
-        const reloadComp = actor.getComponent('gun_reload');
-        if (!reloadComp) return this.failure();
-
-        this.startReloadTimer(actor, reloadComp.reload_time);
+        try 
+        {
+            const handItem = getPlayerHandItem(this.player);
+            if (!handItem) throw 'player hand item is undefined.';
+            
+            const actorResult = ActorManager.getActor(handItem);
+            if (!actorResult.success) throw 'hand item actor is undefined.';
+            
+            const actor = actorResult.ret! as ItemActor;
+            if (!this.canReload(actor)) throw 'cannot reload now';
+            
+            const reloadComp = actor.getComponent('gun_reload')!;
+            
+            this.startReload(actor, reloadComp.reload_time);
+        } 
+        catch(err: any)
+        {
+            return this.failure();
+        }
     }
 
-    private startReloadTimer(actor: ItemActor, reloadTime: number) {
-        
+    private startReload(actor: ItemActor, reloadTime: number) {
         const startTick = system.currentTick;
         
         const progressBarTaskId = system.runInterval(() => {
@@ -46,13 +52,15 @@ class GunReloadSystem {
         }, reloadTime);
 
         const failTriggerCallback = world.afterEvents.dataDrivenEntityTrigger.subscribe(ev => {
-            if (this.player.id === ev.entity.id && ev.eventId === 'trigger:reload_fail') {
+            if (this.player.id === ev.entity.id && ev.eventId === 'property:state.reload.fail') {
                 this.failure();
 
                 system.clearRun(progressBarTaskId);
                 world.afterEvents.dataDrivenEntityTrigger.unsubscribe(failTriggerCallback);
             }
         });
+
+        set_entity_native_property(this.player, 'player:state.reload', 'reloading');
     }
 
     private canReload(actor: ItemActor) {
@@ -86,7 +94,7 @@ class GunReloadSystem {
 }
 
 world.afterEvents.dataDrivenEntityTrigger.subscribe(ev => {
-    if (ev.entity instanceof Player && ev.eventId === 'trigger:reloading') {
+    if (ev.entity instanceof Player && ev.eventId === 'property:state.reload.pre_reload') {
         new GunReloadSystem(ev.entity).playerReload();
     }
 });
