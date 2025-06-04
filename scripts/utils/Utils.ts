@@ -1,5 +1,7 @@
-import { Player, VanillaEntityIdentifier } from "@minecraft/server";
-import { EquipmentSlot, DimensionLocation } from "@minecraft/server";
+import { ColorTable, ColorType } from "./Color";
+
+import { Player } from "@minecraft/server";
+import { EquipmentSlot, DimensionLocation, VanillaEntityIdentifier } from "@minecraft/server";
 
 function randomUUID() {
     let d = new Date().getTime();
@@ -18,4 +20,16 @@ function spawnDummyEntity(dimLocation: DimensionLocation) {
     return dimLocation.dimension.spawnEntity('xblockfire:dummy' as VanillaEntityIdentifier, dimLocation);
 }
 
-export { randomUUID, getPlayerHandItem, spawnDummyEntity };
+function progressBar(duration: number, currentTime: number, barLength: number = 20) {
+    if (duration <= 0 || currentTime < 0 || currentTime > duration) return "Invalid progress bar parameters.";
+
+    const progress = currentTime / duration;
+    const filled = Math.round(progress * barLength);
+    const empty = barLength - filled;
+
+    const progressBar = `${ColorTable[ColorType.Green]}${'|'.repeat(filled)}${ColorTable[ColorType.Gray]}${'|'.repeat(empty)}`;
+
+    return progressBar;
+}
+
+export { randomUUID, getPlayerHandItem, spawnDummyEntity, progressBar };
