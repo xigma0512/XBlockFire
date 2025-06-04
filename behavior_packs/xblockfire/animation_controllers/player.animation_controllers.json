@@ -10,14 +10,26 @@
 					],
 					"transitions": [
                         {
-                            "reloading": "q.is_sneaking&&v.attack_time&&q.is_alive&&q.property('player:state.reload') != 'reloading'&&q.equipped_item_all_tags('slot.weapon.mainhand', 'xblockfire:secondary_weapon')"
+                            "pre_reload": "q.is_sneaking&&v.attack_time&&q.is_alive&&q.property('player:state.reload') != 'reloading'&&q.equipped_item_all_tags('slot.weapon.mainhand', 'xblockfire:secondary_weapon')"
                         }
 					]
 				},
+                "pre_reload": {
+                    "on_entry": [
+                        "/event entity @s property:state.reload.pre_reload"
+					],
+                    "transitions": [
+                        {
+                            "reloading": "q.property('player:state.reload') == 'reloading'"
+                        },
+                        {
+                            "fail": "q.property('player:state.reload') == 'fail'"
+                        }
+                    ]
+                },
 				"reloading": {
 					"on_entry": [
-                        "/event entity @s property:state.reload.reloading",
-                        "/event entity @s trigger:reloading"
+                        "/event entity @s property:state.reload.reloading"
 					],
 					"transitions": [
                         {
@@ -43,8 +55,7 @@
                 },
                 "fail": {
                     "on_entry": [
-                        "/event entity @s property:state.reload.fail",
-                        "/event entity @s trigger:reload_fail"
+                        "/event entity @s property:state.reload.fail"
                     ],
                     "transitions": [
                         {
@@ -63,14 +74,26 @@
 					],
 					"transitions": [
                         {
-                            "reloading": "q.is_sneaking&&v.attack_time&&q.is_alive&&q.property('player:state.reload') != 'reloading'&&q.equipped_item_all_tags('slot.weapon.mainhand', 'xblockfire:main_weapon')"
+                            "pre_reload": "q.is_sneaking&&v.attack_time&&q.is_alive&&q.property('player:state.reload') != 'reloading'&&q.equipped_item_all_tags('slot.weapon.mainhand', 'xblockfire:main_weapon')"
                         }
 					]
 				},
+                "pre_reload": {
+                    "on_entry": [
+                        "/event entity @s property:state.reload.pre_reload"
+					],
+                    "transitions": [
+                        {
+                            "reloading": "q.property('player:state.reload') == 'reloading'"
+                        },
+                        {
+                            "fail": "q.property('player:state.reload') == 'fail'"
+                        }
+                    ]
+                },
 				"reloading": {
 					"on_entry": [
-                        "/event entity @s property:state.reload.reloading",
-                        "/event entity @s trigger:reloading"
+                        "/event entity @s property:state.reload.reloading"
 					],
 					"transitions": [
                         {
@@ -96,8 +119,7 @@
                 },
                 "fail": {
                     "on_entry": [
-                        "/event entity @s property:state.reload.fail",
-                        "/event entity @s trigger:reload_fail"
+                        "/event entity @s property:state.reload.fail"
                     ],
                     "transitions": [
                         {
