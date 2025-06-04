@@ -1,7 +1,7 @@
 import { ActorManager } from "../ActorManager";
 import { ItemActor } from "../../actors/Actor";
 import { set_entity_native_property, entity_native_property } from "../../../../utils/Property";
-import { getPlayerHandItem } from "../../../../utils/Utils";
+import { getPlayerHandItem, progressBar } from "../../../../utils/Utils";
 import { Player, system, world } from "@minecraft/server";
 
 class GunReloadSystem {
@@ -30,9 +30,18 @@ class GunReloadSystem {
     }
 
     private startReloadTimer(actor: ItemActor, reloadTime: number) {
+        
+        const startTick = system.currentTick;
+        
+        const progressBarTaskId = system.runInterval(() => {
+            const progressBarStr = `${progressBar(reloadTime, system.currentTick - startTick)}`;
+            this.player.onScreenDisplay.setActionBar(progressBarStr);
+        });
+
         this.reloadTaskId = system.runTimeout(() => {
             this.complete(actor);
-
+            
+            system.clearRun(progressBarTaskId);
             world.afterEvents.dataDrivenEntityTrigger.unsubscribe(failTriggerCallback);
         }, reloadTime);
 
@@ -40,6 +49,7 @@ class GunReloadSystem {
             if (this.player.id === ev.entity.id && ev.eventId === 'trigger:reload_fail') {
                 this.failure();
 
+                system.clearRun(progressBarTaskId);
                 world.afterEvents.dataDrivenEntityTrigger.unsubscribe(failTriggerCallback);
             }
         });
