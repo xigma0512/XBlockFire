@@ -43,6 +43,7 @@ export class EntityActor extends Actor {
         const dimension = this._entity.dimension;
         const location = this.entity.location;
         
+        ActorManager.removeActor(this.uuid);
         this._entity.remove();
 
         this._entity = dimension.spawnEntity(entityComp.entityTypeId, location, entityComp.spawnOptions);
