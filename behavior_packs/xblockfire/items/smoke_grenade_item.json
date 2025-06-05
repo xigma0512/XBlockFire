@@ -19,8 +19,11 @@
             "minecraft:display_name": {
                 "value": "Smoke Grenade"
             },
-            "minecraft:projectile": {
-                "projectile_entity": "xblockfire:smoke_grenade"
+            "minecraft:food": {
+                "can_always_eat": true
+            },
+            "minecraft:use_modifiers": {
+                "use_duration": 4000
             }
 		}
 	}

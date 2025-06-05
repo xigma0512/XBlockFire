@@ -6,15 +6,7 @@
             "is_spawnable": false,
             "is_summonable": true,
             "is_experimental": false,
-            "runtime_identifier": "minecraft:snowball",
-            "properties": {
-                "bullet:gun_type": {
-                    "client_sync": true,
-                    "type": "int",
-                    "default": 0,
-                    "range": [ 0, 9 ]
-                }
-            }
+            "runtime_identifier": "minecraft:snowball"
         },
         "component_groups": {
             "despawn": {

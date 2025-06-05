@@ -8,14 +8,28 @@
             "is_summonable": false,
             "scripts": {
                 "animate": [
-                    "reload"
+                    "main_weapon_reload",
+                    "secondary_weapon_reload",
+                    "player_movement",
+                    "throwing_flashbang",
+                    "throwing_smoke_grenade"
                 ]
             },
             "animations": {
-                "reload": "controller.animation.player.reload"
+                "secondary_weapon_reload": "controller.animation.player.secondary_weapon.reload",
+                "main_weapon_reload": "controller.animation.player.main_weapon.reload",
+                "player_movement": "controller.animation.player.movement",
+                "throwing_flashbang": "controller.animation.player.grenade.flashbang",
+                "throwing_smoke_grenade": "controller.animation.player.grenade.smoke_grenade"
             },
             "properties": {
-                "player:is_reloading": {
+                "player:state.reload": {
+                    "client_sync": true,
+                    "type": "enum",
+                    "values": [ "idle", "pre_reload", "reloading", "success", "fail" ],
+                    "default": "idle"
+                },
+                "player:is_moving": {
                     "client_sync": true,
                     "type": "bool",
                     "default": false
@@ -94,19 +108,6 @@
                         }
                     ]
                 }
-            },
-            "fire": {
-                "minecraft:spawn_entity": {
-                    "entities": [
-                        {
-                            "spawn_entity": "xblockfire:bullet",
-                            "num_to_spawn": 1,
-                            "min_wait_time": 0,
-                            "max_wait_time": 0,
-                            "single_use": true
-                        }
-                    ]
-                }
             }
         },
         "components": {
@@ -139,7 +140,7 @@
             "minecraft:block_climber": {}
         },
         "events": {
-            "throwing_smoke_grenade": {
+            "event:throwing_smoke_grenade": {
                 "add": {
                     "component_groups": [
                         "throwing_smoke_grenade"
@@ -151,7 +152,7 @@
                     ]
                 }
             },
-            "throwing_flashbang": {
+            "event:throwing_flashbang": {
                 "add": {
                     "component_groups": [
                         "throwing_flashbang"
@@ -163,21 +164,39 @@
                     ]
                 }
             },
-            "fire": {
-                "add": {
-                    "component_groups": [
-                        "fire"
-                    ]
+            "property:state.reload.idle": {
+                "set_property": {
+                    "player:state.reload": "idle"
                 }
             },
-            "add_reloading": {
+            "property:state.reload.pre_reload": {
                 "set_property": {
-                    "player:is_reloading": true
+                    "player:state.reload": "pre_reload"
                 }
             },
-            "remove_reloading": {
+            "property:state.reload.reloading": {
                 "set_property": {
-                    "player:is_reloading": false
+                    "player:state.reload": "reloading"
+                }
+            },
+            "property:state.reload.success": {
+                "set_property": {
+                    "player:state.reload": "idle"
+                }
+            },
+            "property:state.reload.fail": {
+                "set_property": {
+                    "player:state.reload": "fail"
+                }
+            },
+            "property:add_moving": {
+                "set_property": {
+                    "player:is_moving": true
+                }
+            },
+            "property:remove_moving": {
+                "set_property": {
+                    "player:is_moving": false
                 }
             }
         }

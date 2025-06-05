@@ -13,7 +13,7 @@
 				"default": "geometry.smoke_grenade"
 			},
 			"render_controllers": [
-				"controller.render.smoke_grenade"
+				"controller.render.default"
 			]
 		}
 	}

@@ -19,8 +19,11 @@
             "minecraft:display_name": {
                 "value": "Flashbang"
             },
-            "minecraft:projectile": {
-                "projectile_entity": "xblockfire:flashbang"
+            "minecraft:food": {
+                "can_always_eat": true
+            },
+            "minecraft:use_modifiers": {
+                "use_duration": 4000
             }
 		}
 	}
