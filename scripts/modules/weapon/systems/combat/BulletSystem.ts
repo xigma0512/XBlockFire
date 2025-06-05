@@ -1,9 +1,13 @@
+import { ActorManager } from "../ActorManager";
+import { EntityActor } from "../../actors/Actor";
+import { DamageSystem } from "./DamageSystem";
 import { BulletActorTable } from "../../actors/ActorTypeTables";
+
 import { spawnDummyEntity } from "../../../../utils/Utils";
 import { GunTypeEnum } from "../../types/Enums";
 
-import { Entity, Player, world } from "@minecraft/server";
 import { Vector3Utils } from "@minecraft/math";
+import { Player, world } from "@minecraft/server";
 
 export class BulletSystem {
     
@@ -29,20 +33,20 @@ export class BulletSystem {
         );
     }
 
-    applyBulletDamage(bulletEntity: Entity, hitEntity: Entity) {
-        console.warn('hit')
-    }
 }
 
 const bulletHitEntity = world.afterEvents.projectileHitEntity.subscribe(ev => {
-    const source = ev.source;
-    if (source === undefined) return;
-
+    const attacker = ev.source;
+    if (attacker === undefined || !(attacker instanceof Player)) return;
+    const hitEntity = ev.getEntityHit().entity!;
+    
     const projectile = ev.projectile;
     if (projectile.typeId !== 'xblockfire:bullet') return;
-
-    const hitEntity = ev.getEntityHit().entity!;
-    BulletSystem.instance.applyBulletDamage(projectile, hitEntity);
+    
+    const bulletActor = ActorManager.getActor(projectile) as EntityActor;
+    if (bulletActor === undefined) return;
+    
+    new DamageSystem(attacker, hitEntity).applyBulletDamage(bulletActor, ev.location);
 });
 
 const bulletHitBlock = world.afterEvents.projectileHitBlock.subscribe(ev => {
