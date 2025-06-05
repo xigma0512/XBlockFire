@@ -1,4 +1,4 @@
-import './systems/combat/GunFireSystem'
-import './systems/combat/BulletSystem'
-import './systems/combat/GrenadeSystem'
-import './systems/combat/GunReloadSystem'
+import './systems/gun/GunFireSystem'
+import './systems/gun/GunReloadSystem'
+import './systems/bullet/BulletSystem'
+import './systems/grenade/GrenadeSystem'
