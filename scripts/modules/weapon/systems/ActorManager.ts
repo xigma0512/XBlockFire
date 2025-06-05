@@ -50,9 +50,9 @@ export class ActorManager {
 /* Event */
 world.beforeEvents.entityRemove.subscribe(ev => {        
     const entity = ev.removedEntity;
-    system.run(() => {
+    system.runTimeout(() => {
         const actor = ActorManager.getActor(entity);
         if (!actor) return;
         ActorManager.removeActor(actor.uuid);
-    });
+    }, 2);
 });
