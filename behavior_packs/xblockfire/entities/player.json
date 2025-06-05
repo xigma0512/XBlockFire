@@ -26,7 +26,13 @@
                 "player:state.reload": {
                     "client_sync": true,
                     "type": "enum",
-                    "values": [ "idle", "pre_reload", "reloading", "success", "fail" ],
+                    "values": [
+                        "idle",
+                        "pre_reload",
+                        "reloading",
+                        "success",
+                        "fail"
+                    ],
                     "default": "idle"
                 },
                 "player:is_moving": {
@@ -120,6 +126,9 @@
             "minecraft:collision_box": {
                 "width": 0.6,
                 "height": 1.8
+            },
+            "minecraft:movement": {
+                "value": 0.1
             },
             "minecraft:can_climb": {},
             "minecraft:attack": {
