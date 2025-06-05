@@ -11,7 +11,8 @@
             "minecraft:tags": {
                 "tags": [
                     "xblockfire:equipment",
-                    "xblockfire:gun"
+                    "xblockfire:gun",
+                    "xblockfire:secondary_weapon"
                 ]
             },
             "minecraft:display_name": {

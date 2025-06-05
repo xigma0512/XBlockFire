@@ -5,19 +5,10 @@
             "initial_state": "fpp_default",
             "states": {
                 "fpp_default": {
-                    "animations": [
-                        "fpp_hold"
-                    ],
                     "transitions": [
-                        { "draw": "1" }
-                    ]
-                },
-                "hold": {
-                    "animations": [
-                        "fpp_hold"
-                    ],
-                    "transitions": [
-                        { "reload": "c.owning_entity->q.property('player:is_reloading')" }
+                        {
+                            "draw": "1"
+                        }
                     ]
                 },
                 "draw": {
@@ -25,8 +16,19 @@
                         "draw"
                     ],
                     "transitions": [
-                        { "hold": "q.all_animations_finished" },
-                        { "reload": "c.owning_entity->q.property('player:is_reloading')" }
+                        {
+                            "hold": "q.all_animations_finished"
+                        }
+                    ]
+                },
+                "hold": {
+                    "animations": [
+                        "fpp_hold"
+                    ],
+                    "transitions": [
+                        {
+                            "reload": "c.owning_entity->q.property('player:state.reload') == 'reloading'"
+                        }
                     ]
                 },
                 "reload": {
@@ -34,7 +36,9 @@
                         "reload"
                     ],
                     "transitions": [
-                        { "hold": "q.all_animations_finished" }
+                        {
+                            "hold": "q.all_animations_finished"
+                        }
                     ]
                 },
                 "reloadempty": {
@@ -42,7 +46,9 @@
                         "reloadempty"
                     ],
                     "transitions": [
-                        { "hold": "q.all_animations_finished" }
+                        {
+                            "hold": "q.all_animations_finished"
+                        }
                     ]
                 },
                 "inspect": {
@@ -50,7 +56,9 @@
                         "inspect"
                     ],
                     "transitions": [
-                        { "hold": "q.all_animations_finished" }
+                        {
+                            "hold": "q.all_animations_finished"
+                        }
                     ]
                 }
             }
@@ -59,6 +67,13 @@
             "initial_state": "tpp_default",
             "states": {
                 "tpp_default": {
+                    "transitions": [
+                        { 
+                            "hold": "1"
+                        }
+                    ]
+                },
+                "hold": {
                     "animations": [
                         "tpp_hold"
                     ]
