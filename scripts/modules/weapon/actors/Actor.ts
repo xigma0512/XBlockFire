@@ -2,7 +2,7 @@ import { Component, ComponentTypes } from "../components/Component";
 
 import { randomUUID } from "../../../utils/Utils";
 import { Entity, ItemStack } from "@minecraft/server";
-import { ActorManager } from "../processors/ActorManager";
+import { ActorManager } from "../systems/ActorManager";
 
 export type ActorType = EntityActor | ItemActor;
 
