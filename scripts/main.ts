@@ -1,2 +1,2 @@
-import './modules/gun_system/__entry__'
+import './modules/weapon/__entry__'
 import './test'

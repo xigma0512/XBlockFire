@@ -1,5 +1,5 @@
 import { EntityActor } from "../../actors/Actor";
-import { GrenadeActorTable } from "../../types/ActorTypeTables";
+import { GrenadeActorTable } from "../../actors/ActorTypeTables";
 import { entity_native_property } from "../../../../utils/Property";
 
 import { Vector3Builder, Vector3Utils } from "@minecraft/math";
