@@ -4,7 +4,7 @@ import { getPlayerHandItem } from "../../../../utils/Utils";
 import { FireModeEnum } from "../../types/Enums";
 
 import { Player, system, world } from "@minecraft/server";
-import { BulletSystem } from "./BulletSystem";
+import { BulletSystem } from "../bullet/BulletSystem";
 import { getPlayerGunOffset } from "./GunOffsetSystem";
 
 class GunFireSystem {

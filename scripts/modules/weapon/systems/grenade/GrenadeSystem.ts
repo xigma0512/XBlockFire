@@ -73,10 +73,10 @@ class FlashbangHandler extends GrenadeHandler {
         
         for (const player of dimension.getPlayers()) {
             const raycast = this.detectObstacle(player);
-            if (raycast && raycast.block) continue;
-    
-            const blindLevel = this.getBlindLevel(player);
-            this.applyBlindEffect(player, blindLevel.duration, blindLevel.fadeOut);
+            if (raycast === undefined) {
+                const blindLevel = this.getBlindLevel(player);
+                this.applyBlindEffect(player, blindLevel.duration, blindLevel.fadeOut);
+            }
         }
 
         super.execute();
@@ -85,12 +85,14 @@ class FlashbangHandler extends GrenadeHandler {
     private detectObstacle(player: Player) {
         const dimension = player.dimension;
         const location = this.entityActor.entity.location;
-        const headLocation = player.getHeadLocation();
+        const eyeLocation = Vector3Utils.add(player.getHeadLocation(), {y: 0.1});
         
-        const connectVector = new Vector3Builder(Vector3Utils.subtract(location, headLocation));
+        const connectVector = new Vector3Builder(Vector3Utils.subtract(location, eyeLocation));
+        const magnitude = connectVector.magnitude();
         
-        const raycast = dimension.getBlockFromRay(headLocation, connectVector.normalize(), { 
-            maxDistance: connectVector.magnitude()
+        const raycast = dimension.getBlockFromRay(eyeLocation, connectVector.normalize(), { 
+            maxDistance: magnitude,
+            includeLiquidBlocks: false
         });
         return raycast;
     }
@@ -159,7 +161,8 @@ class GrenadeSystem {
 
 const handlerRegister = world.afterEvents.entitySpawn.subscribe(ev => {
     if (!ev.entity.isValid) return;
-    if (!ev.entity.matches({families: ['grenade']})) return;
+    const familyComp = ev.entity.getComponent('type_family');
+    if (familyComp === undefined || !familyComp.hasTypeFamily('grenade')) return;
 
     const grenade = ev.entity;
     const grenadeType = entity_native_property(grenade, 'grenade:type');
@@ -173,7 +176,9 @@ const bounces = new WeakMap<Entity, number>();
 const grenadeRebound = world.afterEvents.projectileHitBlock.subscribe(ev => {
     
     const projectile = ev.projectile;
-    if (!projectile.matches({families: ['grenade']})) return;
+    if (!projectile.isValid) return;
+    const familyComp = projectile.getComponent('type_family');
+    if (familyComp === undefined || !familyComp.hasTypeFamily('grenade')) return;
 
     const MirroredVector = {
         [Direction.Down]: {x:1,y:-1,z:1},
