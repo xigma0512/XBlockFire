@@ -15,7 +15,7 @@ export class ActorManager {
         }
         
         if (target instanceof ItemStack) {
-            set_entity_dynamic_property(target, 'id', actor.uuid);
+            set_entity_dynamic_property(target, 'item:uuid', actor.uuid);
             this._items.set(actor.uuid, actor);
             return true;
         }
@@ -38,7 +38,7 @@ export class ActorManager {
         }
 
         if (target instanceof ItemStack) {
-            const id = entity_dynamic_property(target, 'id');
+            const id = entity_dynamic_property(target, 'item:uuid');
             if (id === undefined || typeof id !== 'string') return;
 
             const actor = this._items.get(id);
