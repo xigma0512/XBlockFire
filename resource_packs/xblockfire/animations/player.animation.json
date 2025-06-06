@@ -1,0 +1,14 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+        "animation.player.crawling_direction": {
+			"loop": true,
+			"bones": {
+				"root": {
+					"rotation": [90, 0, 0],
+					"position": [0, 2, 28]
+				}
+			}
+		}
+	}
+}

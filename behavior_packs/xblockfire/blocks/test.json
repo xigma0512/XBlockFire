@@ -1,0 +1,33 @@
+{
+	"format_version": "1.20.80",
+	"minecraft:block": {
+		"description": {
+			"identifier": "xblockfire:crawl_block",
+            "menu_category": {
+				"category": "nature"
+			}
+		},
+		"permutations": [],
+		"components": {
+            "minecraft:geometry": {
+                "identifier": "geometry.crawl_block"
+            },
+            "minecraft:collision_box": {
+                "origin": [ 0, 0, 0 ],
+                "size": [ 8, 0.001, 8 ] 
+            },
+            "minecraft:destructible_by_mining": {
+                "seconds_to_destroy": 10
+            },
+            "minecraft:destructible_by_explosion": {
+                "explosion_resistance": 0.1
+            },
+            "minecraft:material_instances": {
+                "*": { 
+                    "texture": "snow",
+                    "render_method": "alpha_test"
+                }
+		    }
+	    }
+    }
+}

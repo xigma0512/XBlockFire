@@ -39,6 +39,11 @@
                     "client_sync": true,
                     "type": "bool",
                     "default": false
+                },
+                "player:crawl": {
+                    "client_sync": true,
+                    "type": "bool",
+                    "default": false
                 }
             }
         },
