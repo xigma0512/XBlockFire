@@ -1,5 +1,7 @@
 import { Player } from "@minecraft/server";
 
+const LIMIT = 9000;
+
 export class EconomyManager {
 
     readonly roomId: string;
@@ -18,6 +20,11 @@ export class EconomyManager {
         this.economies.delete(player);
     }
     
+    addMoney(player: Player, value: number) {
+        const money = this.getMoney(player);
+        if (money + value > LIMIT)
+        this.setMoney(player, (money + value > LIMIT) ? LIMIT : money + value) 
+    }
 
     getMoney(player: Player) {
         return this.economies.get(player) ?? 0;
