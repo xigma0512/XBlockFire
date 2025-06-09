@@ -1,6 +1,6 @@
-import { PhaseManager } from "./sub_systems/PhaseManager";
-import { EconomyManager } from "./sub_systems/EconomyManager";
-import { MemberManager } from "./sub_systems/MemberManager";
+import { PhaseManager } from "./PhaseManager";
+import { EconomyManager } from "./EconomyManager";
+import { MemberManager } from "./MemberManager";
 
 import { GameModeEnum } from "../types/Enum";
 import { randomUUID } from "../../../utils/Utils";
