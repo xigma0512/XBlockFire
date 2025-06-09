@@ -47,7 +47,10 @@ export class GameRoomManager {
     }
 
     getRoom(id: string) {
-        return this.rooms.get(id);
+        if (this.rooms.has(id)) {
+            return this.rooms.get(id) as GameRoom;
+        }
+        throw Error(`Cannot found room ${id}`);
     }
 
     removeRoom(id: string) {
