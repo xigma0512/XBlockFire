@@ -24,4 +24,4 @@ export default {
             ]
         }
     }
-} as Record<number, GameMap>;
+} as Record<number, GameMapType>;

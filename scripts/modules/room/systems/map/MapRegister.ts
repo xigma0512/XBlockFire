@@ -5,7 +5,7 @@ export class MapRegister {
     private static _instance: MapRegister;
     static get instance() { return (this._instance || (this._instance = new this())); }
     
-    readonly availableMaps: Map<number, GameMap>;
+    readonly availableMaps: Map<number, GameMapType>;
     
     constructor() {
         this.availableMaps = new Map();
@@ -14,7 +14,7 @@ export class MapRegister {
 
     getMap(mapId: number) {
         if (this.availableMaps.has(mapId)) {
-            return this.availableMaps.get(mapId) as GameMap;
+            return this.availableMaps.get(mapId) as GameMapType;
         }
         throw Error(`Cannot get map ${mapId}.`);
     }
