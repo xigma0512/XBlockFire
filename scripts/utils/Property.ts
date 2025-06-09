@@ -7,6 +7,7 @@ type WorldPropertyList = {
 type EntityDynamicPropertyList = {
     'item:uuid': string,
     'player:team': TeamTagEnum;
+    'player:is_alive': boolean;
 }
 
 type ScoreBoardPropertyList = {
