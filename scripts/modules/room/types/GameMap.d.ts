@@ -6,11 +6,10 @@ interface Position {
     z: number;
 }
 
-type PositionType = {
-    'attacker_spawns';
-    'defender_spawns';
-    'bomb_targets';
-}
+type PositionType = |
+    'attacker_spawns' |
+    'defender_spawns' |
+    'bomb_targets'
 
 declare interface GameMap {
     id: number;
