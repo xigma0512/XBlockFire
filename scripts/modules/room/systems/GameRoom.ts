@@ -3,11 +3,10 @@ import { EconomyManager } from "./EconomyManager";
 import { MemberManager } from "./MemberManager";
 
 import { GameModeEnum } from "../types/Enum";
-import { randomUUID } from "../../../utils/Utils";
 
 class GameRoom {
     
-    readonly id: string;
+    readonly id: number;
     readonly gameMode: GameModeEnum;
     readonly gameMapId: number;
 
@@ -15,7 +14,7 @@ class GameRoom {
     readonly phaseManager: PhaseManager;
     readonly economyManager: EconomyManager;
 
-    constructor(id: string, gameMode: GameModeEnum, gameMapId: number) {
+    constructor(id: number, gameMode: GameModeEnum, gameMapId: number) {
         this.id = id;
         this.gameMode = gameMode;
         this.gameMapId = gameMapId;
@@ -32,29 +31,29 @@ export class GameRoomManager {
     private static _instance: GameRoomManager;
     static get instance() { return (this._instance || (this._instance = new this())); }
 
-    private readonly rooms: Map<string, GameRoom>;
+    private serialId: number = 0;
+    private readonly rooms: Map<number, GameRoom>;
 
     constructor() {
         this.rooms = new Map();
     }
 
     createRoom(gameMode: GameModeEnum, mapId: number) {
-        const roomId = randomUUID();
-        const roomCreated = new GameRoom(roomId, gameMode, mapId);
+        const roomCreated = new GameRoom(this.serialId, gameMode, mapId);
         
-        this.rooms.set(roomId, roomCreated);
-        return roomId;
+        this.rooms.set(this.serialId, roomCreated);
+        return this.serialId++;
     }
 
-    getRoom(id: string) {
-        if (this.rooms.has(id)) {
-            return this.rooms.get(id) as GameRoom;
+    getRoom(roomId: number) {
+        if (this.rooms.has(roomId)) {
+            return this.rooms.get(roomId) as GameRoom;
         }
-        throw Error(`Cannot found room ${id}`);
+        throw Error(`Cannot found room ${roomId}`);
     }
 
-    removeRoom(id: string) {
-        return this.rooms.delete(id);
+    removeRoom(roomId: number) {
+        return this.rooms.delete(roomId);
     }
 
     getAllRooms() {

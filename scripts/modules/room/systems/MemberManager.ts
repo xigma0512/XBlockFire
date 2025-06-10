@@ -4,10 +4,10 @@ import { ChatSendBeforeEvent, Player, PlayerLeaveBeforeEvent, world } from "@min
 
 export class MemberManager {
     
-    readonly roomId: string;
+    readonly roomId: number;
     private players: Set<Player>;
 
-    constructor(roomId: string) {
+    constructor(roomId: number) {
         this.players = new Set();
         this.roomId = roomId;
     }

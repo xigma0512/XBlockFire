@@ -3,11 +3,11 @@ import { BlankPhase } from "./phases/BlankPhaseHandler";
 
 export class PhaseManager {
     
-    readonly roomId: string;
+    readonly roomId: number;
     private phaseHandler: IPhaseHandler;
     private taskId: number;
 
-    constructor(roomId: string) {
+    constructor(roomId: number) {
         this.roomId = roomId;
         this.phaseHandler = new BlankPhase(roomId);
         this.taskId = system.runInterval(() => this.phaseHandler.on_running());
