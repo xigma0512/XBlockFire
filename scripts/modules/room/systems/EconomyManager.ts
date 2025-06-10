@@ -4,10 +4,10 @@ const LIMIT = 9000;
 
 export class EconomyManager {
 
-    readonly roomId: string;
+    readonly roomId: number;
     private economies: Map<Player, number>;
 
-    constructor(roomId: string) {
+    constructor(roomId: number) {
         this.economies = new Map();
         this.roomId = roomId;
     }

@@ -5,7 +5,7 @@ import { BombPlant_IdlePhase } from "./bomb_plant/Idle";
 
 export class BlankPhase implements IPhaseHandler {
 
-    constructor(private readonly roomId: string) { }
+    constructor(private readonly roomId: number) { }
 
     on_entry() {
         console.warn('Entry blank phase.');
