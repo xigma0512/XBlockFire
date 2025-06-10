@@ -1,6 +1,6 @@
-import { PhaseManager } from "./PhaseManager";
-import { EconomyManager } from "./EconomyManager";
-import { MemberManager } from "./MemberManager";
+import { PhaseManager } from "./phase/PhaseManager";
+import { EconomyManager } from "./economy/EconomyManager";
+import { MemberManager } from "./member/MemberManager";
 
 import { GameModeEnum } from "../types/Enum";
 

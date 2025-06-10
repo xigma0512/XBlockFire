@@ -1,6 +1,7 @@
-import { ColorTable, ColorType } from "../../../utils/Color";
-import { GameRoomManager } from "./GameRoom";
-import { Broadcast } from "../../../utils/Broadcast";
+import { GameRoomManager } from "../GameRoom";
+
+import { ColorTable, ColorType } from "../../../../utils/Color";
+import { Broadcast } from "../../../../utils/Broadcast";
 
 import { Player, world } from "@minecraft/server";
 

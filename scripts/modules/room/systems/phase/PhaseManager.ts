@@ -1,5 +1,5 @@
 import { system } from "@minecraft/server";
-import { BlankPhase } from "./phases/BlankPhaseHandler";
+import { BlankPhase } from "./BlankPhaseHandler";
 
 export class PhaseManager {
     
