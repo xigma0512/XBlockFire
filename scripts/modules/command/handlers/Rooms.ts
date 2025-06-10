@@ -23,6 +23,13 @@ function playerJoinRoom(executer: Player, ...args: string[]) {
     const room = GameRoomManager.instance.getRoom(Number(roomSerial));
     if (room.memberManager.includePlayer(executer)) throw Error(`You have already in room ${roomSerial}`);
 
+    const allRooms = GameRoomManager.instance.getAllRooms();
+    for (const [serial, room] of allRooms) {
+        if (room.memberManager.includePlayer(executer)) {
+            room.memberManager.leaveRoom(executer);
+        }
+    }
+
     room.memberManager.joinRoom(executer);
     executer.sendMessage(`Join room ${roomSerial}.`);
 }

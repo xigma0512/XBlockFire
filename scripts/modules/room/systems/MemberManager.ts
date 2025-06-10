@@ -1,6 +1,8 @@
 import { ColorTable, ColorType } from "../../../utils/Color";
+import { GameRoomManager } from "./GameRoom";
+import { Broadcast } from "../../../utils/Broadcast";
 
-import { ChatSendBeforeEvent, Player, PlayerLeaveBeforeEvent, world } from "@minecraft/server";
+import { Player, world } from "@minecraft/server";
 
 export class MemberManager {
     
@@ -13,21 +15,15 @@ export class MemberManager {
     }
 
     joinRoom(player: Player) {
-        if (this.players.has(player)) return false;
-
+        const room = GameRoomManager.instance.getRoom(this.roomId);
         this.players.add(player);
-        world.sendMessage(`${ColorTable[ColorType.Green]}${player.name} has joined the game.`);
-
-        return true;
+        Broadcast.message(`${ColorTable[ColorType.Green]}${player.name} has joined the game.`, room.memberManager.getPlayers());
     }
-
+    
     leaveRoom(player: Player) {
-        if (!this.players.has(player)) return false;
-
+        const room = GameRoomManager.instance.getRoom(this.roomId);
         this.players.delete(player);
-        world.sendMessage(`${ColorTable[ColorType.Red]}${player.name} has left the game.`);
-
-        return true;
+        Broadcast.message(`${ColorTable[ColorType.Red]}${player.name} has left the game.`, room.memberManager.getPlayers());
     }
 
     getPlayers() {
@@ -39,3 +35,14 @@ export class MemberManager {
     }
     
 }
+
+const playerLeaveGameListener = world.beforeEvents.playerLeave.subscribe(ev => {
+    const rooms = GameRoomManager.instance.getAllRooms();
+    const player = ev.player;
+    for (const [serial, room] of rooms) {
+        if (room.memberManager.includePlayer(player)) {
+            room.memberManager.leaveRoom(player);
+            break;
+        }
+    }
+});
