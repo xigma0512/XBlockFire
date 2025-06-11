@@ -10,6 +10,7 @@ export class PhaseManager {
     constructor(roomId: number) {
         this.roomId = roomId;
         this.phaseHandler = new BlankPhase(roomId);
+        this.phaseHandler.on_entry();
         this.taskId = system.runInterval(() => this.phaseHandler.on_running());
     }
 
