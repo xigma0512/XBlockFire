@@ -1,12 +1,14 @@
 import { GameRoomManager } from "../../GameRoom";
 import { BombPlant_IdlePhase } from "./Idle";
 
+import { BombPlant_GamePhaseEnum } from "../../../types/Enum";
 import { Broadcast } from "../../../../../utils/Broadcast";
 
 const COUNTDOWN_TIME = 10 * 20;
 
 export class BombPlant_GameOverPhase implements IPhaseHandler {
 
+    readonly phaseTag = BombPlant_GamePhaseEnum.Gameover;
     private currentTick: number = COUNTDOWN_TIME;
 
     constructor(private readonly roomId: number) { }

@@ -2,7 +2,9 @@ import { GameRoomManager } from "../../GameRoom";
 import { BombPlant_GameOverPhase } from "./Gameover";
 import { BombPlant_RoundEndPhase } from "./RoundEnd";
 
+import { BombPlant_GamePhaseEnum } from "../../../types/Enum";
 import { TeamTagEnum } from "../../../../weapon/types/Enums";
+
 import { ColorTable, ColorType } from "../../../../../utils/Color";
 import { Broadcast } from "../../../../../utils/Broadcast";
 import { entity_dynamic_property } from "../../../../../utils/Property";
@@ -12,6 +14,7 @@ const ACTION_TIME = 120 * 20;
 
 export class BombPlant_ActionPhase implements IPhaseHandler {
 
+    readonly phaseTag = BombPlant_GamePhaseEnum.Action;
     private currentTick: number = ACTION_TIME;
 
     constructor(private readonly roomId: number) { }
