@@ -1,8 +1,8 @@
 import { GameRoomManager } from "../../GameRoom";
-import { BombPlant_BuyingPhase } from "./Buying";
-import { BombPlant_GameOverPhase } from "./Gameover";
+import { BP_BuyingPhase } from "./Buying";
+import { BP_GameOverPhase } from "./Gameover";
+import { BP_PhaseEnum } from "./PhaseEnum";
 
-import { BombPlant_GamePhaseEnum } from "../../../types/Enum";
 import { TeamTagEnum } from "../../../../weapon/types/Enums";
 import { ColorTable, ColorType } from "../../../../../utils/Color";
 import { entity_dynamic_property } from "../../../../../utils/Property";
@@ -13,9 +13,9 @@ const INCOME = [4000, 2000];
 const WINNING_SCORE = 7;
 const COUNTDOWN_TIME = 10 * 20;
 
-export class BombPlant_RoundEndPhase implements IPhaseHandler {
+export class BP_RoundEndPhase implements IPhaseHandler {
 
-    readonly phaseTag = BombPlant_GamePhaseEnum.RoundEnd;
+    readonly phaseTag = BP_PhaseEnum.RoundEnd;
     private currentTick: number = COUNTDOWN_TIME;
 
     constructor(private readonly roomId: number) { }
@@ -41,7 +41,7 @@ export class BombPlant_RoundEndPhase implements IPhaseHandler {
             player.sendMessage(`${ColorTable[ColorType.Gray]}Round Income: +${earn}`);
         }
 
-        console.warn('Entry BombPlant:roundEnd phase.');
+        console.warn('Entry BP:roundEnd phase.');
     }
 
     on_running() {
@@ -56,7 +56,7 @@ export class BombPlant_RoundEndPhase implements IPhaseHandler {
     }
 
     on_exit() {
-        console.warn('Exit BombPlant:roundEnd phase.');
+        console.warn('Exit BP:roundEnd phase.');
     }
 
     private transitions() {
@@ -72,7 +72,7 @@ export class BombPlant_RoundEndPhase implements IPhaseHandler {
 
         if (winner) {
             set_variable(`${this.roomId}.winner`, winner);
-            phase.updatePhase(new BombPlant_GameOverPhase(this.roomId));
+            phase.updatePhase(new BP_GameOverPhase(this.roomId));
             return;
         }
 
@@ -82,7 +82,7 @@ export class BombPlant_RoundEndPhase implements IPhaseHandler {
                 switchSide();
             }
             
-            phase.updatePhase(new BombPlant_BuyingPhase(this.roomId));
+            phase.updatePhase(new BP_BuyingPhase(this.roomId));
         }
     }
 

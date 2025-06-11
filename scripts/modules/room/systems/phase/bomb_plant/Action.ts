@@ -1,8 +1,8 @@
 import { GameRoomManager } from "../../GameRoom";
-import { BombPlant_GameOverPhase } from "./Gameover";
-import { BombPlant_RoundEndPhase } from "./RoundEnd";
+import { BP_GameOverPhase } from "./Gameover";
+import { BP_RoundEndPhase } from "./RoundEnd";
 
-import { BombPlant_GamePhaseEnum } from "../../../types/Enum";
+import { BP_PhaseEnum } from "./PhaseEnum"
 import { TeamTagEnum } from "../../../../weapon/types/Enums";
 
 import { ColorTable, ColorType } from "../../../../../utils/Color";
@@ -12,16 +12,16 @@ import { set_variable } from "../../../../../utils/Variable";
 
 const ACTION_TIME = 120 * 20;
 
-export class BombPlant_ActionPhase implements IPhaseHandler {
+export class BP_ActionPhase implements IPhaseHandler {
 
-    readonly phaseTag = BombPlant_GamePhaseEnum.Action;
+    readonly phaseTag = BP_PhaseEnum.Action;
     private currentTick: number = ACTION_TIME;
 
     constructor(private readonly roomId: number) { }
 
     on_entry() {
         this.currentTick = ACTION_TIME;
-        console.warn('Entry BombPlant:action phase.');
+        console.warn('Entry BP:action phase.');
     }
 
     on_running() {
@@ -36,7 +36,7 @@ export class BombPlant_ActionPhase implements IPhaseHandler {
     }
     
     on_exit() {
-        console.warn('Exit BombPlant:action phase.');
+        console.warn('Exit BP:action phase.');
     }
 
     private transitions() {
@@ -73,7 +73,7 @@ export class BombPlant_ActionPhase implements IPhaseHandler {
 
             const separator = `${ColorTable[ColorType.White]}---------------\n`;
             let message = [separator];
-            let nextPhase: IPhaseHandler = new BombPlant_RoundEndPhase(this.roomId);
+            let nextPhase: IPhaseHandler = new BP_RoundEndPhase(this.roomId);
     
             let winner = TeamTagEnum.Defender;
             switch (endReason) {
@@ -84,14 +84,14 @@ export class BombPlant_ActionPhase implements IPhaseHandler {
                     break;
 
                 case EndReasonEnum['Attacker-Disconnect']:
-                    nextPhase = new BombPlant_GameOverPhase(this.roomId);
+                    nextPhase = new BP_GameOverPhase(this.roomId);
                 case EndReasonEnum['Attacker-Eliminated']:
                     message.push(`${ColorTable[ColorType.Yellow]}Blue Team Win\n`);
                     winner = TeamTagEnum.Defender;
                     break;
 
                 case EndReasonEnum['Defender-Disconnect']:
-                    nextPhase = new BombPlant_GameOverPhase(this.roomId);
+                    nextPhase = new BP_GameOverPhase(this.roomId);
                 case EndReasonEnum['Defender-Eliminated']:
                     message.push(`${ColorTable[ColorType.Yellow]}Red Team Win\n`);
                     winner = TeamTagEnum.Attacker;

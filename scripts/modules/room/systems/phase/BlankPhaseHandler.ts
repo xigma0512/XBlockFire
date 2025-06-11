@@ -1,7 +1,7 @@
-import { GameModeEnum } from "../../types/Enum";
+import { GameModeEnum } from "../GameModeEnum";
 import { GameRoomManager } from "../GameRoom";
 
-import { BombPlant_IdlePhase } from "./bomb_plant/Idle";
+import { BP_IdlePhase } from "./bomb_plant/Idle";
 
 export class BlankPhase implements IPhaseHandler {
 
@@ -25,7 +25,7 @@ export class BlankPhase implements IPhaseHandler {
 
         switch(room.gameMode) {
             case GameModeEnum.BombPlant: 
-                room.phaseManager.updatePhase(new BombPlant_IdlePhase(this.roomId));
+                room.phaseManager.updatePhase(new BP_IdlePhase(this.roomId));
                 break;
         }
     }

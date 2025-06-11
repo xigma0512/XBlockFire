@@ -1,8 +1,9 @@
 import { PhaseManager } from "./phase/PhaseManager";
 import { EconomyManager } from "./economy/EconomyManager";
 import { MemberManager } from "./member/MemberManager";
+import { BombManager } from "./bombs/BombStateManager";
 
-import { GameModeEnum } from "../types/Enum";
+import { GameModeEnum } from "./GameModeEnum";
 
 class GameRoom {
     
@@ -13,6 +14,7 @@ class GameRoom {
     readonly memberManager: MemberManager;
     readonly phaseManager: PhaseManager;
     readonly economyManager: EconomyManager;
+    readonly bombManager: BombManager;
 
     constructor(id: number, gameMode: GameModeEnum, gameMapId: number) {
         this.id = id;
@@ -22,6 +24,7 @@ class GameRoom {
         this.memberManager = new MemberManager(id);
         this.phaseManager = new PhaseManager(id);
         this.economyManager = new EconomyManager(id);
+        this.bombManager = new BombManager(id);
     }
 
 }

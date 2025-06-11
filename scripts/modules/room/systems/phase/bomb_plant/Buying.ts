@@ -1,8 +1,8 @@
 import { GameRoomManager } from "../../GameRoom";
-import { BombPlant_ActionPhase } from "./Action";
+import { BP_ActionPhase } from "./Action";
 import { MapRegister } from "../../map/MapRegister";
 
-import { BombPlant_GamePhaseEnum } from "../../../types/Enum";
+import { BP_PhaseEnum } from "./PhaseEnum";
 import { TeamTagEnum } from "../../../../weapon/types/Enums";
 import { entity_dynamic_property, set_entity_dynamic_property } from "../../../../../utils/Property";
 import { Broadcast } from "../../../../../utils/Broadcast";
@@ -12,9 +12,9 @@ import { Vector3Utils } from "@minecraft/math";
 
 const COUNTDOWN_TIME = 30 * 20;
 
-export class BombPlant_BuyingPhase implements IPhaseHandler {
+export class BP_BuyingPhase implements IPhaseHandler {
 
-    readonly phaseTag = BombPlant_GamePhaseEnum.Buying;
+    readonly phaseTag = BP_PhaseEnum.Buying;
     private currentTick: number = COUNTDOWN_TIME;
 
     constructor(private readonly roomId: number) { }
@@ -24,7 +24,7 @@ export class BombPlant_BuyingPhase implements IPhaseHandler {
         spawnPlayers(this.roomId);
         resetPlayers(this.roomId);
 
-        console.warn('Entry BombPlant:buying phase.');
+        console.warn('Entry BP:buying phase.');
     }
 
     on_running() {
@@ -50,12 +50,12 @@ export class BombPlant_BuyingPhase implements IPhaseHandler {
             player.inputPermissions.setPermissionCategory(InputPermissionCategory.LateralMovement, true);
         }
         
-        console.warn('Exit BombPlant:buying phase.');
+        console.warn('Exit BP:buying phase.');
     }
 
     private transitions() {
         const room = GameRoomManager.instance.getRoom(this.roomId);
-        if (this.currentTick <= 0) room.phaseManager.updatePhase(new BombPlant_ActionPhase(this.roomId));
+        if (this.currentTick <= 0) room.phaseManager.updatePhase(new BP_ActionPhase(this.roomId));
     }
 
 }
