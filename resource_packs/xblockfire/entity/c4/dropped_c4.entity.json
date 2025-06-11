@@ -2,15 +2,15 @@
     "format_version": "1.20.80",
     "minecraft:client_entity": {
         "description": {
-            "identifier": "xblockfire:dropped_bomb",
+            "identifier": "xblockfire:dropped_c4",
             "materials": {
                 "default": "entity_alphatest"
             },
             "textures": {
-                "default": "textures/models/c4/dropped_bomb.png"
+                "default": "textures/models/c4/dropped_c4.png"
             },
             "geometry": {
-                "default": "geometry.dropped_bomb"
+                "default": "geometry.dropped_c4"
             },
             "render_controllers": [
 				"controller.render.default"
