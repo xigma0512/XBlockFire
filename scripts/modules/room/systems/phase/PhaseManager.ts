@@ -22,4 +22,8 @@ export class PhaseManager {
         this.taskId = system.runInterval(() => this.phaseHandler.on_running());
     }
 
+    getPhase() {
+        return this.phaseHandler.phaseTag;
+    }
+
 }

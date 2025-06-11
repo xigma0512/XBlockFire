@@ -1,10 +1,11 @@
 import { GameRoomManager } from "../../GameRoom";
 import { BombPlant_BuyingPhase } from "./Buying";
 
+import { TeamTagEnum } from "../../../../weapon/types/Enums";
+import { BombPlant_GamePhaseEnum } from "../../../types/Enum";
 import { Broadcast } from "../../../../../utils/Broadcast";
 import { ColorTable, ColorType } from "../../../../../utils/Color";
 import { set_entity_dynamic_property } from "../../../../../utils/Property";
-import { TeamTagEnum } from "../../../../weapon/types/Enums";
 
 const AUTO_START = true;
 const AUTO_START_MIN_PLAYER = 2;
@@ -12,6 +13,7 @@ const COUNTDOWN_TIME = 30 * 20;
 
 export class BombPlant_IdlePhase implements IPhaseHandler {
 
+    readonly phaseTag = BombPlant_GamePhaseEnum.Idle;
     private currentTick: number = COUNTDOWN_TIME;
 
     constructor(private readonly roomId: number) { }
