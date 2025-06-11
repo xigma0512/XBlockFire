@@ -2,7 +2,7 @@
     "format_version": "1.20.80",
     "minecraft:entity": {
         "description": {
-            "identifier": "xblockfire:planted_bomb",
+            "identifier": "xblockfire:planted_c4",
             "is_spawnable": true,
             "is_summonable": true,
             "is_experimental": false
