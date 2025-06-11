@@ -1,8 +1,8 @@
 import { GameRoomManager } from "../../GameRoom";
-import { BombPlant_BuyingPhase } from "./Buying";
+import { BP_BuyingPhase } from "./Buying";
+import { BP_PhaseEnum } from "./PhaseEnum";
 
 import { TeamTagEnum } from "../../../../weapon/types/Enums";
-import { BombPlant_GamePhaseEnum } from "../../../types/Enum";
 import { Broadcast } from "../../../../../utils/Broadcast";
 import { ColorTable, ColorType } from "../../../../../utils/Color";
 import { set_entity_dynamic_property } from "../../../../../utils/Property";
@@ -11,16 +11,16 @@ const AUTO_START = true;
 const AUTO_START_MIN_PLAYER = 2;
 const COUNTDOWN_TIME = 30 * 20;
 
-export class BombPlant_IdlePhase implements IPhaseHandler {
+export class BP_IdlePhase implements IPhaseHandler {
 
-    readonly phaseTag = BombPlant_GamePhaseEnum.Idle;
+    readonly phaseTag = BP_PhaseEnum.Idle;
     private currentTick: number = COUNTDOWN_TIME;
 
     constructor(private readonly roomId: number) { }
 
     on_entry() {
         this.currentTick = COUNTDOWN_TIME;
-        console.warn('Entry BombPlant:idle phase.');
+        console.warn('Entry BP:idle phase.');
     }
 
     on_running() {
@@ -47,13 +47,13 @@ export class BombPlant_IdlePhase implements IPhaseHandler {
     on_exit() {
         if (AUTO_START) balanceTeam(this.roomId);
         initializePlayers(this.roomId);
-        console.warn('Exit BombPlant:idle phase.');
+        console.warn('Exit BP:idle phase.');
     }
 
     private transitions() {
         const room = GameRoomManager.instance.getRoom(this.roomId);
 
-        if (this.currentTick <= 0) return room.phaseManager.updatePhase(new BombPlant_BuyingPhase(this.roomId));
+        if (this.currentTick <= 0) return room.phaseManager.updatePhase(new BP_BuyingPhase(this.roomId));
     }
 
 }

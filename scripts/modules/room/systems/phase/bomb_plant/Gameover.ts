@@ -1,21 +1,21 @@
 import { GameRoomManager } from "../../GameRoom";
-import { BombPlant_IdlePhase } from "./Idle";
+import { BP_IdlePhase } from "./Idle";
+import { BP_PhaseEnum } from "./PhaseEnum";
 
-import { BombPlant_GamePhaseEnum } from "../../../types/Enum";
 import { Broadcast } from "../../../../../utils/Broadcast";
 
 const COUNTDOWN_TIME = 10 * 20;
 
-export class BombPlant_GameOverPhase implements IPhaseHandler {
+export class BP_GameOverPhase implements IPhaseHandler {
 
-    readonly phaseTag = BombPlant_GamePhaseEnum.Gameover;
+    readonly phaseTag = BP_PhaseEnum.Gameover;
     private currentTick: number = COUNTDOWN_TIME;
 
     constructor(private readonly roomId: number) { }
 
     on_entry() {
         this.currentTick = COUNTDOWN_TIME;
-        console.warn('Entry BombPlant:gameover phase.');
+        console.warn('Entry BP:gameover phase.');
     }
 
     on_running() {
@@ -30,13 +30,13 @@ export class BombPlant_GameOverPhase implements IPhaseHandler {
     }
 
     on_exit() {
-        console.warn('Exit BombPlant:gameover phase.');
+        console.warn('Exit BP:gameover phase.');
     }
 
     private transitions() {
         const room = GameRoomManager.instance.getRoom(this.roomId);
 
-        if (this.currentTick <= 0) room.phaseManager.updatePhase(new BombPlant_IdlePhase(this.roomId));
+        if (this.currentTick <= 0) room.phaseManager.updatePhase(new BP_IdlePhase(this.roomId));
     }
 
 }
