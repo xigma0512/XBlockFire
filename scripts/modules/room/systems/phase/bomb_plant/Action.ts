@@ -21,7 +21,7 @@ export class BP_ActionPhase implements IPhaseHandler {
 
     on_entry() {
         this.currentTick = ACTION_TIME;
-        console.warn('Entry BP:action phase.');
+        console.warn(`[Room ${this.roomId}] Entry BP:action phase.`);
     }
 
     on_running() {
@@ -36,7 +36,7 @@ export class BP_ActionPhase implements IPhaseHandler {
     }
     
     on_exit() {
-        console.warn('Exit BP:action phase.');
+        console.warn(`[Room ${this.roomId}] Exit BP:action phase.`);
     }
 
     private transitions() {

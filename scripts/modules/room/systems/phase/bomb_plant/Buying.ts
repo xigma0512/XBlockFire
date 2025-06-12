@@ -24,7 +24,7 @@ export class BP_BuyingPhase implements IPhaseHandler {
         spawnPlayers(this.roomId);
         resetPlayers(this.roomId);
 
-        console.warn('Entry BP:buying phase.');
+        console.warn(`[Room ${this.roomId}] Entry BP:buying phase.`);
     }
 
     on_running() {
@@ -50,7 +50,7 @@ export class BP_BuyingPhase implements IPhaseHandler {
             player.inputPermissions.setPermissionCategory(InputPermissionCategory.LateralMovement, true);
         }
         
-        console.warn('Exit BP:buying phase.');
+        console.warn(`[Room ${this.roomId}] Exit BP:buying phase.`);
     }
 
     private transitions() {

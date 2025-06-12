@@ -15,7 +15,7 @@ export class BP_GameOverPhase implements IPhaseHandler {
 
     on_entry() {
         this.currentTick = COUNTDOWN_TIME;
-        console.warn('Entry BP:gameover phase.');
+        console.warn(`[Room ${this.roomId}] Entry BP:gameover phase.`);
     }
 
     on_running() {
@@ -30,7 +30,7 @@ export class BP_GameOverPhase implements IPhaseHandler {
     }
 
     on_exit() {
-        console.warn('Exit BP:gameover phase.');
+        console.warn(`[Room ${this.roomId}] Exit BP:gameover phase.`);
     }
 
     private transitions() {

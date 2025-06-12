@@ -41,7 +41,7 @@ export class BP_RoundEndPhase implements IPhaseHandler {
             player.sendMessage(`${ColorTable[ColorType.Gray]}Round Income: +${earn}`);
         }
 
-        console.warn('Entry BP:roundEnd phase.');
+        console.warn(`[Room ${this.roomId}] Entry BP:roundEnd phase.`);
     }
 
     on_running() {
@@ -56,7 +56,7 @@ export class BP_RoundEndPhase implements IPhaseHandler {
     }
 
     on_exit() {
-        console.warn('Exit BP:roundEnd phase.');
+        console.warn(`[Room ${this.roomId}] Exit BP:roundEnd phase.`);
     }
 
     private transitions() {
