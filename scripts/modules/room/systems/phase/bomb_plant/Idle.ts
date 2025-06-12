@@ -20,7 +20,7 @@ export class BP_IdlePhase implements IPhaseHandler {
 
     on_entry() {
         this.currentTick = COUNTDOWN_TIME;
-        console.warn('Entry BP:idle phase.');
+        console.warn(`[Room ${this.roomId}] Entry BP:idle phase.`);
     }
 
     on_running() {
@@ -47,7 +47,7 @@ export class BP_IdlePhase implements IPhaseHandler {
     on_exit() {
         if (AUTO_START) balanceTeam(this.roomId);
         initializePlayers(this.roomId);
-        console.warn('Exit BP:idle phase.');
+        console.warn(`[Room ${this.roomId}] Exit BP:idle phase.`);
     }
 
     private transitions() {
