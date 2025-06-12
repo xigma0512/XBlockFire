@@ -1,7 +1,7 @@
 import { PhaseManager } from "./phase/PhaseManager";
 import { EconomyManager } from "./economy/EconomyManager";
 import { MemberManager } from "./member/MemberManager";
-import { BombManager } from "./bombs/BombStateManager";
+import { BombManager } from "./bomb/BombManager";
 
 import { GameModeEnum } from "./GameModeEnum";
 
