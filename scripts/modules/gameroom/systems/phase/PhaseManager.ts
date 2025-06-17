@@ -24,7 +24,7 @@ export class PhaseManager {
     }
 
     getPhase() {
-        return this.phaseHandler.phaseTag;
+        return this.phaseHandler;
     }
 
 }
