@@ -6,7 +6,7 @@ import { BombDroppedState } from "./Dropped";
 import { BombStateEnum } from "./BombStateEnum";
 import { TeamTagEnum } from "../../../../weapon/types/Enums";
 import { entity_dynamic_property } from "../../../../../utils/Property";
-import { ColorTable, ColorType } from "../../../../../utils/Color";
+import { FormatCode as FC } from "../../../../../utils/FormatCode";
 
 import { Vector3Utils } from "@minecraft/math";
 import { Player, system, world } from "@minecraft/server";
@@ -107,7 +107,7 @@ function canPlantBomb(roomId: number, source: Player) {
         system.run(() => source.onScreenDisplay.setActionBar('Planting...'));
         return true;
     } catch (err: any) {
-        system.run(() => source.onScreenDisplay.setActionBar(`${ColorTable[ColorType.Red]}${err.message}`));
+        system.run(() => source.onScreenDisplay.setActionBar(`${FC.Red}${err.message}`));
         return false;
     }
 }
