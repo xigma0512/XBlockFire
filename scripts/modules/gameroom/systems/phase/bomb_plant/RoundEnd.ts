@@ -4,7 +4,7 @@ import { BP_GameOverPhase } from "./Gameover";
 import { BP_PhaseEnum } from "./PhaseEnum";
 
 import { TeamTagEnum } from "../../../../weapon/types/Enums";
-import { FormatCode } from "../../../../../utils/FormatCode";
+import { FormatCode as FC } from "../../../../../utils/FormatCode";
 import { entity_dynamic_property } from "../../../../../utils/Property";
 import { set_variable, variable } from "../../../../../utils/Variable";
 import { Broadcast } from "../../../../../utils/Broadcast";
@@ -39,7 +39,7 @@ export class BP_RoundEndPhase implements IPhaseHandler {
             const playerTeam = entity_dynamic_property(player, 'player:team');
             const earn = INCOME[(playerTeam === winnerTeam) ? 0 : 1];
             economy.addMoney(player, earn);
-            player.sendMessage(`${FormatCode.Gray}Round Income: +${earn}`);
+            player.sendMessage(`${FC.Gray}Round Income: +${earn}`);
         }
 
         console.warn(`[Room ${this.roomId}] Entry BP:roundEnd phase.`);
@@ -49,7 +49,7 @@ export class BP_RoundEndPhase implements IPhaseHandler {
         const room = GameRoomManager.instance.getRoom(this.roomId);
         const members = room.memberManager.getPlayers();
         
-        const actionbarText = `${FormatCode.Yellow}Next round start in ${(this.currentTick / 20).toFixed(0)} seconds.`;
+        const actionbarText = `${FC.Yellow}Next round start in ${(this.currentTick / 20).toFixed(0)} seconds.`;
         Broadcast.actionbar(actionbarText, members);
         
         this._currentTick --;

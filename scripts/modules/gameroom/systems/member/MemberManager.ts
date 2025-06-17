@@ -1,6 +1,6 @@
 import { GameRoomManager } from "../GameRoom";
 
-import { FormatCode } from "../../../../utils/FormatCode";
+import { FormatCode as FC } from "../../../../utils/FormatCode";
 import { Broadcast } from "../../../../utils/Broadcast";
 
 import { Player, world } from "@minecraft/server";
@@ -18,13 +18,13 @@ export class MemberManager {
     joinRoom(player: Player) {
         const room = GameRoomManager.instance.getRoom(this.roomId);
         this.players.add(player);
-        Broadcast.message(`${FormatCode.Green}${player.name} has joined the game.`, room.memberManager.getPlayers());
+        Broadcast.message(`${FC.Green}${player.name} has joined the game.`, room.memberManager.getPlayers());
     }
     
     leaveRoom(player: Player) {
         const room = GameRoomManager.instance.getRoom(this.roomId);
         this.players.delete(player);
-        Broadcast.message(`${FormatCode.Red}${player.name} has left the game.`, room.memberManager.getPlayers());
+        Broadcast.message(`${FC.Red}${player.name} has left the game.`, room.memberManager.getPlayers());
     }
 
     getPlayers() {

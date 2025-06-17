@@ -1,4 +1,4 @@
-import { FormatCode } from "./FormatCode";
+import { FormatCode as FC } from "./FormatCode";
 
 import { Player } from "@minecraft/server";
 import { EquipmentSlot, DimensionLocation, VanillaEntityIdentifier } from "@minecraft/server";
@@ -27,7 +27,7 @@ function progressBar(duration: number, currentTime: number, barLength: number = 
     const filled = Math.round(progress * barLength);
     const empty = barLength - filled;
 
-    const progressBar = `${FormatCode.Green}${filledTag.repeat(filled)}${FormatCode.Gray}${emptyTag.repeat(empty)}`;
+    const progressBar = `${FC.Green}${filledTag.repeat(filled)}${FC.Gray}${emptyTag.repeat(empty)}`;
 
     return progressBar;
 }
