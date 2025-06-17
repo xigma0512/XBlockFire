@@ -15,12 +15,13 @@ const COUNTDOWN_TIME = 30 * 20;
 export class BP_BuyingPhase implements IPhaseHandler {
 
     readonly phaseTag = BP_PhaseEnum.Buying;
-    private currentTick: number = COUNTDOWN_TIME;
+    private _currentTick: number = COUNTDOWN_TIME;
+    get currentTick() { return this._currentTick; }
 
     constructor(private readonly roomId: number) { }
 
     on_entry() {
-        this.currentTick = COUNTDOWN_TIME;
+        this._currentTick = COUNTDOWN_TIME;
         spawnPlayers(this.roomId);
         resetPlayers(this.roomId);
 
@@ -37,7 +38,7 @@ export class BP_BuyingPhase implements IPhaseHandler {
         ];
         
         Broadcast.actionbar(actionbarText, members);
-        this.currentTick --;
+        this._currentTick --;
 
         this.transitions();
     }
