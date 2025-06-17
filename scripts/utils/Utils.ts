@@ -1,4 +1,4 @@
-import { ColorTable, ColorType } from "./Color";
+import { FormatCode as FC } from "./FormatCode";
 
 import { Player } from "@minecraft/server";
 import { EquipmentSlot, DimensionLocation, VanillaEntityIdentifier } from "@minecraft/server";
@@ -20,14 +20,14 @@ function spawnDummyEntity(dimLocation: DimensionLocation) {
     return dimLocation.dimension.spawnEntity('xblockfire:dummy' as VanillaEntityIdentifier, dimLocation);
 }
 
-function progressBar(duration: number, currentTime: number, barLength: number = 20) {
+function progressBar(duration: number, currentTime: number, barLength: number = 20, filledTag: string = '|', emptyTag: string = '|') {
     if (duration <= 0 || currentTime < 0 || currentTime > duration) return "Invalid progress bar parameters.";
 
     const progress = currentTime / duration;
     const filled = Math.round(progress * barLength);
     const empty = barLength - filled;
 
-    const progressBar = `${ColorTable[ColorType.Green]}${'|'.repeat(filled)}${ColorTable[ColorType.Gray]}${'|'.repeat(empty)}`;
+    const progressBar = `${FC.Green}${filledTag.repeat(filled)}${FC.Gray}${emptyTag.repeat(empty)}`;
 
     return progressBar;
 }

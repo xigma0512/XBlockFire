@@ -1,5 +1,5 @@
 import { EntityActor } from "../../actors/Actor";
-import { entity_dynamic_property } from "../../../../utils/Property";
+import { entity_dynamic_property, set_entity_dynamic_property } from "../../../../utils/Property";
 
 import { Vector3Utils } from "@minecraft/math";
 import { Entity, GameMode, Player, Vector3 } from "@minecraft/server";
@@ -66,6 +66,7 @@ export class DamageSystem {
 function playerDead(entity: Player | Entity) {
     if (entity instanceof Player) {   
         entity.setGameMode(GameMode.spectator);
+        set_entity_dynamic_property(entity, 'player:is_alive', false);
         entity.sendMessage('you dead');
     }
     else {
