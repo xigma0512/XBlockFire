@@ -1,4 +1,5 @@
 import { Player, world } from "@minecraft/server";
+import { FormatCode as FC } from "./FormatCode";
 
 const sidebarMessages = new Map<Player, string[]>();
 const topbarMessages = new Map<Player, string[]>();
@@ -14,6 +15,8 @@ export class Broadcast {
     }
 
     static topbar(message: string[], players?: Player[]) {
+        message = message.map((m, i) => (i == message.length - 1) ? m : m + '\n' + FC.Reset);
+        
         for (const p of (players ?? world.getAllPlayers())) {
             topbarMessages.set(p, message);
             this.sendTitle(p);
@@ -21,6 +24,8 @@ export class Broadcast {
     }
 
     static sidebar(message: string[], players?: Player[]) {
+        message = message.map((m, i) => (i == message.length - 1) ? m : m + '\n' + FC.Reset);
+
         for (const p of (players ?? world.getAllPlayers())) {
             sidebarMessages.set(p, message);
             this.sendTitle(p);
