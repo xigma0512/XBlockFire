@@ -1,40 +1,54 @@
 {
     "namespace": "hud",
     "hud_title_text": {
-        "type": "stack_panel",
-        "size": [ "100%cm", "100%c" ],
-        "anchor_from": "right_middle",
-        "anchor_to": "right_middle",
+        "type": "screen",
+        "size": [ "default", "default" ],
         "alpha": 1,
         "controls": [
             {
-                "sidebar": {
-                    "type": "panel",
-                    "size": [ "100%c", "100%c" ],
-                    "offset": [ 0, 25 ],
+                "topbar": {
+                    "type": "image",
+                    "size": [ "100%cm+5px", "100%c+5px" ],
+                    "texture": "textures/ui/hud_tip_text_background",
+                    "anchor_from": "top_middle",
+                    "anchor_to": "top_middle",
+                    "layer": 0,
+                    "alpha": 0.5,
+                    "offset": [ 0, 20 ],
                     "controls": [
                         {
-                            "title_sidebar": {
-                                "type": "image",
-                                "size": [ "100%cm+5px", "100%c+5px" ],
-                                "texture": "textures/ui/hud_tip_text_background",
+                            "text": {
+                                "type": "label",
+                                "text": "$title_text",
                                 "anchor_from": "center",
                                 "anchor_to": "center",
-                                "layer": 0,
-                                "alpha": 0.5,
-                                "controls": [
-                                    {
-                                        "title": {
-                                            "type": "label",
-                                            "text": "$subtitle_text",
-                                            "anchor_from": "center",
-                                            "anchor_to": "center",
-                                            "color": "$tool_tip_text",
-                                            "layer": 31,
-                                            "text_alignment": "left"
-                                        }
-                                    }
-                                ]
+                                "color": "$tool_tip_text",
+                                "layer": 31,
+                                "text_alignment": "center"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "sidebar": {
+                    "type": "image",
+                    "size": [ "100%cm+5px", "100%c+5px" ],
+                    "texture": "textures/ui/hud_tip_text_background",
+                    "anchor_from": "right_middle",
+                    "anchor_to": "right_middle",
+                    "layer": 0,
+                    "alpha": 0.5,
+                    "controls": [
+                        {
+                            "text": {
+                                "type": "label",
+                                "text": "$subtitle_text",
+                                "anchor_from": "center",
+                                "anchor_to": "center",
+                                "color": "$tool_tip_text",
+                                "layer": 31,
+                                "text_alignment": "left"
                             }
                         }
                     ]
