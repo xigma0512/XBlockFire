@@ -9,12 +9,13 @@ const COUNTDOWN_TIME = 10 * 20;
 export class BP_GameOverPhase implements IPhaseHandler {
 
     readonly phaseTag = BP_PhaseEnum.Gameover;
-    private currentTick: number = COUNTDOWN_TIME;
+    private _currentTick: number = COUNTDOWN_TIME;
+    get currentTick() { return this._currentTick; }
 
     constructor(private readonly roomId: number) { }
 
     on_entry() {
-        this.currentTick = COUNTDOWN_TIME;
+        this._currentTick = COUNTDOWN_TIME;
         console.warn(`[Room ${this.roomId}] Entry BP:gameover phase.`);
     }
 
@@ -25,7 +26,7 @@ export class BP_GameOverPhase implements IPhaseHandler {
         const actionbarText = `${(this.currentTick / 20).toFixed(0)}`;
         Broadcast.actionbar(actionbarText, members);
 
-        this.currentTick --;
+        this._currentTick --;
         this.transitions();
     }
 

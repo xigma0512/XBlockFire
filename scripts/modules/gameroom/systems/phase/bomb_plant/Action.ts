@@ -15,12 +15,13 @@ const ACTION_TIME = 120 * 20;
 export class BP_ActionPhase implements IPhaseHandler {
 
     readonly phaseTag = BP_PhaseEnum.Action;
-    private currentTick: number = ACTION_TIME;
+    private _currentTick: number = ACTION_TIME;
+    get currentTick() { return this._currentTick; }
 
     constructor(private readonly roomId: number) { }
 
     on_entry() {
-        this.currentTick = ACTION_TIME;
+        this._currentTick = ACTION_TIME;
         console.warn(`[Room ${this.roomId}] Entry BP:action phase.`);
     }
 
@@ -31,7 +32,7 @@ export class BP_ActionPhase implements IPhaseHandler {
         const actionbarText = `${ColorTable[ColorType.Blue]}Round time: ${(this.currentTick / 20).toFixed(0)}`;
         Broadcast.actionbar(actionbarText, members);
 
-        this.currentTick --;
+        this._currentTick --;
         this.transitions();
     }
     

@@ -16,12 +16,13 @@ const COUNTDOWN_TIME = 10 * 20;
 export class BP_RoundEndPhase implements IPhaseHandler {
 
     readonly phaseTag = BP_PhaseEnum.RoundEnd;
-    private currentTick: number = COUNTDOWN_TIME;
+    private _currentTick: number = COUNTDOWN_TIME;
+    get currentTick() { return this._currentTick; }
 
     constructor(private readonly roomId: number) { }
 
     on_entry() {
-        this.currentTick = COUNTDOWN_TIME;
+        this._currentTick = COUNTDOWN_TIME;
 
         const room = GameRoomManager.instance.getRoom(this.roomId);
         const member = room.memberManager;
@@ -51,7 +52,7 @@ export class BP_RoundEndPhase implements IPhaseHandler {
         const actionbarText = `${ColorTable[ColorType.Yellow]}Next round start in ${(this.currentTick / 20).toFixed(0)} seconds.`;
         Broadcast.actionbar(actionbarText, members);
         
-        this.currentTick --;
+        this._currentTick --;
         this.transitions();
     }
 

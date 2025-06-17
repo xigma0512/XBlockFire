@@ -14,12 +14,13 @@ const COUNTDOWN_TIME = 30 * 20;
 export class BP_IdlePhase implements IPhaseHandler {
 
     readonly phaseTag = BP_PhaseEnum.Idle;
-    private currentTick: number = COUNTDOWN_TIME;
+    private _currentTick: number = COUNTDOWN_TIME;
+    get currentTick() { return this._currentTick; }
 
     constructor(private readonly roomId: number) { }
 
     on_entry() {
-        this.currentTick = COUNTDOWN_TIME;
+        this._currentTick = COUNTDOWN_TIME;
         console.warn(`[Room ${this.roomId}] Entry BP:idle phase.`);
     }
 
@@ -32,11 +33,11 @@ export class BP_IdlePhase implements IPhaseHandler {
 
         if (AUTO_START && playerAmount >= AUTO_START_MIN_PLAYER) {
             actionbarText = `${ColorTable[ColorType.Green]}Game will start in ${(this.currentTick / 20).toFixed(0)} seconds.`;
-            this.currentTick --;
+            this._currentTick --;
         }
 
         if (this.currentTick !== COUNTDOWN_TIME && playerAmount < AUTO_START_MIN_PLAYER) {
-            this.currentTick = COUNTDOWN_TIME;
+            this._currentTick = COUNTDOWN_TIME;
             Broadcast.message(`${ColorTable[ColorType.Red]}Not enough players. Waiting for more players.`, members);
         }
 
