@@ -6,7 +6,7 @@ import { BombDroppedState } from "./Dropped";
 import { BombStateEnum } from "./BombStateEnum";
 import { TeamTagEnum } from "../../../../weapon/types/Enums";
 import { entity_dynamic_property } from "../../../../../utils/Property";
-import { FormatCodeTable, FormatCodeEnum } from "../../../../../utils/FormatCode";
+import { FormatCode } from "../../../../../utils/FormatCode";
 
 import { Vector3Utils } from "@minecraft/math";
 import { Player, system, world } from "@minecraft/server";
@@ -107,7 +107,7 @@ function canPlantBomb(roomId: number, source: Player) {
         system.run(() => source.onScreenDisplay.setActionBar('Planting...'));
         return true;
     } catch (err: any) {
-        system.run(() => source.onScreenDisplay.setActionBar(`${FormatCodeTable[FormatCodeEnum.Red]}${err.message}`));
+        system.run(() => source.onScreenDisplay.setActionBar(`${FormatCode.Red}${err.message}`));
         return false;
     }
 }
