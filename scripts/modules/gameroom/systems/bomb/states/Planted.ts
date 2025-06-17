@@ -8,7 +8,7 @@ import { BombStateEnum } from "./BombStateEnum";
 import { BP_PhaseEnum } from "../../phase/bomb_plant/PhaseEnum";
 
 import { Broadcast } from "../../../../../utils/Broadcast";
-import { FormatCode } from "../../../../../utils/FormatCode";
+import { FormatCode as FC } from "../../../../../utils/FormatCode";
 import { progressBar } from "../../../../../utils/Utils";
 import { set_variable } from "../../../../../utils/Variable";
 
@@ -95,7 +95,7 @@ export class BombPlantedState implements IBombStateHandler {
 function canDefuseBomb(bombEntity: Entity, player: Player) {
     const distance = Vector3Utils.distance(player.location, bombEntity.location);
     if (distance > DEFUSE_RANGE) {
-        system.run(() => player.onScreenDisplay.setActionBar(`${FormatCode.Red}There is no c4 in the range.`));
+        system.run(() => player.onScreenDisplay.setActionBar(`${FC.Red}There is no c4 in the range.`));
         return false;
     }
     system.run(() => player.onScreenDisplay.setActionBar(`Defusing...`));
@@ -111,7 +111,7 @@ function defuseComplete(roomId: number, defuser: Player) {
     }
 
     room.bombManager.updateState(new BombIdleState(roomId));
-    Broadcast.message(`${FormatCode.Yellow}Bomb has been defused by ${defuser.name}.`);
+    Broadcast.message(`${FC.Yellow}Bomb has been defused by ${defuser.name}.`);
 }
 
 function explosion(roomId: number, bombEntity: Entity) {

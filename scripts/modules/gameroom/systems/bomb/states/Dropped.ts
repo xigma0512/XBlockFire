@@ -4,7 +4,7 @@ import { GameRoomManager } from "../../GameRoom";
 
 import { entity_dynamic_property } from "../../../../../utils/Property";
 import { TeamTagEnum } from "../../../../weapon/types/Enums";
-import { FormatCode } from "../../../../../utils/FormatCode";
+import { FormatCode as FC } from "../../../../../utils/FormatCode";
 import { Broadcast } from "../../../../../utils/Broadcast";
 
 import { Entity, ItemStack, Player, world } from "@minecraft/server";
@@ -84,8 +84,8 @@ export class BombDroppedState implements IBombStateHandler {
         const room = GameRoomManager.instance.getRoom(this.roomId);
         const attackers = room.memberManager.getPlayers().filter(p => entity_dynamic_property(p, 'player:team') === TeamTagEnum.Attacker);
         
-        player.sendMessage(`${FormatCode.Green}You pick up the bomb.`);
-        Broadcast.message(`${FormatCode.Yellow}Player ${player.name} has picked up the bomb.`, attackers);
+        player.sendMessage(`${FC.Green}You pick up the bomb.`);
+        Broadcast.message(`${FC.Yellow}Player ${player.name} has picked up the bomb.`, attackers);
 
         room.bombManager.updateState(new BombIdleState(this.roomId));
     }
