@@ -1,5 +1,8 @@
 import { Player, world } from "@minecraft/server";
 
+const sidebarMessages = new Map<Player, string[]>();
+const topbarMessages = new Map<Player, string[]>();
+
 export class Broadcast {
     
     static message(message: string | string[], players?: Player[]) {
@@ -10,11 +13,30 @@ export class Broadcast {
         for (const p of (players ?? world.getAllPlayers())) p.onScreenDisplay.setActionBar(message);
     }
 
+    static topbar(message: string[], players?: Player[]) {
+        for (const p of (players ?? world.getAllPlayers())) {
+            topbarMessages.set(p, message);
+            this.sendTitle(p);
+        }
+    }
+
     static sidebar(message: string[], players?: Player[]) {
-        let maxLength = -1;
-        message.forEach(msg => maxLength = Math.max(maxLength, msg.length));
-        message.map(msg => msg += ' '.repeat(maxLength - msg.length) + ' '.repeat(4));
-        for (const p of (players ?? world.getAllPlayers())) p.onScreenDisplay.setTitle(message);
+        for (const p of (players ?? world.getAllPlayers())) {
+            sidebarMessages.set(p, message);
+            this.sendTitle(p);
+        }
+    }
+
+    private static sendTitle(player: Player) {
+        if (!sidebarMessages.has(player)) sidebarMessages.set(player, ['']);
+        if (!topbarMessages.has(player)) topbarMessages.set(player, ['']);
+
+        player.onScreenDisplay.setTitle(topbarMessages.get(player)!, {
+            fadeInDuration: 0,
+            fadeOutDuration: 0,
+            stayDuration: 0,
+            subtitle: sidebarMessages.get(player)!
+        });
     }
 
 }

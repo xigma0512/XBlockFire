@@ -1,6 +1,6 @@
 import { GameRoomManager } from "../../GameRoom";
 import { BP_BuyingPhase } from "./Buying";
-import { BP_PhaseEnum } from "./PhaseEnum";
+import { BP_PhaseEnum, BP_PhaseEnumTable } from "./PhaseEnum";
 
 import { TeamTagEnum } from "../../../../weapon/types/Enums";
 import { Broadcast } from "../../../../../utils/Broadcast";
@@ -42,6 +42,7 @@ export class BP_IdlePhase implements IPhaseHandler {
         }
 
         Broadcast.actionbar(actionbarText, members);
+        updateSidebar(this.roomId);
         this.transitions();
     }
 
@@ -87,4 +88,15 @@ function initializePlayers(roomId: number) {
     for (const player of players) {
         room.economyManager.initializePlayer(player);
     }
+}
+
+function updateSidebar(roomId: number) {
+    const sidebarMessage = [
+        `${FC.Yellow}State:`,
+        ` ${FC.Yellow}${BP_PhaseEnumTable[BP_PhaseEnum.Idle]}\n`
+    ];
+
+    const room = GameRoomManager.instance.getRoom(roomId);
+    Broadcast.topbar(['test top bar'], room.memberManager.getPlayers())
+    Broadcast.sidebar(sidebarMessage, room.memberManager.getPlayers());
 }
