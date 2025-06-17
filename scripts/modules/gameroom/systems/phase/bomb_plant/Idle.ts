@@ -4,7 +4,7 @@ import { BP_PhaseEnum } from "./PhaseEnum";
 
 import { TeamTagEnum } from "../../../../weapon/types/Enums";
 import { Broadcast } from "../../../../../utils/Broadcast";
-import { ColorTable, ColorType } from "../../../../../utils/Color";
+import { FormatCodeTable, FormatCodeEnum } from "../../../../../utils/FormatCode";
 import { set_entity_dynamic_property } from "../../../../../utils/Property";
 
 const AUTO_START = true;
@@ -29,16 +29,16 @@ export class BP_IdlePhase implements IPhaseHandler {
         const members = room.memberManager.getPlayers();
         const playerAmount = members.length;
 
-        let actionbarText = `${ColorTable[ColorType.Yellow]}Waiting for more players...`;
+        let actionbarText = `${FormatCodeTable[FormatCodeEnum.Yellow]}Waiting for more players...`;
 
         if (AUTO_START && playerAmount >= AUTO_START_MIN_PLAYER) {
-            actionbarText = `${ColorTable[ColorType.Green]}Game will start in ${(this.currentTick / 20).toFixed(0)} seconds.`;
+            actionbarText = `${FormatCodeTable[FormatCodeEnum.Green]}Game will start in ${(this.currentTick / 20).toFixed(0)} seconds.`;
             this._currentTick --;
         }
 
         if (this.currentTick !== COUNTDOWN_TIME && playerAmount < AUTO_START_MIN_PLAYER) {
             this._currentTick = COUNTDOWN_TIME;
-            Broadcast.message(`${ColorTable[ColorType.Red]}Not enough players. Waiting for more players.`, members);
+            Broadcast.message(`${FormatCodeTable[FormatCodeEnum.Red]}Not enough players. Waiting for more players.`, members);
         }
 
         Broadcast.actionbar(actionbarText, members);

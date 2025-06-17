@@ -1,4 +1,4 @@
-import { ColorTable, ColorType } from "./Color";
+import { FormatCodeTable, FormatCodeEnum } from "./FormatCode";
 
 import { Player } from "@minecraft/server";
 import { EquipmentSlot, DimensionLocation, VanillaEntityIdentifier } from "@minecraft/server";
@@ -27,7 +27,7 @@ function progressBar(duration: number, currentTime: number, barLength: number = 
     const filled = Math.round(progress * barLength);
     const empty = barLength - filled;
 
-    const progressBar = `${ColorTable[ColorType.Green]}${filledTag.repeat(filled)}${ColorTable[ColorType.Gray]}${emptyTag.repeat(empty)}`;
+    const progressBar = `${FormatCodeTable[FormatCodeEnum.Green]}${filledTag.repeat(filled)}${FormatCodeTable[FormatCodeEnum.Gray]}${emptyTag.repeat(empty)}`;
 
     return progressBar;
 }

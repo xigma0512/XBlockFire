@@ -10,4 +10,11 @@ export class Broadcast {
         for (const p of (players ?? world.getAllPlayers())) p.onScreenDisplay.setActionBar(message);
     }
 
+    static sidebar(message: string[], players?: Player[]) {
+        let maxLength = -1;
+        message.forEach(msg => maxLength = Math.max(maxLength, msg.length));
+        message.map(msg => msg += ' '.repeat(maxLength - msg.length) + ' '.repeat(4));
+        for (const p of (players ?? world.getAllPlayers())) p.onScreenDisplay.setTitle(message);
+    }
+
 }
