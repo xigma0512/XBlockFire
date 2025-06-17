@@ -20,14 +20,13 @@ import { ItemUseBeforeEvent, ItemCompleteUseAfterEvent } from "@minecraft/server
 const DEFUSER_ITEM_ID = 'xblockfire:defuser';
 const PLANTED_C4_ENTITY_ID = 'xblockfire:planted_c4' as VanillaEntityIdentifier;
 const DEFUSE_RANGE = 1.5;
-const COUNTDOWN_TICKS = 45 * 20;
 
 export class BombPlantedState implements IBombStateHandler {
 
     readonly stateTag = BombStateEnum.Planted;
-
+    
     private entity!: Entity;
-    private currentTick: number = COUNTDOWN_TICKS;
+    private bombTotalTime = -1;
 
     private beforeItemUseListener = (ev: ItemUseBeforeEvent) => { };
     private afterItemCompleteUseListener = (ev: ItemCompleteUseAfterEvent) => { };
@@ -41,9 +40,10 @@ export class BombPlantedState implements IBombStateHandler {
         const room = GameRoomManager.instance.getRoom(this.roomId);
         this.entity = this.planter.dimension.spawnEntity(PLANTED_C4_ENTITY_ID, this.planter.location);
 
-        if (room.phaseManager.getPhase() === BP_PhaseEnum.Action) {
+        if (room.phaseManager.getPhase().phaseTag === BP_PhaseEnum.Action) {
             room.phaseManager.updatePhase(new BP_BombPlantedPhase(this.roomId));
         }
+        this.bombTotalTime = room.phaseManager.getPhase().currentTick;
 
         this.beforeItemUseListener = world.beforeEvents.itemUse.subscribe(this.onBeforeItemUse.bind(this));
         this.afterItemCompleteUseListener = world.afterEvents.itemCompleteUse.subscribe(this.onItemCompleteUse.bind(this));
@@ -52,11 +52,12 @@ export class BombPlantedState implements IBombStateHandler {
     }
 
     on_running() {
-        const bar = progressBar(COUNTDOWN_TICKS, this.currentTick, 20);
+        const room = GameRoomManager.instance.getRoom(this.roomId);
+        const phase = room.phaseManager.getPhase();
+        const bar = progressBar(this.bombTotalTime, phase.currentTick, 20);
         this.entity.nameTag = `| ${bar} |`;
         
-        if (this.currentTick <= 0) explosion(this.roomId, this.entity);
-        this.currentTick--;
+        if (phase.currentTick <= 0) explosion(this.roomId, this.entity);
     }
 
     on_exit() {
@@ -104,7 +105,7 @@ function canDefuseBomb(bombEntity: Entity, player: Player) {
 function defuseComplete(roomId: number, defuser: Player) {
     const room = GameRoomManager.instance.getRoom(roomId);
     
-    if (room.phaseManager.getPhase() === BP_PhaseEnum.BombPlanted) {
+    if (room.phaseManager.getPhase().phaseTag === BP_PhaseEnum.BombPlanted) {
         set_variable(`${roomId}.round_winner`, TeamTagEnum.Defender);
         room.phaseManager.updatePhase(new BP_RoundEndPhase(roomId));
     }
@@ -116,11 +117,6 @@ function defuseComplete(roomId: number, defuser: Player) {
 function explosion(roomId: number, bombEntity: Entity) {
     bombEntity.dimension.createExplosion(bombEntity.location, 20, { causesFire: false, breaksBlocks: false });
     const room = GameRoomManager.instance.getRoom(roomId);
-    
-    if (room.phaseManager.getPhase() === BP_PhaseEnum.BombPlanted) {
-        set_variable(`${roomId}.round_winner`, TeamTagEnum.Attacker);
-        room.phaseManager.updatePhase(new BP_RoundEndPhase(roomId));
-    }
 
     room.bombManager.updateState(new BombIdleState(roomId));
 }
