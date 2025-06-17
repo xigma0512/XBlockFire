@@ -1,5 +1,5 @@
 import { Player } from "@minecraft/server";
-import { GameRoomManager } from "../../room/systems/GameRoom";
+import { GameRoomManager } from "../../gameroom/systems/GameRoom";
 
 function createRoom(executer: Player, ...args: string[]) {
     const [gamemode, mapId] = args;
