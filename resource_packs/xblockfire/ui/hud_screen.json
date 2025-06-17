@@ -1,9 +1,8 @@
 {
     "namespace": "hud",
-    "hud_title_text": {
-        "type": "screen",
+    "hud_title_text@custombar": {
+        "type": "panel",
         "size": [ "default", "default" ],
-        "alpha": 1,
         "controls": [
             {
                 "topbar": {
@@ -14,7 +13,6 @@
                     "anchor_to": "top_middle",
                     "layer": 0,
                     "alpha": 0.5,
-                    "offset": [ 0, 20 ],
                     "controls": [
                         {
                             "text": {
