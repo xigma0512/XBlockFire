@@ -5,7 +5,8 @@ import { BP_PhaseEnum, BP_PhaseEnumTable } from "./PhaseEnum";
 import { TeamTagEnum } from "../../../../weapon/types/Enums";
 import { Broadcast } from "../../../../../utils/Broadcast";
 import { FormatCode as FC } from "../../../../../utils/FormatCode";
-import { set_entity_dynamic_property } from "../../../../../utils/Property";
+import { entity_dynamic_property, set_entity_dynamic_property } from "../../../../../utils/Property";
+import { GameModeEnumTable } from "../../GameModeEnum";
 
 const AUTO_START = true;
 const AUTO_START_MIN_PLAYER = 2;
@@ -91,12 +92,31 @@ function initializePlayers(roomId: number) {
 }
 
 function updateSidebar(roomId: number) {
+    const room = GameRoomManager.instance.getRoom(roomId);
+    const players = room.memberManager.getPlayers();
+
+    const currentState = BP_PhaseEnumTable[BP_PhaseEnum.Idle];
+    const playerCount = players.length;
+    const maxPlayers = 10;
+    
     const sidebarMessage = [
-        `${FC.Yellow}State:`,
-        ` ${FC.Yellow}${BP_PhaseEnumTable[BP_PhaseEnum.Idle]}\n`
+        `${FC.Bold}${FC.White}Info:`,
+        `  ${FC.Gold}Room Number: ${FC.White}${roomId}`,
+        `  ${FC.MaterialCopper}Gamemode: ${FC.White}${GameModeEnumTable[room.gameMode]}`,
+        `  ${FC.Aqua}Players: ${FC.White}${playerCount}/${maxPlayers}`,
+        `  ${FC.Yellow}State: ${FC.Green}${currentState}`,
+        '',
+        
+        `${FC.Bold}${FC.White}Players:`,
+        ...players.map(player => {
+            const playerTeam = entity_dynamic_property(player, 'player:team');
+            const teamPrefix = 
+                (playerTeam === TeamTagEnum.Attacker) ? `${FC.Red}[A]` :
+                (playerTeam === TeamTagEnum.Defender) ? `${FC.Aqua}[D]` : `${FC.DarkPurple}[S]`;
+            return ` ${FC.Gray}- ${teamPrefix}${player.name}`
+        })
     ];
 
-    const room = GameRoomManager.instance.getRoom(roomId);
-    Broadcast.topbar(['test top bar'], room.memberManager.getPlayers())
-    Broadcast.sidebar(sidebarMessage, room.memberManager.getPlayers());
+    Broadcast.topbar(['test top bar'], players)
+    Broadcast.sidebar(sidebarMessage, players);
 }
