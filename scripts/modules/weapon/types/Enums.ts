@@ -15,7 +15,7 @@ export const enum GrenadeTypeEnum {
 export const enum TeamTagEnum {
     Spectator = 0,
     Attacker,
-    Defenders
+    Defender
 }
 
 export type GunReloadStateEnum = 'idle' | 'pre_reload' |'reloading' | 'success' | 'fail' 

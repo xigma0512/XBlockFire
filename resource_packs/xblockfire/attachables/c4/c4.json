@@ -8,11 +8,11 @@
 				"enchanted": "entity_alphatest_glint"
 			},
 			"textures": {
-				"default": "textures/models/c4/planted_bomb",
+				"default": "textures/models/c4/planted_c4",
 				"enchanted": "textures/misc/enchanted_item_glint"
 			},
 			"geometry": {
-				"default": "geometry.planted_bomb"
+				"default": "geometry.planted_c4"
 			},
             "animations": {
                 "fpp_hold": "animation.c4.fpp_hold",

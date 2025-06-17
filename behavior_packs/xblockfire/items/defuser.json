@@ -2,15 +2,15 @@
     "format_version": "1.20.80",
     "minecraft:item": {
         "description": {
-            "identifier": "xblockfire:wire_stripper",
+            "identifier": "xblockfire:defuser",
             "menu_category": {
                 "category": "nature"
             }
         },
         "components": {
-            "minecraft:icon": "wire_stripper",
+            "minecraft:icon": "defuser",
             "minecraft:display_name": {
-                "value": "Wire Stripper"
+                "value": "Defuser"
             },
             "minecraft:use_modifiers": {
                 "use_duration": 5,
@@ -20,7 +20,7 @@
                 "value": 1
             },
             "minecraft:food": {
-                "using_converts_to": "xblockfire:wire_stripper"
+                "using_converts_to": "xblockfire:defuser"
             },
             "minecraft:use_animation": "eat"
         }
