@@ -2,8 +2,12 @@ import { PhaseManager } from "./phase/PhaseManager";
 import { EconomyManager } from "./economy/EconomyManager";
 import { MemberManager } from "./member/MemberManager";
 import { BombManager } from "./bomb/BombManager";
+import { AlliesMarker } from "../../allies_mark/AlliesMarker";
 
 import { GameModeEnum } from "./GameModeEnum";
+
+import { system } from "@minecraft/server";
+import { TeamTagEnum } from "../../weapon/types/Enums";
 
 class GameRoom {
     
@@ -16,6 +20,9 @@ class GameRoom {
     readonly economyManager: EconomyManager;
     readonly bombManager: BombManager;
 
+    private marker: AlliesMarker;
+    private markerTaskId = -1;
+
     constructor(id: number, gameMode: GameModeEnum, gameMapId: number) {
         this.id = id;
         this.gameMode = gameMode;
@@ -25,6 +32,17 @@ class GameRoom {
         this.phaseManager = new PhaseManager(id);
         this.economyManager = new EconomyManager(id);
         this.bombManager = new BombManager(id);
+
+        this.marker = new AlliesMarker(this.memberManager);
+        this.markerTaskId = system.runInterval(() => {
+            this.marker.updateMark(TeamTagEnum.Attacker);
+            this.marker.updateMark(TeamTagEnum.Defender);
+            this.marker.updateMark(TeamTagEnum.Spectator);
+        });
+    }
+
+    close() {
+        system.clearRun(this.markerTaskId);
     }
 
 }
@@ -56,6 +74,9 @@ export class GameRoomManager {
     }
 
     removeRoom(roomId: number) {
+        if (this.rooms.has(roomId)) {
+            this.rooms.get(roomId)!.close();
+        }
         return this.rooms.delete(roomId);
     }
 
