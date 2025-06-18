@@ -20,7 +20,7 @@
 				"max_lifetime": 0.05
 			},
 			"minecraft:particle_appearance_billboard": {
-				"size": [0.2, 0.2],
+				"size": ["variable.width", "variable.height"],
 				"facing_camera_mode": "rotate_xyz",
 				"uv": {
 					"texture_width": 16,
