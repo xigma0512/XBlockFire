@@ -93,6 +93,6 @@ function resetPlayers(roomId: number) {
     const players = room.memberManager.getPlayers();
     for (const player of players) {
         set_entity_dynamic_property(player, 'player:is_alive', true);
-        player.setGameMode(GameMode.adventure);
+        player.setGameMode(GameMode.Adventure);
     }
 }
