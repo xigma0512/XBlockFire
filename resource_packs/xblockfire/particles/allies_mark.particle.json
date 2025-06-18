@@ -28,7 +28,15 @@
 					"uv": [0, 0],
 					"uv_size": [16, 16]
 				}
-			}
+			},
+            "minecraft:particle_appearance_tinting": {
+                "color": [
+                    "variable.color.r",
+                    "variable.color.g",
+                    "variable.color.b",
+                    "variable.color.a"
+                ]
+            }
 		}
 	}
 }
