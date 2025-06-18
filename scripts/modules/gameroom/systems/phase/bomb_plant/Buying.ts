@@ -83,7 +83,7 @@ function spawnPlayers(roomId: number) {
         const playerTeamSpawns = spawns[playerTeam];
         const spawnIndex = nextSpawnIndex[playerTeam]++ % playerTeamSpawns.length;
         
-        player.teleport(Vector3Utils.add(playerTeamSpawns[spawnIndex], {x: 0.5, z: 0.5}));
+        player.teleport(playerTeamSpawns[spawnIndex]);
         player.inputPermissions.setPermissionCategory(InputPermissionCategory.LateralMovement, false);
     }
 }
