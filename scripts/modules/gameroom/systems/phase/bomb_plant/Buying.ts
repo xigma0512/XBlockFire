@@ -83,7 +83,7 @@ function spawnPlayers(roomId: number) {
         const playerTeamSpawns = spawns[playerTeam];
         const spawnIndex = nextSpawnIndex[playerTeam]++ % playerTeamSpawns.length;
         
-        player.teleport(Vector3Utils.add(playerTeamSpawns[spawnIndex], {x: 0.5, z: 0.5}));
+        player.teleport(playerTeamSpawns[spawnIndex]);
         player.inputPermissions.setPermissionCategory(InputPermissionCategory.LateralMovement, false);
     }
 }
@@ -93,6 +93,6 @@ function resetPlayers(roomId: number) {
     const players = room.memberManager.getPlayers();
     for (const player of players) {
         set_entity_dynamic_property(player, 'player:is_alive', true);
-        player.setGameMode(GameMode.adventure);
+        player.setGameMode(GameMode.Adventure);
     }
 }
