@@ -65,7 +65,7 @@ export class DamageSystem {
 
 function playerDead(entity: Player | Entity) {
     if (entity instanceof Player) {   
-        entity.setGameMode(GameMode.spectator);
+        entity.setGameMode(GameMode.Spectator);
         set_entity_dynamic_property(entity, 'player:is_alive', false);
         entity.sendMessage('you dead');
     }
