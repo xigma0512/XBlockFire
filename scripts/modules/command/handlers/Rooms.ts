@@ -1,5 +1,7 @@
 import { Player } from "@minecraft/server";
 import { GameRoomManager } from "../../gameroom/systems/GameRoom";
+import { BP_BuyingPhase } from "../../gameroom/systems/phase/bomb_plant/Buying";
+import { GameModeEnum } from "../../gameroom/systems/GameModeEnum";
 
 function createRoom(executer: Player, ...args: string[]) {
     const [gamemode, mapId] = args;
@@ -45,6 +47,18 @@ function playerLeaveRoom(executer: Player, ...args: string[]) {
     executer.sendMessage(`Leave room ${roomId}.`);
 }
 
+function forceStart(executer: Player, ...args: string[]) {
+    const roomId = args[0];
+    if (!roomId) throw Error("Missing argument '<room_serial>'. Usage: /scriptevent blockfire:room start <room_serial>");
+
+    const room = GameRoomManager.instance.getRoom(Number(roomId));
+    const startPhase = {
+        [GameModeEnum.BombPlant]: new BP_BuyingPhase(Number(roomId))
+    };
+    room.phaseManager.updatePhase(startPhase[room.gameMode]);
+    executer.sendMessage(`Force start ${roomId}`);
+}
+
 function roomCmd(executer: Player, ...args: string[]) {
     const cmdType = args[0];
     if (!cmdType) throw Error('Missing arguments <type>. Usage: /scriptevent blockfire:room <type> <...args>');
@@ -55,6 +69,7 @@ function roomCmd(executer: Player, ...args: string[]) {
         case 'list': getRoomList(executer); break;
         case 'join': playerJoinRoom(executer, ...args); break;
         case 'leave': playerLeaveRoom(executer, ...args); break;
+        case 'start': forceStart(executer, ...args); break;
         default: 
             executer.sendMessage(`there is no command type as ${cmdType}`)
             break;
