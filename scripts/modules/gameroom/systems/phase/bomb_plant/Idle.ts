@@ -1,6 +1,6 @@
 import { GameRoomManager } from "../../GameRoom";
 import { BP_BuyingPhase } from "./Buying";
-import { BP_PhaseEnum, BP_PhaseEnumTable } from "./PhaseEnum";
+import { BP_PhaseEnum } from "./PhaseEnum";
 
 import { TeamTagEnum } from "../../../../weapon/types/Enums";
 import { Broadcast } from "../../../../../utils/Broadcast";
@@ -104,7 +104,6 @@ function updateSidebar(roomId: number) {
     const room = GameRoomManager.instance.getRoom(roomId);
     const players = room.memberManager.getPlayers();
 
-    const currentState = BP_PhaseEnumTable[BP_PhaseEnum.Idle];
     const playerCount = players.length;
     const maxPlayers = 10;
     
@@ -113,7 +112,7 @@ function updateSidebar(roomId: number) {
         `  ${FC.Gold}Room Number: ${FC.White}${roomId}`,
         `  ${FC.MaterialCopper}Gamemode: ${FC.White}${GameModeEnumTable[room.gameMode]}`,
         `  ${FC.Aqua}Players: ${FC.White}${playerCount}/${maxPlayers}`,
-        `  ${FC.Yellow}State: ${FC.Green}${currentState}`,
+        `  ${FC.Yellow}State: ${FC.Green}Waiting`,
         '',
         
         `${FC.Bold}${FC.White}Players:`,
