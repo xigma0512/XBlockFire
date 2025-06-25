@@ -2,13 +2,13 @@ import { GameRoomManager } from "../../GameRoom";
 import { BP_GameOverPhase } from "./Gameover";
 import { BP_RoundEndPhase } from "./RoundEnd";
 
-import { BP_PhaseEnum } from "./PhaseEnum"
-import { BP_TeamEnum } from "../TeamEnum";
+import { BP_PhaseEnum } from "../../../types/PhaseEnum"
+import { TeamEnum } from "../../../types/TeamEnum";
 
 import { FormatCode as FC } from "../../../../../utils/FormatCode";
 import { Broadcast } from "../../../../../utils/Broadcast";
 import { entity_dynamic_property } from "../../../../../utils/Property";
-import { set_variable } from "../../../../../utils/Variable";
+import { set_variable, variable } from "../../../../../utils/Variable";
 
 const ACTION_TIME = 120 * 20;
 
@@ -26,13 +26,9 @@ export class BP_ActionPhase implements IPhaseHandler {
     }
 
     on_running() {
-        const room = GameRoomManager.instance.getRoom(this.roomId);
-        const members = room.memberManager.getPlayers();
-        
-        const actionbarText = `${FC.Blue}Round time: ${(this.currentTick / 20).toFixed(0)}`;
-        Broadcast.actionbar(actionbarText, members);
-
         this._currentTick --;
+        updateSidebar(this.roomId);
+        updateTopbar(this.roomId, this.currentTick);
         this.transitions();
     }
     
@@ -56,8 +52,8 @@ export class BP_ActionPhase implements IPhaseHandler {
         let endReason: EndReasonEnum | null = null;
 
         const players = member.getPlayers();
-        const attackers = players.filter(p => entity_dynamic_property(p, 'player:team') === BP_TeamEnum.Attacker);
-        const defenders = players.filter(p => entity_dynamic_property(p, 'player:team') === BP_TeamEnum.Defender);
+        const attackers = players.filter(p => entity_dynamic_property(p, 'player:team') === TeamEnum.Attacker);
+        const defenders = players.filter(p => entity_dynamic_property(p, 'player:team') === TeamEnum.Defender);
 
         const attackersAlive = attackers.filter(p => entity_dynamic_property(p, 'player:is_alive'));
         const defendersAlive = defenders.filter(p => entity_dynamic_property(p, 'player:is_alive'));
@@ -76,26 +72,26 @@ export class BP_ActionPhase implements IPhaseHandler {
             let message = [separator];
             let nextPhase: IPhaseHandler = new BP_RoundEndPhase(this.roomId);
     
-            let winner = BP_TeamEnum.Defender;
+            let winner = TeamEnum.Defender;
             switch (endReason) {
                 case EndReasonEnum['Time-up']:
                     message.push(`${FC.Yellow}Time Up. This Round Is Over.\n`);
                     message.push(`${FC.Yellow}Blue Team Win\n`);
-                    winner = BP_TeamEnum.Defender;
+                    winner = TeamEnum.Defender;
                     break;
 
                 case EndReasonEnum['Attacker-Disconnect']:
                     nextPhase = new BP_GameOverPhase(this.roomId);
                 case EndReasonEnum['Attacker-Eliminated']:
                     message.push(`${FC.Yellow}Blue Team Win\n`);
-                    winner = BP_TeamEnum.Defender;
+                    winner = TeamEnum.Defender;
                     break;
 
                 case EndReasonEnum['Defender-Disconnect']:
                     nextPhase = new BP_GameOverPhase(this.roomId);
                 case EndReasonEnum['Defender-Eliminated']:
                     message.push(`${FC.Yellow}Red Team Win\n`);
-                    winner = BP_TeamEnum.Attacker;
+                    winner = TeamEnum.Attacker;
                     break;
             }
 
@@ -107,4 +103,50 @@ export class BP_ActionPhase implements IPhaseHandler {
         }
     }
 
+}
+
+function updateSidebar(roomId: number) {
+    const room = GameRoomManager.instance.getRoom(roomId);
+    const players = room.memberManager.getPlayers();
+
+    for (const player of players) {
+        const playerTeam = entity_dynamic_property(player, 'player:team') as TeamEnum;
+        const teamStr = 
+            (playerTeam === TeamEnum.Attacker) ? `${FC.Red}Attacker` :
+            (playerTeam === TeamEnum.Defender) ? `${FC.Aqua}Defender` :
+                                                    `${FC.Gray}Spectator` 
+
+        const sidebarMessage = [
+            `Money: ${FC.Green}${room.economyManager.getMoney(player)}`,
+            `Team: ${teamStr}`
+        ];
+
+        Broadcast.sidebar(sidebarMessage, [player]);
+    }
+}
+
+function updateTopbar(roomId: number, currentTick: number) {
+    const room = GameRoomManager.instance.getRoom(roomId);
+    const players = room.memberManager.getPlayers();
+    
+    const attackerScore = variable(`${roomId}.attacker_score`) ?? 0;
+    const defenderScore = variable(`${roomId}.defender_score`) ?? 0;
+
+    const attackerPlayers = players.filter(p => entity_dynamic_property(p, 'player:team') === TeamEnum.Attacker && entity_dynamic_property(p, 'player:is_alive'));
+    const defenderPlayers = players.filter(p => entity_dynamic_property(p, 'player:team') === TeamEnum.Defender && entity_dynamic_property(p, 'player:is_alive'));
+
+    for (const player of players) {
+        const playerTeam = entity_dynamic_property(player, 'player:team') as TeamEnum;
+
+        const [allies, allyTeamScore] = (playerTeam === TeamEnum.Attacker) ? [attackerPlayers, attackerScore] : [defenderPlayers, defenderScore];
+        const [enemies, enemyTeamScore] = (playerTeam === TeamEnum.Attacker) ? [defenderPlayers, defenderScore] : [attackerPlayers, attackerScore];
+
+        const seconds = Number((currentTick / 20).toFixed(0));
+        const topbarMessage = [
+            `[ ${allyTeamScore} ] - [ ${Math.floor(seconds / 60)}:${seconds % 60} ] - [ ${enemyTeamScore} ]`,
+            `[ ${FC.Green}${allies.map(p => p.name.substring(0, 3)).join(' ')}${FC.Reset} ] VS [ ${FC.Red}${enemies.map(p => p.name.substring(0, 3)).join(' ')}${FC.Reset} ]`
+        ];
+
+        Broadcast.topbar(topbarMessage, [player]);
+    }
 }

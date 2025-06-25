@@ -1,4 +1,4 @@
-export const enum BP_TeamEnum {
+export const enum TeamEnum {
     Attacker = "Attacker",
     Defender = "Defender"
 }
