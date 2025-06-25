@@ -4,7 +4,7 @@ import { MemberManager } from "./member/MemberManager";
 import { BombManager } from "./bomb/BombManager";
 import { AlliesMarker } from "../../allies_mark/AlliesMarker";
 
-import { BP_TeamEnum } from "./phase/TeamEnum";
+import { TeamEnum } from "../types/TeamEnum";
 import { GameModeEnum } from "./GameModeEnum";
 
 import { system } from "@minecraft/server";
@@ -42,8 +42,8 @@ class GameRoom {
             default:
             case GameModeEnum.BombPlant: 
                 return system.runInterval(() => {
-                    this.marker.updateMark(BP_TeamEnum.Attacker);
-                    this.marker.updateMark(BP_TeamEnum.Defender);
+                    this.marker.updateMark(TeamEnum.Attacker);
+                    this.marker.updateMark(TeamEnum.Defender);
                 });
         }
     }

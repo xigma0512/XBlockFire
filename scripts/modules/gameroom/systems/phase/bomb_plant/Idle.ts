@@ -1,8 +1,8 @@
 import { GameRoomManager } from "../../GameRoom";
 import { BP_BuyingPhase } from "./Buying";
-import { BP_PhaseEnum } from "./PhaseEnum";
+import { BP_PhaseEnum } from "../../../types/PhaseEnum";
 
-import { BP_TeamEnum } from "../TeamEnum";
+import { TeamEnum } from "../../../types/TeamEnum";
 import { Broadcast } from "../../../../../utils/Broadcast";
 import { FormatCode as FC } from "../../../../../utils/FormatCode";
 import { entity_dynamic_property, set_entity_dynamic_property } from "../../../../../utils/Property";
@@ -62,11 +62,11 @@ function balanceTeam(roomId: number) {
     let defenderTeamCount = 0;
     for (const player of shuffledPlayers) {
         if (attackTeamCount <= defenderTeamCount) {
-            set_entity_dynamic_property(player, 'player:team', BP_TeamEnum.Attacker);
+            set_entity_dynamic_property(player, 'player:team', TeamEnum.Attacker);
             attackTeamCount++;
             player.sendMessage('You have been assigned to the Attacker Team.');
         } else {
-            set_entity_dynamic_property(player, 'player:team', BP_TeamEnum.Defender);
+            set_entity_dynamic_property(player, 'player:team', TeamEnum.Defender);
             defenderTeamCount++;
             player.sendMessage('You have been assigned to the Defender Team.');
         }
@@ -119,8 +119,8 @@ function updateSidebar(roomId: number) {
         ...players.map(player => {
             const playerTeam = entity_dynamic_property(player, 'player:team');
             const teamPrefix = 
-                (playerTeam === BP_TeamEnum.Attacker) ? `${FC.Red}[A]` :
-                (playerTeam === BP_TeamEnum.Defender) ? `${FC.Aqua}[D]` : `${FC.DarkPurple}[S]`;
+                (playerTeam === TeamEnum.Attacker) ? `${FC.Red}[A]` :
+                (playerTeam === TeamEnum.Defender) ? `${FC.Aqua}[D]` : `${FC.DarkPurple}[S]`;
             return ` ${FC.Gray}- ${teamPrefix}${player.name}`
         })
     ];

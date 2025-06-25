@@ -2,8 +2,8 @@ import { GameRoomManager } from "../../GameRoom";
 import { BP_ActionPhase } from "./Action";
 import { MapRegister } from "../../map/MapRegister";
 
-import { BP_TeamEnum } from "../TeamEnum";
-import { BP_PhaseEnum } from "./PhaseEnum";
+import { TeamEnum } from "../../../types/TeamEnum";
+import { BP_PhaseEnum } from "../../../types/PhaseEnum";
 import { entity_dynamic_property, set_entity_dynamic_property } from "../../../../../utils/Property";
 import { Broadcast } from "../../../../../utils/Broadcast";
 

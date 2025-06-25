@@ -3,9 +3,9 @@ import { BP_BombPlantedPhase } from "../../phase/bomb_plant/BombPlanted";
 import { BP_RoundEndPhase } from "../../phase/bomb_plant/RoundEnd";
 import { BombIdleState } from "./Idle";
 
-import { BP_TeamEnum } from "../../phase/TeamEnum";
+import { TeamEnum } from "../../../types/TeamEnum";
 import { BombStateEnum } from "./BombStateEnum";
-import { BP_PhaseEnum } from "../../phase/bomb_plant/PhaseEnum";
+import { BP_PhaseEnum } from "../../../types/PhaseEnum";
 
 import { Broadcast } from "../../../../../utils/Broadcast";
 import { FormatCode as FC } from "../../../../../utils/FormatCode";
@@ -106,7 +106,7 @@ function defuseComplete(roomId: number, defuser: Player) {
     const room = GameRoomManager.instance.getRoom(roomId);
     
     if (room.phaseManager.getPhase().phaseTag === BP_PhaseEnum.BombPlanted) {
-        set_variable(`${roomId}.round_winner`, BP_TeamEnum.Defender);
+        set_variable(`${roomId}.round_winner`, TeamEnum.Defender);
         room.phaseManager.updatePhase(new BP_RoundEndPhase(roomId));
     }
 

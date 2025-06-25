@@ -2,8 +2,8 @@ import { GameRoomManager } from "../../GameRoom";
 import { BP_BuyingPhase } from "./Buying";
 import { BP_GameOverPhase } from "./Gameover";
 
-import { BP_PhaseEnum } from "./PhaseEnum";
-import { BP_TeamEnum } from "../TeamEnum";
+import { BP_PhaseEnum } from "../../../types/PhaseEnum";
+import { TeamEnum } from "../../../types/TeamEnum";
 
 import { FormatCode as FC } from "../../../../../utils/FormatCode";
 import { entity_dynamic_property } from "../../../../../utils/Property";
@@ -29,10 +29,10 @@ export class BP_RoundEndPhase implements IPhaseHandler {
         const member = room.memberManager;
         const economy = room.economyManager;
 
-        const winnerTeam = variable(`${this.roomId}.round_winner`) as BP_TeamEnum;
-        if (winnerTeam === BP_TeamEnum.Attacker) {
+        const winnerTeam = variable(`${this.roomId}.round_winner`) as TeamEnum;
+        if (winnerTeam === TeamEnum.Attacker) {
             set_variable(`${this.roomId}.attacker_score`, (variable(`${this.roomId}.attacker_score`) ?? 0) + 1);
-        } else if (winnerTeam === BP_TeamEnum.Defender) { 
+        } else if (winnerTeam === TeamEnum.Defender) { 
             set_variable(`${this.roomId}.defender_score`, (variable(`${this.roomId}.defender_score`) ?? 0) + 1);
         }
 
@@ -69,8 +69,8 @@ export class BP_RoundEndPhase implements IPhaseHandler {
         const defenderScore = variable(`${this.roomId}.defender_score`);
 
         let winner = null;
-        if (attackerScore >= WINNING_SCORE) winner = BP_TeamEnum.Attacker;
-        if (defenderScore >= WINNING_SCORE) winner = BP_TeamEnum.Defender;
+        if (attackerScore >= WINNING_SCORE) winner = TeamEnum.Attacker;
+        if (defenderScore >= WINNING_SCORE) winner = TeamEnum.Defender;
 
         if (winner) {
             set_variable(`${this.roomId}.winner`, winner);

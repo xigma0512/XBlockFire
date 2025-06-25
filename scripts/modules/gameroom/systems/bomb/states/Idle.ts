@@ -3,7 +3,7 @@ import { MapRegister } from "../../map/MapRegister";
 import { BombPlantedState } from "./Planted";
 import { BombDroppedState } from "./Dropped";
 
-import { BP_TeamEnum } from "../../phase/TeamEnum";
+import { TeamEnum } from "../../../types/TeamEnum";
 import { BombStateEnum } from "./BombStateEnum";
 import { entity_dynamic_property } from "../../../../../utils/Property";
 import { FormatCode as FC } from "../../../../../utils/FormatCode";
@@ -90,7 +90,7 @@ function canPlantBomb(roomId: number, source: Player) {
     try {
         const room = GameRoomManager.instance.getRoom(roomId);
         const sourceTeam = entity_dynamic_property(source, 'player:team');
-        if (sourceTeam !== BP_TeamEnum.Attacker) {
+        if (sourceTeam !== TeamEnum.Attacker) {
             throw new Error(`You are not at Attacker team.`);
         }
 
