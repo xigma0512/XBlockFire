@@ -2,6 +2,7 @@ import { Player } from "@minecraft/server";
 import { GameRoomManager } from "../../gameroom/systems/GameRoom";
 import { BP_BuyingPhase } from "../../gameroom/systems/phase/bomb_plant/Buying";
 import { GameModeEnum } from "../../gameroom/systems/GameModeEnum";
+import { MemberManager } from "../../gameroom/systems/member/MemberManager";
 
 function createRoom(executer: Player, ...args: string[]) {
     const [gamemode, mapId] = args;
@@ -25,11 +26,10 @@ function playerJoinRoom(executer: Player, ...args: string[]) {
     const room = GameRoomManager.instance.getRoom(Number(roomId));
     if (room.memberManager.includePlayer(executer)) throw Error(`You have already in room ${roomId}`);
 
-    const allRooms = GameRoomManager.instance.getAllRooms();
-    for (const [serial, room] of allRooms) {
-        if (room.memberManager.includePlayer(executer)) {
-            room.memberManager.leaveRoom(executer);
-        }
+    if (MemberManager.isInRoom(executer)) {
+        const roomId = MemberManager.getPlayerRoomId(executer)!;
+        const room = GameRoomManager.instance.getRoom(roomId);
+        room.memberManager.leaveRoom(executer);
     }
 
     room.memberManager.joinRoom(executer);
