@@ -2,6 +2,7 @@ import { GameRoomManager } from "../../GameRoom";
 import { BP_ActionPhase } from "./Action";
 import { MapRegister } from "../../map/MapRegister";
 
+import { BP_Config } from "./Config";
 import { TeamEnum } from "../../../types/TeamEnum";
 import { BP_PhaseEnum } from "../../../types/PhaseEnum";
 import { entity_dynamic_property, set_entity_dynamic_property } from "../../../../../utils/Property";
@@ -11,18 +12,18 @@ import { FormatCode } from "../../../../../utils/FormatCode";
 
 import { GameMode, InputPermissionCategory } from "@minecraft/server";
 
-const COUNTDOWN_TIME = 30 * 20;
+const config = BP_Config.buying;
 
 export class BP_BuyingPhase implements IPhaseHandler {
 
     readonly phaseTag = BP_PhaseEnum.Buying;
-    private _currentTick: number = COUNTDOWN_TIME;
+    private _currentTick: number = config.COUNTDOWN_TIME;
     get currentTick() { return this._currentTick; }
 
     constructor(private readonly roomId: number) { }
 
     on_entry() {
-        this._currentTick = COUNTDOWN_TIME;
+        this._currentTick = config.COUNTDOWN_TIME;
         spawnPlayers(this.roomId);
         resetPlayers(this.roomId);
 

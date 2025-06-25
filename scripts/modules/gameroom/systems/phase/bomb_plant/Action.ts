@@ -2,6 +2,7 @@ import { GameRoomManager } from "../../GameRoom";
 import { BP_GameOverPhase } from "./Gameover";
 import { BP_RoundEndPhase } from "./RoundEnd";
 
+import { BP_Config } from "./Config";
 import { BP_PhaseEnum } from "../../../types/PhaseEnum"
 import { TeamEnum } from "../../../types/TeamEnum";
 
@@ -10,18 +11,18 @@ import { Broadcast } from "../../../../../utils/Broadcast";
 import { entity_dynamic_property } from "../../../../../utils/Property";
 import { set_variable, variable } from "../../../../../utils/Variable";
 
-const ACTION_TIME = 120 * 20;
+const config = BP_Config.action;
 
 export class BP_ActionPhase implements IPhaseHandler {
 
     readonly phaseTag = BP_PhaseEnum.Action;
-    private _currentTick: number = ACTION_TIME;
+    private _currentTick: number = config.ACTION_TIME;
     get currentTick() { return this._currentTick; }
 
     constructor(private readonly roomId: number) { }
 
     on_entry() {
-        this._currentTick = ACTION_TIME;
+        this._currentTick = config.ACTION_TIME;
         console.warn(`[Room ${this.roomId}] Entry BP:action phase.`);
     }
 
