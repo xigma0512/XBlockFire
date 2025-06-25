@@ -2,6 +2,7 @@ import { GameRoomManager } from "../../GameRoom";
 import { BP_BuyingPhase } from "./Buying";
 import { BP_GameOverPhase } from "./Gameover";
 
+import { BP_Config } from "./Config";
 import { BP_PhaseEnum } from "../../../types/PhaseEnum";
 import { TeamEnum } from "../../../types/TeamEnum";
 
@@ -10,20 +11,18 @@ import { entity_dynamic_property } from "../../../../../utils/Property";
 import { set_variable, variable } from "../../../../../utils/Variable";
 import { Broadcast } from "../../../../../utils/Broadcast";
 
-const INCOME = [4000, 2000];
-const WINNING_SCORE = 7;
-const COUNTDOWN_TIME = 10 * 20;
+const config = BP_Config.roundEnd;
 
 export class BP_RoundEndPhase implements IPhaseHandler {
 
     readonly phaseTag = BP_PhaseEnum.RoundEnd;
-    private _currentTick: number = COUNTDOWN_TIME;
+    private _currentTick: number = config.COUNTDOWN_TIME;
     get currentTick() { return this._currentTick; }
 
     constructor(private readonly roomId: number) { }
 
     on_entry() {
-        this._currentTick = COUNTDOWN_TIME;
+        this._currentTick = config.COUNTDOWN_TIME;
 
         const room = GameRoomManager.instance.getRoom(this.roomId);
         const member = room.memberManager;
@@ -38,7 +37,7 @@ export class BP_RoundEndPhase implements IPhaseHandler {
 
         for (const player of member.getPlayers()) {
             const playerTeam = entity_dynamic_property(player, 'player:team');
-            const earn = INCOME[(playerTeam === winnerTeam) ? 0 : 1];
+            const earn = config.INCOME[(playerTeam === winnerTeam) ? 0 : 1];
             economy.addMoney(player, earn);
             player.sendMessage(`${FC.Gray}Round Income: +${earn}`);
         }
@@ -69,8 +68,8 @@ export class BP_RoundEndPhase implements IPhaseHandler {
         const defenderScore = variable(`${this.roomId}.defender_score`);
 
         let winner = null;
-        if (attackerScore >= WINNING_SCORE) winner = TeamEnum.Attacker;
-        if (defenderScore >= WINNING_SCORE) winner = TeamEnum.Defender;
+        if (attackerScore >= config.WINNING_SCORE) winner = TeamEnum.Attacker;
+        if (defenderScore >= config.WINNING_SCORE) winner = TeamEnum.Defender;
 
         if (winner) {
             set_variable(`${this.roomId}.winner`, winner);
@@ -80,7 +79,7 @@ export class BP_RoundEndPhase implements IPhaseHandler {
 
         if (this.currentTick <= 0) {
             
-            if (attackerScore + defenderScore >= WINNING_SCORE) {
+            if (attackerScore + defenderScore >= config.WINNING_SCORE) {
                 switchSide();
             }
             

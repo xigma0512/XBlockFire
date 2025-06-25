@@ -2,26 +2,25 @@ import { GameRoomManager } from "../../GameRoom";
 import { BP_BuyingPhase } from "./Buying";
 import { BP_PhaseEnum } from "../../../types/PhaseEnum";
 
+import { BP_Config } from "./Config";
 import { TeamEnum } from "../../../types/TeamEnum";
 import { Broadcast } from "../../../../../utils/Broadcast";
 import { FormatCode as FC } from "../../../../../utils/FormatCode";
 import { entity_dynamic_property, set_entity_dynamic_property } from "../../../../../utils/Property";
 import { GameModeEnumTable } from "../../GameModeEnum";
 
-const AUTO_START = true;
-const AUTO_START_MIN_PLAYER = 2;
-const COUNTDOWN_TIME = 30 * 20;
+const config = BP_Config.idle;
 
 export class BP_IdlePhase implements IPhaseHandler {
 
     readonly phaseTag = BP_PhaseEnum.Idle;
-    private _currentTick: number = COUNTDOWN_TIME;
+    private _currentTick: number = config.COUNTDOWN_TIME;
     get currentTick() { return this._currentTick; }
 
     constructor(private readonly roomId: number) { }
 
     on_entry() {
-        this._currentTick = COUNTDOWN_TIME;
+        this._currentTick = config.COUNTDOWN_TIME;
         console.warn(`[Room ${this.roomId}] Entry BP:idle phase.`);
     }
 
@@ -30,8 +29,8 @@ export class BP_IdlePhase implements IPhaseHandler {
         const members = room.memberManager.getPlayers();
         const playerAmount = members.length;
 
-        if (AUTO_START && playerAmount >= AUTO_START_MIN_PLAYER) this._currentTick --;
-        if (this.currentTick !== COUNTDOWN_TIME && playerAmount < AUTO_START_MIN_PLAYER) this._currentTick = COUNTDOWN_TIME;
+        if (config.AUTO_START && playerAmount >= config.AUTO_START_MIN_PLAYER) this._currentTick --;
+        if (this.currentTick !== config.COUNTDOWN_TIME && playerAmount < config.AUTO_START_MIN_PLAYER) this._currentTick = config.COUNTDOWN_TIME;
 
         updateActionbar(this.roomId, this.currentTick);
         updateSidebar(this.roomId);
@@ -39,7 +38,7 @@ export class BP_IdlePhase implements IPhaseHandler {
     }
 
     on_exit() {
-        if (AUTO_START) balanceTeam(this.roomId);
+        if (config.AUTO_START) balanceTeam(this.roomId);
         initializePlayers(this.roomId);
         console.warn(`[Room ${this.roomId}] Exit BP:idle phase.`);
     }
@@ -89,11 +88,11 @@ function updateActionbar(roomId: number, currentTick: number) {
 
     let actionbarText = `${FC.Yellow}Waiting for more players...`;
 
-    if (AUTO_START && playerAmount >= AUTO_START_MIN_PLAYER) {
+    if (config.AUTO_START && playerAmount >= config.AUTO_START_MIN_PLAYER) {
         actionbarText = `${FC.Green}Game will start in ${(currentTick / 20).toFixed(0)} seconds.`;
     }
 
-    if (currentTick !== COUNTDOWN_TIME && playerAmount < AUTO_START_MIN_PLAYER) {
+    if (currentTick !== config.COUNTDOWN_TIME && playerAmount < config.AUTO_START_MIN_PLAYER) {
         Broadcast.message(`${FC.Red}Not enough players. Waiting for more players.`, members);
     }
 
