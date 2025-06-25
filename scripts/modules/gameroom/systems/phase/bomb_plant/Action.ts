@@ -51,12 +51,11 @@ export class BP_ActionPhase implements IPhaseHandler {
 
         let endReason: EndReasonEnum | null = null;
 
-        const players = member.getPlayers();
-        const attackers = players.filter(p => entity_dynamic_property(p, 'player:team') === TeamEnum.Attacker);
-        const defenders = players.filter(p => entity_dynamic_property(p, 'player:team') === TeamEnum.Defender);
+        const attackers = member.getPlayers({ team: TeamEnum.Attacker });
+        const defenders = member.getPlayers({ team: TeamEnum.Defender });
 
-        const attackersAlive = attackers.filter(p => entity_dynamic_property(p, 'player:is_alive'));
-        const defendersAlive = defenders.filter(p => entity_dynamic_property(p, 'player:is_alive'));
+        const attackersAlive = member.getPlayers({ team: TeamEnum.Attacker, is_alive: true });
+        const defendersAlive = member.getPlayers({ team: TeamEnum.Defender, is_alive: true });
         
         if (attackersAlive.length === 0) endReason = EndReasonEnum['Attacker-Eliminated'];
         if (defendersAlive.length === 0) endReason = EndReasonEnum['Defender-Eliminated'];
@@ -127,14 +126,14 @@ function updateSidebar(roomId: number) {
 
 function updateTopbar(roomId: number, currentTick: number) {
     const room = GameRoomManager.instance.getRoom(roomId);
-    const players = room.memberManager.getPlayers();
     
     const attackerScore = variable(`${roomId}.attacker_score`) ?? 0;
     const defenderScore = variable(`${roomId}.defender_score`) ?? 0;
 
-    const attackerPlayers = players.filter(p => entity_dynamic_property(p, 'player:team') === TeamEnum.Attacker && entity_dynamic_property(p, 'player:is_alive'));
-    const defenderPlayers = players.filter(p => entity_dynamic_property(p, 'player:team') === TeamEnum.Defender && entity_dynamic_property(p, 'player:is_alive'));
-
+    const attackerPlayers = room.memberManager.getPlayers({ team: TeamEnum.Attacker, is_alive: true });
+    const defenderPlayers = room.memberManager.getPlayers({ team: TeamEnum.Defender, is_alive: true });
+    
+    const players = room.memberManager.getPlayers();
     for (const player of players) {
         const playerTeam = entity_dynamic_property(player, 'player:team') as TeamEnum;
 

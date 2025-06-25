@@ -1,13 +1,16 @@
 import { Entity, ItemStack, world } from "@minecraft/server"
-import { GrenadeTypeEnum, GunReloadStateEnum, TeamTagEnum } from "../modules/weapon/types/Enums"
+import { GrenadeTypeEnum, GunReloadStateEnum } from "../modules/weapon/types/Enums"
+import { TeamEnum } from "../modules/gameroom/types/TeamEnum";
 
 type WorldPropertyList = {
 }
 
 type EntityDynamicPropertyList = {
-    'item:uuid': string,
-    'player:team': TeamTagEnum;
+    'item:uuid': string;
+    'player:group': number;
+    'player:team': TeamEnum;
     'player:is_alive': boolean;
+    'player:is_spectator': boolean;
 }
 
 type ScoreBoardPropertyList = {

@@ -11,8 +11,7 @@ export class AlliesMarker {
     constructor(private member: MemberManager) { }
 
     updateMark(team: TeamEnum) {
-        const players = this.member.getPlayers();
-        const teamPlayers = players.filter(p => entity_dynamic_property(p, 'player:team') === team);
+        const teamPlayers = this.member.getPlayers({ team });
 
         for (const viewer of teamPlayers) {
             for (const ally of teamPlayers) {
