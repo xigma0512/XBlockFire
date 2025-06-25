@@ -2,8 +2,8 @@ import { GameRoomManager } from "../../GameRoom";
 import { BP_ActionPhase } from "./Action";
 import { MapRegister } from "../../map/MapRegister";
 
+import { BP_TeamEnum } from "../TeamEnum";
 import { BP_PhaseEnum } from "./PhaseEnum";
-import { TeamTagEnum } from "../../../../weapon/types/Enums";
 import { entity_dynamic_property, set_entity_dynamic_property } from "../../../../../utils/Property";
 import { Broadcast } from "../../../../../utils/Broadcast";
 
@@ -70,15 +70,18 @@ function spawnPlayers(roomId: number) {
     const defenderSpawns = gameMap.positions.defender_spawns;
 
     const spawns = {
-        [TeamTagEnum.Attacker]: attackerSpawns,
-        [TeamTagEnum.Defender]: defenderSpawns,
+        [BP_TeamEnum.Attacker]: attackerSpawns,
+        [BP_TeamEnum.Defender]: defenderSpawns,
     }
 
-    let nextSpawnIndex = new Array<number>(10).fill(0);
+    let nextSpawnIndex = {
+        [BP_TeamEnum.Attacker]: 0,
+        [BP_TeamEnum.Defender]: 0
+    }
 
     for (const player of member.getPlayers()) {
         const playerTeam = entity_dynamic_property(player, 'player:team');
-        if (playerTeam === TeamTagEnum.Spectator) continue;
+        if (entity_dynamic_property(player, 'player:is_spectator')) continue;
 
         const playerTeamSpawns = spawns[playerTeam];
         const spawnIndex = nextSpawnIndex[playerTeam]++ % playerTeamSpawns.length;

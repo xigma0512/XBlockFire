@@ -4,10 +4,10 @@ import { MemberManager } from "./member/MemberManager";
 import { BombManager } from "./bomb/BombManager";
 import { AlliesMarker } from "../../allies_mark/AlliesMarker";
 
+import { BP_TeamEnum } from "./phase/TeamEnum";
 import { GameModeEnum } from "./GameModeEnum";
 
 import { system } from "@minecraft/server";
-import { TeamTagEnum } from "../../weapon/types/Enums";
 
 class GameRoom {
     
@@ -34,11 +34,18 @@ class GameRoom {
         this.bombManager = new BombManager(id);
 
         this.marker = new AlliesMarker(this.memberManager);
-        this.markerTaskId = system.runInterval(() => {
-            this.marker.updateMark(TeamTagEnum.Attacker);
-            this.marker.updateMark(TeamTagEnum.Defender);
-            this.marker.updateMark(TeamTagEnum.Spectator);
-        });
+        this.markerTaskId = this.addMarkerTask();
+    }
+
+    private addMarkerTask() {
+        switch(this.gameMode) {
+            default:
+            case GameModeEnum.BombPlant: 
+                return system.runInterval(() => {
+                    this.marker.updateMark(BP_TeamEnum.Attacker);
+                    this.marker.updateMark(BP_TeamEnum.Defender);
+                });
+        }
     }
 
     close() {

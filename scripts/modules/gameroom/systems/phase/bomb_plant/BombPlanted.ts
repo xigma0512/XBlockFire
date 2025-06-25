@@ -2,7 +2,7 @@ import { GameRoomManager } from "../../GameRoom";
 import { BP_PhaseEnum } from "./PhaseEnum";
 import { BP_RoundEndPhase } from "./RoundEnd";
 
-import { TeamTagEnum } from "../../../../weapon/types/Enums";
+import { BP_TeamEnum } from "../TeamEnum";
 import { set_variable } from "../../../../../utils/Variable";
 
 const COUNTDOWN_TIME = 50 * 20;
@@ -33,7 +33,7 @@ export class BP_BombPlantedPhase implements IPhaseHandler {
         const room = GameRoomManager.instance.getRoom(this.roomId);
 
         if (this._currentTick <= 0) {
-            set_variable(`${this.roomId}.round_winner`, TeamTagEnum.Attacker);
+            set_variable(`${this.roomId}.round_winner`, BP_TeamEnum.Attacker);
             room.phaseManager.updatePhase(new BP_RoundEndPhase(this.roomId));
         }
     }
