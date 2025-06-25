@@ -2,8 +2,9 @@ import { BombStateEnum } from "./BombStateEnum";
 import { BombIdleState } from "./Idle";
 import { GameRoomManager } from "../../GameRoom";
 
+import { BP_TeamEnum } from "../../phase/TeamEnum";
+
 import { entity_dynamic_property } from "../../../../../utils/Property";
-import { TeamTagEnum } from "../../../../weapon/types/Enums";
 import { FormatCode as FC } from "../../../../../utils/FormatCode";
 import { Broadcast } from "../../../../../utils/Broadcast";
 
@@ -74,7 +75,7 @@ export class BombDroppedState implements IBombStateHandler {
 
     private attemptToPickup(player: Player) {
         const playerTeam = entity_dynamic_property(player, 'player:team');
-        if (playerTeam !== TeamTagEnum.Attacker) return;
+        if (playerTeam !== BP_TeamEnum.Attacker) return;
 
         const inventory = player.getComponent('inventory')?.container;
         if (!inventory) return;
@@ -82,7 +83,7 @@ export class BombDroppedState implements IBombStateHandler {
         inventory.addItem(new ItemStack(C4_ITEM_ID));
         
         const room = GameRoomManager.instance.getRoom(this.roomId);
-        const attackers = room.memberManager.getPlayers().filter(p => entity_dynamic_property(p, 'player:team') === TeamTagEnum.Attacker);
+        const attackers = room.memberManager.getPlayers().filter(p => entity_dynamic_property(p, 'player:team') === BP_TeamEnum.Attacker);
         
         player.sendMessage(`${FC.Green}You pick up the bomb.`);
         Broadcast.message(`${FC.Yellow}Player ${player.name} has picked up the bomb.`, attackers);
