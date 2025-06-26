@@ -10,16 +10,20 @@ import { FormatCode as FC } from "../../../../../utils/FormatCode";
 import { entity_dynamic_property } from "../../../../../utils/Property";
 import { set_variable, variable } from "../../../../../utils/Variable";
 import { Broadcast } from "../../../../../utils/Broadcast";
+import { BP_ActionHud } from "../../../../hud/bomb_plant/Action";
 
 const config = BP_Config.roundEnd;
 
 export class BP_RoundEndPhase implements IPhaseHandler {
 
     readonly phaseTag = BP_PhaseEnum.RoundEnd;
+    readonly hud: BP_ActionHud;
     private _currentTick: number = config.COUNTDOWN_TIME;
     get currentTick() { return this._currentTick; }
 
-    constructor(private readonly roomId: number) { }
+    constructor(private readonly roomId: number) {
+        this.hud = new BP_ActionHud(roomId);
+    }
 
     on_entry() {
         this._currentTick = config.COUNTDOWN_TIME;
@@ -46,13 +50,8 @@ export class BP_RoundEndPhase implements IPhaseHandler {
     }
 
     on_running() {
-        const room = GameRoomManager.instance.getRoom(this.roomId);
-        const members = room.memberManager.getPlayers();
-        
-        const actionbarText = `${FC.Yellow}Next round start in ${(this.currentTick / 20).toFixed(0)} seconds.`;
-        Broadcast.actionbar(actionbarText, members);
-        
         this._currentTick --;
+        this.hud.update();
         this.transitions();
     }
 

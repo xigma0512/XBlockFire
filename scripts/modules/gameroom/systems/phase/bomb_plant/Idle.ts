@@ -5,20 +5,20 @@ import { BP_PhaseEnum } from "../../../types/PhaseEnum";
 import { BP_Config } from "./_config";
 import { TeamEnum } from "../../../types/TeamEnum";
 import { set_entity_dynamic_property } from "../../../../../utils/Property";
-import { BP_IdlePhaseHud } from "../../../../hud/bomb_plant/Idle";
+import { BP_WaitingHud } from "../../../../hud/bomb_plant/Waiting";
 
 const config = BP_Config.idle;
 
 export class BP_IdlePhase implements IPhaseHandler {
 
     readonly phaseTag = BP_PhaseEnum.Idle;
-    readonly hud: BP_IdlePhaseHud;
+    readonly hud: BP_WaitingHud;
     
     private _currentTick: number = config.COUNTDOWN_TIME;
     get currentTick() { return this._currentTick; }
 
     constructor(private readonly roomId: number) { 
-        this.hud = new BP_IdlePhaseHud(roomId);
+        this.hud = new BP_WaitingHud(roomId);
     }
 
     on_entry() {

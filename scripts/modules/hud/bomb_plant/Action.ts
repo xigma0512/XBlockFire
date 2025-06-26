@@ -6,8 +6,9 @@ import { Broadcast } from "../../../utils/Broadcast";
 import { FormatCode as FC } from "../../../utils/FormatCode";
 import { entity_dynamic_property } from "../../../utils/Property";
 import { variable } from "../../../utils/Variable";
+import { BP_PhaseEnum } from "../../gameroom/types/PhaseEnum";
 
-export class BP_BuyingPhaseHud implements InGameHud {
+export class BP_ActionHud implements InGameHud {
     
     constructor(private readonly roomId: number) { }
     
@@ -19,13 +20,24 @@ export class BP_BuyingPhaseHud implements InGameHud {
 
     private updateActionbar() {
         const room = GameRoomManager.instance.getRoom(this.roomId);
+        const phase = room.phaseManager.getPhase();
         const members = room.memberManager.getPlayers();
-        const currentTick = room.phaseManager.getPhase().currentTick;
 
-        let actionbarText = [
-            `Buying phase will end in ${(currentTick / 20).toFixed(0)} seconds.\n`, 
-            `Right-click the feather to open the shop.`
-        ];
+        let actionbarText: string | string[] = '';
+        switch (phase.phaseTag) {
+            case BP_PhaseEnum.Buying:
+                actionbarText = [
+                    `Buying phase will end in ${(phase.currentTick / 20).toFixed(0)} seconds.\n`, 
+                    `Right-click the feather to open the shop.`
+                ];
+                break;
+            case BP_PhaseEnum.RoundEnd:
+                actionbarText = `${FC.Yellow}Next round start in ${(phase.currentTick / 20).toFixed(0)} seconds.`;
+                break;
+            case BP_PhaseEnum.Gameover:
+                actionbarText = `Return lobby in ${(phase.currentTick / 20).toFixed(0)}`;
+                break;
+        }
 
         Broadcast.actionbar(actionbarText, members);
     }
@@ -39,7 +51,7 @@ export class BP_BuyingPhaseHud implements InGameHud {
             const teamStr = 
             (playerTeam === TeamEnum.Attacker) ? `${FC.Red}Attacker` :
             (playerTeam === TeamEnum.Defender) ? `${FC.Aqua}Defender` :
-            `${FC.Gray}Spectator` 
+                                                 `${FC.Gray}Spectator` 
             
             const sidebarMessage = [
                 `Money: ${FC.Green}${room.economyManager.getMoney(player)}`,
