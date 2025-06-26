@@ -1,12 +1,10 @@
 import { GameRoomManager } from "../../gameroom/systems/GameRoom";
 
 import { BP_Config } from "../../gameroom/systems/phase/bomb_plant/_config";
-import { TeamEnum } from "../../gameroom/types/TeamEnum";
 import { GameModeEnumTable } from "../../gameroom/systems/GameModeEnum";
 
 import { FormatCode as FC } from "../../../utils/FormatCode";
 import { Broadcast } from "../../../utils/Broadcast";
-import { entity_dynamic_property } from "../../../utils/Property";
 
 const config = BP_Config.idle;
 
@@ -41,28 +39,18 @@ export class BP_WaitingHud implements InGameHud {
     private updateSidebar() {
         const room = GameRoomManager.instance.getRoom(this.roomId);
         const players = room.memberManager.getPlayers();
-
+        
         const playerCount = players.length;
         const maxPlayers = 10;
-    
+
         const sidebarMessage = [
             `${FC.Bold}${FC.White}Info:`,
             `  ${FC.Gold}Room Number: ${FC.White}${this.roomId}`,
             `  ${FC.MaterialCopper}Gamemode: ${FC.White}${GameModeEnumTable[room.gameMode]}`,
             `  ${FC.Aqua}Players: ${FC.White}${playerCount}/${maxPlayers}`,
-            `  ${FC.Yellow}State: ${FC.Green}Waiting`,
-            '',
-
-            `${FC.Bold}${FC.White}Players:`,
-            ...players.map(player => {
-                const playerTeam = entity_dynamic_property(player, 'player:team');
-                const teamPrefix = 
-                    (playerTeam === TeamEnum.Attacker) ? `${FC.Red}[A]` :
-                    (playerTeam === TeamEnum.Defender) ? `${FC.Aqua}[D]` : `${FC.DarkPurple}[S]`;
-                return ` ${FC.Gray}- ${teamPrefix}${player.name}`
-            })
+            ...players.map(player => `  ${FC.Gray}- ${player.name}`)
         ];
-
+        
         Broadcast.sidebar(sidebarMessage, players);
     }
 }
