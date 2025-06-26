@@ -12,10 +12,10 @@ const config = BP_Config.idle;
 export class BP_IdlePhase implements IPhaseHandler {
 
     readonly phaseTag = BP_PhaseEnum.Idle;
+    readonly hud: BP_IdlePhaseHud;
+    
     private _currentTick: number = config.COUNTDOWN_TIME;
     get currentTick() { return this._currentTick; }
-
-    private hud: BP_IdlePhaseHud;
 
     constructor(private readonly roomId: number) { 
         this.hud = new BP_IdlePhaseHud(roomId);
