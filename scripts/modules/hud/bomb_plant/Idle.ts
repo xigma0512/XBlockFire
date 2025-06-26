@@ -1,7 +1,7 @@
 import { InGameHud } from "../types/InGameHud";
 import { GameRoomManager } from "../../gameroom/systems/GameRoom";
 
-import { BP_Config } from "../../gameroom/systems/phase/bomb_plant/Config";
+import { BP_Config } from "../../gameroom/systems/phase/bomb_plant/_config";
 import { TeamEnum } from "../../gameroom/types/TeamEnum";
 import { GameModeEnumTable } from "../../gameroom/systems/GameModeEnum";
 
