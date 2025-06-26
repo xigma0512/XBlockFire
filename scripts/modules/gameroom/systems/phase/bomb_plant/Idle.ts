@@ -2,7 +2,7 @@ import { GameRoomManager } from "../../GameRoom";
 import { BP_BuyingPhase } from "./Buying";
 import { BP_PhaseEnum } from "../../../types/PhaseEnum";
 
-import { BP_Config } from "./Config";
+import { BP_Config } from "./_config";
 import { TeamEnum } from "../../../types/TeamEnum";
 import { set_entity_dynamic_property } from "../../../../../utils/Property";
 import { BP_IdlePhaseHud } from "../../../../hud/bomb_plant/Idle";

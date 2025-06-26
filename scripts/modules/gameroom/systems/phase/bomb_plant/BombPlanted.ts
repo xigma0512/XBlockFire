@@ -2,7 +2,7 @@ import { GameRoomManager } from "../../GameRoom";
 import { BP_PhaseEnum } from "../../../types/PhaseEnum";
 import { BP_RoundEndPhase } from "./RoundEnd";
 
-import { BP_Config } from "./Config";
+import { BP_Config } from "./_config";
 import { TeamEnum } from "../../../types/TeamEnum";
 import { set_variable } from "../../../../../utils/Variable";
 

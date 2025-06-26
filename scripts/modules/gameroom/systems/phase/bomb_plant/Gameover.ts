@@ -1,7 +1,7 @@
 import { GameRoomManager } from "../../GameRoom";
 import { BP_IdlePhase } from "./Idle";
 import { BP_PhaseEnum } from "../../../types/PhaseEnum";
-import { BP_Config } from "./Config";
+import { BP_Config } from "./_config";
 
 import { Broadcast } from "../../../../../utils/Broadcast";
 
