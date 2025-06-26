@@ -1,7 +1,7 @@
 import { GameRoomManager } from "../../GameRoom";
 import { BP_ActionPhase } from "./Action";
 import { MapRegister } from "../../map/MapRegister";
-import { BP_BuyingPhaseHud } from "../../../../hud/bomb_plant/Buying";
+import { BP_ActionHud } from "../../../../hud/bomb_plant/Action";
 
 import { BP_Config } from "./_config";
 import { TeamEnum } from "../../../types/TeamEnum";
@@ -14,14 +14,14 @@ const config = BP_Config.buying;
 
 export class BP_BuyingPhase implements IPhaseHandler {
 
-    readonly hud: BP_BuyingPhaseHud;
+    readonly hud: BP_ActionHud;
     readonly phaseTag = BP_PhaseEnum.Buying;
 
     private _currentTick: number = config.COUNTDOWN_TIME;
     get currentTick() { return this._currentTick; }
 
     constructor(private readonly roomId: number) {        
-        this.hud = new BP_BuyingPhaseHud(roomId);
+        this.hud = new BP_ActionHud(roomId);
     }
 
     on_entry() {

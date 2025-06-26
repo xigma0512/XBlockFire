@@ -8,18 +8,21 @@ import { TeamEnum } from "../../../types/TeamEnum";
 
 import { FormatCode as FC } from "../../../../../utils/FormatCode";
 import { Broadcast } from "../../../../../utils/Broadcast";
-import { entity_dynamic_property } from "../../../../../utils/Property";
-import { set_variable, variable } from "../../../../../utils/Variable";
+import { set_variable } from "../../../../../utils/Variable";
+import { BP_ActionHud } from "../../../../hud/bomb_plant/Action";
 
 const config = BP_Config.action;
 
 export class BP_ActionPhase implements IPhaseHandler {
 
     readonly phaseTag = BP_PhaseEnum.Action;
+    readonly hud: BP_ActionHud;
     private _currentTick: number = config.ACTION_TIME;
     get currentTick() { return this._currentTick; }
 
-    constructor(private readonly roomId: number) { }
+    constructor(private readonly roomId: number) {
+        this.hud = new BP_ActionHud(roomId);
+    }
 
     on_entry() {
         this._currentTick = config.ACTION_TIME;
@@ -28,8 +31,7 @@ export class BP_ActionPhase implements IPhaseHandler {
 
     on_running() {
         this._currentTick --;
-        updateSidebar(this.roomId);
-        updateTopbar(this.roomId, this.currentTick);
+        this.hud.update();
         this.transitions();
     }
     
@@ -103,50 +105,4 @@ export class BP_ActionPhase implements IPhaseHandler {
         }
     }
 
-}
-
-function updateSidebar(roomId: number) {
-    const room = GameRoomManager.instance.getRoom(roomId);
-    const players = room.memberManager.getPlayers();
-
-    for (const player of players) {
-        const playerTeam = entity_dynamic_property(player, 'player:team') as TeamEnum;
-        const teamStr = 
-            (playerTeam === TeamEnum.Attacker) ? `${FC.Red}Attacker` :
-            (playerTeam === TeamEnum.Defender) ? `${FC.Aqua}Defender` :
-                                                    `${FC.Gray}Spectator` 
-
-        const sidebarMessage = [
-            `Money: ${FC.Green}${room.economyManager.getMoney(player)}`,
-            `Team: ${teamStr}`
-        ];
-
-        Broadcast.sidebar(sidebarMessage, [player]);
-    }
-}
-
-function updateTopbar(roomId: number, currentTick: number) {
-    const room = GameRoomManager.instance.getRoom(roomId);
-    
-    const attackerScore = variable(`${roomId}.attacker_score`) ?? 0;
-    const defenderScore = variable(`${roomId}.defender_score`) ?? 0;
-
-    const attackerPlayers = room.memberManager.getPlayers({ team: TeamEnum.Attacker, is_alive: true });
-    const defenderPlayers = room.memberManager.getPlayers({ team: TeamEnum.Defender, is_alive: true });
-    
-    const players = room.memberManager.getPlayers();
-    for (const player of players) {
-        const playerTeam = entity_dynamic_property(player, 'player:team') as TeamEnum;
-
-        const [allies, allyTeamScore] = (playerTeam === TeamEnum.Attacker) ? [attackerPlayers, attackerScore] : [defenderPlayers, defenderScore];
-        const [enemies, enemyTeamScore] = (playerTeam === TeamEnum.Attacker) ? [defenderPlayers, defenderScore] : [attackerPlayers, attackerScore];
-
-        const seconds = Number((currentTick / 20).toFixed(0));
-        const topbarMessage = [
-            `[ ${allyTeamScore} ] - [ ${Math.floor(seconds / 60)}:${seconds % 60} ] - [ ${enemyTeamScore} ]`,
-            `[ ${FC.Green}${allies.map(p => p.name.substring(0, 3)).join(' ')}${FC.Reset} ] VS [ ${FC.Red}${enemies.map(p => p.name.substring(0, 3)).join(' ')}${FC.Reset} ]`
-        ];
-
-        Broadcast.topbar(topbarMessage, [player]);
-    }
 }

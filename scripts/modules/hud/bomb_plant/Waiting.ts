@@ -10,7 +10,7 @@ import { entity_dynamic_property } from "../../../utils/Property";
 
 const config = BP_Config.idle;
 
-export class BP_IdlePhaseHud implements InGameHud {
+export class BP_WaitingHud implements InGameHud {
     
     constructor(private readonly roomId: number) { }
 
