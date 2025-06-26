@@ -1,3 +1,3 @@
-export abstract class InGameHud {
+abstract class InGameHud {
     abstract update(): void;
 }

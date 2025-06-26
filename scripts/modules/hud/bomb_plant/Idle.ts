@@ -1,4 +1,3 @@
-import { InGameHud } from "../types/InGameHud";
 import { GameRoomManager } from "../../gameroom/systems/GameRoom";
 
 import { BP_Config } from "../../gameroom/systems/phase/bomb_plant/_config";
