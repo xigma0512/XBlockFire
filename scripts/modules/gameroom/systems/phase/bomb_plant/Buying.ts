@@ -1,14 +1,12 @@
 import { GameRoomManager } from "../../GameRoom";
 import { BP_ActionPhase } from "./Action";
 import { MapRegister } from "../../map/MapRegister";
+import { BP_BuyingPhaseHud } from "../../../../hud/bomb_plant/Buying";
 
 import { BP_Config } from "./_config";
 import { TeamEnum } from "../../../types/TeamEnum";
 import { BP_PhaseEnum } from "../../../types/PhaseEnum";
 import { entity_dynamic_property, set_entity_dynamic_property } from "../../../../../utils/Property";
-import { Broadcast } from "../../../../../utils/Broadcast";
-import { variable } from "../../../../../utils/Variable";
-import { FormatCode } from "../../../../../utils/FormatCode";
 
 import { GameMode, InputPermissionCategory } from "@minecraft/server";
 
@@ -16,11 +14,15 @@ const config = BP_Config.buying;
 
 export class BP_BuyingPhase implements IPhaseHandler {
 
+    readonly hud: BP_BuyingPhaseHud;
     readonly phaseTag = BP_PhaseEnum.Buying;
+
     private _currentTick: number = config.COUNTDOWN_TIME;
     get currentTick() { return this._currentTick; }
 
-    constructor(private readonly roomId: number) { }
+    constructor(private readonly roomId: number) {        
+        this.hud = new BP_BuyingPhaseHud(roomId);
+    }
 
     on_entry() {
         this._currentTick = config.COUNTDOWN_TIME;
@@ -32,9 +34,7 @@ export class BP_BuyingPhase implements IPhaseHandler {
 
     on_running() {
         this._currentTick --;
-        updateActionbar(this.roomId, this.currentTick);
-        updateTopbar(this.roomId, this.currentTick);
-        updateSidebar(this.roomId);
+        this.hud.update();
         this.transitions();
     }
 
@@ -89,63 +89,5 @@ function resetPlayers(roomId: number) {
     for (const player of players) {
         set_entity_dynamic_property(player, 'player:is_alive', true);
         player.setGameMode(GameMode.Adventure);
-    }
-}
-
-function updateActionbar(roomId: number, currentTick: number) {
-    const room = GameRoomManager.instance.getRoom(roomId);
-    const members = room.memberManager.getPlayers();
-
-    let actionbarText = [
-        `Buying phase will end in ${(currentTick / 20).toFixed(0)} seconds.\n`, 
-        `Right-click the feather to open the shop.`
-    ];
-    
-    Broadcast.actionbar(actionbarText, members);
-}
-
-function updateSidebar(roomId: number) {
-    const room = GameRoomManager.instance.getRoom(roomId);
-    const players = room.memberManager.getPlayers();
-
-    for (const player of players) {
-        const playerTeam = entity_dynamic_property(player, 'player:team') as TeamEnum;
-        const teamStr = 
-            (playerTeam === TeamEnum.Attacker) ? `${FormatCode.Red}Attacker` :
-            (playerTeam === TeamEnum.Defender) ? `${FormatCode.Aqua}Defender` :
-                                                    `${FormatCode.Gray}Spectator` 
-
-        const sidebarMessage = [
-            `Money: ${FormatCode.Green}${room.economyManager.getMoney(player)}`,
-            `Team: ${teamStr}`
-        ];
-
-        Broadcast.sidebar(sidebarMessage, [player]);
-    }
-}
-
-function updateTopbar(roomId: number, currentTick: number) {
-    const room = GameRoomManager.instance.getRoom(roomId);
-    
-    const attackerScore = variable(`${roomId}.attacker_score`) ?? 0;
-    const defenderScore = variable(`${roomId}.defender_score`) ?? 0;
-    
-    const attackerPlayers = room.memberManager.getPlayers({ team: TeamEnum.Attacker, is_alive: true });
-    const defenderPlayers = room.memberManager.getPlayers({ team: TeamEnum.Defender, is_alive: true });
-    
-    const players = room.memberManager.getPlayers();
-    for (const player of players) {
-        const playerTeam = entity_dynamic_property(player, 'player:team') as TeamEnum;
-
-        const [allies, allyTeamScore] = (playerTeam === TeamEnum.Attacker) ? [attackerPlayers, attackerScore] : [defenderPlayers, defenderScore];
-        const [enemies, enemyTeamScore] = (playerTeam === TeamEnum.Attacker) ? [defenderPlayers, defenderScore] : [attackerPlayers, attackerScore];
-
-        const seconds = Number((currentTick / 20).toFixed(0));
-        const topbarMessage = [
-            `[ ${allyTeamScore} ] - [ ${Math.floor(seconds / 60)}:${seconds % 60} ] - [ ${enemyTeamScore} ]`,
-            `[ ${FormatCode.Green}${allies.map(p => p.name.substring(0, 3)).join(' ')}${FormatCode.Reset} ] VS [ ${FormatCode.Red}${enemies.map(p => p.name.substring(0, 3)).join(' ')}${FormatCode.Reset} ]`
-        ];
-
-        Broadcast.topbar(topbarMessage, [player]);
     }
 }
