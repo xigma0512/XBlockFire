@@ -23,19 +23,20 @@ export class MemberManager {
     }
 
     joinRoom(player: Player) {
-        const room = GameRoomManager.instance.getRoom(this.roomId);
         MemberManager.players.set(player, this.roomId);
+        const room = GameRoomManager.instance.getRoom(this.roomId);
         Broadcast.message(`${FC.Green}${player.name} has joined the game.`, room.memberManager.getPlayers());
     }
     
     leaveRoom(player: Player) {
-        const room = GameRoomManager.instance.getRoom(this.roomId);
         MemberManager.players.delete(player);
+        const room = GameRoomManager.instance.getRoom(this.roomId);
         Broadcast.message(`${FC.Red}${player.name} has left the game.`, room.memberManager.getPlayers());
     }
 
     getPlayers(filter?: MemberFilter) {
-        const result = Array.from(MemberManager.players.keys());
+        let result = Array.from(MemberManager.players.keys());
+        result = result.filter(p => MemberManager.players.get(p) === this.roomId);
         
         if (!filter) return result;
         
