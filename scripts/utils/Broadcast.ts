@@ -1,9 +1,6 @@
 import { Player, world } from "@minecraft/server";
 import { FormatCode as FC } from "./FormatCode";
 
-const sidebarMessages = new Map<Player, string[]>();
-const topbarMessages = new Map<Player, string[]>();
-
 export class Broadcast {
     
     static message(message: string | string[], players?: Player[]) {
@@ -14,34 +11,20 @@ export class Broadcast {
         for (const p of (players ?? world.getAllPlayers())) p.onScreenDisplay.setActionBar(message);
     }
 
-    static topbar(message: string[], players?: Player[]) {
-        message = message.map((m, i) => (i == message.length - 1) ? m : m + '\n' + FC.Reset);
+    static updatebar(topbar: string[], sidebar: string[], players: Player[]) {
+        let topbarMessage: string | string[] = topbar.map((m, i) => (i == topbar.length - 1) ? m : m + '\n' + FC.Reset);
+        let sidebarMessage = sidebar.map((m, i) => (i == sidebar.length - 1) ? m : m + '\n' + FC.Reset);
+
+        if (topbar.length == 0) topbarMessage = '\u{E107}';
         
         for (const p of (players ?? world.getAllPlayers())) {
-            topbarMessages.set(p, message);
-            this.sendTitle(p);
+            p.onScreenDisplay.setTitle(topbarMessage, {
+                fadeInDuration: 0,
+                fadeOutDuration: 0,
+                stayDuration: 0,
+                subtitle: sidebarMessage
+            });
         }
-    }
-
-    static sidebar(message: string[], players?: Player[]) {
-        message = message.map((m, i) => (i == message.length - 1) ? m : m + '\n' + FC.Reset);
-
-        for (const p of (players ?? world.getAllPlayers())) {
-            sidebarMessages.set(p, message);
-            this.sendTitle(p);
-        }
-    }
-
-    private static sendTitle(player: Player) {
-        if (!sidebarMessages.has(player)) sidebarMessages.set(player, ['']);
-        if (!topbarMessages.has(player)) topbarMessages.set(player, ['']);
-
-        player.onScreenDisplay.setTitle(topbarMessages.get(player)!, {
-            fadeInDuration: 0,
-            fadeOutDuration: 0,
-            stayDuration: 0,
-            subtitle: sidebarMessages.get(player)!
-        });
     }
 
 }

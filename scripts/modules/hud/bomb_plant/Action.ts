@@ -1,12 +1,14 @@
 import { GameRoomManager } from "../../gameroom/systems/GameRoom";
 
 import { TeamEnum } from "../../gameroom/types/TeamEnum";
+import { BP_PhaseEnum } from "../../gameroom/types/PhaseEnum";
 
 import { Broadcast } from "../../../utils/Broadcast";
 import { FormatCode as FC } from "../../../utils/FormatCode";
 import { entity_dynamic_property } from "../../../utils/Property";
 import { variable } from "../../../utils/Variable";
-import { BP_PhaseEnum } from "../../gameroom/types/PhaseEnum";
+
+import { Player } from "@minecraft/server";
 
 export class BP_ActionHud implements InGameHud {
     
@@ -14,8 +16,7 @@ export class BP_ActionHud implements InGameHud {
     
     update() {
         this.updateActionbar();
-        this.updateSidebar();
-        this.updateTopbar();
+        this.updatebar();
     }
 
     private updateActionbar() {
@@ -42,27 +43,34 @@ export class BP_ActionHud implements InGameHud {
         Broadcast.actionbar(actionbarText, members);
     }
 
-    private updateSidebar() {
+    private updatebar() {
         const room = GameRoomManager.instance.getRoom(this.roomId);
         const players = room.memberManager.getPlayers();
         
         for (const player of players) {
-            const playerTeam = entity_dynamic_property(player, 'player:team') as TeamEnum;
-            const teamStr = 
-            (playerTeam === TeamEnum.Attacker) ? `${FC.Red}Attacker` :
-            (playerTeam === TeamEnum.Defender) ? `${FC.Aqua}Defender` :
-                                                 `${FC.Gray}Spectator` 
-            
-            const sidebarMessage = [
-                `Money: ${FC.Green}${room.economyManager.getMoney(player)}`,
-                `Team: ${teamStr}`
-            ];
-            
-            Broadcast.sidebar(sidebarMessage, [player]);
+            const sidebarMessage = this.getSidebarMessage(player);
+            const topbarMessage = this.getTopbarMessage(player);
+            Broadcast.updatebar(topbarMessage, sidebarMessage, [player]);
         }
     }
     
-    private updateTopbar() {
+    private getSidebarMessage(player: Player) {
+        const room = GameRoomManager.instance.getRoom(this.roomId);
+        const playerTeam = entity_dynamic_property(player, 'player:team') as TeamEnum;
+        const teamStr = 
+        (playerTeam === TeamEnum.Attacker) ? `${FC.Red}Attacker` :
+        (playerTeam === TeamEnum.Defender) ? `${FC.Aqua}Defender` : `${FC.Gray}Spectator` 
+        
+        const sidebarMessage = [
+            `Money: ${FC.Green}${room.economyManager.getMoney(player)}`,
+            `Team: ${teamStr}`
+        ];
+        
+        return sidebarMessage;
+    }
+    
+    private getTopbarMessage(player: Player) {
+
         const room = GameRoomManager.instance.getRoom(this.roomId);
         const currentTick = room.phaseManager.getPhase().currentTick;
         
@@ -72,20 +80,17 @@ export class BP_ActionHud implements InGameHud {
         const attackerPlayers = room.memberManager.getPlayers({ team: TeamEnum.Attacker, is_alive: true });
         const defenderPlayers = room.memberManager.getPlayers({ team: TeamEnum.Defender, is_alive: true });
 
-        const players = room.memberManager.getPlayers();
-        for (const player of players) {
-            const playerTeam = entity_dynamic_property(player, 'player:team') as TeamEnum;
+        const playerTeam = entity_dynamic_property(player, 'player:team') as TeamEnum;
 
-            const [allies, allyTeamScore] = (playerTeam === TeamEnum.Attacker) ? [attackerPlayers, attackerScore] : [defenderPlayers, defenderScore];
-            const [enemies, enemyTeamScore] = (playerTeam === TeamEnum.Attacker) ? [defenderPlayers, defenderScore] : [attackerPlayers, attackerScore];
+        const [allies, allyTeamScore] = (playerTeam === TeamEnum.Attacker) ? [attackerPlayers, attackerScore] : [defenderPlayers, defenderScore];
+        const [enemies, enemyTeamScore] = (playerTeam === TeamEnum.Attacker) ? [defenderPlayers, defenderScore] : [attackerPlayers, attackerScore];
 
-            const seconds = Number((currentTick / 20).toFixed(0));
-            const topbarMessage = [
-                `[ ${allyTeamScore} ] - [ ${Math.floor(seconds / 60)}:${seconds % 60} ] - [ ${enemyTeamScore} ]`,
-                `[ ${FC.Green}${allies.map(p => p.name.substring(0, 3)).join(' ')}${FC.Reset} ] VS [ ${FC.Red}${enemies.map(p => p.name.substring(0, 3)).join(' ')}${FC.Reset} ]`
-            ];
+        const seconds = Number((currentTick / 20).toFixed(0));
+        const topbarMessage = [
+            `[ ${allyTeamScore} ] - [ ${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')} ] - [ ${enemyTeamScore} ]`,
+            `[ ${FC.Green}${allies.map(p => p.name.substring(0, 3)).join(' ')}${FC.Reset} ] VS [ ${FC.Red}${enemies.map(p => p.name.substring(0, 3)).join(' ')}${FC.Reset} ]`
+        ];
 
-            Broadcast.topbar(topbarMessage, [player]);
-        }
+        return topbarMessage;
     }
 }

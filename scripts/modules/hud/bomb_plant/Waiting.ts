@@ -51,6 +51,6 @@ export class BP_WaitingHud implements InGameHud {
             ...players.map(player => `  ${FC.Gray}- ${player.name}`)
         ];
         
-        Broadcast.sidebar(sidebarMessage, players);
+        Broadcast.updatebar([], sidebarMessage, players);
     }
 }
