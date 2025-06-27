@@ -1,49 +1,70 @@
 import { GameRoomManager } from "../GameRoom";
 
+import { TeamEnum } from "../../types/TeamEnum";
 import { FormatCode as FC } from "../../../../utils/FormatCode";
 import { Broadcast } from "../../../../utils/Broadcast";
+import { entity_dynamic_property } from "../../../../utils/Property";
 
 import { Player, world } from "@minecraft/server";
+
+interface MemberFilter {
+    group?: number;
+    team?: TeamEnum;
+    is_alive?: boolean;
+}
 
 export class MemberManager {
     
     readonly roomId: number;
-    private players: Set<Player>;
+    private static players = new Map<Player, number>();
 
     constructor(roomId: number) {
-        this.players = new Set();
         this.roomId = roomId;
     }
 
     joinRoom(player: Player) {
+        MemberManager.players.set(player, this.roomId);
         const room = GameRoomManager.instance.getRoom(this.roomId);
-        this.players.add(player);
         Broadcast.message(`${FC.Green}${player.name} has joined the game.`, room.memberManager.getPlayers());
     }
     
     leaveRoom(player: Player) {
+        MemberManager.players.delete(player);
         const room = GameRoomManager.instance.getRoom(this.roomId);
-        this.players.delete(player);
         Broadcast.message(`${FC.Red}${player.name} has left the game.`, room.memberManager.getPlayers());
     }
 
-    getPlayers() {
-        return Array.from(this.players);
+    getPlayers(filter?: MemberFilter) {
+        let result = Array.from(MemberManager.players.keys());
+        result = result.filter(p => MemberManager.players.get(p) === this.roomId);
+        
+        if (!filter) return result;
+        
+        return result.filter(p => {
+            if (filter.group && filter.group !== entity_dynamic_property(p, 'player:group')) return false;
+            if (filter.team && filter.team !== entity_dynamic_property(p, 'player:team')) return false;
+            if (filter.is_alive && filter.is_alive !== entity_dynamic_property(p, 'player:is_alive')) return false;
+            return true;
+        });
     }
 
     includePlayer(player: Player) {
-        return this.players.has(player);
+        return MemberManager.players.get(player) === this.roomId;
+    }
+
+    static isInRoom(player: Player) {
+        return MemberManager.players.has(player);
+    }
+
+    static getPlayerRoomId(player: Player) {
+        return this.players.get(player);
     }
     
 }
 
 const playerLeaveGameListener = world.beforeEvents.playerLeave.subscribe(ev => {
-    const rooms = GameRoomManager.instance.getAllRooms();
-    const player = ev.player;
-    for (const [serial, room] of rooms) {
-        if (room.memberManager.includePlayer(player)) {
-            room.memberManager.leaveRoom(player);
-            break;
-        }
-    }
+    if (!MemberManager.isInRoom(ev.player)) return;
+    const roomId = MemberManager.getPlayerRoomId(ev.player)!;
+    const room = GameRoomManager.instance.getRoom(roomId);
+    room.memberManager.leaveRoom(ev.player);
 });

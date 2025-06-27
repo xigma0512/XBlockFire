@@ -1,5 +1,8 @@
 import { Player } from "@minecraft/server";
 import { GameRoomManager } from "../../gameroom/systems/GameRoom";
+import { BP_BuyingPhase } from "../../gameroom/systems/phase/bomb_plant/Buying";
+import { GameModeEnum } from "../../gameroom/systems/GameModeEnum";
+import { MemberManager } from "../../gameroom/systems/member/MemberManager";
 
 function createRoom(executer: Player, ...args: string[]) {
     const [gamemode, mapId] = args;
@@ -23,11 +26,10 @@ function playerJoinRoom(executer: Player, ...args: string[]) {
     const room = GameRoomManager.instance.getRoom(Number(roomId));
     if (room.memberManager.includePlayer(executer)) throw Error(`You have already in room ${roomId}`);
 
-    const allRooms = GameRoomManager.instance.getAllRooms();
-    for (const [serial, room] of allRooms) {
-        if (room.memberManager.includePlayer(executer)) {
-            room.memberManager.leaveRoom(executer);
-        }
+    if (MemberManager.isInRoom(executer)) {
+        const roomId = MemberManager.getPlayerRoomId(executer)!;
+        const room = GameRoomManager.instance.getRoom(roomId);
+        room.memberManager.leaveRoom(executer);
     }
 
     room.memberManager.joinRoom(executer);
@@ -45,6 +47,18 @@ function playerLeaveRoom(executer: Player, ...args: string[]) {
     executer.sendMessage(`Leave room ${roomId}.`);
 }
 
+function forceStart(executer: Player, ...args: string[]) {
+    const roomId = args[0];
+    if (!roomId) throw Error("Missing argument '<room_serial>'. Usage: /scriptevent blockfire:room start <room_serial>");
+
+    const room = GameRoomManager.instance.getRoom(Number(roomId));
+    const startPhase = {
+        [GameModeEnum.BombPlant]: new BP_BuyingPhase(Number(roomId))
+    };
+    room.phaseManager.updatePhase(startPhase[room.gameMode]);
+    executer.sendMessage(`Force start ${roomId}`);
+}
+
 function roomCmd(executer: Player, ...args: string[]) {
     const cmdType = args[0];
     if (!cmdType) throw Error('Missing arguments <type>. Usage: /scriptevent blockfire:room <type> <...args>');
@@ -55,6 +69,7 @@ function roomCmd(executer: Player, ...args: string[]) {
         case 'list': getRoomList(executer); break;
         case 'join': playerJoinRoom(executer, ...args); break;
         case 'leave': playerLeaveRoom(executer, ...args); break;
+        case 'start': forceStart(executer, ...args); break;
         default: 
             executer.sendMessage(`there is no command type as ${cmdType}`)
             break;

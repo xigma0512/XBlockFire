@@ -1,7 +1,7 @@
 import { MemberManager } from "../gameroom/systems/member/MemberManager";
 
 import { entity_dynamic_property } from "../../utils/Property";
-import { TeamTagEnum } from "../weapon/types/Enums";
+import { TeamEnum } from "../gameroom/types/TeamEnum";
 
 import { Vector3Builder, Vector3Utils } from "@minecraft/math";
 import { Direction, MolangVariableMap, Player } from "@minecraft/server";
@@ -10,9 +10,8 @@ export class AlliesMarker {
 
     constructor(private member: MemberManager) { }
 
-    updateMark(team: TeamTagEnum) {
-        const players = this.member.getPlayers();
-        const teamPlayers = players.filter(p => entity_dynamic_property(p, 'player:team') === team);
+    updateMark(team: TeamEnum) {
+        const teamPlayers = this.member.getPlayers({ team });
 
         for (const viewer of teamPlayers) {
             for (const ally of teamPlayers) {

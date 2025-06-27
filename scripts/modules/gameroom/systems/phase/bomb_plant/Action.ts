@@ -2,37 +2,36 @@ import { GameRoomManager } from "../../GameRoom";
 import { BP_GameOverPhase } from "./Gameover";
 import { BP_RoundEndPhase } from "./RoundEnd";
 
-import { BP_PhaseEnum } from "./PhaseEnum"
-import { TeamTagEnum } from "../../../../weapon/types/Enums";
+import { BP_Config } from "./_config";
+import { BP_PhaseEnum } from "../../../types/PhaseEnum"
+import { TeamEnum } from "../../../types/TeamEnum";
 
 import { FormatCode as FC } from "../../../../../utils/FormatCode";
 import { Broadcast } from "../../../../../utils/Broadcast";
-import { entity_dynamic_property } from "../../../../../utils/Property";
 import { set_variable } from "../../../../../utils/Variable";
+import { BP_ActionHud } from "../../../../hud/bomb_plant/Action";
 
-const ACTION_TIME = 120 * 20;
+const config = BP_Config.action;
 
 export class BP_ActionPhase implements IPhaseHandler {
 
     readonly phaseTag = BP_PhaseEnum.Action;
-    private _currentTick: number = ACTION_TIME;
+    readonly hud: BP_ActionHud;
+    private _currentTick: number = config.ACTION_TIME;
     get currentTick() { return this._currentTick; }
 
-    constructor(private readonly roomId: number) { }
+    constructor(private readonly roomId: number) {
+        this.hud = new BP_ActionHud(roomId);
+    }
 
     on_entry() {
-        this._currentTick = ACTION_TIME;
+        this._currentTick = config.ACTION_TIME;
         console.warn(`[Room ${this.roomId}] Entry BP:action phase.`);
     }
 
     on_running() {
-        const room = GameRoomManager.instance.getRoom(this.roomId);
-        const members = room.memberManager.getPlayers();
-        
-        const actionbarText = `${FC.Blue}Round time: ${(this.currentTick / 20).toFixed(0)}`;
-        Broadcast.actionbar(actionbarText, members);
-
         this._currentTick --;
+        this.hud.update();
         this.transitions();
     }
     
@@ -55,12 +54,11 @@ export class BP_ActionPhase implements IPhaseHandler {
 
         let endReason: EndReasonEnum | null = null;
 
-        const players = member.getPlayers();
-        const attackers = players.filter(p => entity_dynamic_property(p, 'player:team') === TeamTagEnum.Attacker);
-        const defenders = players.filter(p => entity_dynamic_property(p, 'player:team') === TeamTagEnum.Defender);
+        const attackers = member.getPlayers({ team: TeamEnum.Attacker });
+        const defenders = member.getPlayers({ team: TeamEnum.Defender });
 
-        const attackersAlive = attackers.filter(p => entity_dynamic_property(p, 'player:is_alive'));
-        const defendersAlive = defenders.filter(p => entity_dynamic_property(p, 'player:is_alive'));
+        const attackersAlive = member.getPlayers({ team: TeamEnum.Attacker, is_alive: true });
+        const defendersAlive = member.getPlayers({ team: TeamEnum.Defender, is_alive: true });
         
         if (attackersAlive.length === 0) endReason = EndReasonEnum['Attacker-Eliminated'];
         if (defendersAlive.length === 0) endReason = EndReasonEnum['Defender-Eliminated'];
@@ -76,26 +74,26 @@ export class BP_ActionPhase implements IPhaseHandler {
             let message = [separator];
             let nextPhase: IPhaseHandler = new BP_RoundEndPhase(this.roomId);
     
-            let winner = TeamTagEnum.Defender;
+            let winner = TeamEnum.Defender;
             switch (endReason) {
                 case EndReasonEnum['Time-up']:
                     message.push(`${FC.Yellow}Time Up. This Round Is Over.\n`);
                     message.push(`${FC.Yellow}Blue Team Win\n`);
-                    winner = TeamTagEnum.Defender;
+                    winner = TeamEnum.Defender;
                     break;
 
                 case EndReasonEnum['Attacker-Disconnect']:
                     nextPhase = new BP_GameOverPhase(this.roomId);
                 case EndReasonEnum['Attacker-Eliminated']:
                     message.push(`${FC.Yellow}Blue Team Win\n`);
-                    winner = TeamTagEnum.Defender;
+                    winner = TeamEnum.Defender;
                     break;
 
                 case EndReasonEnum['Defender-Disconnect']:
                     nextPhase = new BP_GameOverPhase(this.roomId);
                 case EndReasonEnum['Defender-Eliminated']:
                     message.push(`${FC.Yellow}Red Team Win\n`);
-                    winner = TeamTagEnum.Attacker;
+                    winner = TeamEnum.Attacker;
                     break;
             }
 

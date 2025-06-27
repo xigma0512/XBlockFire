@@ -1,27 +1,31 @@
 import { GameRoomManager } from "../../GameRoom";
 import { BP_ActionPhase } from "./Action";
 import { MapRegister } from "../../map/MapRegister";
+import { BP_ActionHud } from "../../../../hud/bomb_plant/Action";
 
-import { BP_PhaseEnum } from "./PhaseEnum";
-import { TeamTagEnum } from "../../../../weapon/types/Enums";
+import { BP_Config } from "./_config";
+import { TeamEnum } from "../../../types/TeamEnum";
+import { BP_PhaseEnum } from "../../../types/PhaseEnum";
 import { entity_dynamic_property, set_entity_dynamic_property } from "../../../../../utils/Property";
-import { Broadcast } from "../../../../../utils/Broadcast";
 
 import { GameMode, InputPermissionCategory } from "@minecraft/server";
-import { Vector3Utils } from "@minecraft/math";
 
-const COUNTDOWN_TIME = 30 * 20;
+const config = BP_Config.buying;
 
 export class BP_BuyingPhase implements IPhaseHandler {
 
+    readonly hud: BP_ActionHud;
     readonly phaseTag = BP_PhaseEnum.Buying;
-    private _currentTick: number = COUNTDOWN_TIME;
+
+    private _currentTick: number = config.COUNTDOWN_TIME;
     get currentTick() { return this._currentTick; }
 
-    constructor(private readonly roomId: number) { }
+    constructor(private readonly roomId: number) {        
+        this.hud = new BP_ActionHud(roomId);
+    }
 
     on_entry() {
-        this._currentTick = COUNTDOWN_TIME;
+        this._currentTick = config.COUNTDOWN_TIME;
         spawnPlayers(this.roomId);
         resetPlayers(this.roomId);
 
@@ -29,17 +33,8 @@ export class BP_BuyingPhase implements IPhaseHandler {
     }
 
     on_running() {
-        const room = GameRoomManager.instance.getRoom(this.roomId);
-        const members = room.memberManager.getPlayers();
-
-        let actionbarText = [
-            `Buying phase will end in ${(this.currentTick / 20).toFixed(0)} seconds.\n`, 
-            `Right-click the feather to open the shop.`
-        ];
-        
-        Broadcast.actionbar(actionbarText, members);
         this._currentTick --;
-
+        this.hud.update();
         this.transitions();
     }
 
@@ -66,19 +61,19 @@ function spawnPlayers(roomId: number) {
     const member = room.memberManager;
     const gameMap = MapRegister.instance.getMap(room.gameMapId);
 
-    const attackerSpawns = gameMap.positions.attacker_spawns;
-    const defenderSpawns = gameMap.positions.defender_spawns;
-
     const spawns = {
-        [TeamTagEnum.Attacker]: attackerSpawns,
-        [TeamTagEnum.Defender]: defenderSpawns,
+        [TeamEnum.Attacker]: gameMap.positions.attacker_spawns,
+        [TeamEnum.Defender]: gameMap.positions.defender_spawns,
     }
 
-    let nextSpawnIndex = new Array<number>(10).fill(0);
+    let nextSpawnIndex = {
+        [TeamEnum.Attacker]: 0,
+        [TeamEnum.Defender]: 0
+    }
 
     for (const player of member.getPlayers()) {
         const playerTeam = entity_dynamic_property(player, 'player:team');
-        if (playerTeam === TeamTagEnum.Spectator) continue;
+        if (entity_dynamic_property(player, 'player:is_spectator')) continue;
 
         const playerTeamSpawns = spawns[playerTeam];
         const spawnIndex = nextSpawnIndex[playerTeam]++ % playerTeamSpawns.length;

@@ -1,27 +1,28 @@
 import { GameRoomManager } from "../../GameRoom";
 import { BP_BuyingPhase } from "./Buying";
-import { BP_PhaseEnum } from "./PhaseEnum";
+import { BP_PhaseEnum } from "../../../types/PhaseEnum";
 
-import { TeamTagEnum } from "../../../../weapon/types/Enums";
-import { Broadcast } from "../../../../../utils/Broadcast";
-import { FormatCode as FC } from "../../../../../utils/FormatCode";
-import { entity_dynamic_property, set_entity_dynamic_property } from "../../../../../utils/Property";
-import { GameModeEnumTable } from "../../GameModeEnum";
+import { BP_Config } from "./_config";
+import { TeamEnum } from "../../../types/TeamEnum";
+import { set_entity_dynamic_property } from "../../../../../utils/Property";
+import { BP_WaitingHud } from "../../../../hud/bomb_plant/Waiting";
 
-const AUTO_START = true;
-const AUTO_START_MIN_PLAYER = 2;
-const COUNTDOWN_TIME = 30 * 20;
+const config = BP_Config.idle;
 
 export class BP_IdlePhase implements IPhaseHandler {
 
     readonly phaseTag = BP_PhaseEnum.Idle;
-    private _currentTick: number = COUNTDOWN_TIME;
+    readonly hud: BP_WaitingHud;
+    
+    private _currentTick: number = config.COUNTDOWN_TIME;
     get currentTick() { return this._currentTick; }
 
-    constructor(private readonly roomId: number) { }
+    constructor(private readonly roomId: number) { 
+        this.hud = new BP_WaitingHud(roomId);
+    }
 
     on_entry() {
-        this._currentTick = COUNTDOWN_TIME;
+        this._currentTick = config.COUNTDOWN_TIME;
         console.warn(`[Room ${this.roomId}] Entry BP:idle phase.`);
     }
 
@@ -30,16 +31,15 @@ export class BP_IdlePhase implements IPhaseHandler {
         const members = room.memberManager.getPlayers();
         const playerAmount = members.length;
 
-        if (AUTO_START && playerAmount >= AUTO_START_MIN_PLAYER) this._currentTick --;
-        if (this.currentTick !== COUNTDOWN_TIME && playerAmount < AUTO_START_MIN_PLAYER) this._currentTick = COUNTDOWN_TIME;
+        if (config.AUTO_START && playerAmount >= config.AUTO_START_MIN_PLAYER) this._currentTick --;
+        if (this.currentTick !== config.COUNTDOWN_TIME && playerAmount < config.AUTO_START_MIN_PLAYER) this._currentTick = config.COUNTDOWN_TIME;
 
-        updateActionbar(this.roomId, this.currentTick);
-        updateSidebar(this.roomId);
+        this.hud.update();
         this.transitions();
     }
 
     on_exit() {
-        if (AUTO_START) balanceTeam(this.roomId);
+        if (config.AUTO_START) balanceTeam(this.roomId);
         initializePlayers(this.roomId);
         console.warn(`[Room ${this.roomId}] Exit BP:idle phase.`);
     }
@@ -62,11 +62,11 @@ function balanceTeam(roomId: number) {
     let defenderTeamCount = 0;
     for (const player of shuffledPlayers) {
         if (attackTeamCount <= defenderTeamCount) {
-            set_entity_dynamic_property(player, 'player:team', TeamTagEnum.Attacker);
+            set_entity_dynamic_property(player, 'player:team', TeamEnum.Attacker);
             attackTeamCount++;
             player.sendMessage('You have been assigned to the Attacker Team.');
         } else {
-            set_entity_dynamic_property(player, 'player:team', TeamTagEnum.Defender);
+            set_entity_dynamic_property(player, 'player:team', TeamEnum.Defender);
             defenderTeamCount++;
             player.sendMessage('You have been assigned to the Defender Team.');
         }
@@ -80,50 +80,4 @@ function initializePlayers(roomId: number) {
     for (const player of players) {
         room.economyManager.initializePlayer(player);
     }
-}
-
-function updateActionbar(roomId: number, currentTick: number) {
-    const room = GameRoomManager.instance.getRoom(roomId);
-    const members = room.memberManager.getPlayers();
-    const playerAmount = members.length;
-
-    let actionbarText = `${FC.Yellow}Waiting for more players...`;
-
-    if (AUTO_START && playerAmount >= AUTO_START_MIN_PLAYER) {
-        actionbarText = `${FC.Green}Game will start in ${(currentTick / 20).toFixed(0)} seconds.`;
-    }
-
-    if (currentTick !== COUNTDOWN_TIME && playerAmount < AUTO_START_MIN_PLAYER) {
-        Broadcast.message(`${FC.Red}Not enough players. Waiting for more players.`, members);
-    }
-
-    Broadcast.actionbar(actionbarText, members);
-}
-
-function updateSidebar(roomId: number) {
-    const room = GameRoomManager.instance.getRoom(roomId);
-    const players = room.memberManager.getPlayers();
-
-    const playerCount = players.length;
-    const maxPlayers = 10;
-    
-    const sidebarMessage = [
-        `${FC.Bold}${FC.White}Info:`,
-        `  ${FC.Gold}Room Number: ${FC.White}${roomId}`,
-        `  ${FC.MaterialCopper}Gamemode: ${FC.White}${GameModeEnumTable[room.gameMode]}`,
-        `  ${FC.Aqua}Players: ${FC.White}${playerCount}/${maxPlayers}`,
-        `  ${FC.Yellow}State: ${FC.Green}Waiting`,
-        '',
-        
-        `${FC.Bold}${FC.White}Players:`,
-        ...players.map(player => {
-            const playerTeam = entity_dynamic_property(player, 'player:team');
-            const teamPrefix = 
-                (playerTeam === TeamTagEnum.Attacker) ? `${FC.Red}[A]` :
-                (playerTeam === TeamTagEnum.Defender) ? `${FC.Aqua}[D]` : `${FC.DarkPurple}[S]`;
-            return ` ${FC.Gray}- ${teamPrefix}${player.name}`
-        })
-    ];
-
-    Broadcast.sidebar(sidebarMessage, players);
 }
