@@ -1,32 +1,32 @@
 import { GameRoomManager } from "../../GameRoom";
 import { BP_IdlePhase } from "./Idle";
-import { BP_PhaseEnum } from "./PhaseEnum";
+import { BP_PhaseEnum } from "../../../types/PhaseEnum";
+import { BP_Config } from "./_config";
 
 import { Broadcast } from "../../../../../utils/Broadcast";
+import { BP_ActionHud } from "../../../../hud/bomb_plant/Action";
 
-const COUNTDOWN_TIME = 10 * 20;
+const config = BP_Config.gameover;
 
 export class BP_GameOverPhase implements IPhaseHandler {
 
     readonly phaseTag = BP_PhaseEnum.Gameover;
-    private _currentTick: number = COUNTDOWN_TIME;
+    readonly hud: BP_ActionHud;
+    private _currentTick: number = config.COUNTDOWN_TIME;
     get currentTick() { return this._currentTick; }
 
-    constructor(private readonly roomId: number) { }
+    constructor(private readonly roomId: number) {
+        this.hud = new BP_ActionHud(roomId);
+    }
 
     on_entry() {
-        this._currentTick = COUNTDOWN_TIME;
+        this._currentTick = config.COUNTDOWN_TIME;
         console.warn(`[Room ${this.roomId}] Entry BP:gameover phase.`);
     }
 
     on_running() {
-        const room = GameRoomManager.instance.getRoom(this.roomId);
-        const members = room.memberManager.getPlayers();
-        
-        const actionbarText = `${(this.currentTick / 20).toFixed(0)}`;
-        Broadcast.actionbar(actionbarText, members);
-
         this._currentTick --;
+        this.hud.update();
         this.transitions();
     }
 

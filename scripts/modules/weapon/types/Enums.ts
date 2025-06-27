@@ -12,10 +12,4 @@ export const enum GrenadeTypeEnum {
     'SmokeGrenade'
 }
 
-export const enum TeamTagEnum {
-    Spectator = 0,
-    Attacker,
-    Defender
-}
-
 export type GunReloadStateEnum = 'idle' | 'pre_reload' |'reloading' | 'success' | 'fail' 
