@@ -22,7 +22,6 @@ export class EconomyManager {
     
     addMoney(player: Player, value: number) {
         const money = this.getMoney(player);
-        if (money + value > LIMIT)
         this.setMoney(player, (money + value > LIMIT) ? LIMIT : money + value) 
     }
 
