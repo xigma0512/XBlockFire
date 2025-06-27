@@ -2,6 +2,7 @@ import { GameRoomManager } from "../../GameRoom";
 import { BP_ActionPhase } from "./Action";
 import { MapRegister } from "../../map/MapRegister";
 import { BP_ActionHud } from "../../../../hud/bomb_plant/Action";
+import { HotbarManager } from "../../../../hotbar/Hotbar";
 
 import { BP_Config } from "./_config";
 import { TeamEnum } from "../../../types/TeamEnum";
@@ -79,7 +80,9 @@ function spawnPlayers(roomId: number) {
         const spawnIndex = nextSpawnIndex[playerTeam]++ % playerTeamSpawns.length;
         
         player.teleport(playerTeamSpawns[spawnIndex]);
+
         player.inputPermissions.setPermissionCategory(InputPermissionCategory.LateralMovement, false);
+        HotbarManager.instance.sendHotbar(player);
     }
 }
 
