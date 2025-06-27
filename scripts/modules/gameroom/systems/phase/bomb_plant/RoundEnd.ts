@@ -1,6 +1,9 @@
 import { GameRoomManager } from "../../GameRoom";
 import { BP_BuyingPhase } from "./Buying";
 import { BP_GameOverPhase } from "./Gameover";
+import { Hotbar, HotbarManager } from "../../../../hotbar/Hotbar";
+import { BP_ActionHud } from "../../../../hud/bomb_plant/Action";
+import { Glock17 } from "../../../../weapon/actors/item/Glock17";
 
 import { BP_Config } from "./_config";
 import { BP_PhaseEnum } from "../../../types/PhaseEnum";
@@ -9,8 +12,8 @@ import { TeamEnum } from "../../../types/TeamEnum";
 import { FormatCode as FC } from "../../../../../utils/FormatCode";
 import { entity_dynamic_property } from "../../../../../utils/Property";
 import { set_variable, variable } from "../../../../../utils/Variable";
-import { Broadcast } from "../../../../../utils/Broadcast";
-import { BP_ActionHud } from "../../../../hud/bomb_plant/Action";
+
+import { ItemStack } from "@minecraft/server";
 
 const config = BP_Config.roundEnd;
 
@@ -56,6 +59,22 @@ export class BP_RoundEndPhase implements IPhaseHandler {
     }
 
     on_exit() {
+        const room = GameRoomManager.instance.getRoom(this.roomId);
+        const players = room.memberManager.getPlayers();
+        
+        for (const player of players) {
+            if (entity_dynamic_property(player, 'player:is_alive')) {
+                HotbarManager.instance.updateHotbar(player);
+            } else {   
+                const playerTeam = entity_dynamic_property(player, 'player:team');
+                const hotbar = HotbarManager.instance.getHotbar(player);
+                hotbar.clearAll();
+                hotbar.set(1, new Glock17().item)
+                      .set(2, new ItemStack('minecraft:diamond_sword'))
+                      .set(3, playerTeam === TeamEnum.Defender ? new ItemStack('xblockfire:defuser') : undefined);
+            }
+        }
+
         console.warn(`[Room ${this.roomId}] Exit BP:roundEnd phase.`);
     }
 
