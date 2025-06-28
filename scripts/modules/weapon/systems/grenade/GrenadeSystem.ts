@@ -189,6 +189,16 @@ const grenadeRebound = world.afterEvents.projectileHitBlock.subscribe(ev => {
         [Direction.South]: {x:1,y:1,z:-1},
     };
 
+    const offsetValue = 0.2;
+    const teleportOffset = {
+        [Direction.Up]: { y: 1 + offsetValue },
+        [Direction.Down]: { y: -offsetValue },
+        [Direction.South]: { z: 1 + offsetValue },
+        [Direction.North]: { z: -offsetValue },
+        [Direction.East]: { x: 1 + offsetValue },
+        [Direction.West]: { x: -offsetValue }
+    }
+
     const handler = GrenadeSystem.instance.getHandler(projectile);
     if (handler === undefined) return;
 
@@ -196,7 +206,7 @@ const grenadeRebound = world.afterEvents.projectileHitBlock.subscribe(ev => {
     
     const count = bounces.get(projectile)!;
     const hitBlockInfo = ev.getBlockHit();
-    projectile.teleport(Vector3Utils.add(hitBlockInfo.block.location, Vector3Utils.scale(hitBlockInfo.faceLocation, 1.001)));
+    projectile.teleport(Vector3Utils.add(Vector3Utils.add(hitBlockInfo.block.location, hitBlockInfo.faceLocation), teleportOffset[hitBlockInfo.face]));
 
     bounces.set(projectile, count + 1);
     
