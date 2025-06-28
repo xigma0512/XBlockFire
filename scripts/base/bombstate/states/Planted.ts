@@ -9,7 +9,7 @@ import { BP_PhaseEnum } from "../../../types/gamephase/PhaseEnum";
 
 import { Broadcast } from "../../../utils/Broadcast";
 import { FormatCode as FC } from "../../../utils/FormatCode";
-import { progressBar } from "../../../utils/Utils";
+import { progressBar } from "../../../utils/others/Format";
 import { set_variable } from "../../../utils/Variable";
 
 import { Vector3Utils } from "@minecraft/math";

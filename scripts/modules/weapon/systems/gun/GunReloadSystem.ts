@@ -1,7 +1,8 @@
 import { ActorManager } from "../ActorManager";
 import { ItemActor } from "../../actors/Actor";
 import { set_entity_native_property, entity_native_property } from "../../../../utils/Property";
-import { getPlayerHandItem, progressBar } from "../../../../utils/Utils";
+import { getPlayerHandItem } from "../../../../utils/others/Entity";
+import { progressBar } from "../../../../utils/others/Format";
 
 import { Player, system, world } from "@minecraft/server";
 

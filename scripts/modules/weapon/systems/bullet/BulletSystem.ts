@@ -3,7 +3,7 @@ import { EntityActor } from "../../actors/Actor";
 import { DamageSystem } from "./DamageSystem";
 import { BulletActorTable } from "../../actors/ActorTypeTables";
 
-import { spawnDummyEntity } from "../../../../utils/Utils";
+import { spawnDummyEntity } from "../../../../utils/others/Entity";
 import { GunTypeEnum } from "../../../../types/weapon/WeaponEnum";
 
 import { Vector3Utils } from "@minecraft/math";
