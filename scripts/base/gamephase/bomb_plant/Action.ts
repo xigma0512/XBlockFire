@@ -3,7 +3,7 @@ import { BP_GameOverPhase } from "./Gameover";
 import { BP_RoundEndPhase } from "./RoundEnd";
 
 import { BP_Config } from "./_config";
-import { BP_PhaseEnum } from "../../../types/gamephase/PhaseEnum"
+import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPlantPhaseEnum"
 import { TeamEnum } from "../../../types/TeamEnum";
 
 import { FormatCode as FC } from "../../../utils/FormatCode";
@@ -15,7 +15,7 @@ const config = BP_Config.action;
 
 export class BP_ActionPhase implements IPhaseHandler {
 
-    readonly phaseTag = BP_PhaseEnum.Action;
+    readonly phaseTag = BombPlantPhaseEnum.Action;
     readonly hud: BP_ActionHud;
     private _currentTick: number = config.ACTION_TIME;
     get currentTick() { return this._currentTick; }

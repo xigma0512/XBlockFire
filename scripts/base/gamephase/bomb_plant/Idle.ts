@@ -4,7 +4,7 @@ import { Glock17 } from "../../../modules/weapon/actors/item/Glock17";
 import { BP_WaitingHud } from "../../../modules/hud/bomb_plant/Waiting";
 
 import { BP_Config } from "./_config";
-import { BP_PhaseEnum } from "../../../types/gamephase/PhaseEnum";
+import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPlantPhaseEnum";
 import { TeamEnum } from "../../../types/TeamEnum";
 import { entity_dynamic_property, set_entity_dynamic_property } from "../../../utils/Property";
 import { HotbarManager } from "../../../modules/hotbar/Hotbar";
@@ -15,7 +15,7 @@ const config = BP_Config.idle;
 
 export class BP_IdlePhase implements IPhaseHandler {
 
-    readonly phaseTag = BP_PhaseEnum.Idle;
+    readonly phaseTag = BombPlantPhaseEnum.Idle;
     readonly hud: BP_WaitingHud;
     
     private _currentTick: number = config.COUNTDOWN_TIME;

@@ -1,5 +1,5 @@
 import { GameRoomManager } from "../../gameroom/GameRoom";
-import { BP_PhaseEnum } from "../../../types/gamephase/PhaseEnum";
+import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPlantPhaseEnum";
 import { BP_RoundEndPhase } from "./RoundEnd";
 
 import { BP_Config } from "./_config";
@@ -11,7 +11,7 @@ const config = BP_Config.bombplanted;
 
 export class BP_BombPlantedPhase implements IPhaseHandler {
 
-    readonly phaseTag = BP_PhaseEnum.BombPlanted;
+    readonly phaseTag = BombPlantPhaseEnum.BombPlanted;
     readonly hud: BP_ActionHud;
     private _currentTick: number = config.COUNTDOWN_TIME;
     get currentTick() { return this._currentTick; }

@@ -1,6 +1,6 @@
 import { GameRoomManager } from "../../gameroom/GameRoom";
 import { BP_IdlePhase } from "./Idle";
-import { BP_PhaseEnum } from "../../../types/gamephase/PhaseEnum";
+import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPlantPhaseEnum";
 import { BP_Config } from "./_config";
 
 import { BP_ActionHud } from "../../../modules/hud/bomb_plant/Action";
@@ -9,7 +9,7 @@ const config = BP_Config.gameover;
 
 export class BP_GameOverPhase implements IPhaseHandler {
 
-    readonly phaseTag = BP_PhaseEnum.Gameover;
+    readonly phaseTag = BombPlantPhaseEnum.Gameover;
     readonly hud: BP_ActionHud;
     private _currentTick: number = config.COUNTDOWN_TIME;
     get currentTick() { return this._currentTick; }

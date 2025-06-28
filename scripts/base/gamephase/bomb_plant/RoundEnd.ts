@@ -6,7 +6,7 @@ import { BP_ActionHud } from "../../../modules/hud/bomb_plant/Action";
 import { Glock17 } from "../../../modules/weapon/actors/item/Glock17";
 
 import { BP_Config } from "./_config";
-import { BP_PhaseEnum } from "../../../types/gamephase/PhaseEnum";
+import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPlantPhaseEnum";
 import { TeamEnum } from "../../../types/TeamEnum";
 
 import { FormatCode as FC } from "../../../utils/FormatCode";
@@ -19,7 +19,7 @@ const config = BP_Config.roundEnd;
 
 export class BP_RoundEndPhase implements IPhaseHandler {
 
-    readonly phaseTag = BP_PhaseEnum.RoundEnd;
+    readonly phaseTag = BombPlantPhaseEnum.RoundEnd;
     readonly hud: BP_ActionHud;
     private _currentTick: number = config.COUNTDOWN_TIME;
     get currentTick() { return this._currentTick; }

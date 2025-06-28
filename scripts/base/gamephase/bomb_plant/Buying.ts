@@ -6,7 +6,7 @@ import { HotbarManager } from "../../../modules/hotbar/Hotbar";
 
 import { BP_Config } from "./_config";
 import { TeamEnum } from "../../../types/TeamEnum";
-import { BP_PhaseEnum } from "../../../types/gamephase/PhaseEnum";
+import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPlantPhaseEnum";
 import { entity_dynamic_property, set_entity_dynamic_property } from "../../../utils/Property";
 
 import { GameMode, InputPermissionCategory } from "@minecraft/server";
@@ -16,7 +16,7 @@ const config = BP_Config.buying;
 export class BP_BuyingPhase implements IPhaseHandler {
 
     readonly hud: BP_ActionHud;
-    readonly phaseTag = BP_PhaseEnum.Buying;
+    readonly phaseTag = BombPlantPhaseEnum.Buying;
 
     private _currentTick: number = config.COUNTDOWN_TIME;
     get currentTick() { return this._currentTick; }
