@@ -10,7 +10,7 @@ import { variable } from "../../../utils/Variable";
 
 import { Player } from "@minecraft/server";
 
-export class BP_ActionHud implements InGameHud {
+export class ActionHud implements InGameHud {
     
     constructor(private readonly roomId: number) { }
     

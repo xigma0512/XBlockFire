@@ -1,5 +1,5 @@
 import { GameRoomManager } from "../../base/gameroom/GameRoom";
-import { BP_BuyingPhase } from "../../base/gamephase/bomb_plant/Buying";
+import { BuyingPhase } from "../../base/gamephase/bomb_plant/Buying";
 import { GameModeEnum } from "../../types/gameroom/GameModeEnum";
 import { MemberManager } from "../../base/member/MemberManager";
 
@@ -54,7 +54,7 @@ function forceStart(executer: Player, ...args: string[]) {
 
     const room = GameRoomManager.instance.getRoom(Number(roomId));
     const startPhase = {
-        [GameModeEnum.BombPlant]: new BP_BuyingPhase(Number(roomId))
+        [GameModeEnum.BombPlant]: new BuyingPhase(Number(roomId))
     };
     room.phaseManager.updatePhase(startPhase[room.gameMode]);
     executer.sendMessage(`Force start ${roomId}`);

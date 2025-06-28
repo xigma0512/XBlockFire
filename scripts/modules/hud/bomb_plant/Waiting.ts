@@ -1,14 +1,14 @@
 import { GameRoomManager } from "../../../base/gameroom/GameRoom";
 
-import { BP_Config } from "../../../base/gamephase/bomb_plant/_config";
+import { Config } from "../../../base/gamephase/bomb_plant/_config";
 import { GameModeEnumTable } from "../../../types/gameroom/GameModeEnum";
 
 import { FormatCode as FC } from "../../../utils/FormatCode";
 import { Broadcast } from "../../../utils/Broadcast";
 
-const config = BP_Config.idle;
+const config = Config.idle;
 
-export class BP_WaitingHud implements InGameHud {
+export class WaitingHud implements InGameHud {
     
     constructor(private readonly roomId: number) { }
 

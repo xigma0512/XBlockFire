@@ -1,11 +1,11 @@
 import { GameRoomManager } from "../../gameroom/GameRoom";
-import { BP_BuyingPhase } from "./Buying";
-import { BP_GameOverPhase } from "./Gameover";
+import { BuyingPhase } from "./Buying";
+import { GameOverPhase } from "./Gameover";
 import { HotbarManager } from "../../../modules/hotbar/Hotbar";
-import { BP_ActionHud } from "../../../modules/hud/bomb_plant/Action"; 
+import { ActionHud } from "../../../modules/hud/bomb_plant/Action"; 
 import { Glock17 } from "../../../modules/weapon/actors/item/Glock17";
 
-import { BP_Config } from "./_config";
+import { Config } from "./_config";
 import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPlantPhaseEnum";
 import { TeamEnum } from "../../../types/TeamEnum";
 
@@ -15,17 +15,17 @@ import { set_variable, variable } from "../../../utils/Variable";
 
 import { ItemStack } from "@minecraft/server";
 
-const config = BP_Config.roundEnd;
+const config = Config.roundEnd;
 
-export class BP_RoundEndPhase implements IPhaseHandler {
+export class RoundEndPhase implements IPhaseHandler {
 
     readonly phaseTag = BombPlantPhaseEnum.RoundEnd;
-    readonly hud: BP_ActionHud;
+    readonly hud: ActionHud;
     private _currentTick: number = config.COUNTDOWN_TIME;
     get currentTick() { return this._currentTick; }
 
     constructor(private readonly roomId: number) {
-        this.hud = new BP_ActionHud(roomId);
+        this.hud = new ActionHud(roomId);
     }
 
     on_entry() {
@@ -91,7 +91,7 @@ export class BP_RoundEndPhase implements IPhaseHandler {
 
         if (winner) {
             set_variable(`${this.roomId}.winner`, winner);
-            phase.updatePhase(new BP_GameOverPhase(this.roomId));
+            phase.updatePhase(new GameOverPhase(this.roomId));
             return;
         }
 
@@ -101,7 +101,7 @@ export class BP_RoundEndPhase implements IPhaseHandler {
                 switchSide();
             }
             
-            phase.updatePhase(new BP_BuyingPhase(this.roomId));
+            phase.updatePhase(new BuyingPhase(this.roomId));
         }
     }
 

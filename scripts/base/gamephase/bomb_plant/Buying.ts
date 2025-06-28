@@ -1,28 +1,28 @@
 import { GameRoomManager } from "../../gameroom/GameRoom";
-import { BP_ActionPhase } from "./Action";
+import { ActionPhase } from "./Action";
 import { MapRegister } from "../../gamemap/MapRegister";
-import { BP_ActionHud } from "../../../modules/hud/bomb_plant/Action";
+import { ActionHud } from "../../../modules/hud/bomb_plant/Action";
 import { HotbarManager } from "../../../modules/hotbar/Hotbar";
 
-import { BP_Config } from "./_config";
+import { Config } from "./_config";
 import { TeamEnum } from "../../../types/TeamEnum";
 import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPlantPhaseEnum";
 import { entity_dynamic_property, set_entity_dynamic_property } from "../../../utils/Property";
 
 import { GameMode, InputPermissionCategory } from "@minecraft/server";
 
-const config = BP_Config.buying;
+const config = Config.buying;
 
-export class BP_BuyingPhase implements IPhaseHandler {
+export class BuyingPhase implements IPhaseHandler {
 
-    readonly hud: BP_ActionHud;
+    readonly hud: ActionHud;
     readonly phaseTag = BombPlantPhaseEnum.Buying;
 
     private _currentTick: number = config.COUNTDOWN_TIME;
     get currentTick() { return this._currentTick; }
 
     constructor(private readonly roomId: number) {        
-        this.hud = new BP_ActionHud(roomId);
+        this.hud = new ActionHud(roomId);
     }
 
     on_entry() {
@@ -52,7 +52,7 @@ export class BP_BuyingPhase implements IPhaseHandler {
 
     private transitions() {
         const room = GameRoomManager.instance.getRoom(this.roomId);
-        if (this.currentTick <= 0) room.phaseManager.updatePhase(new BP_ActionPhase(this.roomId));
+        if (this.currentTick <= 0) room.phaseManager.updatePhase(new ActionPhase(this.roomId));
     }
 
 }

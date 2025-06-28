@@ -1,4 +1,4 @@
-export const BP_Config = {
+export const Config = {
     idle: {
         AUTO_START: true,
         AUTO_START_MIN_PLAYER: 10,
