@@ -1,13 +1,13 @@
-import { GameRoomManager } from "../../GameRoom";
+import { GameRoomManager } from "../../gameroom/GameRoom";
 import { BP_BuyingPhase } from "./Buying";
-import { Glock17 } from "../../../../weapon/actors/item/Glock17";
-import { BP_WaitingHud } from "../../../../hud/bomb_plant/Waiting";
+import { Glock17 } from "../../../modules/weapon/actors/item/Glock17";
+import { BP_WaitingHud } from "../../../modules/hud/bomb_plant/Waiting";
 
 import { BP_Config } from "./_config";
-import { BP_PhaseEnum } from "../../../types/PhaseEnum";
+import { BP_PhaseEnum } from "../../../types/gamephase/PhaseEnum";
 import { TeamEnum } from "../../../types/TeamEnum";
-import { entity_dynamic_property, set_entity_dynamic_property } from "../../../../../utils/Property";
-import { Hotbar, HotbarManager } from "../../../../hotbar/Hotbar";
+import { entity_dynamic_property, set_entity_dynamic_property } from "../../../utils/Property";
+import { HotbarManager } from "../../../modules/hotbar/Hotbar";
 
 import { ItemStack } from "@minecraft/server";
 

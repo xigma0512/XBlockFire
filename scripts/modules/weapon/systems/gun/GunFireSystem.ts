@@ -1,7 +1,7 @@
 import { ItemActor } from "../../actors/Actor";
 import { ActorManager } from "../ActorManager";
 import { getPlayerHandItem } from "../../../../utils/Utils";
-import { FireModeEnum } from "../../types/Enums";
+import { FireModeEnum } from "../../../../types/weapon/WeaponEnum";
 
 import { Player, system, world } from "@minecraft/server";
 import { BulletSystem } from "../bullet/BulletSystem";

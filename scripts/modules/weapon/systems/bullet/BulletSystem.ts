@@ -4,7 +4,7 @@ import { DamageSystem } from "./DamageSystem";
 import { BulletActorTable } from "../../actors/ActorTypeTables";
 
 import { spawnDummyEntity } from "../../../../utils/Utils";
-import { GunTypeEnum } from "../../types/Enums";
+import { GunTypeEnum } from "../../../../types/weapon/WeaponEnum";
 
 import { Vector3Utils } from "@minecraft/math";
 import { Player, world } from "@minecraft/server";

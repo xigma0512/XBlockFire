@@ -1,10 +1,9 @@
-import { GameRoomManager } from "../../GameRoom";
+import { GameRoomManager } from "../../gameroom/GameRoom";
 import { BP_IdlePhase } from "./Idle";
-import { BP_PhaseEnum } from "../../../types/PhaseEnum";
+import { BP_PhaseEnum } from "../../../types/gamephase/PhaseEnum";
 import { BP_Config } from "./_config";
 
-import { Broadcast } from "../../../../../utils/Broadcast";
-import { BP_ActionHud } from "../../../../hud/bomb_plant/Action";
+import { BP_ActionHud } from "../../../modules/hud/bomb_plant/Action";
 
 const config = BP_Config.gameover;
 

@@ -1,11 +1,11 @@
-import { PhaseManager } from "./phase/PhaseManager";
+import { PhaseManager } from "../gamephase/PhaseManager";
 import { EconomyManager } from "./economy/EconomyManager";
 import { MemberManager } from "./member/MemberManager";
-import { BombManager } from "./bomb/BombManager";
-import { AlliesMarker } from "../../allies_mark/AlliesMarker";
+import { BombManager } from "../bombstate/BombManager";
+import { AlliesMarker } from "../../modules/allies_mark/AlliesMarker";
 
-import { TeamEnum } from "../types/TeamEnum";
-import { GameModeEnum } from "./GameModeEnum";
+import { TeamEnum } from "../../types/TeamEnum";
+import { GameModeEnum } from "../../types/gameroom/GameModeEnum";
 
 import { system } from "@minecraft/server";
 

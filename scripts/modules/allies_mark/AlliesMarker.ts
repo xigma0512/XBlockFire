@@ -1,7 +1,6 @@
-import { MemberManager } from "../gameroom/systems/member/MemberManager";
+import { MemberManager } from "../../base/member/MemberManager";
 
-import { entity_dynamic_property } from "../../utils/Property";
-import { TeamEnum } from "../gameroom/types/TeamEnum";
+import { TeamEnum } from "../../types/TeamEnum";
 
 import { Vector3Builder, Vector3Utils } from "@minecraft/math";
 import { Direction, MolangVariableMap, Player } from "@minecraft/server";

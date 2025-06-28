@@ -1,4 +1,4 @@
-import { GunTypeEnum } from "../../types/Enums";
+import { GunTypeEnum } from "../../../../types/weapon/WeaponEnum";
 import { Component } from "../Component";
 
 type ComponentDataType = {

@@ -1,7 +1,7 @@
 import { world } from "@minecraft/server";
 import { Glock17 } from "./modules/weapon/actors/item/Glock17";
 import { set_entity_dynamic_property } from "./utils/Property";
-import { TeamEnum } from "./modules/gameroom/types/TeamEnum";
+import { TeamEnum } from "./types/TeamEnum";
 import { HotbarManager } from "./modules/hotbar/Hotbar";
 
 let hotbar: any;

@@ -1,6 +1,6 @@
 import { Entity, ItemStack, world } from "@minecraft/server"
-import { GrenadeTypeEnum, GunReloadStateEnum } from "../modules/weapon/types/Enums"
-import { TeamEnum } from "../modules/gameroom/types/TeamEnum";
+import { GrenadeTypeEnum, GunReloadStateEnum } from "../types/weapon/WeaponEnum"
+import { TeamEnum } from "../types/TeamEnum";
 
 type WorldPropertyList = {
 }

@@ -4,7 +4,7 @@ import { entity_native_property } from "../../../../utils/Property";
 
 import { Entity } from "@minecraft/server";
 import { GrenadeComponent } from "../../components/GrenadeComponent";
-import { GrenadeTypeEnum } from "../../types/Enums";
+import { GrenadeTypeEnum } from "../../../../types/weapon/WeaponEnum";
 
 export class SmokeGrenade extends EntityActor {
 

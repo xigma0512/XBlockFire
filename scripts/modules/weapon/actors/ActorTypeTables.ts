@@ -1,4 +1,4 @@
-import { GrenadeTypeEnum, GunTypeEnum } from "../types/Enums";
+import { GrenadeTypeEnum, GunTypeEnum } from "../../../types/weapon/WeaponEnum";
 
 import { Glock17Bullet } from "./entity/Glock17Bullet";
 import { Flashbang } from "./entity/Flashbang";

@@ -1,4 +1,4 @@
-import { FireModeEnum } from "../../types/Enums";
+import { FireModeEnum } from "../../../../types/weapon/WeaponEnum";
 import { Component } from "../Component";
 
 type ComponentDataType = {

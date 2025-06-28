@@ -1,5 +1,5 @@
-import { GameModeEnum } from "../GameModeEnum";
-import { GameRoomManager } from "../GameRoom";
+import { GameModeEnum } from "../../types/gameroom/GameModeEnum";
+import { GameRoomManager } from "../gameroom/GameRoom";
 
 import { BP_IdlePhase } from "./bomb_plant/Idle";
 

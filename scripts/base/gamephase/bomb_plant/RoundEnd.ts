@@ -1,17 +1,17 @@
-import { GameRoomManager } from "../../GameRoom";
+import { GameRoomManager } from "../../gameroom/GameRoom";
 import { BP_BuyingPhase } from "./Buying";
 import { BP_GameOverPhase } from "./Gameover";
-import { Hotbar, HotbarManager } from "../../../../hotbar/Hotbar";
-import { BP_ActionHud } from "../../../../hud/bomb_plant/Action";
-import { Glock17 } from "../../../../weapon/actors/item/Glock17";
+import { HotbarManager } from "../../../modules/hotbar/Hotbar";
+import { BP_ActionHud } from "../../../modules/hud/bomb_plant/Action"; 
+import { Glock17 } from "../../../modules/weapon/actors/item/Glock17";
 
 import { BP_Config } from "./_config";
-import { BP_PhaseEnum } from "../../../types/PhaseEnum";
+import { BP_PhaseEnum } from "../../../types/gamephase/PhaseEnum";
 import { TeamEnum } from "../../../types/TeamEnum";
 
-import { FormatCode as FC } from "../../../../../utils/FormatCode";
-import { entity_dynamic_property } from "../../../../../utils/Property";
-import { set_variable, variable } from "../../../../../utils/Variable";
+import { FormatCode as FC } from "../../../utils/FormatCode";
+import { entity_dynamic_property } from "../../../utils/Property";
+import { set_variable, variable } from "../../../utils/Variable";
 
 import { ItemStack } from "@minecraft/server";
 
