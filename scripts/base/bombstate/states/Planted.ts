@@ -5,7 +5,7 @@ import { BombIdleState } from "./Idle";
 
 import { TeamEnum } from "../../../types/TeamEnum";
 import { BombStateEnum } from "./BombStateEnum";
-import { BP_PhaseEnum } from "../../../types/gamephase/PhaseEnum";
+import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPlantPhaseEnum";
 
 import { Broadcast } from "../../../utils/Broadcast";
 import { FormatCode as FC } from "../../../utils/FormatCode";
@@ -40,7 +40,7 @@ export class BombPlantedState implements IBombStateHandler {
         const room = GameRoomManager.instance.getRoom(this.roomId);
         this.entity = this.planter.dimension.spawnEntity(PLANTED_C4_ENTITY_ID, this.planter.location);
 
-        if (room.phaseManager.getPhase().phaseTag === BP_PhaseEnum.Action) {
+        if (room.phaseManager.getPhase().phaseTag === BombPlantPhaseEnum.Action) {
             room.phaseManager.updatePhase(new BP_BombPlantedPhase(this.roomId));
         }
         this.bombTotalTime = room.phaseManager.getPhase().currentTick;
@@ -105,7 +105,7 @@ function canDefuseBomb(bombEntity: Entity, player: Player) {
 function defuseComplete(roomId: number, defuser: Player) {
     const room = GameRoomManager.instance.getRoom(roomId);
     
-    if (room.phaseManager.getPhase().phaseTag === BP_PhaseEnum.BombPlanted) {
+    if (room.phaseManager.getPhase().phaseTag === BombPlantPhaseEnum.BombPlanted) {
         set_variable(`${roomId}.round_winner`, TeamEnum.Defender);
         room.phaseManager.updatePhase(new BP_RoundEndPhase(roomId));
     }

@@ -1,4 +1,4 @@
-export const enum BP_PhaseEnum {
+export const enum PhaseEnum {
     Idle,
     Buying,
     Action,

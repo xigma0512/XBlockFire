@@ -1,7 +1,7 @@
 import { GameRoomManager } from "../../../base/gameroom/GameRoom";
 
 import { TeamEnum } from "../../../types/TeamEnum";
-import { BP_PhaseEnum } from "../../../types/gamephase/PhaseEnum";
+import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPlantPhaseEnum";
 
 import { Broadcast } from "../../../utils/Broadcast";
 import { FormatCode as FC } from "../../../utils/FormatCode";
@@ -26,16 +26,16 @@ export class BP_ActionHud implements InGameHud {
 
         let actionbarText: string | string[] = '';
         switch (phase.phaseTag) {
-            case BP_PhaseEnum.Buying:
+            case BombPlantPhaseEnum.Buying:
                 actionbarText = [
                     `Buying phase will end in ${(phase.currentTick / 20).toFixed(0)} seconds.\n`, 
                     `Right-click the feather to open the shop.`
                 ];
                 break;
-            case BP_PhaseEnum.RoundEnd:
+            case BombPlantPhaseEnum.RoundEnd:
                 actionbarText = `${FC.Yellow}Next round start in ${(phase.currentTick / 20).toFixed(0)} seconds.`;
                 break;
-            case BP_PhaseEnum.Gameover:
+            case BombPlantPhaseEnum.Gameover:
                 actionbarText = `Return lobby in ${(phase.currentTick / 20).toFixed(0)}`;
                 break;
         }
