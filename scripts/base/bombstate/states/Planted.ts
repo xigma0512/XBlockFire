@@ -1,6 +1,6 @@
 import { GameRoomManager } from "../../gameroom/GameRoom";
-import { BP_BombPlantedPhase } from "../../gamephase/bomb_plant/BombPlanted";
-import { BP_RoundEndPhase } from "../../gamephase/bomb_plant/RoundEnd";
+import { BombPlantedPhase } from "../../gamephase/bomb_plant/BombPlanted";
+import { RoundEndPhase } from "../../gamephase/bomb_plant/RoundEnd";
 import { BombIdleState } from "./Idle";
 
 import { TeamEnum } from "../../../types/TeamEnum";
@@ -41,7 +41,7 @@ export class BombPlantedState implements IBombStateHandler {
         this.entity = this.planter.dimension.spawnEntity(PLANTED_C4_ENTITY_ID, this.planter.location);
 
         if (room.phaseManager.getPhase().phaseTag === BombPlantPhaseEnum.Action) {
-            room.phaseManager.updatePhase(new BP_BombPlantedPhase(this.roomId));
+            room.phaseManager.updatePhase(new BombPlantedPhase(this.roomId));
         }
         this.bombTotalTime = room.phaseManager.getPhase().currentTick;
 
@@ -107,7 +107,7 @@ function defuseComplete(roomId: number, defuser: Player) {
     
     if (room.phaseManager.getPhase().phaseTag === BombPlantPhaseEnum.BombPlanted) {
         set_variable(`${roomId}.round_winner`, TeamEnum.Defender);
-        room.phaseManager.updatePhase(new BP_RoundEndPhase(roomId));
+        room.phaseManager.updatePhase(new RoundEndPhase(roomId));
     }
 
     room.bombManager.updateState(new BombIdleState(roomId));

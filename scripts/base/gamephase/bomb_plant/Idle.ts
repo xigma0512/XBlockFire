@@ -1,9 +1,9 @@
 import { GameRoomManager } from "../../gameroom/GameRoom";
-import { BP_BuyingPhase } from "./Buying";
+import { BuyingPhase } from "./Buying";
 import { Glock17 } from "../../../modules/weapon/actors/item/Glock17";
-import { BP_WaitingHud } from "../../../modules/hud/bomb_plant/Waiting";
+import { WaitingHud } from "../../../modules/hud/bomb_plant/Waiting";
 
-import { BP_Config } from "./_config";
+import { Config } from "./_config";
 import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPlantPhaseEnum";
 import { TeamEnum } from "../../../types/TeamEnum";
 import { entity_dynamic_property, set_entity_dynamic_property } from "../../../utils/Property";
@@ -11,18 +11,18 @@ import { HotbarManager } from "../../../modules/hotbar/Hotbar";
 
 import { ItemStack } from "@minecraft/server";
 
-const config = BP_Config.idle;
+const config = Config.idle;
 
-export class BP_IdlePhase implements IPhaseHandler {
+export class IdlePhase implements IPhaseHandler {
 
     readonly phaseTag = BombPlantPhaseEnum.Idle;
-    readonly hud: BP_WaitingHud;
+    readonly hud: WaitingHud;
     
     private _currentTick: number = config.COUNTDOWN_TIME;
     get currentTick() { return this._currentTick; }
 
     constructor(private readonly roomId: number) { 
-        this.hud = new BP_WaitingHud(roomId);
+        this.hud = new WaitingHud(roomId);
     }
 
     on_entry() {
@@ -51,7 +51,7 @@ export class BP_IdlePhase implements IPhaseHandler {
     private transitions() {
         const room = GameRoomManager.instance.getRoom(this.roomId);
 
-        if (this.currentTick <= 0) return room.phaseManager.updatePhase(new BP_BuyingPhase(this.roomId));
+        if (this.currentTick <= 0) return room.phaseManager.updatePhase(new BuyingPhase(this.roomId));
     }
 
 }

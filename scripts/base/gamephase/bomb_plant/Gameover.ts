@@ -1,21 +1,21 @@
 import { GameRoomManager } from "../../gameroom/GameRoom";
-import { BP_IdlePhase } from "./Idle";
+import { IdlePhase } from "./Idle";
 import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPlantPhaseEnum";
-import { BP_Config } from "./_config";
+import { Config } from "./_config";
 
-import { BP_ActionHud } from "../../../modules/hud/bomb_plant/Action";
+import { ActionHud } from "../../../modules/hud/bomb_plant/Action";
 
-const config = BP_Config.gameover;
+const config = Config.gameover;
 
-export class BP_GameOverPhase implements IPhaseHandler {
+export class GameOverPhase implements IPhaseHandler {
 
     readonly phaseTag = BombPlantPhaseEnum.Gameover;
-    readonly hud: BP_ActionHud;
+    readonly hud: ActionHud;
     private _currentTick: number = config.COUNTDOWN_TIME;
     get currentTick() { return this._currentTick; }
 
     constructor(private readonly roomId: number) {
-        this.hud = new BP_ActionHud(roomId);
+        this.hud = new ActionHud(roomId);
     }
 
     on_entry() {
@@ -36,7 +36,7 @@ export class BP_GameOverPhase implements IPhaseHandler {
     private transitions() {
         const room = GameRoomManager.instance.getRoom(this.roomId);
 
-        if (this.currentTick <= 0) room.phaseManager.updatePhase(new BP_IdlePhase(this.roomId));
+        if (this.currentTick <= 0) room.phaseManager.updatePhase(new IdlePhase(this.roomId));
     }
 
 }

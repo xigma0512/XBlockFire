@@ -1,23 +1,23 @@
 import { GameRoomManager } from "../../gameroom/GameRoom";
 import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPlantPhaseEnum";
-import { BP_RoundEndPhase } from "./RoundEnd";
+import { RoundEndPhase } from "./RoundEnd";
 
-import { BP_Config } from "./_config";
+import { Config } from "./_config";
 import { TeamEnum } from "../../../types/TeamEnum";
 import { set_variable } from "../../../utils/Variable";
-import { BP_ActionHud } from "../../../modules/hud/bomb_plant/Action";
+import { ActionHud } from "../../../modules/hud/bomb_plant/Action";
 
-const config = BP_Config.bombplanted;
+const config = Config.bombplanted;
 
-export class BP_BombPlantedPhase implements IPhaseHandler {
+export class BombPlantedPhase implements IPhaseHandler {
 
     readonly phaseTag = BombPlantPhaseEnum.BombPlanted;
-    readonly hud: BP_ActionHud;
+    readonly hud: ActionHud;
     private _currentTick: number = config.COUNTDOWN_TIME;
     get currentTick() { return this._currentTick; }
 
     constructor(private readonly roomId: number) {
-        this.hud = new BP_ActionHud(roomId);
+        this.hud = new ActionHud(roomId);
     }
 
     on_entry() {
@@ -40,7 +40,7 @@ export class BP_BombPlantedPhase implements IPhaseHandler {
 
         if (this._currentTick <= 0) {
             set_variable(`${this.roomId}.round_winner`, TeamEnum.Attacker);
-            room.phaseManager.updatePhase(new BP_RoundEndPhase(this.roomId));
+            room.phaseManager.updatePhase(new RoundEndPhase(this.roomId));
         }
     }
 

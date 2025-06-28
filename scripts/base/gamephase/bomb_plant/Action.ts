@@ -1,27 +1,27 @@
 import { GameRoomManager } from "../../gameroom/GameRoom";
-import { BP_GameOverPhase } from "./Gameover";
-import { BP_RoundEndPhase } from "./RoundEnd";
+import { GameOverPhase } from "./Gameover";
+import { RoundEndPhase } from "./RoundEnd";
 
-import { BP_Config } from "./_config";
+import { Config } from "./_config";
 import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPlantPhaseEnum"
 import { TeamEnum } from "../../../types/TeamEnum";
 
 import { FormatCode as FC } from "../../../utils/FormatCode";
 import { Broadcast } from "../../../utils/Broadcast";
 import { set_variable } from "../../../utils/Variable";
-import { BP_ActionHud } from "../../../modules/hud/bomb_plant/Action";
+import { ActionHud } from "../../../modules/hud/bomb_plant/Action";
 
-const config = BP_Config.action;
+const config = Config.action;
 
-export class BP_ActionPhase implements IPhaseHandler {
+export class ActionPhase implements IPhaseHandler {
 
     readonly phaseTag = BombPlantPhaseEnum.Action;
-    readonly hud: BP_ActionHud;
+    readonly hud: ActionHud;
     private _currentTick: number = config.ACTION_TIME;
     get currentTick() { return this._currentTick; }
 
     constructor(private readonly roomId: number) {
-        this.hud = new BP_ActionHud(roomId);
+        this.hud = new ActionHud(roomId);
     }
 
     on_entry() {
@@ -72,7 +72,7 @@ export class BP_ActionPhase implements IPhaseHandler {
 
             const separator = `${FC.White}---------------\n`;
             let message = [separator];
-            let nextPhase: IPhaseHandler = new BP_RoundEndPhase(this.roomId);
+            let nextPhase: IPhaseHandler = new RoundEndPhase(this.roomId);
     
             let winner = TeamEnum.Defender;
             switch (endReason) {
@@ -83,14 +83,14 @@ export class BP_ActionPhase implements IPhaseHandler {
                     break;
 
                 case EndReasonEnum['Attacker-Disconnect']:
-                    nextPhase = new BP_GameOverPhase(this.roomId);
+                    nextPhase = new GameOverPhase(this.roomId);
                 case EndReasonEnum['Attacker-Eliminated']:
                     message.push(`${FC.Yellow}Blue Team Win\n`);
                     winner = TeamEnum.Defender;
                     break;
 
                 case EndReasonEnum['Defender-Disconnect']:
-                    nextPhase = new BP_GameOverPhase(this.roomId);
+                    nextPhase = new GameOverPhase(this.roomId);
                 case EndReasonEnum['Defender-Eliminated']:
                     message.push(`${FC.Yellow}Red Team Win\n`);
                     winner = TeamEnum.Attacker;
