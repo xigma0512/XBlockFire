@@ -1,16 +1,16 @@
-import { GameRoomManager } from "../../GameRoom";
-import { BP_BombPlantedPhase } from "../../phase/bomb_plant/BombPlanted";
-import { BP_RoundEndPhase } from "../../phase/bomb_plant/RoundEnd";
+import { GameRoomManager } from "../../gameroom/GameRoom";
+import { BP_BombPlantedPhase } from "../../gamephase/bomb_plant/BombPlanted";
+import { BP_RoundEndPhase } from "../../gamephase/bomb_plant/RoundEnd";
 import { BombIdleState } from "./Idle";
 
 import { TeamEnum } from "../../../types/TeamEnum";
 import { BombStateEnum } from "./BombStateEnum";
-import { BP_PhaseEnum } from "../../../types/PhaseEnum";
+import { BP_PhaseEnum } from "../../../types/gamephase/PhaseEnum";
 
-import { Broadcast } from "../../../../../utils/Broadcast";
-import { FormatCode as FC } from "../../../../../utils/FormatCode";
-import { progressBar } from "../../../../../utils/Utils";
-import { set_variable } from "../../../../../utils/Variable";
+import { Broadcast } from "../../../utils/Broadcast";
+import { FormatCode as FC } from "../../../utils/FormatCode";
+import { progressBar } from "../../../utils/Utils";
+import { set_variable } from "../../../utils/Variable";
 
 import { Vector3Utils } from "@minecraft/math";
 import { Entity, Player, system, world } from "@minecraft/server";

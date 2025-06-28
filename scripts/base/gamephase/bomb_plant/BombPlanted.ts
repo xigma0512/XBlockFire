@@ -1,11 +1,11 @@
-import { GameRoomManager } from "../../GameRoom";
-import { BP_PhaseEnum } from "../../../types/PhaseEnum";
+import { GameRoomManager } from "../../gameroom/GameRoom";
+import { BP_PhaseEnum } from "../../../types/gamephase/PhaseEnum";
 import { BP_RoundEndPhase } from "./RoundEnd";
 
 import { BP_Config } from "./_config";
 import { TeamEnum } from "../../../types/TeamEnum";
-import { set_variable } from "../../../../../utils/Variable";
-import { BP_ActionHud } from "../../../../hud/bomb_plant/Action";
+import { set_variable } from "../../../utils/Variable";
+import { BP_ActionHud } from "../../../modules/hud/bomb_plant/Action";
 
 const config = BP_Config.bombplanted;
 

@@ -1,15 +1,15 @@
-import { GameRoomManager } from "../../GameRoom";
+import { GameRoomManager } from "../../gameroom/GameRoom";
 import { BP_GameOverPhase } from "./Gameover";
 import { BP_RoundEndPhase } from "./RoundEnd";
 
 import { BP_Config } from "./_config";
-import { BP_PhaseEnum } from "../../../types/PhaseEnum"
+import { BP_PhaseEnum } from "../../../types/gamephase/PhaseEnum"
 import { TeamEnum } from "../../../types/TeamEnum";
 
-import { FormatCode as FC } from "../../../../../utils/FormatCode";
-import { Broadcast } from "../../../../../utils/Broadcast";
-import { set_variable } from "../../../../../utils/Variable";
-import { BP_ActionHud } from "../../../../hud/bomb_plant/Action";
+import { FormatCode as FC } from "../../../utils/FormatCode";
+import { Broadcast } from "../../../utils/Broadcast";
+import { set_variable } from "../../../utils/Variable";
+import { BP_ActionHud } from "../../../modules/hud/bomb_plant/Action";
 
 const config = BP_Config.action;
 

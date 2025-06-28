@@ -1,13 +1,13 @@
-import { GameRoomManager } from "../../GameRoom";
+import { GameRoomManager } from "../../gameroom/GameRoom";
 import { BP_ActionPhase } from "./Action";
-import { MapRegister } from "../../map/MapRegister";
-import { BP_ActionHud } from "../../../../hud/bomb_plant/Action";
-import { HotbarManager } from "../../../../hotbar/Hotbar";
+import { MapRegister } from "../../gamemap/MapRegister";
+import { BP_ActionHud } from "../../../modules/hud/bomb_plant/Action";
+import { HotbarManager } from "../../../modules/hotbar/Hotbar";
 
 import { BP_Config } from "./_config";
 import { TeamEnum } from "../../../types/TeamEnum";
-import { BP_PhaseEnum } from "../../../types/PhaseEnum";
-import { entity_dynamic_property, set_entity_dynamic_property } from "../../../../../utils/Property";
+import { BP_PhaseEnum } from "../../../types/gamephase/PhaseEnum";
+import { entity_dynamic_property, set_entity_dynamic_property } from "../../../utils/Property";
 
 import { GameMode, InputPermissionCategory } from "@minecraft/server";
 

@@ -1,7 +1,7 @@
-import { GameRoomManager } from "../../gameroom/systems/GameRoom";
+import { GameRoomManager } from "../../../base/gameroom/GameRoom";
 
-import { BP_Config } from "../../gameroom/systems/phase/bomb_plant/_config";
-import { GameModeEnumTable } from "../../gameroom/systems/GameModeEnum";
+import { BP_Config } from "../../../base/gamephase/bomb_plant/_config";
+import { GameModeEnumTable } from "../../../types/gameroom/GameModeEnum";
 
 import { FormatCode as FC } from "../../../utils/FormatCode";
 import { Broadcast } from "../../../utils/Broadcast";

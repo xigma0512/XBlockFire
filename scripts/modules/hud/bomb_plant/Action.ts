@@ -1,7 +1,7 @@
-import { GameRoomManager } from "../../gameroom/systems/GameRoom";
+import { GameRoomManager } from "../../../base/gameroom/GameRoom";
 
-import { TeamEnum } from "../../gameroom/types/TeamEnum";
-import { BP_PhaseEnum } from "../../gameroom/types/PhaseEnum";
+import { TeamEnum } from "../../../types/TeamEnum";
+import { BP_PhaseEnum } from "../../../types/gamephase/PhaseEnum";
 
 import { Broadcast } from "../../../utils/Broadcast";
 import { FormatCode as FC } from "../../../utils/FormatCode";

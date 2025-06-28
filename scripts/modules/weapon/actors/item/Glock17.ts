@@ -2,7 +2,7 @@ import { ItemActor } from "../Actor";
 import { GunComponent } from "../../components/gun/GunComponent";
 import { ItemComponent } from "../../components/ItemComponent";
 import { GunMagazineComponent } from "../../components/gun/GunMagazineComponent";
-import { FireModeEnum, GunTypeEnum } from "../../types/Enums";
+import { FireModeEnum, GunTypeEnum } from "../../../../types/weapon/WeaponEnum";
 
 import { ItemLockMode, ItemStack } from "@minecraft/server";
 import { GunFireComponent } from "../../components/gun/GunFireComponent";

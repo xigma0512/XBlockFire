@@ -1,8 +1,9 @@
+import { GameRoomManager } from "../../base/gameroom/GameRoom";
+import { BP_BuyingPhase } from "../../base/gamephase/bomb_plant/Buying";
+import { GameModeEnum } from "../../types/gameroom/GameModeEnum";
+import { MemberManager } from "../../base/member/MemberManager";
+
 import { Player } from "@minecraft/server";
-import { GameRoomManager } from "../../gameroom/systems/GameRoom";
-import { BP_BuyingPhase } from "../../gameroom/systems/phase/bomb_plant/Buying";
-import { GameModeEnum } from "../../gameroom/systems/GameModeEnum";
-import { MemberManager } from "../../gameroom/systems/member/MemberManager";
 
 function createRoom(executer: Player, ...args: string[]) {
     const [gamemode, mapId] = args;

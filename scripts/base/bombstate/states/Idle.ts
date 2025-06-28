@@ -1,12 +1,12 @@
-import { GameRoomManager } from "../../GameRoom";
-import { MapRegister } from "../../map/MapRegister";
+import { GameRoomManager } from "../../gameroom/GameRoom";
+import { MapRegister } from "../../gamemap/MapRegister";
 import { BombPlantedState } from "./Planted";
 import { BombDroppedState } from "./Dropped";
 
 import { TeamEnum } from "../../../types/TeamEnum";
 import { BombStateEnum } from "./BombStateEnum";
-import { entity_dynamic_property } from "../../../../../utils/Property";
-import { FormatCode as FC } from "../../../../../utils/FormatCode";
+import { entity_dynamic_property } from "../../../utils/Property";
+import { FormatCode as FC } from "../../../utils/FormatCode";
 
 import { Vector3Utils } from "@minecraft/math";
 import { Player, system, world } from "@minecraft/server";
