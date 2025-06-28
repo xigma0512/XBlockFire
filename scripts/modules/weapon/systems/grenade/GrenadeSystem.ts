@@ -189,7 +189,7 @@ const grenadeRebound = world.afterEvents.projectileHitBlock.subscribe(ev => {
         [Direction.South]: {x:1,y:1,z:-1},
     };
 
-    const offsetValue = 0.2;
+    const offsetValue = 0.1;
     const teleportOffset = {
         [Direction.Up]: { y: 1 + offsetValue },
         [Direction.Down]: { y: -offsetValue },
