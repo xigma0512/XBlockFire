@@ -20,7 +20,6 @@ class GameRoom {
     readonly economyManager: EconomyManager;
     readonly bombManager: BombManager;
 
-    private marker: AlliesMarker;
     private markerTaskId = -1;
 
     constructor(id: number, gameMode: GameModeEnum, gameMapId: number) {
@@ -33,7 +32,6 @@ class GameRoom {
         this.economyManager = new EconomyManager(id);
         this.bombManager = new BombManager(id);
 
-        this.marker = new AlliesMarker(this.memberManager);
         this.markerTaskId = this.addMarkerTask();
     }
 
@@ -42,8 +40,7 @@ class GameRoom {
             default:
             case GameModeEnum.BombPlant: 
                 return system.runInterval(() => {
-                    this.marker.updateMark(TeamEnum.Attacker);
-                    this.marker.updateMark(TeamEnum.Defender);
+                    AlliesMarker.updateMark(this.memberManager);
                 });
         }
     }
