@@ -4,7 +4,7 @@ import { RoundEndPhase } from "../../gamephase/bomb_plant/RoundEnd";
 import { BombIdleState } from "./Idle";
 
 import { TeamEnum } from "../../../types/TeamEnum";
-import { BombStateEnum } from "./BombStateEnum";
+import { BombStateEnum } from "../../../types/bombstate/BombStateEnum";
 import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPlantPhaseEnum";
 
 import { Broadcast } from "../../../utils/Broadcast";
