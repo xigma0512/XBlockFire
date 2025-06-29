@@ -79,7 +79,7 @@ export class Shop {
                 hotbar.set(product.hotbar_slot, item);
             }
             else {
-                hotbarItem.amount += item.amount;
+                hotbarItem.amount ++;
                 hotbar.set(product.hotbar_slot, hotbarItem);
             }
             
