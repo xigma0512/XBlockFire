@@ -41,7 +41,7 @@ class GameRoom {
             case GameModeEnum.BombPlant: 
                 return system.runInterval(() => {
                     AlliesMarker.updateMark(this.memberManager);
-                });
+                }, 3);
         }
     }
 
