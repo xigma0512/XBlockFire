@@ -46,8 +46,8 @@ export class BuyingPhase implements IPhaseHandler {
 
         for (const player of member.getPlayers()) {
             player.inputPermissions.setPermissionCategory(InputPermissionCategory.LateralMovement, true);
-            HotbarManager.instance.getHotbar(player).set(8, undefined);
-            HotbarManager.instance.sendHotbar(player);
+            HotbarManager.getHotbar(player).set(8, undefined);
+            HotbarManager.sendHotbar(player);
         }
         
         console.warn(`[Room ${this.roomId}] Exit BP:buying phase.`);
@@ -85,8 +85,8 @@ function spawnPlayers(roomId: number) {
         player.teleport(playerTeamSpawns[spawnIndex]);
 
         player.inputPermissions.setPermissionCategory(InputPermissionCategory.LateralMovement, false);
-        HotbarManager.instance.getHotbar(player).set(8, new ItemStack('minecraft:feather'));
-        HotbarManager.instance.sendHotbar(player);
+        HotbarManager.getHotbar(player).set(8, new ItemStack('minecraft:feather'));
+        HotbarManager.sendHotbar(player);
     }
 }
 
@@ -95,14 +95,14 @@ function sendHotbar(roomId: number) {
     const member = room.memberManager;
 
     for (const player of member.getPlayers()) {
-        HotbarManager.instance.getHotbar(player).set(8, new ItemStack('minecraft:feather'));
-        HotbarManager.instance.sendHotbar(player);
+        HotbarManager.getHotbar(player).set(8, new ItemStack('minecraft:feather'));
+        HotbarManager.sendHotbar(player);
     }
 
     const attackers = member.getPlayers({ team: TeamEnum.Attacker });
     const bombPlayer = attackers[Math.floor(Math.random() * attackers.length)];
-    HotbarManager.instance.getHotbar(bombPlayer).set(3, new ItemStack('xblockfire:c4'));
-    HotbarManager.instance.sendHotbar(bombPlayer);
+    HotbarManager.getHotbar(bombPlayer).set(3, new ItemStack('xblockfire:c4'));
+    HotbarManager.sendHotbar(bombPlayer);
 }
 
 function resetPlayers(roomId: number) {

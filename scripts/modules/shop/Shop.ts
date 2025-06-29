@@ -73,7 +73,7 @@ export class Shop {
                 item = new product.item().item;
             }
             
-            const hotbar = HotbarManager.instance.getHotbar(player);
+            const hotbar = HotbarManager.getHotbar(player);
             const hotbarItem = hotbar.get(product.hotbar_slot);
             if (hotbarItem === undefined || !hotbarItem.matches(item.typeId)) {
                 hotbar.set(product.hotbar_slot, item);
@@ -83,7 +83,7 @@ export class Shop {
                 hotbar.set(product.hotbar_slot, hotbarItem);
             }
             
-            HotbarManager.instance.sendHotbar(player);
+            HotbarManager.sendHotbar(player);
         }
         catch (err: any)
         {

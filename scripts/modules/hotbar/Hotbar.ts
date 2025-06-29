@@ -31,22 +31,19 @@ export class Hotbar {
 }
 
 export class HotbarManager {
-
-    private static _instance: HotbarManager;
-    static get instance() { return (this._instance || (this._instance = new this())); }
     
-    private players = new Map<Player, Hotbar>();
+    private static players = new Map<Player, Hotbar>();
 
-    private constructor() { 
-        this.players = new Map();
-    }
-
-    getHotbar(target: Player) {
+    static getHotbar(target: Player) {
         if (!this.players.has(target)) this.players.set(target, new Hotbar());
         return this.players.get(target)!;
     }
 
-    updateHotbar(target: Player) {
+    static setHotbar(target: Player, hotbar: Hotbar) {
+        this.players.set(target, hotbar);
+    }
+
+    static updateHotbar(target: Player) {
         const container = target.getComponent('inventory')!.container;
         const hotbar = this.getHotbar(target);
         for (let index = 0; index < 10; index ++) {
@@ -54,7 +51,7 @@ export class HotbarManager {
         }
     }
 
-    sendHotbar(target: Player) {
+    static sendHotbar(target: Player) {
         const container = target.getComponent('inventory')!.container;
         const hotbar = this.getHotbar(target);
         for (let index = 0; index < 10; index ++) {
