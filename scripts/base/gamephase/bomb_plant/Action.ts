@@ -1,6 +1,7 @@
 import { GameRoomManager } from "../../gameroom/GameRoom";
 import { GameOverPhase } from "./Gameover";
 import { RoundEndPhase } from "./RoundEnd";
+import { ActionHud } from "../../../modules/hud/bomb_plant/Action";
 
 import { Config } from "./_config";
 import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPlantPhaseEnum"
@@ -9,7 +10,6 @@ import { TeamEnum } from "../../../types/TeamEnum";
 import { FormatCode as FC } from "../../../utils/FormatCode";
 import { Broadcast } from "../../../utils/Broadcast";
 import { set_variable } from "../../../utils/Variable";
-import { ActionHud } from "../../../modules/hud/bomb_plant/Action";
 
 const config = Config.action;
 
