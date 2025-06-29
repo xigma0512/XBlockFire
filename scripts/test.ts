@@ -1,16 +1,6 @@
-import { system, world } from "@minecraft/server";
-import { Glock17 } from "./modules/weapon/actors/item/Glock17";
+import { world } from "@minecraft/server";
 import { set_entity_dynamic_property } from "./utils/Property";
 import { TeamEnum } from "./types/TeamEnum";
-import { HotbarManager } from "./modules/hotbar/Hotbar";
-import { Shop } from "./modules/shop/Shop";
-
-world.beforeEvents.itemUse.subscribe(ev => {
-    if (ev.itemStack.typeId !== 'minecraft:feather') return;
-    system.run(() => {
-        Shop.instance.openShop(ev.source);
-    })
-})
 
 world.afterEvents.chatSend.subscribe(ev => {
     const sender = ev.sender;
