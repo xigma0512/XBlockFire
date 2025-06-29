@@ -64,6 +64,8 @@ export class RoundEndPhase implements IPhaseHandler {
         
         for (const player of players) {
             if (entity_dynamic_property(player, 'player:is_alive')) {
+                // eslint-disable-next-line
+                player.runCommand('clear @s xblockfire:c4');
                 HotbarManager.instance.updateHotbar(player);
             } else {   
                 const playerTeam = entity_dynamic_property(player, 'player:team');
