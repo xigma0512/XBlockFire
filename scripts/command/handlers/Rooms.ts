@@ -1,7 +1,7 @@
 import { GameRoomManager } from "../../base/gameroom/GameRoom";
 import { BuyingPhase } from "../../base/gamephase/bomb_plant/Buying";
 import { GameModeEnum } from "../../types/gameroom/GameModeEnum";
-import { MemberManager } from "../../base/member/MemberManager";
+import { MemberManager } from "../../base/gameroom/member/MemberManager";
 
 import { Player } from "@minecraft/server";
 
