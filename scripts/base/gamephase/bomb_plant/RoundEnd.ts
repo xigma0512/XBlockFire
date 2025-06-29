@@ -45,7 +45,7 @@ export class RoundEndPhase implements IPhaseHandler {
         for (const player of member.getPlayers()) {
             const playerTeam = entity_dynamic_property(player, 'player:team');
             const earn = config.INCOME[(playerTeam === winnerTeam) ? 0 : 1];
-            economy.addMoney(player, earn);
+            economy.modifyMoney(player, earn);
             player.sendMessage(`${FC.Gray}Round Income: +${earn}`);
         }
 
