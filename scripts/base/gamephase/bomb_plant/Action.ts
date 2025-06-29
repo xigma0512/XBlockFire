@@ -78,21 +78,21 @@ export class ActionPhase implements IPhaseHandler {
             switch (endReason) {
                 case EndReasonEnum['Time-up']:
                     message.push(`${FC.Yellow}Time Up. This Round Is Over.\n`);
-                    message.push(`${FC.Yellow}Blue Team Win\n`);
+                    message.push(`${FC.Yellow}Defenders Win\n`);
                     winner = TeamEnum.Defender;
                     break;
 
                 case EndReasonEnum['Attacker-Disconnect']:
                     nextPhase = new GameOverPhase(this.roomId);
                 case EndReasonEnum['Attacker-Eliminated']:
-                    message.push(`${FC.Yellow}Blue Team Win\n`);
+                    message.push(`${FC.Yellow}Defenders Win\n`);
                     winner = TeamEnum.Defender;
                     break;
 
                 case EndReasonEnum['Defender-Disconnect']:
                     nextPhase = new GameOverPhase(this.roomId);
                 case EndReasonEnum['Defender-Eliminated']:
-                    message.push(`${FC.Yellow}Red Team Win\n`);
+                    message.push(`${FC.Yellow}Attackers Win\n`);
                     winner = TeamEnum.Attacker;
                     break;
             }
