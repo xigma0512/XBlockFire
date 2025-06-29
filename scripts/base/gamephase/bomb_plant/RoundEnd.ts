@@ -29,25 +29,7 @@ export class RoundEndPhase implements IPhaseHandler {
 
     on_entry() {
         this._currentTick = config.COUNTDOWN_TIME;
-
-        const room = GameRoomManager.instance.getRoom(this.roomId);
-        const member = room.memberManager;
-        const economy = room.economyManager;
-
-        const winnerTeam = variable(`${this.roomId}.round_winner`) as TeamEnum;
-        if (winnerTeam === TeamEnum.Attacker) {
-            set_variable(`${this.roomId}.attacker_score`, (variable(`${this.roomId}.attacker_score`) ?? 0) + 1);
-        } else if (winnerTeam === TeamEnum.Defender) { 
-            set_variable(`${this.roomId}.defender_score`, (variable(`${this.roomId}.defender_score`) ?? 0) + 1);
-        }
-
-        for (const player of member.getPlayers()) {
-            const playerTeam = entity_dynamic_property(player, 'player:team');
-            const earn = config.INCOME[(playerTeam === winnerTeam) ? 0 : 1];
-            economy.modifyMoney(player, earn);
-            player.sendMessage(`${FC.Gray}Round Income: +${earn}`);
-        }
-
+        processWinner(this.roomId);
         console.warn(`[Room ${this.roomId}] Entry BP:roundEnd phase.`);
     }
 
@@ -58,21 +40,7 @@ export class RoundEndPhase implements IPhaseHandler {
     }
 
     on_exit() {
-        const room = GameRoomManager.instance.getRoom(this.roomId);
-        const players = room.memberManager.getPlayers();
-        
-        for (const player of players) {
-            if (entity_dynamic_property(player, 'player:is_alive')) {
-                // eslint-disable-next-line
-                player.runCommand('clear @s xblockfire:c4');
-                HotbarManager.updateHotbar(player);
-            } else {   
-                const playerTeam = entity_dynamic_property(player, 'player:team');
-                HotbarManager.setHotbar(player, HotbarTemplate.initSpawn(playerTeam === TeamEnum.Defender));
-                HotbarManager.sendHotbar(player);
-            }
-        }
-
+        clearC4(this.roomId);
         console.warn(`[Room ${this.roomId}] Exit BP:roundEnd phase.`);
     }
 
@@ -107,4 +75,41 @@ export class RoundEndPhase implements IPhaseHandler {
 
 function switchSide() {
     console.warn('switching side!!');
+}
+
+function processWinner(roomId: number) {
+    const room = GameRoomManager.instance.getRoom(roomId);
+    const member = room.memberManager;
+    const economy = room.economyManager;
+
+    const winnerTeam = variable(`${roomId}.round_winner`) as TeamEnum;
+    if (winnerTeam === TeamEnum.Attacker) {
+        set_variable(`${roomId}.attacker_score`, (variable(`${roomId}.attacker_score`) ?? 0) + 1);
+    } else if (winnerTeam === TeamEnum.Defender) { 
+        set_variable(`${roomId}.defender_score`, (variable(`${roomId}.defender_score`) ?? 0) + 1);
+    }
+
+    for (const player of member.getPlayers()) {
+        const playerTeam = entity_dynamic_property(player, 'player:team');
+        const earn = config.INCOME[(playerTeam === winnerTeam) ? 0 : 1];
+        economy.modifyMoney(player, earn);
+        player.sendMessage(`${FC.Gray}Round Income: +${earn}`);
+    }
+}
+
+function clearC4(roomId: number) {
+    const room = GameRoomManager.instance.getRoom(roomId);
+    const players = room.memberManager.getPlayers();
+    
+    for (const player of players) {
+        if (entity_dynamic_property(player, 'player:is_alive')) {
+            // eslint-disable-next-line
+            player.runCommand('clear @s xblockfire:c4');
+            HotbarManager.updateHotbar(player);
+        } else {   
+            const playerTeam = entity_dynamic_property(player, 'player:team');
+            HotbarManager.setHotbar(player, HotbarTemplate.initSpawn(playerTeam === TeamEnum.Defender));
+            HotbarManager.sendHotbar(player);
+        }
+    }
 }
