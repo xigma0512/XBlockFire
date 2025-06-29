@@ -1,4 +1,4 @@
-import { BombStateEnum } from "./BombStateEnum";
+import { BombStateEnum } from "../../../types/bombstate/BombStateEnum";
 import { BombIdleState } from "./Idle";
 import { GameRoomManager } from "../../gameroom/GameRoom";
 

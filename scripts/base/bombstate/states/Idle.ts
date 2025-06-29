@@ -4,7 +4,7 @@ import { BombPlantedState } from "./Planted";
 import { BombDroppedState } from "./Dropped";
 
 import { TeamEnum } from "../../../types/TeamEnum";
-import { BombStateEnum } from "./BombStateEnum";
+import { BombStateEnum } from "../../../types/bombstate/BombStateEnum";
 import { entity_dynamic_property } from "../../../utils/Property";
 import { FormatCode as FC } from "../../../utils/FormatCode";
 
