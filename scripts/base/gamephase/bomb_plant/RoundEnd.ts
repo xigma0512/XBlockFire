@@ -63,7 +63,7 @@ export class RoundEndPhase implements IPhaseHandler {
 
         if (this.currentTick <= 0) {
             
-            if (attackerScore + defenderScore >= config.WINNING_SCORE) {
+            if (attackerScore + defenderScore === config.WINNING_SCORE - 1) {
                 switchSide(this.roomId);
             }
             
@@ -80,6 +80,12 @@ function switchSide(roomId: number) {
         const playerTeam = entity_dynamic_property(player, 'player:team');
         set_entity_dynamic_property(player, 'player:team', (playerTeam === TeamEnum.Attacker) ? TeamEnum.Defender : TeamEnum.Attacker);
     }
+
+    const attacker_score = variable(`${roomId}.attacker_score`);
+    const defender_score = variable(`${roomId}.defender_score`);
+
+    set_variable(`${roomId}.attacker_score`, defender_score);
+    set_variable(`${roomId}.defender_score`, attacker_score);
 }
 
 function processWinner(roomId: number) {
