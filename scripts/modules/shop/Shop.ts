@@ -6,7 +6,8 @@ import { Glock17 } from "../weapon/actors/item/Glock17";
 
 import { PhaseEnum as BombPlantPhaseEnum } from "../../types/gamephase/BombPlantPhaseEnum";
 
-import { ItemLockMode, ItemStack, Player, world } from "@minecraft/server";
+import { ItemStack, Player, system, world } from "@minecraft/server";
+import { ItemLockMode } from "@minecraft/server";
 import { ActionFormData, ActionFormResponse } from "@minecraft/server-ui";
 
 interface Product {
@@ -115,5 +116,7 @@ const openShopListener = world.beforeEvents.itemUse.subscribe(ev => {
 
     if (phase.phaseTag !== BombPlantPhaseEnum.Buying) return;
 
-    Shop.instance.openShop(player);
+    system.run(() => {
+        Shop.instance.openShop(player);
+    });
 });
