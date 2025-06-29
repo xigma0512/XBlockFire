@@ -12,8 +12,8 @@ export class AlliesMarker {
         const players = member.getPlayers();
         for (const viewer of players) {
 
-            const group = entity_dynamic_property(viewer, 'player:group');
-            const groupPlayers = member.getPlayers({ group });
+            const team = entity_dynamic_property(viewer, 'player:team');
+            const groupPlayers = member.getPlayers({ team });
             
             for (const ally of groupPlayers) {
                 if (ally.id === viewer.id) continue;

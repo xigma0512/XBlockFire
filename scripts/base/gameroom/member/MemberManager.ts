@@ -41,7 +41,6 @@ export class MemberManager {
         if (!filter) return result;
         
         return result.filter(p => {
-            if (filter.group && filter.group !== entity_dynamic_property(p, 'player:group')) return false;
             if (filter.team && filter.team !== entity_dynamic_property(p, 'player:team')) return false;
             if (filter.is_alive && filter.is_alive !== entity_dynamic_property(p, 'player:is_alive')) return false;
             return true;
