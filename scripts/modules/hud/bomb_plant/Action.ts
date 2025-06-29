@@ -74,8 +74,8 @@ export class ActionHud implements InGameHud {
         const room = GameRoomManager.instance.getRoom(this.roomId);
         const currentTick = room.phaseManager.getPhase().currentTick;
         
-        const attackerScore = variable(`${this.roomId}.attacker_score`) ?? 0;
-        const defenderScore = variable(`${this.roomId}.defender_score`) ?? 0;
+        const attackerScore = variable(`${this.roomId}.attacker_score`);
+        const defenderScore = variable(`${this.roomId}.defender_score`);
         
         const attackerPlayers = room.memberManager.getPlayers({ team: TeamEnum.Attacker, is_alive: true });
         const defenderPlayers = room.memberManager.getPlayers({ team: TeamEnum.Defender, is_alive: true });

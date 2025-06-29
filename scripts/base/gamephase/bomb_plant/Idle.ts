@@ -8,6 +8,7 @@ import { Config } from "./_config";
 import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPlantPhaseEnum";
 import { TeamEnum } from "../../../types/TeamEnum";
 import { entity_dynamic_property, set_entity_dynamic_property } from "../../../utils/Property";
+import { set_variable } from "../../../utils/Variable";
 
 
 const config = Config.idle;
@@ -44,6 +45,7 @@ export class IdlePhase implements IPhaseHandler {
     on_exit() {
         if (config.AUTO_START) balanceTeam(this.roomId);
         initializePlayers(this.roomId);
+        initializeVariable(this.roomId);
         console.warn(`[Room ${this.roomId}] Exit BP:idle phase.`);
     }
 
@@ -87,4 +89,9 @@ function initializePlayers(roomId: number) {
         HotbarManager.setHotbar(player, HotbarTemplate.initSpawn(playerTeam === TeamEnum.Defender));
         HotbarManager.sendHotbar(player);
     }
+}
+
+function initializeVariable(roomId: number) {
+    set_variable(`${roomId}.attacker_score`, 0);
+    set_variable(`${roomId}.defender_score`, 0);
 }
