@@ -10,7 +10,7 @@ import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPl
 import { TeamEnum } from "../../../types/TeamEnum";
 
 import { FormatCode as FC } from "../../../utils/FormatCode";
-import { entity_dynamic_property } from "../../../utils/Property";
+import { entity_dynamic_property, set_entity_dynamic_property } from "../../../utils/Property";
 import { set_variable, variable } from "../../../utils/Variable";
 
 
@@ -64,7 +64,7 @@ export class RoundEndPhase implements IPhaseHandler {
         if (this.currentTick <= 0) {
             
             if (attackerScore + defenderScore >= config.WINNING_SCORE) {
-                switchSide();
+                switchSide(this.roomId);
             }
             
             phase.updatePhase(new BuyingPhase(this.roomId));
@@ -73,8 +73,13 @@ export class RoundEndPhase implements IPhaseHandler {
 
 }
 
-function switchSide() {
-    console.warn('switching side!!');
+function switchSide(roomId: number) {
+    const room = GameRoomManager.instance.getRoom(roomId);
+    const member = room.memberManager;
+    for (const player of member.getPlayers()) {
+        const playerTeam = entity_dynamic_property(player, 'player:team');
+        set_entity_dynamic_property(player, 'player:team', (playerTeam === TeamEnum.Attacker) ? TeamEnum.Defender : TeamEnum.Attacker);
+    }
 }
 
 function processWinner(roomId: number) {
