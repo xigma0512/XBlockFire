@@ -22,7 +22,7 @@ export class BulletSystem {
         const viewDirection = player.getViewDirection();
         const spawnLocation = Vector3Utils.add(Vector3Utils.add(headLocation, viewDirection), { y:0.1 });
 
-        const bulletActor = new BulletActorTable[gunType](spawnDummyEntity({dimension: player.dimension, ...spawnLocation}));
+        const bulletActor = new BulletActorTable[gunType](spawnDummyEntity(spawnLocation));
         const bulletComp = bulletActor.getComponent('bullet')!;
 
         const projComp = bulletActor.entity.getComponent('projectile')!;

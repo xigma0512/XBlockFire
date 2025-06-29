@@ -79,7 +79,7 @@ export class BombIdleState implements IBombStateHandler {
             throw Error(`C4 item entity spawned at {${entity.location.x}, ${entity.location.y}, ${entity.location.z}} but no owning player found in room ${this.roomId}.`);
         }
 
-        room.bombManager.updateState(new BombDroppedState(this.roomId, entity.dimension, entity.location));
+        room.bombManager.updateState(new BombDroppedState(this.roomId, entity.location));
 
         entity.remove();
     }

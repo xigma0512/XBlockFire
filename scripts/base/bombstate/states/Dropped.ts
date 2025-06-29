@@ -10,7 +10,7 @@ import { Broadcast } from "../../../utils/Broadcast";
 
 import { Entity, ItemStack, Player, world } from "@minecraft/server";
 import { EntityHitEntityAfterEvent } from "@minecraft/server";
-import { VanillaEntityIdentifier, Dimension, Vector3 } from "@minecraft/server";
+import { VanillaEntityIdentifier, Vector3 } from "@minecraft/server";
 
 const DROPPED_C4_ENTITY_ID = 'xblockfire:dropped_c4' as VanillaEntityIdentifier;
 const C4_ITEM_ID = 'xblockfire:c4';
@@ -26,17 +26,15 @@ export class BombDroppedState implements IBombStateHandler {
 
     constructor(
         private readonly roomId: number, 
-        private dimension: Dimension,
         private location: Vector3
     ) {
-        this.dimension = dimension;
         this.location = location;
 
         this.afterEntityHitEntityListener = this.onEntityHit.bind(this);
     }
 
     on_entry() {
-        this.entity = this.dimension.spawnEntity(DROPPED_C4_ENTITY_ID, this.location);
+        this.entity = world.getDimension('overworld').spawnEntity(DROPPED_C4_ENTITY_ID, this.location);
         world.afterEvents.entityHitEntity.subscribe(this.afterEntityHitEntityListener);
         
         console.warn(`[Room ${this.roomId}] Entry BombDropped state.`);
