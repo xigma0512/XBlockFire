@@ -19,10 +19,11 @@ export class EconomyManager {
     removePlayer(player: Player) {
         this.economies.delete(player);
     }
+
     
-    addMoney(player: Player, value: number) {
-        const money = this.getMoney(player);
-        this.setMoney(player, (money + value > LIMIT) ? LIMIT : money + value) 
+    modifyMoney(player: Player, value: number) {
+        let money = this.getMoney(player);
+        this.setMoney(player, (money + value > LIMIT) ? LIMIT : money + value);
     }
 
     getMoney(player: Player) {
@@ -34,13 +35,8 @@ export class EconomyManager {
         this.economies.set(player, value);
     }
 
-    payMoney(sender: Player, receiver: Player, value: number) {
-        const senderMoney = this.getMoney(sender);
-        const receiverMoney = this.getMoney(receiver);
-        if (senderMoney - value < 0) return false;
-        this.setMoney(sender, senderMoney - value);
-        this.setMoney(receiver, receiverMoney + value);
-        return true;
+    canBeAfforded(player: Player, value: number) {
+        return this.getMoney(player) >= value;
     }
 
 }
