@@ -1,12 +1,12 @@
-import { Player } from "@minecraft/server";
-import { EquipmentSlot, DimensionLocation, VanillaEntityIdentifier } from "@minecraft/server";
+import { Player, Vector3, world } from "@minecraft/server";
+import { EquipmentSlot, VanillaEntityIdentifier } from "@minecraft/server";
 
 function getPlayerHandItem(player: Player) {
     return player.getComponent('equippable')!.getEquipmentSlot(EquipmentSlot.Mainhand).getItem();
 }
 
-function spawnDummyEntity(dimLocation: DimensionLocation) {
-    return dimLocation.dimension.spawnEntity('xblockfire:dummy' as VanillaEntityIdentifier, dimLocation);
+function spawnDummyEntity(location: Vector3) {
+    return world.getDimension('overworld').spawnEntity('xblockfire:dummy' as VanillaEntityIdentifier, location);
 }
 
 export { getPlayerHandItem, spawnDummyEntity };
