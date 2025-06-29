@@ -1,15 +1,14 @@
 import { GameRoomManager } from "../../gameroom/GameRoom";
 import { BuyingPhase } from "./Buying";
-import { Glock17 } from "../../../modules/weapon/actors/item/Glock17";
 import { WaitingHud } from "../../../modules/hud/bomb_plant/Waiting";
+import { HotbarManager } from "../../../modules/hotbar/Hotbar";
+import { HotbarTemplate } from "../../../modules/hotbar/HotbarTemplates";
 
 import { Config } from "./_config";
 import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPlantPhaseEnum";
 import { TeamEnum } from "../../../types/TeamEnum";
 import { entity_dynamic_property, set_entity_dynamic_property } from "../../../utils/Property";
-import { HotbarManager } from "../../../modules/hotbar/Hotbar";
 
-import { ItemStack } from "@minecraft/server";
 
 const config = Config.idle;
 
@@ -85,10 +84,7 @@ function initializePlayers(roomId: number) {
         room.economyManager.initializePlayer(player);
 
         const playerTeam = entity_dynamic_property(player, 'player:team');
-        const hotbar = HotbarManager.instance.getHotbar(player);
-        hotbar.clearAll();
-        hotbar.set(1, new Glock17().item)
-              .set(2, new ItemStack('minecraft:diamond_sword'))
-              .set(3, playerTeam === TeamEnum.Defender ? new ItemStack('xblockfire:defuser') : undefined)
+        HotbarManager.setHotbar(player, HotbarTemplate.initSpawn(playerTeam === TeamEnum.Defender));
+        HotbarManager.sendHotbar(player);
     }
 }

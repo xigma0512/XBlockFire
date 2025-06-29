@@ -1,9 +1,9 @@
 import { GameRoomManager } from "../../gameroom/GameRoom";
 import { BuyingPhase } from "./Buying";
 import { GameOverPhase } from "./Gameover";
-import { HotbarManager } from "../../../modules/hotbar/Hotbar";
 import { ActionHud } from "../../../modules/hud/bomb_plant/Action"; 
-import { Glock17 } from "../../../modules/weapon/actors/item/Glock17";
+import { HotbarManager } from "../../../modules/hotbar/Hotbar";
+import { HotbarTemplate } from "../../../modules/hotbar/HotbarTemplates";
 
 import { Config } from "./_config";
 import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPlantPhaseEnum";
@@ -13,7 +13,6 @@ import { FormatCode as FC } from "../../../utils/FormatCode";
 import { entity_dynamic_property } from "../../../utils/Property";
 import { set_variable, variable } from "../../../utils/Variable";
 
-import { ItemStack } from "@minecraft/server";
 
 const config = Config.roundEnd;
 
@@ -66,14 +65,11 @@ export class RoundEndPhase implements IPhaseHandler {
             if (entity_dynamic_property(player, 'player:is_alive')) {
                 // eslint-disable-next-line
                 player.runCommand('clear @s xblockfire:c4');
-                HotbarManager.instance.updateHotbar(player);
+                HotbarManager.updateHotbar(player);
             } else {   
                 const playerTeam = entity_dynamic_property(player, 'player:team');
-                const hotbar = HotbarManager.instance.getHotbar(player);
-                hotbar.clearAll();
-                hotbar.set(1, new Glock17().item)
-                      .set(2, new ItemStack('minecraft:diamond_sword'))
-                      .set(3, playerTeam === TeamEnum.Defender ? new ItemStack('xblockfire:defuser') : undefined);
+                HotbarManager.setHotbar(player, HotbarTemplate.initSpawn(playerTeam === TeamEnum.Defender));
+                HotbarManager.sendHotbar(player);
             }
         }
 
