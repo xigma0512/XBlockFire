@@ -9,7 +9,7 @@ import { TeamEnum } from "../../../types/TeamEnum";
 import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPlantPhaseEnum";
 import { entity_dynamic_property, set_entity_dynamic_property } from "../../../utils/Property";
 
-import { GameMode, InputPermissionCategory } from "@minecraft/server";
+import { GameMode, InputPermissionCategory, ItemStack } from "@minecraft/server";
 
 const config = Config.buying;
 
@@ -45,6 +45,8 @@ export class BuyingPhase implements IPhaseHandler {
 
         for (const player of member.getPlayers()) {
             player.inputPermissions.setPermissionCategory(InputPermissionCategory.LateralMovement, true);
+            HotbarManager.instance.getHotbar(player).set(8, undefined);
+            HotbarManager.instance.sendHotbar(player);
         }
         
         console.warn(`[Room ${this.roomId}] Exit BP:buying phase.`);
@@ -82,6 +84,7 @@ function spawnPlayers(roomId: number) {
         player.teleport(playerTeamSpawns[spawnIndex]);
 
         player.inputPermissions.setPermissionCategory(InputPermissionCategory.LateralMovement, false);
+        HotbarManager.instance.getHotbar(player).set(8, new ItemStack('minecraft:feather'));
         HotbarManager.instance.sendHotbar(player);
     }
 }
