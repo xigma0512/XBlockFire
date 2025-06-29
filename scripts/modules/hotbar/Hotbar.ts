@@ -12,6 +12,11 @@ export class Hotbar {
         this.items.fill(undefined);
     }
 
+    get(index: number) {
+        if (index < 0 || index > 8) throw Error('index out of bounds');
+        return this.items[index];
+    }
+
     set(index: number, item: ItemStack | undefined) {
         if (item) {
             item.lockMode = ItemLockMode.slot;
