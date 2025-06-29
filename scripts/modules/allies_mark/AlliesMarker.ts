@@ -1,4 +1,4 @@
-import { MemberManager } from "../../base/member/MemberManager";
+import { MemberManager } from "../../base/gameroom/member/MemberManager";
 
 import { TeamEnum } from "../../types/TeamEnum";
 
