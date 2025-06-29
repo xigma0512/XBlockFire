@@ -4,16 +4,18 @@ import { TeamEnum } from "../../types/TeamEnum";
 
 import { Vector3Builder, Vector3Utils } from "@minecraft/math";
 import { Direction, MolangVariableMap, Player } from "@minecraft/server";
+import { entity_dynamic_property } from "../../utils/Property";
 
 export class AlliesMarker {
 
-    constructor(private member: MemberManager) { }
+    static updateMark(member: MemberManager) {
+        const players = member.getPlayers();
+        for (const viewer of players) {
 
-    updateMark(team: TeamEnum) {
-        const teamPlayers = this.member.getPlayers({ team });
-
-        for (const viewer of teamPlayers) {
-            for (const ally of teamPlayers) {
+            const group = entity_dynamic_property(viewer, 'player:group');
+            const groupPlayers = member.getPlayers({ group });
+            
+            for (const ally of groupPlayers) {
                 if (ally.id === viewer.id) continue;
 
                 const { location, hasObstacle } = this.getSpawnLocation(viewer, ally);
@@ -25,7 +27,7 @@ export class AlliesMarker {
         }
     }
 
-    private getSpawnLocation(viewer: Player, ally: Player) {
+    private static getSpawnLocation(viewer: Player, ally: Player) {
         const startLocation = Vector3Utils.add(viewer.getHeadLocation(), { y: 0.1 });
         const endLocation = Vector3Utils.add(ally.location, { y: 2.3 }); 
 
@@ -58,7 +60,7 @@ export class AlliesMarker {
         }
     }
 
-    private getSize(viewer: Player, ally: Player, hasObstacle: boolean) {
+    private static getSize(viewer: Player, ally: Player, hasObstacle: boolean) {
         const distance = Vector3Utils.distance(viewer.location, ally.location);
 
         const minSize = 0.02;
@@ -75,7 +77,7 @@ export class AlliesMarker {
         return size;
     }
 
-    private getVarMap(size: number) {
+    private static getVarMap(size: number) {
         const varMap = new MolangVariableMap();
 
         varMap.setColorRGBA('color', {
