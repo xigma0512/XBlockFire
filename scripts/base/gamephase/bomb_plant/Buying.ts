@@ -28,6 +28,7 @@ export class BuyingPhase implements IPhaseHandler {
     on_entry() {
         this._currentTick = config.COUNTDOWN_TIME;
         spawnPlayers(this.roomId);
+        sendHotbar(this.roomId);
         resetPlayers(this.roomId);
 
         console.warn(`[Room ${this.roomId}] Entry BP:buying phase.`);
@@ -87,6 +88,21 @@ function spawnPlayers(roomId: number) {
         HotbarManager.instance.getHotbar(player).set(8, new ItemStack('minecraft:feather'));
         HotbarManager.instance.sendHotbar(player);
     }
+}
+
+function sendHotbar(roomId: number) {
+    const room = GameRoomManager.instance.getRoom(roomId);
+    const member = room.memberManager;
+
+    for (const player of member.getPlayers()) {
+        HotbarManager.instance.getHotbar(player).set(8, new ItemStack('minecraft:feather'));
+        HotbarManager.instance.sendHotbar(player);
+    }
+
+    const attackers = member.getPlayers({ team: TeamEnum.Attacker });
+    const bombPlayer = attackers[Math.floor(Math.random() * attackers.length)];
+    HotbarManager.instance.getHotbar(bombPlayer).set(3, new ItemStack('xblockfire:c4'));
+    HotbarManager.instance.sendHotbar(bombPlayer);
 }
 
 function resetPlayers(roomId: number) {

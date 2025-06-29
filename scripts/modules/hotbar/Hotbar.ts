@@ -18,7 +18,7 @@ export class Hotbar {
     }
 
     set(index: number, item: ItemStack | undefined) {
-        if (item) {
+        if (item && item.typeId !== 'xblockfire:c4') {
             item.lockMode = ItemLockMode.slot;
         }
         this.items[index] = item;
