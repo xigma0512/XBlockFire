@@ -11,6 +11,7 @@ import { Broadcast } from "../../../utils/Broadcast";
 import { FormatCode as FC } from "../../../utils/FormatCode";
 import { progressBar } from "../../../utils/others/Format";
 import { set_variable } from "../../../utils/Variable";
+import { Config as BP_Config } from "../../gamephase/bomb_plant/_config";
 
 import { Vector3Utils } from "@minecraft/math";
 import { Entity, Player, system, world } from "@minecraft/server";
@@ -26,7 +27,7 @@ export class BombPlantedState implements IBombStateHandler {
     readonly stateTag = BombStateEnum.Planted;
     
     private entity!: Entity;
-    private bombTotalTime = -1;
+    private currentTick: number = -1;
 
     private beforeItemUseListener = (ev: ItemUseBeforeEvent) => { };
     private afterItemCompleteUseListener = (ev: ItemCompleteUseAfterEvent) => { };
@@ -39,11 +40,11 @@ export class BombPlantedState implements IBombStateHandler {
     on_entry() {
         const room = GameRoomManager.instance.getRoom(this.roomId);
         this.entity = this.planter.dimension.spawnEntity(PLANTED_C4_ENTITY_ID, this.planter.location);
+        this.currentTick = BP_Config.bombplanted.COUNTDOWN_TIME;
 
         if (room.phaseManager.getPhase().phaseTag === BombPlantPhaseEnum.Action) {
             room.phaseManager.updatePhase(new BombPlantedPhase(this.roomId));
         }
-        this.bombTotalTime = room.phaseManager.getPhase().currentTick;
 
         this.beforeItemUseListener = world.beforeEvents.itemUse.subscribe(this.onBeforeItemUse.bind(this));
         this.afterItemCompleteUseListener = world.afterEvents.itemCompleteUse.subscribe(this.onItemCompleteUse.bind(this));
@@ -52,12 +53,11 @@ export class BombPlantedState implements IBombStateHandler {
     }
 
     on_running() {
-        const room = GameRoomManager.instance.getRoom(this.roomId);
-        const phase = room.phaseManager.getPhase();
-        const bar = progressBar(this.bombTotalTime, phase.currentTick, 20);
+        const bar = progressBar(BP_Config.bombplanted.COUNTDOWN_TIME, this.currentTick, 20);
         this.entity.nameTag = `| ${bar} |`;
-        
-        if (phase.currentTick <= 0) explosion(this.roomId, this.entity);
+        this.currentTick --;
+
+        if (this.currentTick <= 0) explosion(this.roomId, this.entity);
     }
 
     on_exit() {
