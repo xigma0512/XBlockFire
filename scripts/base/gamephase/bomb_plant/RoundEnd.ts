@@ -1,6 +1,6 @@
 import { GameRoomManager } from "../../gameroom/GameRoom";
-import { BuyingPhase } from "./Buying";
 import { GameOverPhase } from "./Gameover";
+import { PreRoundStartPhase } from "./PreRoundStart";
 import { ActionHud } from "../../../modules/hud/bomb_plant/Action"; 
 import { HotbarManager, HotbarTemplate } from "../../../modules/hotbar/Hotbar";
 
@@ -66,7 +66,7 @@ export class RoundEndPhase implements IPhaseHandler {
                 switchSide(this.roomId);
             }
             
-            phase.updatePhase(new BuyingPhase(this.roomId));
+            phase.updatePhase(new PreRoundStartPhase(this.roomId));
         }
     }
 

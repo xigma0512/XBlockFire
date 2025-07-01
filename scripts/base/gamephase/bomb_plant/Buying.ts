@@ -1,15 +1,12 @@
 import { GameRoomManager } from "../../gameroom/GameRoom";
 import { ActionPhase } from "./Action";
-import { MapRegister } from "../../gamemap/MapRegister";
 import { ActionHud } from "../../../modules/hud/bomb_plant/Action";
 import { HotbarManager } from "../../../modules/hotbar/Hotbar";
 
 import { Config } from "./_config";
-import { TeamEnum } from "../../../types/TeamEnum";
 import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPlantPhaseEnum";
-import { entity_dynamic_property, set_entity_dynamic_property } from "../../../utils/Property";
 
-import { GameMode, InputPermissionCategory, ItemStack } from "@minecraft/server";
+import { InputPermissionCategory, ItemStack } from "@minecraft/server";
 
 const config = Config.buying;
 
@@ -27,8 +24,7 @@ export class BuyingPhase implements IPhaseHandler {
 
     on_entry() {
         this._currentTick = config.COUNTDOWN_TIME;
-        spawnPlayers(this.roomId);
-
+        sendShopItem(this.roomId);
         console.warn(`[Room ${this.roomId}] Entry BP:buying phase.`);
     }
 
@@ -39,7 +35,7 @@ export class BuyingPhase implements IPhaseHandler {
     }
 
     on_exit() {
-        resetPlayer(this.roomId);        
+        restorePlayerDefaults(this.roomId);        
         console.warn(`[Room ${this.roomId}] Exit BP:buying phase.`);
     }
 
@@ -50,51 +46,18 @@ export class BuyingPhase implements IPhaseHandler {
 
 }
 
-function spawnPlayers(roomId: number) {
+function sendShopItem(roomId: number) {
     const room = GameRoomManager.instance.getRoom(roomId);
     const member = room.memberManager;
-    const gameMap = MapRegister.instance.getMap(room.gameMapId);
-
-    const spawns = {
-        [TeamEnum.Attacker]: gameMap.positions.attacker_spawns,
-        [TeamEnum.Defender]: gameMap.positions.defender_spawns,
-    }
-
-    let nextSpawnIndex = {
-        [TeamEnum.Attacker]: 0,
-        [TeamEnum.Defender]: 0
-    }
 
     for (const player of member.getPlayers()) {
-        if (entity_dynamic_property(player, 'player:is_spectator')) continue;
-
-        // teleport
-        const playerTeam = entity_dynamic_property(player, 'player:team');
-        const playerTeamSpawns = spawns[playerTeam];
-        const spawnIndex = nextSpawnIndex[playerTeam]++ % playerTeamSpawns.length;
-        player.teleport(playerTeamSpawns[spawnIndex]);
-        
-        // player initial setting
-        player.inputPermissions.setPermissionCategory(InputPermissionCategory.LateralMovement, false);
-        set_entity_dynamic_property(player, 'player:is_alive', true);
-        player.setGameMode(GameMode.Adventure);
-    
-        // send hotbar
         const hotbar = HotbarManager.getPlayerHotbar(player)
         hotbar.items[8] = new ItemStack('minecraft:feather');
         HotbarManager.sendHotbar(player, hotbar);
     }
-
-    // send c4
-    const attackers = member.getPlayers({ team: TeamEnum.Attacker });
-    const bombPlayer = attackers[Math.floor(Math.random() * attackers.length)];
-
-    const hotbar = HotbarManager.getPlayerHotbar(bombPlayer)
-    hotbar.items[3] = new ItemStack('xblockfire:c4');
-    HotbarManager.sendHotbar(bombPlayer, hotbar);
 }
 
-function resetPlayer(roomId: number) {
+function restorePlayerDefaults(roomId: number) {
     const room = GameRoomManager.instance.getRoom(roomId);
     const member = room.memberManager;
 
