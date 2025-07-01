@@ -5,7 +5,7 @@ import { BuyingPhase } from "./Buying";
 
 import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPlantPhaseEnum";
 import { TeamEnum } from "../../../types/TeamEnum";
-import { entity_dynamic_property, set_entity_dynamic_property } from "../../../utils/Property";
+import { entity_dynamic_property, set_entity_dynamic_property, set_entity_native_property } from "../../../utils/Property";
 
 import { GameMode, InputPermissionCategory, ItemStack } from "@minecraft/server";
 
@@ -63,8 +63,10 @@ function initializePlayers(roomId: number) {
         // player initial setting
         player.inputPermissions.setPermissionCategory(InputPermissionCategory.LateralMovement, false); 
         set_entity_dynamic_property(player, 'player:is_alive', true);
+        set_entity_native_property(player, 'player:can_use_item', false);
         player.setGameMode(GameMode.Adventure);
         player.addEffect('regeneration', 100, { amplifier: 255 });
+        
     }
 
     // send c4

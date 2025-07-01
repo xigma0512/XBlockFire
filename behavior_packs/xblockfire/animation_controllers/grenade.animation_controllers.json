@@ -7,12 +7,15 @@
 				"idle": {
 					"transitions": [
                         {
-                            "pull": "q.main_hand_item_use_duration&&q.equipped_item_all_tags('slot.weapon.mainhand', 'xblockfire:flashbang')"
+                            "pull": "q.property('player:can_use_item')&&q.main_hand_item_use_duration&&q.equipped_item_all_tags('slot.weapon.mainhand', 'xblockfire:flashbang')"
                         }
 					]
 				},
 				"pull": {
 					"transitions": [
+                        {
+                            "idle": "!q.property('player:can_use_item')"
+                        },
 						{
 							"idle": "!q.main_hand_item_use_duration&&!q.equipped_item_all_tags('slot.weapon.mainhand', 'xblockfire:flashbang')"
 						},

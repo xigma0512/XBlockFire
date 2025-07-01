@@ -7,6 +7,7 @@ import { Config } from "./_config";
 import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPlantPhaseEnum";
 
 import { InputPermissionCategory, ItemStack } from "@minecraft/server";
+import { set_entity_native_property } from "../../../utils/Property";
 
 const config = Config.buying;
 
@@ -63,6 +64,7 @@ function restorePlayerDefaults(roomId: number) {
 
     for (const player of member.getPlayers()) {
         player.inputPermissions.setPermissionCategory(InputPermissionCategory.LateralMovement, true);
+        set_entity_native_property(player, 'player:can_use_item', true);
 
         // clear feather(shop)
         const hotbar = HotbarManager.getPlayerHotbar(player)
