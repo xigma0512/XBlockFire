@@ -1,8 +1,7 @@
 import { GameRoomManager } from "../../gameroom/GameRoom";
 import { BuyingPhase } from "./Buying";
 import { WaitingHud } from "../../../modules/hud/bomb_plant/Waiting";
-import { HotbarManager } from "../../../modules/hotbar/Hotbar";
-import { HotbarTemplate } from "../../../modules/hotbar/HotbarTemplates";
+import { HotbarManager, HotbarTemplate } from "../../../modules/hotbar/Hotbar";
 
 import { Config } from "./_config";
 import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPlantPhaseEnum";
@@ -86,8 +85,7 @@ function initializePlayers(roomId: number) {
         room.economyManager.initializePlayer(player);
 
         const playerTeam = entity_dynamic_property(player, 'player:team');
-        HotbarManager.setHotbar(player, HotbarTemplate.initSpawn(playerTeam === TeamEnum.Defender));
-        HotbarManager.sendHotbar(player);
+        HotbarManager.sendHotbar(player, HotbarTemplate.initSpawn(playerTeam === TeamEnum.Defender));
     }
 }
 

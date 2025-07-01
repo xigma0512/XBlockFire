@@ -1,54 +1,56 @@
 import { GameRoomManager } from "../../base/gameroom/GameRoom";
 import { MemberManager } from "../../base/gameroom/member/MemberManager";
-import { HotbarManager } from "../hotbar/Hotbar";
 import { ItemActor } from "../weapon/actors/Actor";
 import { Glock17 } from "../weapon/actors/item/Glock17";
 
 import { PhaseEnum as BombPlantPhaseEnum } from "../../types/gamephase/BombPlantPhaseEnum";
 
 import { ItemStack, Player, system, world } from "@minecraft/server";
-import { ItemLockMode } from "@minecraft/server";
 import { ActionFormData, ActionFormResponse } from "@minecraft/server-ui";
+import { HotbarManager } from "../hotbar/Hotbar";
 
 interface Product {
     name: string;
     price: number;
-    hotbar_slot: number;
-    item: (new () => ItemActor) | ItemStack;
     max_amount: number;
+    hotbar_slot: number;
+    
+    itemActor?: (new () => ItemActor);
+    itemStackTypeId?: string;
+
     iconPath?: string;
     description?: string;
 }
+
+const productTable: Product[] = [
+    {
+        name: "Glock17",
+        price: 0,
+        max_amount: 1,
+        hotbar_slot: 1,
+        itemActor: Glock17,
+        description: "This is a good and classic weapon."
+    },
+    {
+        name: "Flashbang",
+        price: 300,
+        max_amount: 2,
+        hotbar_slot: 5,
+        itemStackTypeId: 'xblockfire:flashbang_item',
+    }
+];
 
 export class Shop {
 
     private static _instance: Shop;
     static get instance() { return (this._instance || (this._instance = new this)); }
 
-    readonly productTable: Product[] = [
-        {
-            name: "Glock17",
-            price: 0,
-            item: Glock17,
-            max_amount: 1,
-            hotbar_slot: 1,
-            description: "This is a good and classic weapon."
-        },
-        {
-            name: "Flashbang",
-            price: 300,
-            item: new ItemStack('xblockfire:flashbang_item', 1),
-            max_amount: 2,
-            hotbar_slot: 5
-        }
-    ];
-
     async openShop(player: Player) {
         const form = new ActionFormData();
         form.title('SHOP')
             .body('Select an item to purchase:')
 
-        for (const product of this.productTable) {
+        for (const product of productTable) {
             const name = `${product.name}\n${product.description ?? ''}`;
             form.button(name, product.iconPath);
         }
@@ -61,29 +63,24 @@ export class Shop {
         {
             if (response.selection === undefined) return;
             const selection = response.selection;
-            const product = this.productTable[selection];
-
+            const product = productTable[selection];
+            
             this.pay(player, product.price);
             
-            let item: ItemStack;
-            if (product.item instanceof ItemStack) {
-                item = product.item;
-                item.lockMode = ItemLockMode.slot;
-            } else {
-                item = new product.item().item;
-            }
+            const productItem = (product.itemActor) ? new product.itemActor().item
+                                                    : new ItemStack(product.itemStackTypeId!);
             
-            const hotbar = HotbarManager.getHotbar(player);
-            const hotbarItem = hotbar.get(product.hotbar_slot);
-            if (hotbarItem === undefined || !hotbarItem.matches(item.typeId)) {
-                hotbar.set(product.hotbar_slot, item);
-            }
-            else {
+            const hotbar = HotbarManager.getPlayerHotbar(player);
+            const hotbarItem = hotbar.items[product.hotbar_slot];
+
+            if (hotbarItem === undefined) {
+                hotbar.items[product.hotbar_slot] = productItem;
+            } else if (hotbarItem.typeId === productItem.typeId) {
                 hotbarItem.amount ++;
-                hotbar.set(product.hotbar_slot, hotbarItem);
+                hotbar.items[product.hotbar_slot] = hotbarItem;
             }
             
-            HotbarManager.sendHotbar(player);
+            HotbarManager.sendHotbar(player, hotbar);
         }
         catch (err: any)
         {
