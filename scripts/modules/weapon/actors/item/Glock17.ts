@@ -21,9 +21,7 @@ export class Glock17 extends ItemActor {
                     nametag: 'Glock17',
                     lore: [ "I'M A GUN!!!" ],
                     keepOnDeath: true,
-                    lockMode: ItemLockMode.slot,
-                    canPlaceOn: [],
-                    canDestroy: []
+                    lockMode: ItemLockMode.slot
                 }
             )).set('gun', new GunComponent(
                 {
