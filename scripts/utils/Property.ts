@@ -18,6 +18,7 @@ type ScoreBoardPropertyList = {
 type EntityNativePropertyList = {
     'player:is_moving': boolean;
     'player:state.reload': GunReloadStateEnum;
+    'player:can_use_item': boolean;
     'grenade:throwing_type': number;
     'grenade:type': GrenadeTypeEnum;
 }

@@ -6,6 +6,7 @@ import { FireModeEnum } from "../../../../types/weapon/WeaponEnum";
 import { Player, system, world } from "@minecraft/server";
 import { BulletSystem } from "../bullet/BulletSystem";
 import { getPlayerGunOffset } from "./GunOffsetSystem";
+import { entity_native_property } from "../../../../utils/Property";
 
 class GunFireSystem {
 
@@ -27,10 +28,10 @@ class GunFireSystem {
         const gunFireComp = gunActor.getComponent('gun_fire')!;
 
         switch(gunFireComp.fire_mode) {
-            case FireModeEnum["Fully-Auto"]:                 
+            case FireModeEnum["Fully-Auto"]:
                 this.fullAutoFire(player, gunActor);
                 break;
-            case FireModeEnum["Semi-Auto"]: 
+            case FireModeEnum["Semi-Auto"]:
                 this.semiAutoFire(player, gunActor);
                 break;
         }
@@ -95,6 +96,7 @@ class GunFireSystem {
 
 const startFireTrigger = world.afterEvents.itemStartUse.subscribe(ev => {
     const player = ev.source;
+    if (!entity_native_property(player, 'player:can_use_item')) return;
     
     const handItem = getPlayerHandItem(player);
     if (handItem === undefined) return;
