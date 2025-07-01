@@ -80,15 +80,18 @@ function spawnPlayers(roomId: number) {
         player.setGameMode(GameMode.Adventure);
     
         // send hotbar
-        HotbarManager.getHotbar(player).set(8, new ItemStack('minecraft:feather'));
-        HotbarManager.sendHotbar(player);
+        const hotbar = HotbarManager.getPlayerHotbar(player)
+        hotbar.items[8] = new ItemStack('minecraft:feather');
+        HotbarManager.sendHotbar(player, hotbar);
     }
 
     // send c4
     const attackers = member.getPlayers({ team: TeamEnum.Attacker });
     const bombPlayer = attackers[Math.floor(Math.random() * attackers.length)];
-    HotbarManager.getHotbar(bombPlayer).set(3, new ItemStack('xblockfire:c4'));
-    HotbarManager.sendHotbar(bombPlayer);
+
+    const hotbar = HotbarManager.getPlayerHotbar(bombPlayer)
+    hotbar.items[3] = new ItemStack('xblockfire:c4');
+    HotbarManager.sendHotbar(bombPlayer, hotbar);
 }
 
 function resetPlayer(roomId: number) {
@@ -99,7 +102,8 @@ function resetPlayer(roomId: number) {
         player.inputPermissions.setPermissionCategory(InputPermissionCategory.LateralMovement, true);
 
         // clear feather(shop)
-        HotbarManager.getHotbar(player).set(8, undefined);
-        HotbarManager.sendHotbar(player);
+        const hotbar = HotbarManager.getPlayerHotbar(player)
+        hotbar.items[8] = undefined;
+        HotbarManager.sendHotbar(player, hotbar);
     }
 }

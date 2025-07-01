@@ -2,8 +2,7 @@ import { GameRoomManager } from "../../gameroom/GameRoom";
 import { BuyingPhase } from "./Buying";
 import { GameOverPhase } from "./Gameover";
 import { ActionHud } from "../../../modules/hud/bomb_plant/Action"; 
-import { HotbarManager } from "../../../modules/hotbar/Hotbar";
-import { HotbarTemplate } from "../../../modules/hotbar/HotbarTemplates";
+import { HotbarManager, HotbarTemplate } from "../../../modules/hotbar/Hotbar";
 
 import { Config } from "./_config";
 import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPlantPhaseEnum";
@@ -40,7 +39,7 @@ export class RoundEndPhase implements IPhaseHandler {
     }
 
     on_exit() {
-        clearC4(this.roomId);
+        resetPlayerInventory(this.roomId);
         console.warn(`[Room ${this.roomId}] Exit BP:roundEnd phase.`);
     }
 
@@ -108,19 +107,17 @@ function processWinner(roomId: number) {
     }
 }
 
-function clearC4(roomId: number) {
+function resetPlayerInventory(roomId: number) {
     const room = GameRoomManager.instance.getRoom(roomId);
     const players = room.memberManager.getPlayers();
     
     for (const player of players) {
-        if (entity_dynamic_property(player, 'player:is_alive')) {
-            // eslint-disable-next-line
-            player.runCommand('clear @s xblockfire:c4');
-            HotbarManager.updateHotbar(player);
-        } else {   
+        // eslint-disable-next-line
+        player.runCommand('clear @s xblockfire:c4');
+
+        if (!entity_dynamic_property(player, 'player:is_alive')) {
             const playerTeam = entity_dynamic_property(player, 'player:team');
-            HotbarManager.setHotbar(player, HotbarTemplate.initSpawn(playerTeam === TeamEnum.Defender));
-            HotbarManager.sendHotbar(player);
+            HotbarManager.sendHotbar(player, HotbarTemplate.initSpawn(playerTeam === TeamEnum.Defender));
         }
     }
 }

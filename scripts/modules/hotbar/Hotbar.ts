@@ -1,61 +1,50 @@
-import { ItemLockMode, ItemStack, Player } from "@minecraft/server";
+import { ItemStack, Player } from "@minecraft/server";
+import { Glock17 } from "../weapon/actors/item/Glock17";
 
-export class Hotbar {
+export interface IHotbar {
+    readonly items: Array<ItemStack|undefined>;
+}
+
+class Hotbar {
     
-    private readonly items: Array<ItemStack | undefined>;
-
+    readonly items: Array<ItemStack|undefined>;
+    
     constructor() {
-        this.items = new Array<ItemStack | undefined>(9);
+        this.items = new Array(9).fill(undefined);
     }
 
-    clearAll() {
-        this.items.fill(undefined);
-    }
-
-    get(index: number) {
-        if (index < 0 || index > 8) throw Error('index out of bounds');
-        return this.items[index];
-    }
-
-    set(index: number, item: ItemStack | undefined) {
-        if (item && item.typeId !== 'xblockfire:c4') {
-            item.lockMode = ItemLockMode.slot;
+    copy(target: Player) {
+        const container = target.getComponent('inventory')!.container;
+        for (let index = 0; index < 9; index ++) {
+            this.items[index] = container.getItem(index);
         }
-        this.items[index] = item;
-        return this;
-    }
-
-    at(index: number) {
-        return this.items.at(index);
     }
 }
 
 export class HotbarManager {
-    
-    private static players = new Map<Player, Hotbar>();
 
-    static getHotbar(target: Player) {
-        if (!this.players.has(target)) this.players.set(target, new Hotbar());
-        return this.players.get(target)!;
+    static getPlayerHotbar(player: Player): IHotbar {
+        const hotbar = new Hotbar();
+        hotbar.copy(player);
+        return hotbar;
     }
 
-    static setHotbar(target: Player, hotbar: Hotbar) {
-        this.players.set(target, hotbar);
-    }
-
-    static updateHotbar(target: Player) {
+    static sendHotbar(target: Player, hotbar: IHotbar) {
         const container = target.getComponent('inventory')!.container;
-        const hotbar = this.getHotbar(target);
-        for (let index = 0; index < 10; index ++) {
-            hotbar.set(index, container.getItem(index));
+        for (let index = 0; index < 9; index ++) {
+            container.setItem(index, hotbar.items.at(index));
         }
     }
+}
 
-    static sendHotbar(target: Player) {
-        const container = target.getComponent('inventory')!.container;
-        const hotbar = this.getHotbar(target);
-        for (let index = 0; index < 10; index ++) {
-            container.setItem(index, hotbar.at(index));
-        }
+export class HotbarTemplate {
+    static initSpawn(isDefender: boolean) {
+        const hotbar = new Hotbar();
+        
+        hotbar.items[1] = new Glock17().item;
+        hotbar.items[2] = new ItemStack('minecraft:diamond_sword');
+        hotbar.items[3] = isDefender ? new ItemStack('xblockfire:defuser') : undefined;
+        
+        return hotbar;
     }
 }
