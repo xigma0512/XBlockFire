@@ -5,7 +5,7 @@ import { Glock17 } from "../weapon/actors/item/Glock17";
 
 import { PhaseEnum as BombPlantPhaseEnum } from "../../types/gamephase/BombPlantPhaseEnum";
 
-import { ItemStack, Player, system, world } from "@minecraft/server";
+import { ItemLockMode, ItemStack, Player, system, world } from "@minecraft/server";
 import { ActionFormData, ActionFormResponse } from "@minecraft/server-ui";
 import { HotbarManager } from "../hotbar/Hotbar";
 
@@ -69,6 +69,8 @@ export class Shop {
             
             const productItem = (product.itemActor) ? new product.itemActor().item
                                                     : new ItemStack(product.itemStackTypeId!);
+
+            if (productItem.lockMode === ItemLockMode.none) productItem.lockMode = ItemLockMode.slot;
             
             const hotbar = HotbarManager.getPlayerHotbar(player);
             const hotbarItem = hotbar.items[product.hotbar_slot];
