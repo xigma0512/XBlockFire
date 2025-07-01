@@ -100,9 +100,9 @@ const startFireTrigger = world.afterEvents.itemStartUse.subscribe(ev => {
     
     const handItem = getPlayerHandItem(player);
     if (handItem === undefined) return;
-        
+    
+    if (!ActorManager.isActor(handItem)) return;
     const actor = ActorManager.getActor(handItem) as ItemActor;
-    if (actor === undefined) return;
 
     if (handItem.hasTag('xblockfire:gun')) {
         GunFireSystem.instance.startFiring(player, actor);

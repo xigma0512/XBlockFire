@@ -21,8 +21,8 @@ class GunReloadSystem {
             const handItem = getPlayerHandItem(this.player);
             if (!handItem) throw 'player hand item is undefined.';
             
+            if (!ActorManager.isActor(handItem)) throw 'hand item actor is undefined.';
             const actor = ActorManager.getActor(handItem) as ItemActor;
-            if (actor === undefined) throw 'hand item actor is undefined.';
             
             if (!this.canReload(actor)) throw 'cannot reload now';
             

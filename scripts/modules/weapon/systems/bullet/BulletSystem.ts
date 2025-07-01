@@ -43,8 +43,8 @@ const bulletHitEntity = world.afterEvents.projectileHitEntity.subscribe(ev => {
     const projectile = ev.projectile;
     if (projectile.typeId !== 'xblockfire:bullet') return;
     
+    if (!ActorManager.isActor(projectile)) return;
     const bulletActor = ActorManager.getActor(projectile) as EntityActor;
-    if (bulletActor === undefined) return;
     
     new DamageSystem(attacker, hitEntity).applyBulletDamage(bulletActor, ev.location);
 });
