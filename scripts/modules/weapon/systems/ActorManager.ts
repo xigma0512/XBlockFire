@@ -31,6 +31,18 @@ export class ActorManager {
         return true;
     }
 
+    static isActor(target: Entity | ItemStack) {
+        if (target instanceof Entity) {
+            return this._entities.has(target.id);
+        }
+
+        if (target instanceof ItemStack) {
+            const id = entity_dynamic_property(target, 'item:uuid');
+            if (id === undefined || typeof id !== 'string') return false;
+            return this._items.has(id);
+        }
+    }
+
     static getActor(target: Entity | ItemStack) {
         if (target instanceof Entity) {
             const actor = this._entities.get(target.id);
@@ -51,8 +63,8 @@ export class ActorManager {
 world.beforeEvents.entityRemove.subscribe(ev => {        
     const entity = ev.removedEntity;
     system.runTimeout(() => {
-        const actor = ActorManager.getActor(entity);
-        if (!actor) return;
+        if (!ActorManager.isActor(entity)) return;
+        const actor = ActorManager.getActor(entity)!;
         ActorManager.removeActor(actor.uuid);
     }, 2);
 });
