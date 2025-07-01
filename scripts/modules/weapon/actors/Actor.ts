@@ -6,7 +6,7 @@ import { ActorManager } from "../systems/ActorManager";
 
 export type ActorType = EntityActor | ItemActor;
 
-class Actor {
+abstract class Actor {
     readonly typeId: string;
     readonly uuid: string;
     protected readonly components = new Map<keyof ComponentTypes, Component>;
@@ -25,7 +25,7 @@ class Actor {
     }
 }
 
-export class EntityActor extends Actor {
+export abstract class EntityActor extends Actor {
     
     // readonly entity: Entity;
     private _entity: Entity;
@@ -51,7 +51,7 @@ export class EntityActor extends Actor {
     }
 }
 
-export class ItemActor extends Actor {
+export abstract class ItemActor extends Actor {
     readonly item: ItemStack;
     constructor(typeId: string, item: ItemStack) {
         super(typeId);
@@ -70,4 +70,6 @@ export class ItemActor extends Actor {
         this.item.setCanDestroy(itemComp.canDestroy);
         this.item.setCanPlaceOn(itemComp.canPlaceOn);
     }
+
+    abstract clone(): ItemActor;
 }

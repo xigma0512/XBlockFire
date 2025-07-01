@@ -12,6 +12,8 @@ import { GunOffsetComponent } from "../../components/gun/GunOffsetComponent";
 
 export class Glock17 extends ItemActor {
 
+    clone() { return new Glock17(); }
+
     constructor() {
         super('glock17', new ItemStack('xblockfire:glock17', 1));
         
@@ -56,4 +58,5 @@ export class Glock17 extends ItemActor {
 
         this.setItem();
     }
+
 }
