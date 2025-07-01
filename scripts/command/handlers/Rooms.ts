@@ -1,7 +1,7 @@
 import { GameRoomManager } from "../../base/gameroom/GameRoom";
-import { BuyingPhase } from "../../base/gamephase/bomb_plant/Buying";
 import { GameModeEnum } from "../../types/gameroom/GameModeEnum";
 import { MemberManager } from "../../base/gameroom/member/MemberManager";
+import { PreRoundStartPhase } from "../../base/gamephase/bomb_plant/PreRoundStart";
 
 import { Player } from "@minecraft/server";
 
@@ -54,7 +54,7 @@ function forceStart(executer: Player, ...args: string[]) {
 
     const room = GameRoomManager.instance.getRoom(Number(roomId));
     const startPhase = {
-        [GameModeEnum.BombPlant]: new BuyingPhase(Number(roomId))
+        [GameModeEnum.BombPlant]: new PreRoundStartPhase(Number(roomId))
     };
     room.phaseManager.updatePhase(startPhase[room.gameMode]);
     executer.sendMessage(`Force start ${roomId}`);
