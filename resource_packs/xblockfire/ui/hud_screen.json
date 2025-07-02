@@ -8,6 +8,27 @@
         ],
         "controls": [
             {
+                "subtitle": {
+                    "type": "label",
+                    "anchor_from": "center",
+                    "anchor_to": "center",
+                    "offset": [
+                        0,
+                        "15%"
+                    ],
+                    "color": "$title_command_text_color",
+                    "text": "$subtitle_text",
+                    "localize": false,
+                    "font_size": "large",
+                    "shadow": true,
+                    "size": [
+                        "100%",
+                        "default"
+                    ],
+                    "text_alignment": "center"
+                }
+            },
+            {
                 "sidebar": {
                     "type": "image",
                     "size": [
@@ -44,7 +65,7 @@
         ],
         "offset": [
             0,
-            "50%-68px"
+            "35%"
         ],
         "texture": "textures/ui/hud_tip_text_background",
         "controls": [
