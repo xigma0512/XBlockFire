@@ -1,4 +1,5 @@
 import { GameRoomManager } from "../../../base/gameroom/GameRoom";
+import { HudTextController } from "../HudTextController";
 
 import { Config } from "../../../base/gamephase/bomb_plant/_config";
 import { GameModeEnumTable } from "../../../types/gameroom/GameModeEnum";
@@ -13,27 +14,29 @@ export class WaitingHud implements InGameHud {
     constructor(private readonly roomId: number) { }
 
     update() {
-        this.updateActionbar();
+        this.updateSubtitle();
         this.updateSidebar();
     }
 
-    private updateActionbar() {
+    private updateSubtitle() {
         const room = GameRoomManager.instance.getRoom(this.roomId);
-        const members = room.memberManager.getPlayers();
         const phase = room.phaseManager.getPhase();
+        const members = room.memberManager.getPlayers();
         const playerAmount = members.length;
-    
-        let actionbarText = `${FC.Yellow}Waiting for more players...`;
-    
+        
+        let text = `${FC.Yellow}Waiting for more players...`;
+        
         if (config.AUTO_START && playerAmount >= config.AUTO_START_MIN_PLAYER) {
-            actionbarText = `${FC.Green}Game will start in ${(phase.currentTick / 20).toFixed(0)} seconds.`;
+            text = `${FC.Green}Game will start in ${(phase.currentTick / 20).toFixed(0)} seconds.`;
         }
-    
+        
         if (phase.currentTick !== config.COUNTDOWN_TIME && playerAmount < config.AUTO_START_MIN_PLAYER) {
             Broadcast.message(`${FC.Red}Not enough players. Waiting for more players.`, members);
         }
-    
-        Broadcast.actionbar(actionbarText, members);
+        
+        for (const player of members) {
+            HudTextController.add(player, 'subtitle', text);
+        }
     }
 
     private updateSidebar() {
@@ -51,6 +54,8 @@ export class WaitingHud implements InGameHud {
             ...players.map(player => `  ${FC.Gray}- ${player.name}`)
         ];
         
-        Broadcast.updatebar([], sidebarMessage, players);
+        for (const player of players) {
+            HudTextController.add(player, 'sidebar', sidebarMessage);
+        }
     }
 }

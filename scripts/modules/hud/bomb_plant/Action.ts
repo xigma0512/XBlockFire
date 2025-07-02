@@ -1,9 +1,9 @@
 import { GameRoomManager } from "../../../base/gameroom/GameRoom";
+import { HudTextController } from "../HudTextController";
 
 import { TeamEnum } from "../../../types/TeamEnum";
 import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPlantPhaseEnum";
 
-import { Broadcast } from "../../../utils/Broadcast";
 import { FormatCode as FC } from "../../../utils/FormatCode";
 import { entity_dynamic_property } from "../../../utils/Property";
 import { variable } from "../../../utils/Variable";
@@ -15,42 +15,44 @@ export class ActionHud implements InGameHud {
     constructor(private readonly roomId: number) { }
     
     update() {
-        this.updateActionbar();
-        this.updatebar();
+        this.updateSubtitle();
+        this.updateSidebar();
     }
 
-    private updateActionbar() {
+    private updateSubtitle() {
         const room = GameRoomManager.instance.getRoom(this.roomId);
         const phase = room.phaseManager.getPhase();
-        const members = room.memberManager.getPlayers();
 
-        let actionbarText: string | string[] = '';
+        let text: string | string[] = '';
         switch (phase.phaseTag) {
             case BombPlantPhaseEnum.Buying:
-                actionbarText = [
-                    `Buying phase will end in ${(phase.currentTick / 20).toFixed(0)} seconds.\n`, 
+                text = [
+                    `Buying phase will end in ${(phase.currentTick / 20).toFixed(0)} seconds.`, 
                     `Right-click the feather to open the shop.`
                 ];
                 break;
             case BombPlantPhaseEnum.RoundEnd:
-                actionbarText = `${FC.Yellow}Next round start in ${(phase.currentTick / 20).toFixed(0)} seconds.`;
+                text = `${FC.Yellow}Next round start in ${(phase.currentTick / 20).toFixed(0)} seconds.`;
                 break;
             case BombPlantPhaseEnum.Gameover:
-                actionbarText = `Return lobby in ${(phase.currentTick / 20).toFixed(0)}`;
+                text = `${FC.Yellow}Return lobby in ${(phase.currentTick / 20).toFixed(0)}`;
                 break;
         }
 
-        Broadcast.actionbar(actionbarText, members);
+        if (text === '') return;
+        const members = room.memberManager.getPlayers();
+        for (const player of members) {
+            HudTextController.add(player, 'subtitle', text);
+        }
     }
 
-    private updatebar() {
+    private updateSidebar() {
         const room = GameRoomManager.instance.getRoom(this.roomId);
         const players = room.memberManager.getPlayers();
         
         for (const player of players) {
             const sidebarMessage = this.getSidebarMessage(player);
-            const topbarMessage = this.getTopbarMessage(player);
-            Broadcast.updatebar(topbarMessage, sidebarMessage, [player]);
+            HudTextController.add(player, 'sidebar', sidebarMessage);
         }
     }
     
