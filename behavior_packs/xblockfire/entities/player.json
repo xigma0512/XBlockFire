@@ -11,6 +11,7 @@
                     "main_weapon_reload",
                     "secondary_weapon_reload",
                     "player_movement",
+                    "player_gun_holding",
                     "throwing_flashbang",
                     "throwing_smoke_grenade"
                 ]
@@ -19,6 +20,7 @@
                 "secondary_weapon_reload": "controller.animation.player.secondary_weapon.reload",
                 "main_weapon_reload": "controller.animation.player.main_weapon.reload",
                 "player_movement": "controller.animation.player.movement",
+                "player_gun_holding": "controller.animation.player.gun_holding",
                 "throwing_flashbang": "controller.animation.player.grenade.flashbang",
                 "throwing_smoke_grenade": "controller.animation.player.grenade.smoke_grenade"
             },
@@ -41,6 +43,11 @@
                     "default": false
                 },
                 "player:can_use_item": {
+                    "client_sync": true,
+                    "type": "bool",
+                    "default": false
+                },
+                "player:is_holding_gun": {
                     "client_sync": true,
                     "type": "bool",
                     "default": false
@@ -211,6 +218,16 @@
             "property:remove_moving": {
                 "set_property": {
                     "player:is_moving": false
+                }
+            },
+            "property:holding_gun": {
+                "set_property": {
+                    "player:is_holding_gun": true
+                }
+            },
+            "property:not_holding_gun": {
+                "set_property": {
+                    "player:is_holding_gun": false
                 }
             }
         }

@@ -153,6 +153,31 @@
 					]
 				}
 			}
-		}
+		},
+        "controller.animation.player.gun_holding": {
+            "initial_state": "not_holding",
+            "states": {
+                "not_holding": {
+                    "on_entry": [
+                        "/event entity @s property:not_holding_gun"
+                    ],
+                    "transitions": [
+                        {
+                            "holding": "q.equipped_item_all_tags('slot.weapon.mainhand', 'xblockfire:gun')&&q.is_alive"
+                        }
+                    ]
+                },
+                "holding": {
+                    "on_entry": [
+                        "/event entity @s property:holding_gun"
+                    ],
+                    "transitions": [
+                        {
+                            "not_holding": "!q.equipped_item_all_tags('slot.weapon.mainhand', 'xblockfire:gun')||!q.is_alive"
+                        }
+                    ]
+                }
+            }
+        }
     }
 }
