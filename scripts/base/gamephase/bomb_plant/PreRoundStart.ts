@@ -1,5 +1,5 @@
 import { GameRoomManager } from "../../gameroom/GameRoom";
-import { HotbarManager } from "../../../modules/hotbar/Hotbar";
+import { HotbarManager, HotbarTemplate } from "../../../modules/hotbar/Hotbar";
 import { MapRegister } from "../../gamemap/MapRegister";
 import { BuyingPhase } from "./Buying";
 
@@ -18,8 +18,10 @@ export class PreRoundStartPhase implements IPhaseHandler {
     constructor(private readonly roomId: number) {}
 
     on_entry() {
-        console.warn(`[Room ${this.roomId}] Entry BP:pre_round_start phase.`);
+        teleportPlayers(this.roomId);
         initializePlayers(this.roomId);
+        resetPlayerInventory(this.roomId);
+        console.warn(`[Room ${this.roomId}] Entry BP:pre_round_start phase.`);
     }
 
     on_running() {
@@ -39,6 +41,22 @@ export class PreRoundStartPhase implements IPhaseHandler {
 function initializePlayers(roomId: number) {
     const room = GameRoomManager.instance.getRoom(roomId);
     const member = room.memberManager;
+
+    for (const player of member.getPlayers()) {
+        if (entity_dynamic_property(player, 'player:is_spectator')) continue;
+
+        player.inputPermissions.setPermissionCategory(InputPermissionCategory.LateralMovement, false); 
+        set_entity_dynamic_property(player, 'player:is_alive', true);
+        set_entity_native_property(player, 'player:can_use_item', false);
+        player.setGameMode(GameMode.Adventure);
+        player.addEffect('regeneration', 100, { amplifier: 255 });
+        
+    }
+}
+
+function teleportPlayers(roomId: number) {
+    const room = GameRoomManager.instance.getRoom(roomId);
+    const member = room.memberManager;
     const gameMap = MapRegister.instance.getMap(room.gameMapId);
 
     const spawns = {
@@ -54,22 +72,31 @@ function initializePlayers(roomId: number) {
     for (const player of member.getPlayers()) {
         if (entity_dynamic_property(player, 'player:is_spectator')) continue;
 
-        // teleport
         const playerTeam = entity_dynamic_property(player, 'player:team');
         const playerTeamSpawns = spawns[playerTeam];
         const spawnIndex = nextSpawnIndex[playerTeam]++ % playerTeamSpawns.length;
         player.teleport(playerTeamSpawns[spawnIndex]);
-        
-        // player initial setting
-        player.inputPermissions.setPermissionCategory(InputPermissionCategory.LateralMovement, false); 
-        set_entity_dynamic_property(player, 'player:is_alive', true);
-        set_entity_native_property(player, 'player:can_use_item', false);
-        player.setGameMode(GameMode.Adventure);
-        player.addEffect('regeneration', 100, { amplifier: 255 });
-        
+    }
+}
+
+function resetPlayerInventory(roomId: number) {
+    const room = GameRoomManager.instance.getRoom(roomId);
+    const member = room.memberManager;
+    
+    for (const player of member.getPlayers()) {
+        // eslint-disable-next-line
+        player.runCommand('clear @s xblockfire:c4');
+
+        if (!entity_dynamic_property(player, 'player:is_alive')) {
+            const playerTeam = entity_dynamic_property(player, 'player:team');
+            HotbarManager.sendHotbar(player, HotbarTemplate.initSpawn(playerTeam === TeamEnum.Defender));
+        } else {
+            const hotbar = HotbarManager.getPlayerHotbar(player);
+            HotbarManager.resetItemActors(hotbar);
+            HotbarManager.sendHotbar(player, hotbar);
+        }
     }
 
-    // send c4
     const attackers = member.getPlayers({ team: TeamEnum.Attacker });
     if (attackers.length > 0) {
         const bombPlayer = attackers[Math.floor(Math.random() * attackers.length)];
