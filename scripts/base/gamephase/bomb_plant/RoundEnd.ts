@@ -39,7 +39,6 @@ export class RoundEndPhase implements IPhaseHandler {
     }
 
     on_exit() {
-        resetPlayerInventory(this.roomId);
         console.warn(`[Room ${this.roomId}] Exit BP:roundEnd phase.`);
     }
 
@@ -104,20 +103,5 @@ function processWinner(roomId: number) {
         const earn = config.INCOME[(playerTeam === winnerTeam) ? 0 : 1];
         economy.modifyMoney(player, earn);
         player.sendMessage(`${FC.Gray}Round Income: +${earn}`);
-    }
-}
-
-function resetPlayerInventory(roomId: number) {
-    const room = GameRoomManager.instance.getRoom(roomId);
-    const players = room.memberManager.getPlayers();
-    
-    for (const player of players) {
-        // eslint-disable-next-line
-        player.runCommand('clear @s xblockfire:c4');
-
-        if (!entity_dynamic_property(player, 'player:is_alive')) {
-            const playerTeam = entity_dynamic_property(player, 'player:team');
-            HotbarManager.sendHotbar(player, HotbarTemplate.initSpawn(playerTeam === TeamEnum.Defender));
-        }
     }
 }
