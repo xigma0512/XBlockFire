@@ -29,13 +29,15 @@ class _HudTextController {
     private update() {
         for (const [player, text] of this.hud) {
             if (text.sidebar.length == 0) text.sidebar = ['\u{E107}'];
-            player.onScreenDisplay.setTitle(text.sidebar.join(`\n${FormatCode.Reset}`), {
-                fadeInDuration: 0,
-                fadeOutDuration: 0,
-                stayDuration: 20,
-                subtitle: text.subtitle.join(`\n${FormatCode.Reset}`)
-            });
-            player.onScreenDisplay.setActionBar(text.actionbar.join(`\n${FormatCode.Reset}`));
+            try {
+                player.onScreenDisplay.setTitle(text.sidebar.join(`\n${FormatCode.Reset}`), {
+                    fadeInDuration: 0,
+                    fadeOutDuration: 0,
+                    stayDuration: 20,
+                    subtitle: text.subtitle.join(`\n${FormatCode.Reset}`)
+                });
+                player.onScreenDisplay.setActionBar(text.actionbar.join(`\n${FormatCode.Reset}`));
+            } catch { continue; }
         }
         this.hud.clear();
     }
