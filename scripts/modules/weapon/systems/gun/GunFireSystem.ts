@@ -1,12 +1,21 @@
 import { ItemActor } from "../../actors/Actor";
 import { ActorManager } from "../ActorManager";
-import { getPlayerHandItem } from "../../../../utils/others/Entity";
-import { FireModeEnum } from "../../../../types/weapon/WeaponEnum";
-
-import { Player, system, world } from "@minecraft/server";
 import { BulletSystem } from "../bullet/BulletSystem";
 import { getPlayerGunOffset } from "./GunOffsetSystem";
+
+import { FireModeEnum } from "../../../../types/weapon/WeaponEnum";
+
+import { getPlayerHandItem } from "../../../../utils/others/Entity";
 import { entity_native_property } from "../../../../utils/Property";
+
+import { Player, system, world } from "@minecraft/server";
+import { ItemStopUseAfterEvent, PlayerHotbarSelectedSlotChangeAfterEvent, PlayerLeaveAfterEvent } from "@minecraft/server";
+
+interface StopFiringListeners {
+    afterItemStopUse: (ev: ItemStopUseAfterEvent) => void;
+    afterPlayerHotbarSelected: (ev: PlayerHotbarSelectedSlotChangeAfterEvent) => void;
+    afterPlayerLeave: (ev: PlayerLeaveAfterEvent) => void;
+}
 
 class GunFireSystem {
 
@@ -14,10 +23,12 @@ class GunFireSystem {
     static get instance() { return (this._instance || (this._instance = new this())); }
 
     private _firingTask: Map<Player, number>;
+    private _stopFiringCallback: Map<Player, StopFiringListeners>;
     private _cooldowns: Set<Player>;
 
     private constructor() {
         this._firingTask = new Map();
+        this._stopFiringCallback = new Map();
         this._cooldowns = new Set();
     }
 
@@ -35,13 +46,36 @@ class GunFireSystem {
                 this.semiAutoFire(player, gunActor);
                 break;
         }
+
+        this._stopFiringCallback.set(player, {
+            afterItemStopUse: world.afterEvents.itemStopUse.subscribe((ev) => { 
+                if (ev.source.id === player.id) this.stopFiringTrigger(player); 
+            }),
+            afterPlayerHotbarSelected: world.afterEvents.playerHotbarSelectedSlotChange.subscribe((ev) => {
+                if (ev.player.id === player.id) this.stopFiringTrigger(player); 
+            }),
+            afterPlayerLeave: world.afterEvents.playerLeave.subscribe((ev) => {
+                if (ev.playerId === player.id) this.stopFiringTrigger(player); 
+            })
+        });
     }
 
-    stopFiring(player: Player) {
-        const taskId = this._firingTask.get(player);
-        if (taskId === undefined) return;
-        system.clearRun(taskId);
-        this._firingTask.delete(player);
+    private stopFiringTrigger(player: Player) {
+        if (this._firingTask.has(player)) {
+            const taskId = this._firingTask.get(player)!;
+            system.clearRun(taskId);
+            this._firingTask.delete(player);
+        }
+
+        if (this._stopFiringCallback.has(player)) {
+            const callbacks = this._stopFiringCallback.get(player)!;
+            
+            world.afterEvents.itemStopUse.unsubscribe(callbacks.afterItemStopUse);
+            world.afterEvents.playerHotbarSelectedSlotChange.unsubscribe(callbacks.afterPlayerHotbarSelected);
+            world.afterEvents.playerLeave.unsubscribe(callbacks.afterPlayerLeave);
+
+            this._stopFiringCallback.delete(player);   
+        }
     }
 
     private fullAutoFire(player: Player, actor: ItemActor) {
@@ -106,16 +140,5 @@ const startFireTrigger = world.afterEvents.itemStartUse.subscribe(ev => {
 
     if (handItem.hasTag('xblockfire:gun')) {
         GunFireSystem.instance.startFiring(player, actor);
-    }
-});
-
-const stopFireTrigger = world.afterEvents.itemStopUse.subscribe(ev => {
-    const player = ev.source;
-    
-    const handItem = getPlayerHandItem(player);
-    if (handItem === undefined) return;
-
-    if (handItem.hasTag('xblockfire:gun')) {
-        GunFireSystem.instance.stopFiring(player);
     }
 });
