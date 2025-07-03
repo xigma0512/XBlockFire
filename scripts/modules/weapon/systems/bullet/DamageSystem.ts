@@ -1,8 +1,9 @@
 import { EntityActor } from "../../actors/Actor";
-import { entity_dynamic_property, set_entity_dynamic_property } from "../../../../utils/Property";
+import { entity_dynamic_property } from "../../../../utils/Property";
+import { gameEvents } from "../../../../event/EventEmitter";
 
 import { Vector3Utils } from "@minecraft/math";
-import { Entity, GameMode, Player, Vector3 } from "@minecraft/server";
+import { Entity, Player, Vector3 } from "@minecraft/server";
 
 const NEAR_DISTANCE = 15;
 const MEDIUM_DISTANCE = 45;
@@ -36,7 +37,16 @@ export class DamageSystem {
         if (healthComp.currentValue - damage > 0) {
             healthComp.setCurrentValue(healthComp.currentValue - damage);
         } else {
-            playerDead(this.target);
+
+            if (this.target instanceof Player) {
+                gameEvents.emit('playerDied', {
+                    attacker: this.attacker,
+                    deadPlayer: this.target
+                });
+            } else { 
+                this.target.kill();
+            }
+        
         }
 
         this.attacker.playSound('game.player.hurt');
@@ -61,15 +71,4 @@ export class DamageSystem {
         return 'head';
     }
 
-}
-
-function playerDead(entity: Player | Entity) {
-    if (entity instanceof Player) {   
-        entity.setGameMode(GameMode.Spectator);
-        set_entity_dynamic_property(entity, 'player:is_alive', false);
-        entity.sendMessage('you dead');
-    }
-    else {
-        entity.kill();
-    }
 }
