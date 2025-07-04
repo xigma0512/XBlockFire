@@ -1,0 +1,38 @@
+{
+    "format_version": "1.20.0",
+    "minecraft:attachable": {
+        "description": {
+            "identifier": "xblockfire:glock17",
+            "materials": {
+                "default": "entity_alphatest",
+                "enchanted": "entity_alphatest_glint"
+            },
+            "textures": {
+                "default": "textures/models/gun/glock17",
+                "enchanted": "textures/misc/enchanted_item_glint"
+            },
+            "geometry": {
+                "default": "geometry.glock17"
+            },
+            "animations": {
+                "fpp_hold": "animation.glock17.fpp_hold",
+                "tpp_hold": "animation.glock17.tpp_hold",
+                "draw": "animation.glock17.draw",
+                "reload": "animation.glock17.reload",
+                "reloadempty": "animation.glock17.reloadempty",
+                "inspect": "animation.glock17.inspect",
+                "fpp_controller": "controller.animation.item.fpp_glock17",
+                "tpp_controller": "controller.animation.item.tpp_glock17"
+            },
+            "scripts": {
+                "animate": [
+                    { "fpp_controller": "c.is_first_person" },
+                    { "tpp_controller": "!c.is_first_person" }
+                ]
+            },
+            "render_controllers": [
+                "controller.render.item_default"
+            ]
+        }
+    }
+}

@@ -1,0 +1,183 @@
+{
+	"format_version": "1.10.0",
+	"animation_controllers": {
+        "controller.animation.player.secondary_weapon.reload": {
+            "initial_state": "idle",
+			"states": {
+				"idle": {
+                    "on_entry": [
+                        "/event entity @s property:state.reload.idle"
+					],
+					"transitions": [
+                        {
+                            "pre_reload": "q.is_sneaking&&v.attack_time&&q.is_alive&&q.property('player:state.reload') != 'reloading'&&q.equipped_item_all_tags('slot.weapon.mainhand', 'xblockfire:secondary_weapon')"
+                        }
+					]
+				},
+                "pre_reload": {
+                    "on_entry": [
+                        "/event entity @s property:state.reload.pre_reload"
+					],
+                    "transitions": [
+                        {
+                            "reloading": "q.property('player:state.reload') == 'reloading'"
+                        },
+                        {
+                            "fail": "q.property('player:state.reload') == 'fail'"
+                        }
+                    ]
+                },
+				"reloading": {
+					"on_entry": [
+                        "/event entity @s property:state.reload.reloading"
+					],
+					"transitions": [
+                        {
+                            "success": "q.property('player:state.reload') == 'success'"
+                        },
+                        {
+                            "fail": "!q.equipped_item_all_tags('slot.weapon.mainhand', 'xblockfire:secondary_weapon')||!q.is_alive"
+                        },
+                        {
+                            "fail": "q.property('player:state.reload') == 'fail'"
+                        }
+					]
+				},
+                "success": {
+                    "on_entry": [
+                        "/event entity @s property:state.reload.success"
+                    ],
+                    "transitions": [
+                        {
+                            "idle": "1"
+                        }
+                    ]
+                },
+                "fail": {
+                    "on_entry": [
+                        "/event entity @s property:state.reload.fail"
+                    ],
+                    "transitions": [
+                        {
+                            "idle": "!v.attack_time"
+                        }
+                    ]
+                }
+			}
+        },
+        "controller.animation.player.main_weapon.reload": {
+            "initial_state": "idle",
+			"states": {
+				"idle": {
+                    "on_entry": [
+                        "/event entity @s property:state.reload.idle"
+					],
+					"transitions": [
+                        {
+                            "pre_reload": "q.is_sneaking&&v.attack_time&&q.is_alive&&q.property('player:state.reload') != 'reloading'&&q.equipped_item_all_tags('slot.weapon.mainhand', 'xblockfire:main_weapon')"
+                        }
+					]
+				},
+                "pre_reload": {
+                    "on_entry": [
+                        "/event entity @s property:state.reload.pre_reload"
+					],
+                    "transitions": [
+                        {
+                            "reloading": "q.property('player:state.reload') == 'reloading'"
+                        },
+                        {
+                            "fail": "q.property('player:state.reload') == 'fail'"
+                        }
+                    ]
+                },
+				"reloading": {
+					"on_entry": [
+                        "/event entity @s property:state.reload.reloading"
+					],
+					"transitions": [
+                        {
+                            "success": "q.property('player:state.reload') == 'success'"
+                        },
+                        {
+                            "fail": "!q.equipped_item_all_tags('slot.weapon.mainhand', 'xblockfire:main_weapon')||!q.is_alive"
+                        },
+                        {
+                            "fail": "q.property('player:state.reload') == 'fail'"
+                        }
+					]
+				},
+                "success": {
+                    "on_entry": [
+                        "/event entity @s property:state.reload.success"
+                    ],
+                    "transitions": [
+                        {
+                            "idle": "1"
+                        }
+                    ]
+                },
+                "fail": {
+                    "on_entry": [
+                        "/event entity @s property:state.reload.fail"
+                    ],
+                    "transitions": [
+                        {
+                            "idle": "!v.attack_time"
+                        }
+                    ]
+                }
+			}
+        },
+        "controller.animation.player.movement": {
+			"initial_state": "not_moving",
+			"states": {
+				"not_moving": {
+                    "on_entry": [
+                        "/event entity @s remove_moving"
+					],
+					"transitions": [
+                        {
+                            "moving": "q.is_moving&&q.is_alive"
+                        }
+					]
+				},
+				"moving": {
+					"on_entry": [
+                        "/event entity @s add_moving"
+					],
+					"transitions": [
+						{
+							"not_moving": "!q.is_moving || !q.is_alive"
+						}
+					]
+				}
+			}
+		},
+        "controller.animation.player.gun_holding": {
+            "initial_state": "not_holding",
+            "states": {
+                "not_holding": {
+                    "on_entry": [
+                        "/event entity @s property:not_holding_gun"
+                    ],
+                    "transitions": [
+                        {
+                            "holding": "q.equipped_item_all_tags('slot.weapon.mainhand', 'xblockfire:gun')&&q.is_alive"
+                        }
+                    ]
+                },
+                "holding": {
+                    "on_entry": [
+                        "/event entity @s property:holding_gun"
+                    ],
+                    "transitions": [
+                        {
+                            "not_holding": "!q.equipped_item_all_tags('slot.weapon.mainhand', 'xblockfire:gun')||!q.is_alive"
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}

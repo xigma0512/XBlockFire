@@ -1,0 +1,72 @@
+{
+	"format_version": "1.10.0",
+	"animation_controllers": {
+        "controller.animation.player.grenade.flashbang": {
+			"initial_state": "idle",
+			"states": {
+				"idle": {
+					"transitions": [
+                        {
+                            "pull": "q.property('player:can_use_item')&&q.main_hand_item_use_duration&&q.equipped_item_all_tags('slot.weapon.mainhand', 'xblockfire:flashbang')"
+                        }
+					]
+				},
+				"pull": {
+					"transitions": [
+                        {
+                            "idle": "!q.property('player:can_use_item')"
+                        },
+						{
+							"idle": "!q.main_hand_item_use_duration&&!q.equipped_item_all_tags('slot.weapon.mainhand', 'xblockfire:flashbang')"
+						},
+                        {
+                            "throw": "!q.main_hand_item_use_duration&&q.equipped_item_all_tags('slot.weapon.mainhand', 'xblockfire:flashbang')"
+                        }
+					]
+				},
+                "throw": {
+                    "on_entry": [
+                        "/event entity @s event:throwing_flashbang"
+					],
+					"transitions": [
+                        {
+                            "idle": "1"
+                        }
+					]
+                }
+			}
+		},
+        "controller.animation.player.grenade.smoke_grenade": {
+			"initial_state": "idle",
+			"states": {
+				"idle": {
+					"transitions": [
+                        {
+                            "pull": "q.main_hand_item_use_duration&&q.equipped_item_all_tags('slot.weapon.mainhand', 'xblockfire:smoke_grenade')"
+                        }
+					]
+				},
+				"pull": {
+					"transitions": [
+						{
+							"idle": "!q.main_hand_item_use_duration&&!q.equipped_item_all_tags('slot.weapon.mainhand', 'xblockfire:smoke_grenade')"
+						},
+                        {
+                            "throw": "!q.main_hand_item_use_duration&&q.equipped_item_all_tags('slot.weapon.mainhand', 'xblockfire:smoke_grenade')"
+                        }
+					]
+				},
+                "throw": {
+                    "on_entry": [
+                        "/event entity @s event:throwing_smoke_grenade"
+					],
+					"transitions": [
+                        {
+                            "idle": "1"
+                        }
+					]
+                }
+			}
+		}
+    }
+}

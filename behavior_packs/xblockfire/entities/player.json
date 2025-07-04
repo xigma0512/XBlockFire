@@ -1,0 +1,235 @@
+{
+    "format_version": "1.21.0",
+    "minecraft:entity": {
+        "description": {
+            "identifier": "minecraft:player",
+            "spawn_category": "creature",
+            "is_spawnable": false,
+            "is_summonable": false,
+            "scripts": {
+                "animate": [
+                    "main_weapon_reload",
+                    "secondary_weapon_reload",
+                    "player_movement",
+                    "player_gun_holding",
+                    "throwing_flashbang",
+                    "throwing_smoke_grenade"
+                ]
+            },
+            "animations": {
+                "secondary_weapon_reload": "controller.animation.player.secondary_weapon.reload",
+                "main_weapon_reload": "controller.animation.player.main_weapon.reload",
+                "player_movement": "controller.animation.player.movement",
+                "player_gun_holding": "controller.animation.player.gun_holding",
+                "throwing_flashbang": "controller.animation.player.grenade.flashbang",
+                "throwing_smoke_grenade": "controller.animation.player.grenade.smoke_grenade"
+            },
+            "properties": {
+                "player:state.reload": {
+                    "client_sync": true,
+                    "type": "enum",
+                    "values": [
+                        "idle",
+                        "pre_reload",
+                        "reloading",
+                        "success",
+                        "fail"
+                    ],
+                    "default": "idle"
+                },
+                "player:is_moving": {
+                    "client_sync": true,
+                    "type": "bool",
+                    "default": false
+                },
+                "player:can_use_item": {
+                    "client_sync": true,
+                    "type": "bool",
+                    "default": false
+                },
+                "player:is_holding_gun": {
+                    "client_sync": true,
+                    "type": "bool",
+                    "default": false
+                }
+            }
+        },
+        "component_groups": {
+            "throwing_smoke_grenade": {
+                "minecraft:spawn_entity": {
+                    "entities": [
+                        {
+                            "filters": [
+                                {
+                                    "test": "is_sneaking",
+                                    "operator": "==",
+                                    "value": false
+                                }
+                            ],
+                            "min_wait_time": 0,
+                            "max_wait_time": 0,
+                            "single_use": true,
+                            "spawn_entity": "xblockfire:smoke_grenade",
+                            "spawn_event": "set_overhand",
+                            "num_to_spawn": 1
+                        },
+                        {
+                            "filters": [
+                                {
+                                    "test": "is_sneaking",
+                                    "operator": "==",
+                                    "value": true
+                                }
+                            ],
+                            "min_wait_time": 0,
+                            "max_wait_time": 0,
+                            "single_use": true,
+                            "spawn_entity": "xblockfire:smoke_grenade",
+                            "spawn_event": "set_underhand",
+                            "num_to_spawn": 1
+                        }
+                    ]
+                }
+            },
+            "throwing_flashbang": {
+                "minecraft:spawn_entity": {
+                    "entities": [
+                        {
+                            "filters": [
+                                {
+                                    "test": "is_sneaking",
+                                    "operator": "==",
+                                    "value": false
+                                }
+                            ],
+                            "min_wait_time": 0,
+                            "max_wait_time": 0,
+                            "single_use": true,
+                            "spawn_entity": "xblockfire:flashbang",
+                            "spawn_event": "set_overhand",
+                            "num_to_spawn": 1
+                        },
+                        {
+                            "filters": [
+                                {
+                                    "test": "is_sneaking",
+                                    "operator": "==",
+                                    "value": true
+                                }
+                            ],
+                            "min_wait_time": 0,
+                            "max_wait_time": 0,
+                            "single_use": true,
+                            "spawn_entity": "xblockfire:flashbang",
+                            "spawn_event": "set_underhand",
+                            "num_to_spawn": 1
+                        }
+                    ]
+                }
+            }
+        },
+        "components": {
+            "minecraft:type_family": {
+                "family": [
+                    "player"
+                ]
+            },
+            "minecraft:is_hidden_when_invisible": {},
+            "minecraft:collision_box": {
+                "width": 0.6,
+                "height": 1.8
+            },
+            "minecraft:movement": {
+                "value": 0.1
+            },
+            "minecraft:can_climb": {},
+            "minecraft:attack": {
+                "damage": 0
+            },
+            "minecraft:nameable": {
+                "always_show": false,
+                "allow_name_tag_renaming": false
+            },
+            "minecraft:physics": {
+                "push_towards_closest_space": true
+            },
+            "minecraft:pushable": {
+                "is_pushable": false,
+                "is_pushable_by_piston": true
+            },
+            "minecraft:conditional_bandwidth_optimization": {},
+            "minecraft:block_climber": {}
+        },
+        "events": {
+            "event:throwing_smoke_grenade": {
+                "add": {
+                    "component_groups": [
+                        "throwing_smoke_grenade"
+                    ]
+                },
+                "queue_command": {
+                    "command": [
+                        "clear @s xblockfire:smoke_grenade_item 0 1"
+                    ]
+                }
+            },
+            "event:throwing_flashbang": {
+                "add": {
+                    "component_groups": [
+                        "throwing_flashbang"
+                    ]
+                },
+                "queue_command": {
+                    "command": [
+                        "clear @s xblockfire:flashbang_item 0 1"
+                    ]
+                }
+            },
+            "property:state.reload.idle": {
+                "set_property": {
+                    "player:state.reload": "idle"
+                }
+            },
+            "property:state.reload.pre_reload": {
+                "set_property": {
+                    "player:state.reload": "pre_reload"
+                }
+            },
+            "property:state.reload.reloading": {
+                "set_property": {
+                    "player:state.reload": "reloading"
+                }
+            },
+            "property:state.reload.success": {
+                "set_property": {
+                    "player:state.reload": "idle"
+                }
+            },
+            "property:state.reload.fail": {
+                "set_property": {
+                    "player:state.reload": "fail"
+                }
+            },
+            "property:add_moving": {
+                "set_property": {
+                    "player:is_moving": true
+                }
+            },
+            "property:remove_moving": {
+                "set_property": {
+                    "player:is_moving": false
+                }
+            },
+            "property:holding_gun": {
+                "set_property": {
+                    "player:is_holding_gun": true
+                }
+            },
+            "property:not_holding_gun": {
+                "set_property": {
+                    "player:is_holding_gun": false
+                }
+            }
+        }
+    }
+}
