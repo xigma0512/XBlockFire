@@ -1,6 +1,6 @@
 import { GameEvent } from "./GameEvent";
 
-type Listener<T extends keyof GameEvent> = (data?: GameEvent[T]) => void;
+type Listener<T extends keyof GameEvent> = (data: GameEvent[T]) => void;
 
 class EventEmitter {
 
