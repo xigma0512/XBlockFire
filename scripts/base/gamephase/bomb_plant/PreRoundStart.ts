@@ -2,12 +2,13 @@ import { GameRoomManager } from "../../gameroom/GameRoom";
 import { HotbarManager, HotbarTemplate } from "../../../modules/hotbar/Hotbar";
 import { MapRegister } from "../../gamemap/MapRegister";
 import { BuyingPhase } from "./Buying";
+import { BombIdleState } from "../../bombstate/states/Idle";
 
 import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPlantPhaseEnum";
 import { TeamEnum } from "../../../types/TeamEnum";
 import { entity_dynamic_property, set_entity_dynamic_property, set_entity_native_property } from "../../../utils/Property";
 
-import { GameMode, InputPermissionCategory, ItemStack } from "@minecraft/server";
+import { GameMode, InputPermissionCategory, ItemStack, system } from "@minecraft/server";
 
 
 export class PreRoundStartPhase implements IPhaseHandler {
@@ -18,6 +19,7 @@ export class PreRoundStartPhase implements IPhaseHandler {
     constructor(private readonly roomId: number) {}
 
     on_entry() {
+        resetBombState(this.roomId);
         teleportPlayers(this.roomId);
         resetPlayerInventory(this.roomId);
         initializePlayers(this.roomId);
@@ -36,6 +38,12 @@ export class PreRoundStartPhase implements IPhaseHandler {
         const room = GameRoomManager.instance.getRoom(this.roomId);
         room.phaseManager.updatePhase(new BuyingPhase(this.roomId));
     }
+}
+
+function resetBombState(roomId: number) {
+    const room = GameRoomManager.instance.getRoom(roomId);
+    const bombManager = room.bombManager;
+    bombManager.updateState(new BombIdleState(roomId));
 }
 
 function initializePlayers(roomId: number) {
