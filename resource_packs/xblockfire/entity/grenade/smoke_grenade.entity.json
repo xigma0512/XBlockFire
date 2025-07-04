@@ -1,0 +1,20 @@
+{
+	"format_version": "1.10.0",
+	"minecraft:client_entity": {
+		"description": {
+			"identifier": "xblockfire:smoke_grenade",
+			"materials": {
+				"default": "entity_alphatest"
+			},
+			"textures": {
+				"default": "textures/models/grenade/smoke_grenade"
+			},
+			"geometry": {
+				"default": "geometry.smoke_grenade"
+			},
+			"render_controllers": [
+				"controller.render.default"
+			]
+		}
+	}
+}
