@@ -6,3 +6,5 @@ import './weapon/systems/bullet/BulletSystem'
 import './weapon/systems/grenade/GrenadeSystem'
 
 import './hud/weapon/WeaponInfo'
+
+import './playerDead/playerDead'
