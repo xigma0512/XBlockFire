@@ -2,7 +2,6 @@ import { GameRoomManager } from "../../gameroom/GameRoom";
 import { GameOverPhase } from "./Gameover";
 import { PreRoundStartPhase } from "./PreRoundStart";
 import { ActionHud } from "../../../modules/hud/bomb_plant/Action"; 
-import { HotbarManager, HotbarTemplate } from "../../../modules/hotbar/Hotbar";
 
 import { Config } from "./_config";
 import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPlantPhaseEnum";
