@@ -6,8 +6,10 @@ import { HotbarManager } from "../../../modules/hotbar/Hotbar";
 import { Config } from "./_config";
 import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPlantPhaseEnum";
 
-import { InputPermissionCategory, ItemStack } from "@minecraft/server";
 import { set_entity_native_property } from "../../../utils/Property";
+import { ItemStackFactory } from "../../../utils/ItemStackFactory";
+
+import { InputPermissionCategory, ItemLockMode } from "@minecraft/server";
 
 const config = Config.buying;
 
@@ -53,7 +55,7 @@ function sendShopItem(roomId: number) {
 
     for (const player of member.getPlayers()) {
         const hotbar = HotbarManager.getPlayerHotbar(player)
-        hotbar.items[8] = new ItemStack('minecraft:feather');
+        hotbar.items[8] = ItemStackFactory.new({ typeId: 'minecraft:feather', lockMode: ItemLockMode.slot });
         HotbarManager.sendHotbar(player, hotbar);
     }
 }
