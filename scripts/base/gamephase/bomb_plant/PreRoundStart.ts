@@ -19,8 +19,8 @@ export class PreRoundStartPhase implements IPhaseHandler {
 
     on_entry() {
         teleportPlayers(this.roomId);
-        initializePlayers(this.roomId);
         resetPlayerInventory(this.roomId);
+        initializePlayers(this.roomId);
         console.warn(`[Room ${this.roomId}] Entry BP:pre_round_start phase.`);
     }
 
@@ -92,7 +92,7 @@ function resetPlayerInventory(roomId: number) {
             HotbarManager.sendHotbar(player, HotbarTemplate.initSpawn(playerTeam === TeamEnum.Defender));
         } else {
             const hotbar = HotbarManager.getPlayerHotbar(player);
-            HotbarManager.resetItemActors(hotbar);
+            HotbarManager.resetItems(hotbar);
             HotbarManager.sendHotbar(player, hotbar);
         }
     }
