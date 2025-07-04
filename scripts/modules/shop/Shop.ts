@@ -2,12 +2,13 @@ import { GameRoomManager } from "../../base/gameroom/GameRoom";
 import { MemberManager } from "../../base/gameroom/member/MemberManager";
 import { ItemActor } from "../weapon/actors/Actor";
 import { Glock17 } from "../weapon/actors/item/Glock17";
+import { HotbarManager } from "../hotbar/Hotbar";
 
 import { PhaseEnum as BombPlantPhaseEnum } from "../../types/gamephase/BombPlantPhaseEnum";
+import { ItemStackFactory } from "../../utils/ItemStackFactory";
 
-import { ItemLockMode, ItemStack, Player, system, world } from "@minecraft/server";
+import { ItemLockMode, Player, system, world } from "@minecraft/server";
 import { ActionFormData, ActionFormResponse } from "@minecraft/server-ui";
-import { HotbarManager } from "../hotbar/Hotbar";
 
 interface Product {
     name: string;
@@ -68,7 +69,7 @@ export class Shop {
             this.pay(player, product.price);
             
             const productItem = (product.itemActor) ? new product.itemActor().item
-                                                    : new ItemStack(product.itemStackTypeId!);
+                                                    : ItemStackFactory.new({ typeId: product.itemStackTypeId!, lockMode: ItemLockMode.slot });
 
             if (productItem.lockMode === ItemLockMode.none) productItem.lockMode = ItemLockMode.slot;
             

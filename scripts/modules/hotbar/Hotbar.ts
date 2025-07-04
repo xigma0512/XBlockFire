@@ -1,7 +1,9 @@
-import { ItemStack, Player } from "@minecraft/server";
 import { Glock17 } from "../weapon/actors/item/Glock17";
 import { ActorManager } from "../weapon/systems/ActorManager";
 import { ItemActor } from "../weapon/actors/Actor";
+import { ItemStackFactory } from "../../utils/ItemStackFactory";
+
+import { ItemLockMode, ItemStack, Player } from "@minecraft/server";
 
 export interface IHotbar {
     readonly items: Array<ItemStack|undefined>;
@@ -51,7 +53,19 @@ export class HotbarManager {
                 
                 ActorManager.removeActor(itemActor.uuid);
             } else {
-                const newItem = new ItemStack(item.typeId, item.amount);
+
+                const itemInfo = {
+                    typeId: item.typeId,
+                    amount: item.amount,
+                    nametag: item.nameTag,
+                    lore: item.getLore(),
+                    keepOnDeath: item.keepOnDeath,
+                    lockMode: item.lockMode,
+                    canDestroy: item.getCanDestroy(),
+                    canPlaceOn: item.getCanPlaceOn()
+                };
+
+                const newItem = ItemStackFactory.new(itemInfo);
                 hotbar.items[index] = newItem;
             }
         }
@@ -65,8 +79,8 @@ export class HotbarTemplate {
         const hotbar = new Hotbar();
         
         hotbar.items[1] = new Glock17().item;
-        hotbar.items[2] = new ItemStack('minecraft:diamond_sword');
-        hotbar.items[3] = isDefender ? new ItemStack('xblockfire:defuser') : undefined;
+        hotbar.items[2] = ItemStackFactory.new({ typeId: 'minecraft:diamond_sword', lockMode: ItemLockMode.slot });
+        hotbar.items[3] = isDefender ? ItemStackFactory.new({ typeId: 'xblockfire:defuser', lockMode: ItemLockMode.slot }) : undefined;
         
         return hotbar;
     }
