@@ -39,16 +39,21 @@ export class HotbarManager {
         }
     }
 
-    static resetItemActors(hotbar: IHotbar) {
+    static resetItems(hotbar: IHotbar) {
         for (let index = 0; index < 9; index ++) {
             const item = hotbar.items[index];
-            if (item === undefined || !ActorManager.isActor(item)) continue;
+            if (item === undefined) continue;
 
-            const itemActor = ActorManager.getActor(item) as ItemActor;
-            const cloneActor = itemActor.clone();
-            hotbar.items[index] = cloneActor.item;
-
-            ActorManager.removeActor(itemActor.uuid);
+            if (ActorManager.isActor(item)) {   
+                const itemActor = ActorManager.getActor(item) as ItemActor;
+                const cloneActor = itemActor.clone();
+                hotbar.items[index] = cloneActor.item;
+                
+                ActorManager.removeActor(itemActor.uuid);
+            } else {
+                const newItem = new ItemStack(item.typeId, item.amount);
+                hotbar.items[index] = newItem;
+            }
         }
         return hotbar;
     }
