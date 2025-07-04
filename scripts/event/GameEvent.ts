@@ -1,8 +1,8 @@
-import { Player } from "@minecraft/server";
+import { Entity, Player } from "@minecraft/server";
 
 export interface GameEvent {
     'playerDied': {
         deadPlayer: Player;
-        attacker?: Player;
+        attacker?: Entity;
     }
 }
