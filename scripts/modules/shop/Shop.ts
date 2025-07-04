@@ -66,6 +66,7 @@ export class Shop {
             const selection = response.selection;
             const product = productTable[selection];
             
+            this.checkAmountLimit(player, product.hotbar_slot, product.max_amount);
             this.pay(player, product.price);
             
             const productItem = (product.itemActor) ? new product.itemActor().item
@@ -88,6 +89,14 @@ export class Shop {
         catch (err: any)
         {
             player.sendMessage(err.message);
+        }
+    }
+
+    private checkAmountLimit(player: Player, slot: number, limit: number) {
+        const hotbar = HotbarManager.getPlayerHotbar(player);
+        const hotbarItem = hotbar.items.at(slot);
+        if (hotbarItem !== undefined && hotbarItem.amount >= limit) {
+            throw Error('You have reached purchase limit.');
         }
     }
 
