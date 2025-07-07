@@ -18,7 +18,7 @@ export class PhaseManager {
         this.phaseHandler.on_exit();
         system.clearRun(this.taskId);
 
-        system.waitTicks(2).then(() => { 
+        system.waitTicks(5).then(() => { 
             this.phaseHandler = newPhase;
             this.phaseHandler.on_entry();
             this.taskId = system.runInterval(() => this.phaseHandler.on_running());

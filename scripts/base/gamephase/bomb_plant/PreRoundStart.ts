@@ -6,10 +6,12 @@ import { BombIdleState } from "../../bombstate/states/Idle";
 
 import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPlantPhaseEnum";
 import { TeamEnum } from "../../../types/TeamEnum";
+
 import { entity_dynamic_property, set_entity_dynamic_property, set_entity_native_property } from "../../../utils/Property";
+import { ItemStackFactory } from "../../../utils/ItemStackFactory";
 
-import { GameMode, InputPermissionCategory, ItemStack, system } from "@minecraft/server";
-
+import { GameMode, InputPermissionCategory, ItemLockMode } from "@minecraft/server";
+import { ItemStack } from "@minecraft/server";
 
 export class PreRoundStartPhase implements IPhaseHandler {
     readonly phaseTag = BombPlantPhaseEnum.PreRoundStart;
@@ -99,13 +101,18 @@ function resetPlayerInventory(roomId: number) {
         player.runCommand('clear @s xblockfire:c4');
 
         if (!entity_dynamic_property(player, 'player:is_alive')) {
-            const playerTeam = entity_dynamic_property(player, 'player:team');
-            HotbarManager.sendHotbar(player, HotbarTemplate.initSpawn(playerTeam === TeamEnum.Defender));
+            HotbarManager.sendHotbar(player, HotbarTemplate.initSpawn());
         } else {
             const hotbar = HotbarManager.getPlayerHotbar(player);
             HotbarManager.resetItems(hotbar);
             HotbarManager.sendHotbar(player, hotbar);
         }
+    }
+
+    for (const player of member.getPlayers({team: TeamEnum.Defender})) {
+        const hotbar = HotbarManager.getPlayerHotbar(player)
+        hotbar.items[3] = ItemStackFactory.new({ typeId: 'xblockfire:defuser', lockMode: ItemLockMode.slot });
+        HotbarManager.sendHotbar(player, hotbar);
     }
 
     const attackers = member.getPlayers({ team: TeamEnum.Attacker });

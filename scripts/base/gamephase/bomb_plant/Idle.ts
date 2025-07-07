@@ -6,8 +6,12 @@ import { HotbarManager, HotbarTemplate } from "../../../modules/hotbar/Hotbar";
 import { Config } from "./_config";
 import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPlantPhaseEnum";
 import { TeamEnum } from "../../../types/TeamEnum";
-import { entity_dynamic_property, set_entity_dynamic_property } from "../../../utils/Property";
+
+import { set_entity_dynamic_property } from "../../../utils/Property";
 import { set_variable } from "../../../utils/Variable";
+import { ItemStackFactory } from "../../../utils/ItemStackFactory";
+
+import { ItemLockMode } from "@minecraft/server";
 
 
 const config = Config.idle;
@@ -79,13 +83,17 @@ function balanceTeam(roomId: number) {
 
 function initializePlayers(roomId: number) {
     const room = GameRoomManager.instance.getRoom(roomId);
-    const players = room.memberManager.getPlayers();
+    const member = room.memberManager;
 
-    for (const player of players) {
+    for (const player of member.getPlayers()) {
         room.economyManager.initializePlayer(player);
+        HotbarManager.sendHotbar(player, HotbarTemplate.initSpawn());
+    }
 
-        const playerTeam = entity_dynamic_property(player, 'player:team');
-        HotbarManager.sendHotbar(player, HotbarTemplate.initSpawn(playerTeam === TeamEnum.Defender));
+    for (const player of member.getPlayers({team: TeamEnum.Defender})) {
+        const hotbar = HotbarManager.getPlayerHotbar(player)
+        hotbar.items[3] = ItemStackFactory.new({ typeId: 'xblockfire:defuser', lockMode: ItemLockMode.slot });
+        HotbarManager.sendHotbar(player, hotbar);
     }
 }
 

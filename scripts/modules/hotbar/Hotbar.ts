@@ -75,12 +75,11 @@ export class HotbarManager {
 }
 
 export class HotbarTemplate {
-    static initSpawn(isDefender: boolean) {
+    static initSpawn() {
         const hotbar = new Hotbar();
         
         hotbar.items[1] = new Glock17().item;
         hotbar.items[2] = ItemStackFactory.new({ typeId: 'minecraft:diamond_sword', lockMode: ItemLockMode.slot });
-        hotbar.items[3] = isDefender ? ItemStackFactory.new({ typeId: 'xblockfire:defuser', lockMode: ItemLockMode.slot }) : undefined;
         
         return hotbar;
     }
