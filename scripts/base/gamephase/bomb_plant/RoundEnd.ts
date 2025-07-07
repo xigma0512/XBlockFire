@@ -76,6 +76,11 @@ function switchSide(roomId: number) {
     for (const player of member.getPlayers()) {
         const playerTeam = entity_dynamic_property(player, 'player:team');
         set_entity_dynamic_property(player, 'player:team', (playerTeam === TeamEnum.Attacker) ? TeamEnum.Defender : TeamEnum.Attacker);
+    
+        // reset player money
+        room.economyManager.setMoney(player, 800);
+        // clear players inventory
+        set_entity_dynamic_property(player, 'player:is_alive', false);
     }
 
     const attacker_score = variable(`${roomId}.attacker_score`);
