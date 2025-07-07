@@ -1,8 +1,9 @@
 import { Component, ComponentTypes } from "../components/Component";
+import { ActorManager } from "../systems/ActorManager";
 
 import { randomUUID } from "../../../utils/others/Common";
-import { Entity, ItemStack } from "@minecraft/server";
-import { ActorManager } from "../systems/ActorManager";
+
+import { Dimension, Entity, ItemStack, Vector3 } from "@minecraft/server";
 
 export type ActorType = EntityActor | ItemActor;
 
@@ -25,26 +26,30 @@ abstract class Actor {
     }
 }
 
+export interface DummyEntity {
+    dimension: Dimension;
+    location: Vector3;
+}
+
 export abstract class EntityActor extends Actor {
     
     // readonly entity: Entity;
-    private _entity: Entity;
-    get entity() { return this._entity; };
+    private _entity: Entity | DummyEntity;
+    get entity() { return this._entity as Entity; };
 
-    constructor(typeId: string, entity: Entity) {
+    constructor(typeId: string, entity: Entity | DummyEntity) {
         super(typeId);
         this._entity = entity;
 
-        ActorManager.setActor(entity, this);
+        if (entity instanceof Entity) {
+            ActorManager.setActor(entity, this);
+        }
     }
 
     protected setEntity() {
         const entityComp = this.getComponent('entity')!;
         const dimension = this._entity.dimension;
-        const location = this.entity.location;
-        
-        ActorManager.removeActor(this.uuid);
-        this._entity.remove();
+        const location = this._entity.location;
 
         this._entity = dimension.spawnEntity(entityComp.entityTypeId, location, entityComp.spawnOptions);
         ActorManager.setActor(this.entity, this);
