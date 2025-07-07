@@ -59,6 +59,9 @@ function initializePlayers(roomId: number) {
         player.setGameMode(GameMode.Adventure);
         player.addEffect('regeneration', 100, { amplifier: 255 });
         
+        player.removeTag('attacker');
+        player.removeTag('defender');
+        player.addTag(entity_dynamic_property(player, 'player:team') === TeamEnum.Attacker ? 'attacker' : 'defender');
     }
 }
 
