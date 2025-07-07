@@ -21,7 +21,7 @@ const enum EndReasonEnum {
 
 const endReasonTable = {
     [EndReasonEnum['Time-up']]: {
-        winner: TeamEnum.Defender,
+        winner: TeamEnum.Attacker,
         message: [
             `${FC.Yellow}Bomb Has Exploded.\n`,
             `${FC.Yellow}Attackers Win.\n`
