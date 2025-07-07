@@ -3,7 +3,6 @@ import { EntityActor } from "../../actors/Actor";
 import { DamageSystem } from "./DamageSystem";
 import { BulletActorTable } from "../../actors/ActorTypeTables";
 
-import { spawnDummyEntity } from "../../../../utils/others/Entity";
 import { GunTypeEnum } from "../../../../types/weapon/WeaponEnum";
 
 import { Vector3Utils } from "@minecraft/math";
@@ -22,7 +21,10 @@ export class BulletSystem {
         const viewDirection = player.getViewDirection();
         const spawnLocation = Vector3Utils.add(Vector3Utils.add(headLocation, viewDirection), { y:0.1 });
 
-        const bulletActor = new BulletActorTable[gunType](spawnDummyEntity(spawnLocation));
+        const bulletActor = new BulletActorTable[gunType]({
+            dimension: player.dimension,
+            location: spawnLocation
+        });
         const bulletComp = bulletActor.getComponent('bullet')!;
 
         const projComp = bulletActor.entity.getComponent('projectile')!;
