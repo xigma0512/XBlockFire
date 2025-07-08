@@ -60,6 +60,26 @@
             ],
             "category": "ambient",
             "max_distance": 32
+        },
+        "xblockfire.m4a4_fire": {
+            "sounds": [
+                {
+                    "name": "sounds/gun/m4a4_fire",
+                    "volume": 1
+                }
+            ],
+            "category": "ambient",
+            "max_distance": 32
+        },
+        "xblockfire.m4a4_reload": {
+            "sounds": [
+                {
+                    "name": "sounds/gun/m4a4_reload",
+                    "volume": 1
+                }
+            ],
+            "category": "ambient",
+            "max_distance": 32
         }
     }
 }
