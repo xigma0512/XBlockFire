@@ -6,7 +6,7 @@ import { BulletActorTable } from "../../actors/ActorTypeTables";
 import { GunTypeEnum } from "../../../../types/weapon/WeaponEnum";
 
 import { Vector3Utils } from "@minecraft/math";
-import { Player, world } from "@minecraft/server";
+import { Direction, Player, world } from "@minecraft/server";
 
 export class BulletSystem {
     
@@ -54,6 +54,30 @@ const bulletHitEntity = world.afterEvents.projectileHitEntity.subscribe(ev => {
 const bulletHitBlock = world.afterEvents.projectileHitBlock.subscribe(ev => {
     const projectile = ev.projectile;
     if (projectile.typeId !== 'xblockfire:bullet') return;
+    
+    const offsetValue = 0.02;
+    const particleOffset = {
+        [Direction.Up]: { y: 1 + offsetValue },
+        [Direction.Down]: { y: -offsetValue },
+        [Direction.South]: { z: 1 + offsetValue },
+        [Direction.North]: { z: -offsetValue },
+        [Direction.East]: { x: 1 + offsetValue },
+        [Direction.West]: { x: -offsetValue }
+    }
 
-    // 生成彈孔
+    const particleTypes = {
+        [Direction.Up]: 'xblockfire:bullet_hole_xz',
+        [Direction.Down]: 'xblockfire:bullet_hole_xz',
+        [Direction.South]: 'xblockfire:bullet_hole_xy',
+        [Direction.North]: 'xblockfire:bullet_hole_xy',
+        [Direction.East]: 'xblockfire:bullet_hole_yz',
+        [Direction.West]: 'xblockfire:bullet_hole_yz'
+    }
+
+    const hitBlockInfo = ev.getBlockHit();
+    const spawnLocation = Vector3Utils.add(Vector3Utils.add(hitBlockInfo.block.location, hitBlockInfo.faceLocation), particleOffset[hitBlockInfo.face]);
+
+    ev.dimension.spawnParticle(particleTypes[hitBlockInfo.face], spawnLocation);
+
+    projectile.remove();
 });
