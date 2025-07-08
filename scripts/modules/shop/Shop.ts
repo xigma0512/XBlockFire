@@ -1,9 +1,11 @@
 import { GameRoomManager } from "../../base/gameroom/GameRoom";
 import { MemberManager } from "../../base/gameroom/member/MemberManager";
+import { HotbarManager } from "../hotbar/Hotbar";
+
 import { ItemActor } from "../weapon/actors/Actor";
 import { Glock17 } from "../weapon/actors/item/Glock17";
 import { AK47 } from "../weapon/actors/item/AK47";
-import { HotbarManager } from "../hotbar/Hotbar";
+import { M4A4 } from "../weapon/actors/item/M4A4";
 
 import { PhaseEnum as BombPlantPhaseEnum } from "../../types/gamephase/BombPlantPhaseEnum";
 import { ItemStackFactory } from "../../utils/ItemStackFactory";
@@ -33,6 +35,15 @@ const productTable: Product[] = [
         itemActor: AK47,
         description: "GOOD GUN",
         iconPath: 'textures/items/ak47'
+    },
+    {
+        name: "M4A4",
+        price: 0,
+        max_amount: 1,
+        hotbar_slot: 0,
+        itemActor: M4A4,
+        description: "GOOD GUN",
+        iconPath: 'textures/items/m4a4'
     },
     {
         name: "Glock17",
