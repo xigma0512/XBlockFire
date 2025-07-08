@@ -19,6 +19,9 @@ abstract class GrenadeHandler {
         for (const event of grenadeComp.executeEvent ?? []) {
             this.entityActor.entity.triggerEvent(event);
         }
+
+        this.entityActor.entity.triggerEvent('explode_sound');
+
         system.runTimeout(() => {
             GrenadeSystem.instance.removeHandler(this.entityActor.entity);
             this.entityActor.entity.remove();
@@ -168,8 +171,11 @@ const handlerRegister = world.afterEvents.entitySpawn.subscribe(ev => {
     const grenadeType = entity_native_property(grenade, 'grenade:type');
     const grenadeActor = new GrenadeActorTable[grenadeType](grenade);
 
+    grenade.triggerEvent('throwing_sound');
+    
     if (grenade.typeId === 'xblockfire:flashbang') GrenadeSystem.instance.setHandler(grenade, new FlashbangHandler(grenadeActor));
     if (grenade.typeId === 'xblockfire:smoke_grenade') GrenadeSystem.instance.setHandler(grenade, new SmokeGrenadeHandler(grenadeActor));
+
 });
 
 const bounces = new WeakMap<Entity, number>();

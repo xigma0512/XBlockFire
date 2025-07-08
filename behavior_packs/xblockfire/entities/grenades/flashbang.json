@@ -125,14 +125,14 @@
             "explode_sound": {
                 "queue_command": {
                     "command": [
-                        "playsound xigmaguns.flash_explode @a ~~~ 5 1"
+                        "playsound xblockfire.flash_explode @a ~~~ 5 1"
                     ]
                 }
             },
             "throwing_sound": {
                 "queue_command": {
                     "command": [
-                        "playsound xigmaguns.throwing_flash @a ~~~ 1 1"
+                        "playsound xblockfire.throwing_flash @a ~~~ 1 1"
                     ]
                 }
             }
