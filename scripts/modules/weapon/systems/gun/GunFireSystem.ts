@@ -2,6 +2,7 @@ import { ItemActor } from "../../actors/Actor";
 import { ActorManager } from "../ActorManager";
 import { BulletSystem } from "../bullet/BulletSystem";
 import { getPlayerGunOffset } from "./GunOffsetSystem";
+import { GunAnimations } from "./GunAnimations";
 
 import { FireModeEnum } from "../../../../types/weapon/WeaponEnum";
 
@@ -89,6 +90,8 @@ class GunFireSystem {
         for (let _ = 0; _ < gunFireComp.bullet_spread; _ ++) {
             BulletSystem.instance.spawnBullet(player, gunComp.gunTypeId, shootOffset);
         }
+
+        GunAnimations.applyFireAnimation(player, gunActor);
     }
 
     private stopFiringTrigger(player: Player, firingTaskId: number) {
