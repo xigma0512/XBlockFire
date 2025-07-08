@@ -1,0 +1,32 @@
+{
+    "format_version": "1.20.80",
+    "minecraft:item": {
+        "description": {
+            "identifier": "xblockfire:m4a4",
+            "menu_category": {
+                "category": "equipment"
+            }
+        },
+        "components": {
+            "minecraft:tags": {
+                "tags": [
+                    "xblockfire:equipment",
+                    "xblockfire:gun",
+                    "xblockfire:main_weapon"
+                ]
+            },
+            "minecraft:display_name": {
+                "value": "M4A4"
+            },
+            "minecraft:icon": "m4a4",
+            "minecraft:max_stack_size": 1,
+            "minecraft:food": {
+                "can_always_eat": true
+            },
+            "minecraft:use_modifiers": {
+                "use_duration": 4000
+            },
+            "minecraft:hand_equipped": true
+        }
+    }
+}
