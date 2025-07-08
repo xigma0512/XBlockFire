@@ -34,7 +34,7 @@ const productTable: Product[] = [
         hotbar_slot: 0,
         itemActor: AK47,
         description: "GOOD GUN",
-        iconPath: 'textures/items/ak47'
+        iconPath: 'textures/items/gun/ak47'
     },
     {
         name: "M4A4",
@@ -43,7 +43,7 @@ const productTable: Product[] = [
         hotbar_slot: 0,
         itemActor: M4A4,
         description: "GOOD GUN",
-        iconPath: 'textures/items/m4a4'
+        iconPath: 'textures/items/gun/m4a4'
     },
     {
         name: "Glock17",
@@ -52,15 +52,15 @@ const productTable: Product[] = [
         hotbar_slot: 1,
         itemActor: Glock17,
         description: "This is a good and classic weapon.",
-        iconPath: 'textures/items/glock17'
+        iconPath: 'textures/items/gun/glock17'
     },
     {
         name: "SmokeGrenade",
         price: 300,
         max_amount: 2,
-        hotbar_slot: 5,
+        hotbar_slot: 4,
         itemStackTypeId: 'xblockfire:smoke_grenade_item',
-        iconPath: 'textures/items/smoke_grenade_item'
+        iconPath: 'textures/items/grenade/smoke_grenade_item'
     },
     {
         name: "Flashbang",
@@ -68,7 +68,7 @@ const productTable: Product[] = [
         max_amount: 2,
         hotbar_slot: 5,
         itemStackTypeId: 'xblockfire:flashbang_item',
-        iconPath: 'textures/items/flashbang_item'
+        iconPath: 'textures/items/grenade/flashbang_item'
     }
 ];
 
