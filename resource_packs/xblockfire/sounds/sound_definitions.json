@@ -50,6 +50,16 @@
             ],
             "category": "ambient",
             "max_distance": 32
+        },
+        "xblockfire.ak47_reload": {
+            "sounds": [
+                {
+                    "name": "sounds/gun/ak47_reload",
+                    "volume": 1
+                }
+            ],
+            "category": "ambient",
+            "max_distance": 32
         }
     }
 }
