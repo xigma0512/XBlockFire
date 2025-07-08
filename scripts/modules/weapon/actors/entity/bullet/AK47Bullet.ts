@@ -18,9 +18,9 @@ export class AK47Bullet extends EntityActor {
                 flightSpeed: 1000
             }))
             .set('bullet_damage', new BulletDamageComponent({
-                near: { head: 14, body: 10, legs: 8 },
-                medium: { head: 13, body: 8, legs: 6 },
-                far: { head: 5, body: 4, legs: 3 }
+                near: { head: 20, body: 10, legs: 8 },
+                medium: { head: 16, body: 8, legs: 6 },
+                far: { head: 8, body: 5, legs: 4 }
             }));
         
         this.setEntity();
