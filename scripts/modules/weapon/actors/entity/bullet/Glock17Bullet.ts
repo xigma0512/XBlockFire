@@ -1,7 +1,7 @@
-import { DummyEntity, EntityActor } from "../Actor";
-import { BulletComponent } from "../../components/bullet/BulletComponent";
-import { BulletDamageComponent } from "../../components/bullet/BulletDamageComponent";
-import { EntityComponent } from "../../components/EntityComponent";
+import { DummyEntity, EntityActor } from "../../Actor";
+import { BulletComponent } from "../../../components/bullet/BulletComponent";
+import { BulletDamageComponent } from "../../../components/bullet/BulletDamageComponent";
+import { EntityComponent } from "../../../components/EntityComponent";
 
 import { Entity, VanillaEntityIdentifier } from "@minecraft/server";
 
