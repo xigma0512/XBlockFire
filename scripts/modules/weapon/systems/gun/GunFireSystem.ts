@@ -23,9 +23,6 @@ class GunFireSystem {
     }
 
     startFiring(player: Player, gunActor: ItemActor) {
-        const magazineComp = gunActor.getComponent('gun_magazine')!;
-        if (magazineComp.ammo <= 0) return;
-        
         const gunFireComp = gunActor.getComponent('gun_fire')!;
 
         switch(gunFireComp.fire_mode) {
@@ -79,7 +76,10 @@ class GunFireSystem {
 
     private fire(player: Player, gunActor: ItemActor) {
         const magazineComp = gunActor.getComponent('gun_magazine')!;
-        if (magazineComp.ammo === 0) return;
+        if (magazineComp.ammo <= 0) {
+            player.playSound('xblockfire.empty_gun');
+            return;
+        }
         
         magazineComp.ammo --;
 

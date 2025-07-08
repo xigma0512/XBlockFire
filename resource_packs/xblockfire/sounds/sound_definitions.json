@@ -42,6 +42,19 @@
             "category": "ambient",
             "max_distance": 32
         },
+
+        "xblockfire.empty_gun": {
+            "sounds": [
+                {
+                    "name": "sounds/gun/empty_gun",
+                    "volume": 1,
+                    "is3D": false
+                }
+            ],
+            "category": "ambient",
+            "max_distance": 32
+        },
+
         "xblockfire.ak47_fire": {
             "sounds": [
                 {
