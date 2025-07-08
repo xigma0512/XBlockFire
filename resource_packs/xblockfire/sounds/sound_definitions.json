@@ -35,7 +35,8 @@
             "sounds": [
                 {
                     "name": "sounds/grenade/throwing_flash",
-                    "volume": 1
+                    "volume": 1,
+                    "is3D": false
                 }
             ],
             "category": "ambient",
@@ -45,7 +46,8 @@
             "sounds": [
                 {
                     "name": "sounds/gun/ak47_fire",
-                    "volume": 1
+                    "volume": 1,
+                    "is3D": false
                 }
             ],
             "category": "ambient",
@@ -65,7 +67,8 @@
             "sounds": [
                 {
                     "name": "sounds/gun/m4a4_fire",
-                    "volume": 1
+                    "volume": 1,
+                    "is3D": false
                 }
             ],
             "category": "ambient",
@@ -75,7 +78,8 @@
             "sounds": [
                 {
                     "name": "sounds/gun/m4a4_reload",
-                    "volume": 1
+                    "volume": 1,
+                    "is3D": false
                 }
             ],
             "category": "ambient",
