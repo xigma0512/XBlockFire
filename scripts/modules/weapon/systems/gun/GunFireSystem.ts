@@ -119,6 +119,9 @@ class GunFireSystem {
 const startFireTrigger = world.afterEvents.itemStartUse.subscribe(ev => {
     const player = ev.source;
     if (!entity_native_property(player, 'player:can_use_item')) return;
+
+    const isReloading = entity_native_property(player, 'player:state.reload');
+    if (isReloading === 'reloading') return;
     
     const handItem = getPlayerHandItem(player);
     if (handItem === undefined) return;
