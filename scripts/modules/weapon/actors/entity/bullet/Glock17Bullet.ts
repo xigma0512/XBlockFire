@@ -18,9 +18,9 @@ export class Glock17Bullet extends EntityActor {
                 flightSpeed: 1000
             }))
             .set('bullet_damage', new BulletDamageComponent({
-                near: { head: 10, body: 5, legs: 3 },
-                medium: { head: 8, body: 4, legs: 2 },
-                far: { head: 6, body: 3, legs: 1 }
+                near: { head: 10, body: 5, legs: 4 },
+                medium: { head: 8, body: 4, legs: 3 },
+                far: { head: 4, body: 2, legs: 1 }
             }));
         
         this.setEntity();
