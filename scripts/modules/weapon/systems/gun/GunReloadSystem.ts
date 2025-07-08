@@ -26,9 +26,7 @@ class GunReloadSystem {
             
             if (!this.canReload(actor)) throw 'cannot reload now';
             
-            const reloadComp = actor.getComponent('gun_reload')!;
-            
-            this.startReload(actor, reloadComp.reload_time);
+            this.startReload(actor);
         } 
         catch(err: any)
         {
@@ -36,7 +34,9 @@ class GunReloadSystem {
         }
     }
 
-    private startReload(actor: ItemActor, reloadTime: number) {
+    private startReload(actor: ItemActor) {
+        const reloadComp = actor.getComponent('gun_reload')!;
+        const reloadTime = reloadComp.reload_time;
         const startTick = system.currentTick;
         
         const progressBarTaskId = system.runInterval(() => {
@@ -57,10 +57,12 @@ class GunReloadSystem {
 
                 system.clearRun(progressBarTaskId);
                 world.afterEvents.dataDrivenEntityTrigger.unsubscribe(failTriggerCallback);
+                this.player.stopSound(reloadComp.reload_sound ?? '');
             }
         });
 
         set_entity_native_property(this.player, 'player:state.reload', 'reloading');
+        this.player.playSound(reloadComp.reload_sound ?? '');
     }
 
     private canReload(actor: ItemActor) {
