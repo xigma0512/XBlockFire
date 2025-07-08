@@ -2,6 +2,7 @@ import { GameRoomManager } from "../../base/gameroom/GameRoom";
 import { MemberManager } from "../../base/gameroom/member/MemberManager";
 import { ItemActor } from "../weapon/actors/Actor";
 import { Glock17 } from "../weapon/actors/item/Glock17";
+import { AK47 } from "../weapon/actors/item/AK47";
 import { HotbarManager } from "../hotbar/Hotbar";
 
 import { PhaseEnum as BombPlantPhaseEnum } from "../../types/gamephase/BombPlantPhaseEnum";
@@ -25,12 +26,30 @@ interface Product {
 
 const productTable: Product[] = [
     {
+        name: "AK47",
+        price: 0,
+        max_amount: 1,
+        hotbar_slot: 0,
+        itemActor: AK47,
+        description: "GOOD GUN",
+        iconPath: 'textures/items/ak47'
+    },
+    {
         name: "Glock17",
         price: 0,
         max_amount: 1,
         hotbar_slot: 1,
         itemActor: Glock17,
-        description: "This is a good and classic weapon."
+        description: "This is a good and classic weapon.",
+        iconPath: 'textures/items/glock17'
+    },
+    {
+        name: "SmokeGrenade",
+        price: 300,
+        max_amount: 2,
+        hotbar_slot: 5,
+        itemStackTypeId: 'xblockfire:smoke_grenade_item',
+        iconPath: 'textures/items/smoke_grenade_item'
     },
     {
         name: "Flashbang",
@@ -38,6 +57,7 @@ const productTable: Product[] = [
         max_amount: 2,
         hotbar_slot: 5,
         itemStackTypeId: 'xblockfire:flashbang_item',
+        iconPath: 'textures/items/flashbang_item'
     }
 ];
 
@@ -52,7 +72,7 @@ export class Shop {
             .body('Select an item to purchase:')
 
         for (const product of productTable) {
-            const name = `${product.name}\n${product.description ?? ''}`;
+            const name = `${product.name} | ${product.price}$\n${product.description ?? ''}`;
             form.button(name, product.iconPath);
         }
 
