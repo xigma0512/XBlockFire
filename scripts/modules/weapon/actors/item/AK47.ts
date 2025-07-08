@@ -45,14 +45,15 @@ export class AK47 extends ItemActor {
             )).set('gun_recoil', new GunRecoilComponent(
                 {
                     shacking_level: 0.15,
-                    shacking_duration: 0.1
+                    shacking_duration: 0.08
                 }
             )).set('gun_reload', new GunReloadComponent(
                 {
-                    reload_time: 45
+                    reload_time: 45,
+                    reload_sound: 'xblockfire.ak47_reload'
                 }
             )).set('gun_offset', new GunOffsetComponent({
-                scope: 0.3,
+                scope: 0.2,
                 hipfire: 4,
                 movement: 9
             }));
