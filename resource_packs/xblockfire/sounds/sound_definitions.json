@@ -1,7 +1,7 @@
 {
     "format_version": "1.14.0",
     "sound_definitions": {
-        "xigmaguns.smoke_explode": {
+        "xblockfire.smoke_explode": {
             "sounds": [
                 {
                     "name": "sounds/grenade/smoke_explode",
@@ -11,7 +11,7 @@
             "category": "ambient",
             "max_distance": 256
         },
-        "xigmaguns.throwing_smoke": {
+        "xblockfire.throwing_smoke": {
             "sounds": [
                 {
                     "name": "sounds/grenade/throwing_smoke",
@@ -21,7 +21,7 @@
             "category": "ambient",
             "max_distance": 32
         },
-        "xigmaguns.flash_explode": {
+        "xblockfire.flash_explode": {
             "sounds": [
                 {
                     "name": "sounds/grenade/flash_explode",
@@ -31,10 +31,20 @@
             "category": "ambient",
             "max_distance": 256
         },
-        "xigmaguns.throwing_flash": {
+        "xblockfire.throwing_flash": {
             "sounds": [
                 {
                     "name": "sounds/grenade/throwing_flash",
+                    "volume": 1
+                }
+            ],
+            "category": "ambient",
+            "max_distance": 32
+        },
+        "xblockfire.ak47_fire": {
+            "sounds": [
+                {
+                    "name": "sounds/gun/ak47_fire",
                     "volume": 1
                 }
             ],

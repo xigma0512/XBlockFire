@@ -11,6 +11,9 @@
         "glock17": {
             "textures": "textures/items/glock17"
         },
+        "ak47": {
+            "textures": "textures/items/ak47"
+        },
         "defuser": {
             "textures": "textures/items/defuser"
         },
