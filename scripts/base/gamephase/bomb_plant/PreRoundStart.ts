@@ -10,8 +10,9 @@ import { TeamEnum } from "../../../types/TeamEnum";
 import { entity_dynamic_property, set_entity_dynamic_property, set_entity_native_property } from "../../../utils/Property";
 import { ItemStackFactory } from "../../../utils/ItemStackFactory";
 
-import { GameMode, InputPermissionCategory, ItemLockMode } from "@minecraft/server";
+import { EquipmentSlot, GameMode, InputPermissionCategory, ItemLockMode } from "@minecraft/server";
 import { ItemStack } from "@minecraft/server";
+import { UnCommonItems } from "../../../modules/uncommon_items/UnCommonItems";
 
 export class PreRoundStartPhase implements IPhaseHandler {
     readonly phaseTag = BombPlantPhaseEnum.PreRoundStart;
@@ -122,5 +123,22 @@ function resetPlayerInventory(roomId: number) {
         const hotbar = HotbarManager.getPlayerHotbar(bombPlayer)
         hotbar.items[3] = new ItemStack('xblockfire:c4');
         HotbarManager.sendHotbar(bombPlayer, hotbar);
+    }
+
+    const defenders = member.getPlayers({ team: TeamEnum.Defender });
+    for (const player of attackers) {
+        const equippable = player.getComponent('equippable')!;
+        equippable.setEquipment(EquipmentSlot.Head, UnCommonItems.getItem('attacker_helmet'));
+        equippable.setEquipment(EquipmentSlot.Chest, UnCommonItems.getItem('attacker_chestplate'));
+        equippable.setEquipment(EquipmentSlot.Legs, UnCommonItems.getItem('attacker_leggings'));
+        equippable.setEquipment(EquipmentSlot.Feet, UnCommonItems.getItem('attacker_boots'));
+    }
+
+    for (const player of defenders) {
+        const equippable = player.getComponent('equippable')!;
+        equippable.setEquipment(EquipmentSlot.Head, UnCommonItems.getItem('defender_helmet'));
+        equippable.setEquipment(EquipmentSlot.Chest, UnCommonItems.getItem('defender_chestplate'));
+        equippable.setEquipment(EquipmentSlot.Legs, UnCommonItems.getItem('defender_leggings'));
+        equippable.setEquipment(EquipmentSlot.Feet, UnCommonItems.getItem('defender_boots'));
     }
 }
