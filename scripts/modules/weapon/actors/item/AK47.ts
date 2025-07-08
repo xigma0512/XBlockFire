@@ -10,28 +10,28 @@ import { GunRecoilComponent } from "../../components/gun/GunRecoilComponent";
 import { GunReloadComponent } from "../../components/gun/GunReloadComponent";
 import { GunOffsetComponent } from "../../components/gun/GunOffsetComponent";
 
-export class Glock17 extends ItemActor {
+export class AK47 extends ItemActor {
 
-    clone() { return new Glock17(); }
+    clone() { return new AK47(); }
 
     constructor() {
-        super('glock17', new ItemStack('xblockfire:glock17', 1));
+        super('ak47', new ItemStack('xblockfire:ak47', 1));
         
         this.components
             .set('item', new ItemComponent(
                 {
-                    nametag: 'Glock17',
+                    nametag: 'AK47',
                     lore: [ "I'M A GUN!!!" ],
                     keepOnDeath: true,
                     lockMode: ItemLockMode.slot
                 }
             )).set('gun', new GunComponent(
                 {
-                    gunTypeId: GunTypeEnum.Glock17
+                    gunTypeId: GunTypeEnum.AK47
                 }
             )).set('gun_magazine', new GunMagazineComponent(
                 {
-                    ammo: 12,
+                    ammo: 30,
                     count: 3
                 }
             )).set('gun_fire', new GunFireComponent(
@@ -39,21 +39,22 @@ export class Glock17 extends ItemActor {
                     fire_mode: FireModeEnum["Fully-Auto"],
                     release_to_fire: false,
                     bullet_spread: 1,
-                    fire_rate: 7
+                    fire_rate: 3,
+                    fire_sound: 'xblockfire.ak47_fire'
                 }
             )).set('gun_recoil', new GunRecoilComponent(
                 {
-                    shacking_level: 0.1,
+                    shacking_level: 0.15,
                     shacking_duration: 0.1
                 }
             )).set('gun_reload', new GunReloadComponent(
                 {
-                    reload_time: 30
+                    reload_time: 45
                 }
             )).set('gun_offset', new GunOffsetComponent({
                 scope: 0.3,
-                hipfire: 2,
-                movement: 3
+                hipfire: 4,
+                movement: 9
             }));
 
         this.setItem();

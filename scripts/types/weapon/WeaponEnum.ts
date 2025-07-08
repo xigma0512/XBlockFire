@@ -4,7 +4,8 @@ export const enum FireModeEnum {
 }
 
 export const enum GunTypeEnum {
-    'Glock17' = 0
+    'Glock17' = 0,
+    'AK47'
 }
 
 export const enum GrenadeTypeEnum {
