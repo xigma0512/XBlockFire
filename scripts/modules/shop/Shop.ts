@@ -2,10 +2,10 @@ import { GameRoomManager } from "../../base/gameroom/GameRoom";
 import { MemberManager } from "../../base/gameroom/member/MemberManager";
 import { HotbarManager } from "../hotbar/Hotbar";
 
-import { ItemActor } from "../weapon/actors/Actor";
-import { Glock17 } from "../weapon/actors/item/Glock17";
-import { AK47 } from "../weapon/actors/item/AK47";
-import { M4A4 } from "../weapon/actors/item/M4A4";
+import { ItemActor } from "../../base/weapon/actors/Actor";
+import { Glock17 } from "../../base/weapon/actors/item/Glock17";
+import { AK47 } from "../../base/weapon/actors/item/AK47";
+import { M4A4 } from "../../base/weapon/actors/item/M4A4";
 
 import { PhaseEnum as BombPlantPhaseEnum } from "../../types/gamephase/BombPlantPhaseEnum";
 import { ItemStackFactory } from "../../utils/ItemStackFactory";

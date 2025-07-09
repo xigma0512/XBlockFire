@@ -1,6 +1,6 @@
 import { system, world } from "@minecraft/server";
 import { getPlayerHandItem } from "../../../utils/others/Entity";
-import { ActorManager } from "../../weapon/systems/ActorManager";
+import { ActorManager } from "../../../base/weapon/systems/ActorManager";
 import { HudTextController } from "../HudTextController";
 
 export class WeaponInfo implements InGameHud {
