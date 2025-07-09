@@ -32,6 +32,7 @@ export class BombPlantedState implements IBombStateHandler {
     
     private entity!: Entity;
     private currentTick: number = -1;
+    private soundPlayInterval: number = 0;
 
     private beforeItemUseListener = (ev: ItemUseBeforeEvent) => { };
     private afterItemCompleteUseListener = (ev: ItemCompleteUseAfterEvent) => { };
@@ -57,10 +58,26 @@ export class BombPlantedState implements IBombStateHandler {
     }
 
     on_running() {
-        const bar = progressBar(BP_Config.bombplanted.COUNTDOWN_TIME, this.currentTick, 20);
+        const totalTime = BP_Config.bombplanted.COUNTDOWN_TIME;
+        const bar = progressBar(totalTime, this.currentTick, 30);
         this.entity.nameTag = `| ${bar} |`;
-        this.currentTick --;
 
+        if (this.currentTick > totalTime * (2/3)) {
+            this.soundPlayInterval = 20;
+        } else if (this.currentTick > totalTime * (1/3)) {
+            this.soundPlayInterval = 10;
+        } else {
+            this.soundPlayInterval = 5;
+        }
+
+        const location = Vector3Utils.add(this.entity.location, { y: 0.3 });
+
+        if (this.currentTick % this.soundPlayInterval === 0) {
+            this.entity.dimension.playSound("block.click", location, { pitch: 1.5, volume:5 });
+            try { this.entity.dimension.spawnParticle("minecraft:explosion_particle", location); } catch {}
+        }
+        
+        this.currentTick --;
         if (this.currentTick <= 0) explosion(this.roomId, this.entity);
     }
 
@@ -131,5 +148,4 @@ function explosion(roomId: number, bombEntity: Entity) {
     const room = GameRoomManager.getRoom(roomId);
 
     room.bombManager.updateState(new BombIdleState(roomId));
-
 }
