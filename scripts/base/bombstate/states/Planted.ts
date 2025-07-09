@@ -73,7 +73,7 @@ export class BombPlantedState implements IBombStateHandler {
         const location = Vector3Utils.add(this.entity.location, { y: 0.3 });
 
         if (this.currentTick % this.soundPlayInterval === 0) {
-            this.entity.dimension.playSound("block.click", location, { pitch: 1.5, volume:5 });
+            this.entity.dimension.playSound("block.click", location, { pitch: 1.5, volume: 5 });
             try { this.entity.dimension.spawnParticle("minecraft:explosion_particle", location); } catch {}
         }
         
@@ -138,7 +138,9 @@ function defuseComplete(roomId: number, defuser: Player) {
 
     room.bombManager.updateState(new BombIdleState(roomId));
 
-    defuser.dimension.playSound(COMPLETE_DEFUSED_SOUND_ID, defuser.location, { volume: 3 });
+    for (const player of room.memberManager.getPlayers()) {
+        player.playSound(COMPLETE_DEFUSED_SOUND_ID);
+    }
     Broadcast.message(`${FC.Yellow}Bomb has been defused by ${defuser.name}.`);
 }
 
