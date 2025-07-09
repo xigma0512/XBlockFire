@@ -42,7 +42,7 @@ export class RoundEndPhase implements IPhaseHandler {
     }
 
     private transitions() {
-        const room = GameRoomManager.instance.getRoom(this.roomId);
+        const room = GameRoomManager.getRoom(this.roomId);
         const phase = room.phaseManager;
 
         const attackerScore = variable(`${this.roomId}.attacker_score`);
@@ -71,7 +71,7 @@ export class RoundEndPhase implements IPhaseHandler {
 }
 
 function switchSide(roomId: number) {
-    const room = GameRoomManager.instance.getRoom(roomId);
+    const room = GameRoomManager.getRoom(roomId);
     const member = room.memberManager;
     for (const player of member.getPlayers()) {
         const playerTeam = entity_dynamic_property(player, 'player:team');
@@ -91,7 +91,7 @@ function switchSide(roomId: number) {
 }
 
 function processWinner(roomId: number) {
-    const room = GameRoomManager.instance.getRoom(roomId);
+    const room = GameRoomManager.getRoom(roomId);
     const member = room.memberManager;
     const economy = room.economyManager;
 

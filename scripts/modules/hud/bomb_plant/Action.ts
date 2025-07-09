@@ -18,7 +18,7 @@ export class ActionHud implements InGameHud {
     }
 
     private updateSubtitle() {
-        const room = GameRoomManager.instance.getRoom(this.roomId);
+        const room = GameRoomManager.getRoom(this.roomId);
         const phase = room.phaseManager.getPhase();
 
         let text: string | string[] = '';
@@ -45,7 +45,7 @@ export class ActionHud implements InGameHud {
     }
 
     private updateSidebar() {
-        const room = GameRoomManager.instance.getRoom(this.roomId);
+        const room = GameRoomManager.getRoom(this.roomId);
         const players = room.memberManager.getPlayers();
         const phase = room.phaseManager.getPhase();
         const economy = room.economyManager;

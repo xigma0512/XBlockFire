@@ -91,7 +91,7 @@ export class ActionPhase implements IPhaseHandler {
     }
 
     private transitions() {
-        const room = GameRoomManager.instance.getRoom(this.roomId);
+        const room = GameRoomManager.getRoom(this.roomId);
         const member = room.memberManager;
         const phase = room.phaseManager;
 

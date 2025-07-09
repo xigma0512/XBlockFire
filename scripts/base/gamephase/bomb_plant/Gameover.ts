@@ -34,7 +34,7 @@ export class GameOverPhase implements IPhaseHandler {
     }
 
     private transitions() {
-        const room = GameRoomManager.instance.getRoom(this.roomId);
+        const room = GameRoomManager.getRoom(this.roomId);
 
         if (this.currentTick <= 0) room.phaseManager.updatePhase(new IdlePhase(this.roomId));
     }

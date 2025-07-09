@@ -9,12 +9,12 @@ function createRoom(executer: Player, ...args: string[]) {
     const [gamemode, mapId] = args;
     if (!gamemode || !mapId) throw Error("Missing argument '<gamemode>' or '<map_id>'. Usage: /scriptevent blockfire:room create <gamemode> <mapId>");
     
-    const roomId = GameRoomManager.instance.createRoom(Number(gamemode), Number(mapId));
+    const roomId = GameRoomManager.createRoom(Number(gamemode), Number(mapId));
     executer.sendMessage(`Create room ${roomId} successfully.`);
 }
 
 function getRoomList(executer: Player) {
-    const rooms = GameRoomManager.instance.getAllRooms();
+    const rooms = GameRoomManager.getAllRooms();
     for (const [serial, room] of rooms) {
         executer.sendMessage(`Serial: ${serial} | GameMapId: ${room.gameMapId} | GamemodeId: ${room.gameMode}`);
     }
@@ -24,12 +24,12 @@ function playerJoinRoom(executer: Player, ...args: string[]) {
     const roomId = args[0];
     if (!roomId) throw Error("Missing argument '<room_serial>'. Usage: /scriptevent blockfire:room join <room_serial>");
     
-    const room = GameRoomManager.instance.getRoom(Number(roomId));
+    const room = GameRoomManager.getRoom(Number(roomId));
     if (room.memberManager.includePlayer(executer)) throw Error(`You have already in room ${roomId}`);
 
     if (MemberManager.isInRoom(executer)) {
         const roomId = MemberManager.getPlayerRoomId(executer)!;
-        const room = GameRoomManager.instance.getRoom(roomId);
+        const room = GameRoomManager.getRoom(roomId);
         room.memberManager.leaveRoom(executer);
     }
 
@@ -41,7 +41,7 @@ function playerLeaveRoom(executer: Player, ...args: string[]) {
     const roomId = args[0];
     if (!roomId) throw Error("Missing argument '<room_serial>'. Usage: /scriptevent blockfire:room leave <room_serial>");
     
-    const room = GameRoomManager.instance.getRoom(Number(roomId));
+    const room = GameRoomManager.getRoom(Number(roomId));
     if (!room.memberManager.includePlayer(executer)) throw Error(`You are not in room ${roomId}`);
 
     room.memberManager.leaveRoom(executer);
@@ -52,7 +52,7 @@ function forceStart(executer: Player, ...args: string[]) {
     const roomId = args[0];
     if (!roomId) throw Error("Missing argument '<room_serial>'. Usage: /scriptevent blockfire:room start <room_serial>");
 
-    const room = GameRoomManager.instance.getRoom(Number(roomId));
+    const room = GameRoomManager.getRoom(Number(roomId));
     const startPhase = {
         [GameModeEnum.BombPlant]: new PreRoundStartPhase(Number(roomId))
     };

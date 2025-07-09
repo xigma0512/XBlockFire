@@ -8,9 +8,9 @@ import { GunTypeEnum } from "../../../../types/weapon/WeaponEnum";
 import { Vector3Utils } from "@minecraft/math";
 import { Direction, Player, world } from "@minecraft/server";
 
-export class BulletSystem {
+class _BulletSystem {
     
-    private static _instance: BulletSystem;
+    private static _instance: _BulletSystem;
     static get instance() { return (this._instance || (this._instance = new this())); }
 
     private constructor() {
@@ -36,6 +36,8 @@ export class BulletSystem {
     }
 
 }
+
+export const BulletSystem = _BulletSystem.instance;
 
 const bulletHitEntity = world.afterEvents.projectileHitEntity.subscribe(ev => {
     const attacker = ev.source;

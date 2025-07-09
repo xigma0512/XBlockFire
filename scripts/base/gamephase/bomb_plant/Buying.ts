@@ -43,14 +43,14 @@ export class BuyingPhase implements IPhaseHandler {
     }
 
     private transitions() {
-        const room = GameRoomManager.instance.getRoom(this.roomId);
+        const room = GameRoomManager.getRoom(this.roomId);
         if (this.currentTick <= 0) room.phaseManager.updatePhase(new ActionPhase(this.roomId));
     }
 
 }
 
 function sendShopItem(roomId: number) {
-    const room = GameRoomManager.instance.getRoom(roomId);
+    const room = GameRoomManager.getRoom(roomId);
     const member = room.memberManager;
 
     for (const player of member.getPlayers()) {
@@ -61,7 +61,7 @@ function sendShopItem(roomId: number) {
 }
 
 function restorePlayerDefaults(roomId: number) {
-    const room = GameRoomManager.instance.getRoom(roomId);
+    const room = GameRoomManager.getRoom(roomId);
     const member = room.memberManager;
 
     for (const player of member.getPlayers()) {

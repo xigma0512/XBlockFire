@@ -42,7 +42,7 @@ export class BombDroppedState implements IBombStateHandler {
     
     on_running() {
         if (!this.entity.isValid) {
-            const room = GameRoomManager.instance.getRoom(this.roomId);
+            const room = GameRoomManager.getRoom(this.roomId);
             room.bombManager.updateState(new BombIdleState(this.roomId));
             return;
         }
@@ -80,7 +80,7 @@ export class BombDroppedState implements IBombStateHandler {
 
         inventory.addItem(new ItemStack(C4_ITEM_ID));
         
-        const room = GameRoomManager.instance.getRoom(this.roomId);
+        const room = GameRoomManager.getRoom(this.roomId);
         const attackers = room.memberManager.getPlayers({ team: TeamEnum.Attacker });
         
         player.sendMessage(`${FC.Green}You pick up the bomb.`);

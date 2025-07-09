@@ -24,13 +24,13 @@ export class MemberManager {
 
     joinRoom(player: Player) {
         MemberManager.players.set(player, this.roomId);
-        const room = GameRoomManager.instance.getRoom(this.roomId);
+        const room = GameRoomManager.getRoom(this.roomId);
         Broadcast.message(`${FC.Green}${player.name} has joined the game.`, room.memberManager.getPlayers());
     }
     
     leaveRoom(player: Player) {
         MemberManager.players.delete(player);
-        const room = GameRoomManager.instance.getRoom(this.roomId);
+        const room = GameRoomManager.getRoom(this.roomId);
         Broadcast.message(`${FC.Red}${player.name} has left the game.`, room.memberManager.getPlayers());
     }
 
@@ -64,6 +64,6 @@ export class MemberManager {
 const playerLeaveGameListener = world.beforeEvents.playerLeave.subscribe(ev => {
     if (!MemberManager.isInRoom(ev.player)) return;
     const roomId = MemberManager.getPlayerRoomId(ev.player)!;
-    const room = GameRoomManager.instance.getRoom(roomId);
+    const room = GameRoomManager.getRoom(roomId);
     room.memberManager.leaveRoom(ev.player);
 });

@@ -48,7 +48,7 @@ export class BombIdleState implements IBombStateHandler {
     private onBeforeItemUse(ev: ItemUseBeforeEvent) {
         if (ev.itemStack.typeId !== C4_ITEM_ID) return;
 
-        const room = GameRoomManager.instance.getRoom(this.roomId);
+        const room = GameRoomManager.getRoom(this.roomId);
         if (!room.memberManager.includePlayer(ev.source)) return;
 
         ev.cancel = !canPlantBomb(this.roomId, ev.source);
@@ -58,7 +58,7 @@ export class BombIdleState implements IBombStateHandler {
         try {
             if (ev.itemStack.typeId !== C4_ITEM_ID) return;
             
-            const room = GameRoomManager.instance.getRoom(this.roomId);
+            const room = GameRoomManager.getRoom(this.roomId);
             if (!room.memberManager.includePlayer(ev.source)) throw '';
             
             const phase = room.phaseManager.getPhase();
@@ -77,7 +77,7 @@ export class BombIdleState implements IBombStateHandler {
         const itemComp = entity.getComponent('item')!;
         if (itemComp.itemStack.typeId !== C4_ITEM_ID) return;
 
-        const room = GameRoomManager.instance.getRoom(this.roomId);
+        const room = GameRoomManager.getRoom(this.roomId);
         const player = entity.dimension
             .getEntities({ location: entity.location, maxDistance: 2, type: 'minecraft:player' })
             .find(p => room.memberManager.includePlayer(p as Player));
@@ -96,13 +96,13 @@ export class BombIdleState implements IBombStateHandler {
 
 function canPlantBomb(roomId: number, source: Player) {
     try {
-        const room = GameRoomManager.instance.getRoom(roomId);
+        const room = GameRoomManager.getRoom(roomId);
         const sourceTeam = entity_dynamic_property(source, 'player:team');
         if (sourceTeam !== TeamEnum.Attacker) {
             throw new Error(`You are not at Attacker team.`);
         }
 
-        const mapInfo = MapRegister.instance.getMap(room.gameMapId);
+        const mapInfo = MapRegister.getMap(room.gameMapId);
         const isAtTarget = mapInfo.positions.bomb_targets.some(target => {
             const distance = Vector3Utils.distance(source.location, target);
             return distance <= BOMB_TARGET_RANGE;

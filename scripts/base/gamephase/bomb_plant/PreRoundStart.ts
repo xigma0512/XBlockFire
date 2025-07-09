@@ -38,19 +38,19 @@ export class PreRoundStartPhase implements IPhaseHandler {
     }
 
     private transitions() {
-        const room = GameRoomManager.instance.getRoom(this.roomId);
+        const room = GameRoomManager.getRoom(this.roomId);
         room.phaseManager.updatePhase(new BuyingPhase(this.roomId));
     }
 }
 
 function resetBombState(roomId: number) {
-    const room = GameRoomManager.instance.getRoom(roomId);
+    const room = GameRoomManager.getRoom(roomId);
     const bombManager = room.bombManager;
     bombManager.updateState(new BombIdleState(roomId));
 }
 
 function initializePlayers(roomId: number) {
-    const room = GameRoomManager.instance.getRoom(roomId);
+    const room = GameRoomManager.getRoom(roomId);
     const member = room.memberManager;
 
     for (const player of member.getPlayers()) {
@@ -69,9 +69,9 @@ function initializePlayers(roomId: number) {
 }
 
 function teleportPlayers(roomId: number) {
-    const room = GameRoomManager.instance.getRoom(roomId);
+    const room = GameRoomManager.getRoom(roomId);
     const member = room.memberManager;
-    const gameMap = MapRegister.instance.getMap(room.gameMapId);
+    const gameMap = MapRegister.getMap(room.gameMapId);
 
     const spawns = {
         [TeamEnum.Attacker]: gameMap.positions.attacker_spawns,
@@ -94,7 +94,7 @@ function teleportPlayers(roomId: number) {
 }
 
 function resetPlayerInventory(roomId: number) {
-    const room = GameRoomManager.instance.getRoom(roomId);
+    const room = GameRoomManager.getRoom(roomId);
     const member = room.memberManager;
     
     for (const player of member.getPlayers()) {

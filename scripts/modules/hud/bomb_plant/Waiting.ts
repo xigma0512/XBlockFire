@@ -20,7 +20,7 @@ export class WaitingHud implements InGameHud {
     }
 
     private updateSubtitle() {
-        const room = GameRoomManager.instance.getRoom(this.roomId);
+        const room = GameRoomManager.getRoom(this.roomId);
         const phase = room.phaseManager.getPhase();
         const members = room.memberManager.getPlayers();
         const playerAmount = members.length;
@@ -41,13 +41,13 @@ export class WaitingHud implements InGameHud {
     }
 
     private updateSidebar() {
-        const room = GameRoomManager.instance.getRoom(this.roomId);
+        const room = GameRoomManager.getRoom(this.roomId);
         const players = room.memberManager.getPlayers();
         
         const date = new Date();
         const todayStr = `${date.getFullYear()}/${String(date.getMonth()).padStart(2, '0')}/${String(date.getDay()).padStart(2, '0')}`;
         
-        const map = MapRegister.instance.getMap(room.gameMapId);
+        const map = MapRegister.getMap(room.gameMapId);
         const playerCount = players.length;
 
         const message = [
