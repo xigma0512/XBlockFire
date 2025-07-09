@@ -32,8 +32,9 @@ export class DamageSystem {
         const damageComp = bulletActor.getComponent('bullet_damage')!;
         const damage = damageComp[distance][hitPart];
         
-        const healthComp = this.target.getComponent('health');
-        if (healthComp === undefined) return;
+        if (!this.target.hasComponent('health')) return;
+        const healthComp = this.target.getComponent('health')!;
+        
         if (healthComp.currentValue - damage > 0) {
             healthComp.setCurrentValue(healthComp.currentValue - damage);
         } else {
