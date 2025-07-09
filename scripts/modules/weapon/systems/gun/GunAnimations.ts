@@ -10,7 +10,7 @@ export class GunAnimations {
         const gunComp = gunActor.getComponent('gun_fire')!;
         owner.playSound(gunComp.fire_sound ?? '');
         for (const player of world.getPlayers({excludeNames: [owner.name]})) {
-            player.playSound(`${gunComp.fire_sound}.3d`, {location: owner.location});
+            player.playSound(`${gunComp.fire_sound}.3d`, {location: owner.location, volume: 4});
         }
     }
 
@@ -18,7 +18,7 @@ export class GunAnimations {
         const reloadComp = gunActor.getComponent('gun_reload')!;
         owner.playSound(reloadComp.reload_sound ?? '');
         for (const player of world.getPlayers({excludeNames: [owner.name]})) {
-            player.playSound(`${reloadComp.reload_sound}.3d`, {location: owner.location});
+            player.playSound(`${reloadComp.reload_sound}.3d`, {location: owner.location, volume: 2});
         }
     }
 }
