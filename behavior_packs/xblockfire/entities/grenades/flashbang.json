@@ -125,14 +125,14 @@
             "explode_sound": {
                 "queue_command": {
                     "command": [
-                        "playsound xblockfire.flash_explode @a ~~~ 5 1"
+                        "playsound xblockfire.flash_explode @a ~~~ 4 1"
                     ]
                 }
             },
             "throwing_sound": {
                 "queue_command": {
                     "command": [
-                        "playsound xblockfire.throwing_flash @a ~~~ 1 1"
+                        "playsound xblockfire.throwing_flash @a ~~~ 2 1"
                     ]
                 }
             }

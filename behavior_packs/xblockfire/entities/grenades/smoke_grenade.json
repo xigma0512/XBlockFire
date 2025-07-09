@@ -133,14 +133,14 @@
             "explode_sound": {
                 "queue_command": {
                     "command": [
-                        "playsound xblockfire.smoke_explode @a ~~~ 3 1"
+                        "playsound xblockfire.smoke_explode @a ~~~ 5 1"
                     ]
                 }
             },
             "throwing_sound": {
                 "queue_command": {
                     "command": [
-                        "playsound xblockfire.throwing_smoke @a ~~~ 1 1"
+                        "playsound xblockfire.throwing_smoke @a ~~~ 2 1"
                     ]
                 }
             }
