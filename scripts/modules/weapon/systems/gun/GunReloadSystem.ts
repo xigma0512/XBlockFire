@@ -5,6 +5,7 @@ import { getPlayerHandItem } from "../../../../utils/others/Entity";
 import { progressBar } from "../../../../utils/others/Format";
 
 import { Player, system, world } from "@minecraft/server";
+import { GunAnimations } from "./GunAnimations";
 
 class GunReloadSystem {
 
@@ -62,7 +63,7 @@ class GunReloadSystem {
         });
 
         set_entity_native_property(this.player, 'player:state.reload', 'reloading');
-        this.player.playSound(reloadComp.reload_sound ?? '');
+        GunAnimations.playGunReloadAnimation(this.player, actor);
     }
 
     private canReload(actor: ItemActor) {

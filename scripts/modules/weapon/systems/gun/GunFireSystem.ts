@@ -91,7 +91,7 @@ class GunFireSystem {
             BulletSystem.instance.spawnBullet(player, gunComp.gunTypeId, shootOffset);
         }
 
-        GunAnimations.applyFireAnimation(player, gunActor);
+        GunAnimations.playerGunFireAnimation(player, gunActor);
     }
 
     private stopFiringTrigger(player: Player, firingTaskId: number) {
