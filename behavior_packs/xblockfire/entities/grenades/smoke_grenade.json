@@ -75,8 +75,7 @@
             "minecraft:type_family": {
                 "family": [
                     "projectile",
-                    "grenade",
-                    "smoke_grenade"
+                    "grenade"
                 ]
             },
 			"minecraft:collision_box": {
@@ -128,20 +127,6 @@
                 },
                 "set_property": {
                     "grenade:throwing_type": 1
-                }
-            },
-            "explode_sound": {
-                "queue_command": {
-                    "command": [
-                        "playsound xblockfire.smoke_explode @a ~~~ 5 1"
-                    ]
-                }
-            },
-            "throwing_sound": {
-                "queue_command": {
-                    "command": [
-                        "playsound xblockfire.throwing_smoke @a ~~~ 2 1"
-                    ]
                 }
             }
         }

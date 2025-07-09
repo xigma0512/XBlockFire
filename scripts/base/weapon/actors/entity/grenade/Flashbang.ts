@@ -21,7 +21,9 @@ export class Flashbang extends EntityActor {
             .set('grenade', new GrenadeComponent(
                 {
                     grenadeTypeId: GrenadeTypeEnum.Flashbang,
-                    executeDelay: (throwingType === 0 ? 40 : 20)
+                    executeDelay: (throwingType === 0 ? 40 : 20),
+                    throwing_sound: 'xblockfire.throwing_flash',
+                    explode_sound: 'xblockfire.flash_explode'
                 }
             ));
     }
