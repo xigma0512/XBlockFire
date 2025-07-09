@@ -1,6 +1,68 @@
 {
     "format_version": "1.14.0",
     "sound_definitions": {
+
+        // c4
+        "xblockfire.c4_planted": {
+            "sounds": [
+                {
+                    "name": "sounds/c4/c4_planted",
+                    "is3D": false
+                } 
+            ],
+            "category": "ambient"
+        },
+        "xblockfire.c4_defused": {
+            "sounds": [
+                {
+                    "name": "sounds/c4/c4_defused",
+                    "is3D": false
+                }
+            ],
+            "category": "ambient"
+        },
+        "xblockfire.c4_explosion": {
+            "sounds": [
+                {
+                    "name": "sounds/c4/c4_explosion",
+                    "volume": 5
+                }
+            ],
+            "category": "ambient",
+            "max_distance": 256
+        },
+        "xblockfire.defusing": {
+            "sounds": [
+                {
+                    "name": "sounds/c4/defusing",
+                    "volume": 5
+                }
+            ],
+            "category": "ambient",
+            "max_distance": 256
+        },
+        "xblockfire.planting.broadcast": {
+            "sounds": [
+                {
+                    "name": "sounds/c4/defusing",
+                    "volume": 5
+                }
+            ],
+            "category": "ambient",
+            "max_distance": 256
+        },
+        "xblockfire.planting.self": {
+            "sounds": [
+                {
+                    "name": "sounds/c4/planting",
+                    "is3D": false
+                }
+            ],
+            "category": "ambient",
+            "max_distance": 256
+        },
+
+        // grenades
         "xblockfire.smoke_explode": {
             "sounds": [
                 {
@@ -42,6 +104,7 @@
             "max_distance": 32
         },
 
+        // guns
         "xblockfire.empty_gun": {
             "sounds": [
                 {
