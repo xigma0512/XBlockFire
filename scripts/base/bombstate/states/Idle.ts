@@ -4,12 +4,13 @@ import { BombPlantedState } from "./Planted";
 import { BombDroppedState } from "./Dropped";
 
 import { TeamEnum } from "../../../types/TeamEnum";
+import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPlantPhaseEnum";
 import { BombStateEnum } from "../../../types/bombstate/BombStateEnum";
 import { entity_dynamic_property } from "../../../utils/Property";
 import { FormatCode as FC } from "../../../utils/FormatCode";
 
 import { Vector3Utils } from "@minecraft/math";
-import { Player, system, world } from "@minecraft/server";
+import { ItemStack, Player, system, world } from "@minecraft/server";
 import { EntitySpawnAfterEvent, ItemUseBeforeEvent, ItemCompleteUseAfterEvent } from "@minecraft/server";
 
 const BOMB_TARGET_RANGE = 3;
@@ -54,12 +55,19 @@ export class BombIdleState implements IBombStateHandler {
     }
 
     private onItemCompleteUse(ev: ItemCompleteUseAfterEvent) {
-        if (ev.itemStack.typeId !== C4_ITEM_ID) return;
-
-        const room = GameRoomManager.instance.getRoom(this.roomId);
-        if (!room.memberManager.includePlayer(ev.source)) return; 
-
-        room.bombManager.updateState(new BombPlantedState(this.roomId, ev.source));
+        try {
+            if (ev.itemStack.typeId !== C4_ITEM_ID) return;
+            
+            const room = GameRoomManager.instance.getRoom(this.roomId);
+            if (!room.memberManager.includePlayer(ev.source)) throw '';
+            
+            const phase = room.phaseManager.getPhase();
+            if (phase.phaseTag !== BombPlantPhaseEnum.Action) throw '';
+            
+            room.bombManager.updateState(new BombPlantedState(this.roomId, ev.source));
+        } catch {
+            ev.source.getComponent('inventory')?.container.setItem(3, new ItemStack(C4_ITEM_ID));
+        }
     }
 
     private onEntitySpawn(ev: EntitySpawnAfterEvent) {
