@@ -38,7 +38,7 @@ export class BombPlantedState implements IBombStateHandler {
     ) { }
 
     on_entry() {
-        const room = GameRoomManager.instance.getRoom(this.roomId);
+        const room = GameRoomManager.getRoom(this.roomId);
         this.entity = this.planter.dimension.spawnEntity(PLANTED_C4_ENTITY_ID, this.planter.location);
         this.currentTick = BP_Config.bombplanted.COUNTDOWN_TIME;
 
@@ -74,7 +74,7 @@ export class BombPlantedState implements IBombStateHandler {
         if (ev.itemStack.typeId !== DEFUSER_ITEM_ID) return;
         
         const player = ev.source;
-        const room = GameRoomManager.instance.getRoom(this.roomId);
+        const room = GameRoomManager.getRoom(this.roomId);
         if (!room.memberManager.includePlayer(player)) return;
         
         ev.cancel = !canDefuseBomb(this.entity, player);
@@ -84,7 +84,7 @@ export class BombPlantedState implements IBombStateHandler {
         if (ev.itemStack.typeId !== DEFUSER_ITEM_ID) return;
         
         const player = ev.source;
-        const room = GameRoomManager.instance.getRoom(this.roomId);
+        const room = GameRoomManager.getRoom(this.roomId);
         if (!room.memberManager.includePlayer(player)) return;
 
         defuseComplete(this.roomId, player);
@@ -103,7 +103,7 @@ function canDefuseBomb(bombEntity: Entity, player: Player) {
 }
 
 function defuseComplete(roomId: number, defuser: Player) {
-    const room = GameRoomManager.instance.getRoom(roomId);
+    const room = GameRoomManager.getRoom(roomId);
     
     if (room.phaseManager.getPhase().phaseTag === BombPlantPhaseEnum.BombPlanted) {
         set_variable(`${roomId}.round_winner`, TeamEnum.Defender);
@@ -116,7 +116,7 @@ function defuseComplete(roomId: number, defuser: Player) {
 
 function explosion(roomId: number, bombEntity: Entity) {
     bombEntity.dimension.createExplosion(bombEntity.location, 20, { causesFire: false, breaksBlocks: false });
-    const room = GameRoomManager.instance.getRoom(roomId);
+    const room = GameRoomManager.getRoom(roomId);
 
     room.bombManager.updateState(new BombIdleState(roomId));
 }

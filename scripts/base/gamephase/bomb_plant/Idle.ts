@@ -34,7 +34,7 @@ export class IdlePhase implements IPhaseHandler {
     }
 
     on_running() {
-        const room = GameRoomManager.instance.getRoom(this.roomId);
+        const room = GameRoomManager.getRoom(this.roomId);
         const members = room.memberManager.getPlayers();
         const playerAmount = members.length;
 
@@ -53,7 +53,7 @@ export class IdlePhase implements IPhaseHandler {
     }
 
     private transitions() {
-        const room = GameRoomManager.instance.getRoom(this.roomId);
+        const room = GameRoomManager.getRoom(this.roomId);
 
         if (this.currentTick <= 0) return room.phaseManager.updatePhase(new BuyingPhase(this.roomId));
     }
@@ -61,7 +61,7 @@ export class IdlePhase implements IPhaseHandler {
 }
 
 function balanceTeam(roomId: number) {
-    const room = GameRoomManager.instance.getRoom(roomId);
+    const room = GameRoomManager.getRoom(roomId);
     const players = room.memberManager.getPlayers();
     
     const shuffledPlayers = [...players].sort(() => 0.5 - Math.random());
@@ -82,7 +82,7 @@ function balanceTeam(roomId: number) {
 }
 
 function initializePlayers(roomId: number) {
-    const room = GameRoomManager.instance.getRoom(roomId);
+    const room = GameRoomManager.getRoom(roomId);
     const member = room.memberManager;
 
     for (const player of member.getPlayers()) {

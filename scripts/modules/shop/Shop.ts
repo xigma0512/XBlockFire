@@ -72,9 +72,9 @@ const productTable: Product[] = [
     }
 ];
 
-export class Shop {
+class _Shop {
 
-    private static _instance: Shop;
+    private static _instance: _Shop;
     static get instance() { return (this._instance || (this._instance = new this)); }
 
     async openShop(player: Player) {
@@ -133,7 +133,7 @@ export class Shop {
 
     private pay(player: Player, price: number) {
         const playerRoomId = MemberManager.getPlayerRoomId(player)!;
-        const playerRoom = GameRoomManager.instance.getRoom(playerRoomId);
+        const playerRoom = GameRoomManager.getRoom(playerRoomId);
         const economy = playerRoom.economyManager;
 
         if (economy.canBeAfforded(player, price)) {
@@ -144,6 +144,8 @@ export class Shop {
     }
 }
 
+export const Shop = _Shop.instance;
+
 const openShopListener = world.beforeEvents.itemUse.subscribe(ev => {
     if (ev.itemStack.typeId !== 'minecraft:feather') return;
 
@@ -151,12 +153,12 @@ const openShopListener = world.beforeEvents.itemUse.subscribe(ev => {
     if (!MemberManager.isInRoom(player)) return;
 
     const playerRoomId = MemberManager.getPlayerRoomId(player)!;
-    const playerRoom = GameRoomManager.instance.getRoom(playerRoomId);
+    const playerRoom = GameRoomManager.getRoom(playerRoomId);
     const phase = playerRoom.phaseManager.getPhase();
 
     if (phase.phaseTag !== BombPlantPhaseEnum.Buying) return;
 
     system.run(() => {
-        Shop.instance.openShop(player);
+        Shop.openShop(player);
     });
 });

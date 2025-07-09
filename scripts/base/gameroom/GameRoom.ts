@@ -51,9 +51,9 @@ class GameRoom {
 
 }
 
-export class GameRoomManager {
+class _GameRoomManager {
     
-    private static _instance: GameRoomManager;
+    private static _instance: _GameRoomManager;
     static get instance() { return (this._instance || (this._instance = new this())); }
 
     private serialId: number = 0;
@@ -88,3 +88,5 @@ export class GameRoomManager {
         return Array.from(this.rooms.entries());
     }
 }
+
+export const GameRoomManager = _GameRoomManager.instance; 

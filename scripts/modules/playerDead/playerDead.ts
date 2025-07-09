@@ -37,14 +37,14 @@ function dropC4(player: Player) {
     if (container.find(new ItemStack(C4_ITEM_ID)) === undefined) return;
 
     const roomId = MemberManager.getPlayerRoomId(player)!;
-    const room = GameRoomManager.instance.getRoom(roomId);
+    const room = GameRoomManager.getRoom(roomId);
     const bombManager = room.bombManager;
     bombManager.updateState(new BombDroppedState(roomId, player.location));
 }
 
 function showDeathMessage(deadPlayer: Player, attacker: Player) {
     const roomId = MemberManager.getPlayerRoomId(deadPlayer)!;
-    const room = GameRoomManager.instance.getRoom(roomId);
+    const room = GameRoomManager.getRoom(roomId);
 
     const deadPlayerTeam = entity_dynamic_property(deadPlayer, 'player:team');
     const attackerTeam = entity_dynamic_property(attacker, 'player:team');

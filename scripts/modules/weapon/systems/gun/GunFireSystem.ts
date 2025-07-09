@@ -11,9 +11,9 @@ import { entity_native_property } from "../../../../utils/Property";
 
 import { Player, system, world } from "@minecraft/server";
 
-class GunFireSystem {
+class _GunFireSystem {
 
-    private static _instance: GunFireSystem;
+    private static _instance: _GunFireSystem;
     static get instance() { return (this._instance || (this._instance = new this())); }
 
     private _cooldowns: Set<Player>;
@@ -88,7 +88,7 @@ class GunFireSystem {
         const shootOffset = getPlayerGunOffset(player, gunActor);
         
         for (let _ = 0; _ < gunFireComp.bullet_spread; _ ++) {
-            BulletSystem.instance.spawnBullet(player, gunComp.gunTypeId, shootOffset);
+            BulletSystem.spawnBullet(player, gunComp.gunTypeId, shootOffset);
         }
 
         GunAnimations.playerGunFireAnimation(player, gunActor);
@@ -116,6 +116,8 @@ class GunFireSystem {
     }
 }
 
+const GunFireSystem = _GunFireSystem.instance;
+
 const startFireTrigger = world.afterEvents.itemStartUse.subscribe(ev => {
     const player = ev.source;
     if (!entity_native_property(player, 'player:can_use_item')) return;
@@ -130,6 +132,6 @@ const startFireTrigger = world.afterEvents.itemStartUse.subscribe(ev => {
     const actor = ActorManager.getActor(handItem) as ItemActor;
 
     if (handItem.hasTag('xblockfire:gun')) {
-        GunFireSystem.instance.startFiring(player, actor);
+        GunFireSystem.startFiring(player, actor);
     }
 });

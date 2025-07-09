@@ -23,7 +23,7 @@ abstract class GrenadeHandler {
         this.entityActor.entity.triggerEvent('explode_sound');
 
         system.runTimeout(() => {
-            GrenadeSystem.instance.removeHandler(this.entityActor.entity);
+            GrenadeSystem.removeHandler(this.entityActor.entity);
             this.entityActor.entity.remove();
         }, 2);
     }
@@ -137,9 +137,9 @@ class FlashbangHandler extends GrenadeHandler {
     }
 }
 
-class GrenadeSystem {
+class _GrenadeSystem {
 
-    private static _instance: GrenadeSystem;
+    private static _instance: _GrenadeSystem;
     static get instance() { return (this._instance || (this._instance = new this())); }
 
     private _grenades: Map<Entity, GrenadeHandler>;
@@ -162,6 +162,8 @@ class GrenadeSystem {
 
 }
 
+const GrenadeSystem = _GrenadeSystem.instance;
+
 const handlerRegister = world.afterEvents.entitySpawn.subscribe(ev => {
     if (!ev.entity.isValid) return;
     const familyComp = ev.entity.getComponent('type_family');
@@ -173,8 +175,8 @@ const handlerRegister = world.afterEvents.entitySpawn.subscribe(ev => {
 
     grenade.triggerEvent('throwing_sound');
     
-    if (grenade.typeId === 'xblockfire:flashbang') GrenadeSystem.instance.setHandler(grenade, new FlashbangHandler(grenadeActor));
-    if (grenade.typeId === 'xblockfire:smoke_grenade') GrenadeSystem.instance.setHandler(grenade, new SmokeGrenadeHandler(grenadeActor));
+    if (grenade.typeId === 'xblockfire:flashbang') GrenadeSystem.setHandler(grenade, new FlashbangHandler(grenadeActor));
+    if (grenade.typeId === 'xblockfire:smoke_grenade') GrenadeSystem.setHandler(grenade, new SmokeGrenadeHandler(grenadeActor));
 
 });
 
@@ -205,7 +207,7 @@ const grenadeRebound = world.afterEvents.projectileHitBlock.subscribe(ev => {
         [Direction.West]: { x: -offsetValue }
     }
 
-    const handler = GrenadeSystem.instance.getHandler(projectile);
+    const handler = GrenadeSystem.getHandler(projectile);
     if (handler === undefined) return;
 
     if (!bounces.has(projectile)) bounces.set(projectile, 1);
