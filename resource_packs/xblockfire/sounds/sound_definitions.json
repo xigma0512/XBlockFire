@@ -35,8 +35,7 @@
             "sounds": [
                 {
                     "name": "sounds/grenade/throwing_flash",
-                    "volume": 1,
-                    "is3D": false
+                    "volume": 1
                 }
             ],
             "category": "ambient",
@@ -47,56 +46,80 @@
             "sounds": [
                 {
                     "name": "sounds/gun/empty_gun",
-                    "volume": 1,
                     "is3D": false
                 }
             ],
-            "category": "ambient",
-            "max_distance": 32
+            "category": "ambient"
         },
 
         "xblockfire.ak47_fire": {
             "sounds": [
                 {
                     "name": "sounds/gun/ak47_fire",
-                    "volume": 1,
                     "is3D": false
                 }
             ],
-            "category": "ambient",
-            "max_distance": 32
+            "category": "ambient"
         },
         "xblockfire.ak47_reload": {
             "sounds": [
                 {
                     "name": "sounds/gun/ak47_reload",
-                    "volume": 1
+                    "is3D": false
                 }
             ],
-            "category": "ambient",
-            "max_distance": 32
+            "category": "ambient"
         },
         "xblockfire.m4a4_fire": {
             "sounds": [
                 {
                     "name": "sounds/gun/m4a4_fire",
-                    "volume": 1,
                     "is3D": false
                 }
             ],
-            "category": "ambient",
-            "max_distance": 32
+            "category": "ambient"
         },
         "xblockfire.m4a4_reload": {
             "sounds": [
                 {
                     "name": "sounds/gun/m4a4_reload",
-                    "volume": 1,
                     "is3D": false
                 }
             ],
-            "category": "ambient",
-            "max_distance": 32
+            "category": "ambient"
+        },
+
+        "xblockfire.ak47_fire.3d": {
+            "sounds": [
+                {
+                    "name": "sounds/gun/ak47_fire"
+                }
+            ],
+            "category": "ambient"
+        },
+        "xblockfire.ak47_reload.3d": {
+            "sounds": [
+                {
+                    "name": "sounds/gun/ak47_reload"
+                }
+            ],
+            "category": "ambient"
+        },
+        "xblockfire.m4a4_fire.3d": {
+            "sounds": [
+                {
+                    "name": "sounds/gun/m4a4_fire"
+                }
+            ],
+            "category": "ambient"
+        },
+        "xblockfire.m4a4_reload.3d": {
+            "sounds": [
+                {
+                    "name": "sounds/gun/m4a4_reload"
+                }
+            ],
+            "category": "ambient"
         }
     }
 }
