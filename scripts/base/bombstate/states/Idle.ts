@@ -17,6 +17,7 @@ import { EntitySpawnAfterEvent, ItemUseBeforeEvent, ItemCompleteUseAfterEvent } 
 const BOMB_TARGET_RANGE = 3;
 const C4_ITEM_ID = 'xblockfire:c4';
 
+const C4_PLANTED_SOUND_ID = 'xblockfire.c4_planted';
 const PLANTING_BROADCAST_SOUND_ID = 'xblockfire.planting.broadcast'
 const PLANTING_SELF_SOUND_ID = 'xblockfire.planting.self';
 
@@ -77,6 +78,11 @@ export class BombIdleState implements IBombStateHandler {
             if (phase.phaseTag !== BombPlantPhaseEnum.Action) throw '';
             
             room.bombManager.updateState(new BombPlantedState(this.roomId, ev.source));
+
+            for (const player of room.memberManager.getPlayers()) {
+                player.playSound(C4_PLANTED_SOUND_ID);
+            }
+            
         } catch {
             ev.source.getComponent('inventory')?.container.setItem(3, new ItemStack(C4_ITEM_ID));
         }
