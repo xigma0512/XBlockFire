@@ -6,21 +6,26 @@ import { BombDroppedState } from "./Dropped";
 import { TeamEnum } from "../../../types/TeamEnum";
 import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPlantPhaseEnum";
 import { BombStateEnum } from "../../../types/bombstate/BombStateEnum";
+
 import { entity_dynamic_property } from "../../../utils/Property";
 import { FormatCode as FC } from "../../../utils/FormatCode";
 
 import { Vector3Utils } from "@minecraft/math";
-import { ItemStack, Player, system, world } from "@minecraft/server";
+import { ItemStack, ItemStopUseAfterEvent, Player, system, world } from "@minecraft/server";
 import { EntitySpawnAfterEvent, ItemUseBeforeEvent, ItemCompleteUseAfterEvent } from "@minecraft/server";
 
 const BOMB_TARGET_RANGE = 3;
 const C4_ITEM_ID = 'xblockfire:c4';
+
+const PLANTING_BROADCAST_SOUND_ID = 'xblockfire.planting.broadcast'
+const PLANTING_SELF_SOUND_ID = 'xblockfire.planting.self';
 
 export class BombIdleState implements IBombStateHandler {
 
     readonly stateTag = BombStateEnum.Idle;
 
     private beforeItemUseListener = (ev: ItemUseBeforeEvent) => { };
+    private afterItemStopUseListener = (ev: ItemStopUseAfterEvent) => { };
     private afterItemCompleteUseListener = (ev: ItemCompleteUseAfterEvent) => { };
     private afterEntitySpawnListener = (ev: EntitySpawnAfterEvent) => { };
 
@@ -28,6 +33,7 @@ export class BombIdleState implements IBombStateHandler {
 
     on_entry() {
         this.beforeItemUseListener = world.beforeEvents.itemUse.subscribe(this.onBeforeItemUse.bind(this));
+        this.afterItemStopUseListener = world.afterEvents.itemStopUse.subscribe(this.onAfterItemStopUse.bind(this));
         this.afterItemCompleteUseListener = world.afterEvents.itemCompleteUse.subscribe(this.onItemCompleteUse.bind(this));
         this.afterEntitySpawnListener = world.afterEvents.entitySpawn.subscribe(this.onEntitySpawn.bind(this));
 
@@ -38,6 +44,7 @@ export class BombIdleState implements IBombStateHandler {
 
     on_exit() {
         world.beforeEvents.itemUse.unsubscribe(this.beforeItemUseListener);
+        world.afterEvents.itemStopUse.unsubscribe(this.afterItemStopUseListener);
         world.afterEvents.itemCompleteUse.unsubscribe(this.afterItemCompleteUseListener);
         world.afterEvents.entitySpawn.unsubscribe(this.afterEntitySpawnListener);
 
@@ -52,6 +59,11 @@ export class BombIdleState implements IBombStateHandler {
         if (!room.memberManager.includePlayer(ev.source)) return;
 
         ev.cancel = !canPlantBomb(this.roomId, ev.source);
+    }
+
+    private onAfterItemStopUse(ev: ItemStopUseAfterEvent) {
+        if (!ev.itemStack || ev.itemStack.typeId !== C4_ITEM_ID) return;
+        ev.source.stopSound(PLANTING_SELF_SOUND_ID);
     }
 
     private onItemCompleteUse(ev: ItemCompleteUseAfterEvent) {
@@ -112,8 +124,15 @@ function canPlantBomb(roomId: number, source: Player) {
             throw new Error('Cannot plant c4 outside the bomb target position');
         }
 
-        system.run(() => source.onScreenDisplay.setActionBar('Planting...'));
+        system.run(() => {
+            for (const player of world.getPlayers({excludeNames: [source.name]})) {
+                player.playSound(PLANTING_BROADCAST_SOUND_ID, { location: source.location, volume: 3 });
+            }
+            source.playSound(PLANTING_SELF_SOUND_ID);
+        });
+
         return true;
+
     } catch (err: any) {
         system.run(() => source.onScreenDisplay.setActionBar(`${FC.Red}${err.message}`));
         return false;

@@ -22,6 +22,10 @@ const DEFUSER_ITEM_ID = 'xblockfire:defuser';
 const PLANTED_C4_ENTITY_ID = 'xblockfire:planted_c4' as VanillaEntityIdentifier;
 const DEFUSE_RANGE = 1.5;
 
+const DEFUSING_SOUND_ID = 'xblockfire.defusing';
+const COMPLETE_DEFUSED_SOUND_ID = 'xblockfire.c4_defused';
+const EXPLOSION_SOUND_ID = 'xblockfire.c4_explosion';
+
 export class BombPlantedState implements IBombStateHandler {
 
     readonly stateTag = BombStateEnum.Planted;
@@ -98,7 +102,12 @@ function canDefuseBomb(bombEntity: Entity, player: Player) {
         system.run(() => player.onScreenDisplay.setActionBar(`${FC.Red}There is no c4 in the range.`));
         return false;
     }
-    system.run(() => player.onScreenDisplay.setActionBar(`Defusing...`));
+
+    system.run(() => {
+        player.onScreenDisplay.setActionBar(`Defusing...`);
+        player.dimension.playSound(DEFUSING_SOUND_ID, player.location, { volume: 3 });
+    });
+
     return true;
 }
 
@@ -111,12 +120,16 @@ function defuseComplete(roomId: number, defuser: Player) {
     }
 
     room.bombManager.updateState(new BombIdleState(roomId));
+
+    defuser.dimension.playSound(COMPLETE_DEFUSED_SOUND_ID, defuser.location, { volume: 3 });
     Broadcast.message(`${FC.Yellow}Bomb has been defused by ${defuser.name}.`);
 }
 
 function explosion(roomId: number, bombEntity: Entity) {
+    bombEntity.dimension.playSound(EXPLOSION_SOUND_ID, bombEntity.location, { volume: 3 });
     bombEntity.dimension.createExplosion(bombEntity.location, 20, { causesFire: false, breaksBlocks: false });
     const room = GameRoomManager.getRoom(roomId);
 
     room.bombManager.updateState(new BombIdleState(roomId));
+
 }
