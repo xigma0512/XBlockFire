@@ -1,4 +1,4 @@
-import { world } from "@minecraft/server"
+import { ItemLockMode, world } from "@minecraft/server"
 
 const containerLocation = { x: 281, y: 79, z: 489 }
 
@@ -21,6 +21,11 @@ export class UnCommonItems {
             throw Error('Cannot found UnCommonItems container.');
         } 
         const container = chest.getComponent('inventory')!.container!;
-        return container.getItem(itemList[type])!;
+        const item = container.getItem(itemList[type])?.clone();
+        if (item === undefined) {
+            throw Error(`${type} item is undefined`);
+        }
+        item.lockMode = ItemLockMode.slot;
+        return item;
     }
 }
