@@ -22,7 +22,9 @@ export class SmokeGrenade extends EntityActor {
             .set('grenade', new GrenadeComponent(
                 {
                     grenadeTypeId: GrenadeTypeEnum.Flashbang,
-                    executeDelay: (throwingType === 0 ? 70 : 40)
+                    executeDelay: (throwingType === 0 ? 70 : 40),
+                    throwing_sound: 'xblockfire.throwing_smoke',
+                    explode_sound: 'xblockfire.smoke_explode'
                 }
             ));
     }
