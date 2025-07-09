@@ -1,6 +1,6 @@
-import { Glock17 } from "../weapon/actors/item/Glock17";
-import { ActorManager } from "../weapon/systems/ActorManager";
-import { ItemActor } from "../weapon/actors/Actor";
+import { Glock17 } from "../../base/weapon/actors/item/Glock17";
+import { ActorManager } from "../../base/weapon/systems/ActorManager";
+import { ItemActor } from "../../base/weapon/actors/Actor";
 import { ItemStackFactory } from "../../utils/ItemStackFactory";
 
 import { ItemLockMode, ItemStack, Player } from "@minecraft/server";
