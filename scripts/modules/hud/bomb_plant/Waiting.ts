@@ -32,7 +32,7 @@ export class WaitingHud implements InGameHud {
         }
         
         if (phase.currentTick !== config.COUNTDOWN_TIME && playerAmount < config.AUTO_START_MIN_PLAYER) {
-            Broadcast.message(`${FC.Red}Not enough players. Waiting for more players.`, members);
+            Broadcast.message(`${FC.Gray}>> ${FC.Red}Not enough players. Waiting for more players.`, members);
         }
         
         for (const player of members) {
