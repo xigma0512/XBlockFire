@@ -2,6 +2,7 @@ import { GameRoomManager } from "../../gameroom/GameRoom";
 import { MapRegister } from "../../gamemap/MapRegister";
 import { BombPlantedState } from "./Planted";
 import { BombDroppedState } from "./Dropped";
+import { HudTextController } from "../../../modules/hud/HudTextController";
 
 import { TeamEnum } from "../../../types/TeamEnum";
 import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPlantPhaseEnum";
@@ -10,6 +11,7 @@ import { BombStateEnum } from "../../../types/bombstate/BombStateEnum";
 import { entity_dynamic_property } from "../../../utils/Property";
 import { FormatCode as FC } from "../../../utils/FormatCode";
 import { Broadcast } from "../../../utils/Broadcast";
+import { progressBar } from "../../../utils/others/Format";
 
 import { Vector3Utils } from "@minecraft/math";
 import { ItemStopUseAfterEvent, Player, system, world } from "@minecraft/server";
@@ -57,10 +59,36 @@ export class BombIdleState implements IBombStateHandler {
     private onBeforeItemUse(ev: ItemUseBeforeEvent) {
         if (ev.itemStack.typeId !== C4_ITEM_ID) return;
 
+        const { itemStack, source } = ev;
         const room = GameRoomManager.getRoom(this.roomId);
-        if (!room.memberManager.includePlayer(ev.source)) return;
+        if (!room.memberManager.includePlayer(source)) return;
 
-        ev.cancel = !canPlantBomb(this.roomId, ev.source);
+        ev.cancel = !canPlantBomb(this.roomId, source);
+
+        if (!ev.cancel) {
+
+            let currentTime = 3 * 20 - 1;
+            const taskId = system.runInterval(() => {
+                const progress = progressBar(3 * 20 - 1, currentTime--, 30);
+                HudTextController.add(source, 'actionbar', progress);
+                if (currentTime < 0) {
+                    system.clearRun(taskId);
+                }
+            });
+
+            system.run(() => {
+                const players = world.getPlayers({excludeNames: [source.name]});
+                Broadcast.sound(PLANTING_BROADCAST_SOUND_ID, { location: source.location, volume: 3 }, players);
+                source.playSound(PLANTING_SELF_SOUND_ID);
+
+                const callback = world.afterEvents.itemStopUse.subscribe(ev => {
+                    if (ev.source.id === source.id) {
+                        system.clearRun(taskId);
+                        world.afterEvents.itemStopUse.unsubscribe(callback);
+                    }
+                });
+            });
+        }
     }
 
     private onAfterItemStopUse(ev: ItemStopUseAfterEvent) {
@@ -127,16 +155,10 @@ function canPlantBomb(roomId: number, source: Player) {
             throw new Error('Cannot plant c4 outside the bomb target position');
         }
 
-        system.run(() => {
-            const players = world.getPlayers({excludeNames: [source.name]});
-            Broadcast.sound(PLANTING_BROADCAST_SOUND_ID, { location: source.location, volume: 3 }, players);
-            source.playSound(PLANTING_SELF_SOUND_ID);
-        });
-
         return true;
 
     } catch (err: any) {
-        system.run(() => source.onScreenDisplay.setActionBar(`${FC.Red}${err.message}`));
+        HudTextController.add(source, 'actionbar', `${FC.Red}${err.message}`);
         return false;
     }
 }
