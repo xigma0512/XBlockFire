@@ -13,6 +13,7 @@ import { FormatCode as FC } from "../../../utils/FormatCode";
 import { Vector3Utils } from "@minecraft/math";
 import { Player, system, world } from "@minecraft/server";
 import { EntitySpawnAfterEvent, ItemUseBeforeEvent } from "@minecraft/server";
+import { set_variable } from "../../../utils/Variable";
 
 const C4_TARGET_RANGE = 3;
 const C4_ITEM_ID = 'xblockfire:c4';
@@ -90,9 +91,13 @@ function canPlantC4(roomId: number, source: Player) {
         }
 
         const mapInfo = MapRegister.getMap(room.gameMapId);
-        const isAtTarget = mapInfo.positions.C4_targets.some(target => {
+        const isAtTarget = mapInfo.positions.C4_targets.some((target, index) => {
             const distance = Vector3Utils.distance(source.location, target);
-            return distance <= C4_TARGET_RANGE;
+            if (distance <= C4_TARGET_RANGE) {
+                set_variable(`${roomId}.c4.plant_site_index`, index);
+                return true;
+            }
+            return false;
         });
 
         if (!isAtTarget) {

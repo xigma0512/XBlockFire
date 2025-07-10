@@ -10,7 +10,7 @@ import { C4StateEnum } from "../../../types/bombstate/C4StateEnum";
 import { TeamEnum } from "../../../types/TeamEnum";
 import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPlantPhaseEnum";
 
-import { set_variable } from "../../../utils/Variable";
+import { set_variable, variable } from "../../../utils/Variable";
 import { Broadcast } from "../../../utils/Broadcast";
 import { FormatCode as FC } from "../../../utils/FormatCode";
 import { progressBar } from "../../../utils/others/Format";
@@ -54,6 +54,9 @@ export class C4PlantedState implements IC4StateHandler {
         if (room.phaseManager.getPhase().phaseTag === BombPlantPhaseEnum.Action) {
             room.phaseManager.updatePhase(new C4PlantedPhase(this.roomId));
         }
+
+        const siteIndex = String.fromCharCode(65 + (variable(`${this.roomId}.c4.plant_site_index`) ?? 0));
+        Broadcast.message(`${FC.Gray}>> ${FC.Bold}${FC.MinecoinGold}C4 HAS BEEN PLANTED AT SITE ${siteIndex}.` ,room.memberManager.getPlayers());
         
         console.warn(`[Room ${this.roomId}] Entry C4Planted state.`);
     }
