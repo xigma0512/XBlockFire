@@ -56,7 +56,7 @@ export class C4PlantedState implements IC4StateHandler {
         }
 
         const siteIndex = String.fromCharCode(65 + (variable(`${this.roomId}.c4.plant_site_index`) ?? 0));
-        Broadcast.message(`${FC.Gray}>> ${FC.Bold}${FC.MinecoinGold}C4 HAS BEEN PLANTED AT SITE ${siteIndex}.` ,room.memberManager.getPlayers());
+        Broadcast.message(`${FC.Bold}${FC.MinecoinGold}C4 HAS BEEN PLANTED AT SITE ${siteIndex}.` ,room.memberManager.getPlayers());
         
         console.warn(`[Room ${this.roomId}] Entry C4Planted state.`);
     }
@@ -156,7 +156,14 @@ function defuseComplete(roomId: number, defuser: Player) {
 
     const players = room.memberManager.getPlayers();
     Broadcast.sound(COMPLETE_DEFUSED_SOUND_ID, {}, players);
-    Broadcast.message(`${FC.Gray}>> ${FC.Green}C4 has been defused by ${defuser.name}.`, players);
+    
+    const message = [
+        `${FC.Bold}${FC.Gray}---- ${FC.Yellow}[ ROUND END ] ${FC.Gray}----\n`,
+        `${FC.Bold}${FC.Gold}C4 has been defused by ${defuser.name}.\n`,
+        `${FC.Bold}${FC.Green}DEFENDERS win this game.\n`,
+        `${FC.Bold}${FC.Gray}---`
+    ]
+    Broadcast.message(message, players);
 }
 
 let soundPlayInterval = 20;

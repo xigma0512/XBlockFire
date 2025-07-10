@@ -23,30 +23,30 @@ const endReasonTable = {
     [EndReasonEnum['Time-up']]: {
         winner: TeamEnum.Attacker,
         message: [
-            `${FC.Gray}--- ${FC.Yellow}[ ROUND END ] ${FC.Gray}---`,
-            `${FC.Gray}>> ${FC.Red}C4 DETONATED!`,
-            `${FC.Gray}>> ${FC.Green}ATTACKERS win this round!`,
-            ``
+            `${FC.Bold}${FC.Gray}---- ${FC.Yellow}[ ROUND END ] ${FC.Gray}----\n`,
+            `${FC.Bold}${FC.Red}C4 DETONATED!\n`,
+            `${FC.Bold}${FC.Green}ATTACKERS win this round!\n`,
+            `${FC.Bold}${FC.Gray}---`
         ],
         nextPhaseGenerator: (roomId: number) => new RoundEndPhase(roomId)
     },
     [EndReasonEnum['Defender-Eliminated']]: {
         winner: TeamEnum.Attacker,
         message: [
-            `${FC.Gray}--- ${FC.Yellow}[ ROUND END ] ${FC.Gray}---`,
-            `${FC.Red}All DEFENDERS ELIMINATED!`,
-            `${FC.Green}ATTACKERS WIN the round!`,
-            ``
+            `${FC.Bold}${FC.Gray}---- ${FC.Yellow}[ ROUND END ] ${FC.Gray}----\n`,
+            `${FC.Bold}${FC.Red}All DEFENDERS ELIMINATED!\n`,
+            `${FC.Bold}${FC.Green}ATTACKERS WIN this round!\n`,
+            `${FC.Bold}${FC.Gray}---`
         ],
         nextPhaseGenerator: (roomId: number) => new RoundEndPhase(roomId)
     },
     [EndReasonEnum['Defender-Disconnect']]: {
         winner: TeamEnum.Attacker,
         message: [
-            `${FC.Gray}--- ${FC.DarkPurple}[ GAME OVER ] ${FC.Gray}---\n`,
-            `${FC.Gray}>> ${FC.Red}All DEFENDERS disconnected.\n`,
-            `${FC.Gray}>> ${FC.Green}ATTACKERs win this game.\n`,
-            ''
+            `${FC.Bold}${FC.Gray}---- ${FC.DarkPurple}[ GAME OVER ] ${FC.Gray}----\n`,
+            `${FC.Bold}${FC.Red}All DEFENDERS disconnected.\n`,
+            `${FC.Bold}${FC.Green}ATTACKERs win this game.\n`,
+            `${FC.Bold}${FC.Gray}---`
         ],
         nextPhaseGenerator: (roomId: number) => new GameOverPhase(roomId)
     }
