@@ -28,7 +28,6 @@ export class RoundEndPhase implements IPhaseHandler {
     on_entry() {
         this._currentTick = config.COUNTDOWN_TIME;
         processWinner(this.roomId);
-        console.warn(`[Room ${this.roomId}] Entry BP:roundEnd phase.`);
     }
 
     on_running() {        
@@ -41,7 +40,6 @@ export class RoundEndPhase implements IPhaseHandler {
     }
 
     on_exit() {
-        console.warn(`[Room ${this.roomId}] Exit BP:roundEnd phase.`);
     }
 
     private transitions() {

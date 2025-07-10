@@ -65,7 +65,6 @@ export class C4PlantedPhase implements IPhaseHandler {
 
     on_entry() {
         this._currentTick = config.COUNTDOWN_TIME;
-        console.warn(`[Room ${this.roomId}] Entry BP:bomb_planted phase.`);
     }
 
     on_running() {
@@ -75,7 +74,6 @@ export class C4PlantedPhase implements IPhaseHandler {
     }
 
     on_exit() {
-        console.warn(`[Room ${this.roomId}] Exit BP:bomb_planted phase.`);
     }
 
     private transitions() {

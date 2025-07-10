@@ -26,7 +26,6 @@ export class PreRoundStartPhase implements IPhaseHandler {
         teleportPlayers(this.roomId);
         resetPlayerInventory(this.roomId);
         initializePlayers(this.roomId);
-        console.warn(`[Room ${this.roomId}] Entry BP:pre_round_start phase.`);
     }
 
     on_running() {
@@ -34,7 +33,6 @@ export class PreRoundStartPhase implements IPhaseHandler {
     }
 
     on_exit() {
-        console.warn(`[Room ${this.roomId}] Exit BP:pre_round_start phase.`);
     }
 
     private transitions() {

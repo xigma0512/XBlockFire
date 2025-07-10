@@ -36,8 +36,6 @@ export class C4DroppedState implements IC4StateHandler {
     on_entry() {
         this.entity = world.getDimension('overworld').spawnEntity(DROPPED_C4_ENTITY_ID, this.location);
         world.afterEvents.entityHitEntity.subscribe(this.afterEntityHitEntityListener);
-        
-        console.warn(`[Room ${this.roomId}] Entry C4Dropped state.`);
     }
     
     on_running() {
@@ -54,10 +52,7 @@ export class C4DroppedState implements IC4StateHandler {
     
     on_exit() {
         world.afterEvents.entityHitEntity.unsubscribe(this.afterEntityHitEntityListener);
-
         this.entity.remove();
-
-        console.warn(`[Room ${this.roomId}] Exit C4Dropped state.`);
     }
 
 

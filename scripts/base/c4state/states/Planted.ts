@@ -57,8 +57,6 @@ export class C4PlantedState implements IC4StateHandler {
 
         const siteIndex = String.fromCharCode(65 + (variable(`${this.roomId}.c4.plant_site_index`) ?? 0));
         Broadcast.message(`${FC.Bold}${FC.MinecoinGold}C4 HAS BEEN PLANTED AT SITE ${siteIndex}.` ,room.memberManager.getPlayers());
-        
-        console.warn(`[Room ${this.roomId}] Entry C4Planted state.`);
     }
     
     on_running() {
@@ -70,10 +68,7 @@ export class C4PlantedState implements IC4StateHandler {
     on_exit() {
         world.beforeEvents.itemUse.unsubscribe(this.beforeItemUseListener);
         world.afterEvents.itemCompleteUse.unsubscribe(this.afterItemCompleteUseListener);
-
         this.entity.remove();
-
-        console.warn(`[Room ${this.roomId}] Exit C4Planted state.`);
     }
 
 
