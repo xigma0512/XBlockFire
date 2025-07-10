@@ -121,7 +121,6 @@ function canDefuseBomb(bombEntity: Entity, player: Player) {
     }
 
     system.run(() => {
-        player.onScreenDisplay.setActionBar(`Defusing...`);
         player.dimension.playSound(DEFUSING_SOUND_ID, player.location, { volume: 3 });
     });
 
@@ -138,14 +137,15 @@ function defuseComplete(roomId: number, defuser: Player) {
 
     room.bombManager.updateState(new BombIdleState(roomId));
 
-    for (const player of room.memberManager.getPlayers()) {
-        player.playSound(COMPLETE_DEFUSED_SOUND_ID);
-    }
-    Broadcast.message(`${FC.Yellow}Bomb has been defused by ${defuser.name}.`);
+    const players = room.memberManager.getPlayers();
+    Broadcast.sound(COMPLETE_DEFUSED_SOUND_ID, {}, players);
+    Broadcast.message(`${FC.Yellow}Bomb has been defused by ${defuser.name}.`, players);
 }
 
 function explosion(roomId: number, bombEntity: Entity) {
+    
     bombEntity.dimension.playSound(EXPLOSION_SOUND_ID, bombEntity.location, { volume: 3 });
+
     bombEntity.dimension.createExplosion(bombEntity.location, 20, { causesFire: false, breaksBlocks: false });
     const room = GameRoomManager.getRoom(roomId);
 
