@@ -15,6 +15,10 @@ export class WeaponInfo implements InGameHud {
                 {
                     propertyId: 'player:is_holding_gun',
                     value: true
+                },
+                {
+                    propertyId: 'player:is_reloading',
+                    value: false
                 }
             ]
         });
