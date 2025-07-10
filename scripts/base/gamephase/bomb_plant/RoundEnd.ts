@@ -10,7 +10,7 @@ import { TeamEnum } from "../../../types/TeamEnum";
 import { FormatCode as FC } from "../../../utils/FormatCode";
 import { entity_dynamic_property, set_entity_dynamic_property } from "../../../utils/Property";
 import { set_variable, variable } from "../../../utils/Variable";
-
+import { Broadcast } from "../../../utils/Broadcast";
 
 const config = Config.roundEnd;
 
@@ -31,8 +31,11 @@ export class RoundEndPhase implements IPhaseHandler {
         console.warn(`[Room ${this.roomId}] Entry BP:roundEnd phase.`);
     }
 
-    on_running() {
-        this._currentTick --;
+    on_running() {        
+        if (this._currentTick-- % 20 == 0) {
+            const room = GameRoomManager.getRoom(this.roomId);
+            Broadcast.sound("firework.launch", {}, room.memberManager.getPlayers());
+        }
         this.hud.update();
         this.transitions();
     }
