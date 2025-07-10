@@ -41,7 +41,7 @@ class GunReloadSystem {
         const startTick = system.currentTick;
         
         const progressBarTaskId = system.runInterval(() => {
-            const progressBarStr = `${progressBar(reloadTime, system.currentTick - startTick)}`;
+            const progressBarStr = `${progressBar(reloadTime, system.currentTick - startTick, 30)}`;
             this.player.onScreenDisplay.setActionBar(progressBarStr);
         });
 
