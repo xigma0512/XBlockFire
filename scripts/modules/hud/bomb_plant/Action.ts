@@ -7,6 +7,7 @@ import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPl
 import { FormatCode as FC } from "../../../utils/FormatCode";
 import { entity_dynamic_property } from "../../../utils/Property";
 import { variable } from "../../../utils/Variable";
+import { Broadcast } from "../../../utils/Broadcast";
 
 export class ActionHud implements InGameHud {
     
@@ -39,9 +40,7 @@ export class ActionHud implements InGameHud {
 
         if (text === '') return;
         const members = room.memberManager.getPlayers();
-        for (const player of members) {
-            HudTextController.add(player, 'subtitle', text);
-        }
+        Broadcast.subtitle(text, members);
     }
 
     private updateSidebar() {
