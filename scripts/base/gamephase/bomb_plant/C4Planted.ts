@@ -11,7 +11,7 @@ import { set_variable } from "../../../utils/Variable";
 import { FormatCode as FC } from "../../../utils/FormatCode";
 import { Broadcast } from "../../../utils/Broadcast";
 
-const config = Config.bombplanted;
+const config = Config.C4planted;
 
 const enum EndReasonEnum {
     'Time-up' = 1,
@@ -23,7 +23,7 @@ const endReasonTable = {
     [EndReasonEnum['Time-up']]: {
         winner: TeamEnum.Attacker,
         message: [
-            `${FC.Yellow}Bomb Has Exploded.\n`,
+            `${FC.Yellow}C4 Has Exploded.\n`,
             `${FC.Yellow}Attackers Win.\n`
         ],
         nextPhaseGenerator: (roomId: number) => new RoundEndPhase(roomId)
@@ -46,9 +46,9 @@ const endReasonTable = {
     }
 }
 
-export class BombPlantedPhase implements IPhaseHandler {
+export class C4PlantedPhase implements IPhaseHandler {
 
-    readonly phaseTag = BombPlantPhaseEnum.BombPlanted;
+    readonly phaseTag = BombPlantPhaseEnum.C4Planted;
     readonly hud: ActionHud;
     private _currentTick: number = config.COUNTDOWN_TIME;
     get currentTick() { return this._currentTick; }

@@ -1,7 +1,7 @@
 export const enum GameModeEnum {
-    'BombPlant'
+    'C4Plant'
 }
 
 export const GameModeEnumTable = {
-    [GameModeEnum.BombPlant]: 'BombPlant'
+    [GameModeEnum.C4Plant]: 'C4Plant'
 }

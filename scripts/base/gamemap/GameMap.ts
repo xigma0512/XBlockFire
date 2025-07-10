@@ -18,7 +18,7 @@ export default {
                 { x: 258, y: 93, z: 437 },
                 { x: 258, y: 93, z: 439 }
             ],
-            bomb_targets: [
+            C4_targets: [
                 { x: 216, y: 93, z: 433 },
                 { x: 253, y: 93, z: 478 }
             ]

@@ -54,7 +54,7 @@ function forceStart(executer: Player, ...args: string[]) {
 
     const room = GameRoomManager.getRoom(Number(roomId));
     const startPhase = {
-        [GameModeEnum.BombPlant]: new PreRoundStartPhase(Number(roomId))
+        [GameModeEnum.C4Plant]: new PreRoundStartPhase(Number(roomId))
     };
     room.phaseManager.updatePhase(startPhase[room.gameMode]);
     executer.sendMessage(`Force start ${roomId}`);

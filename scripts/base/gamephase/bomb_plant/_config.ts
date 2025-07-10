@@ -10,7 +10,7 @@ export const Config = {
     action: {
         ACTION_TIME: 120 * 20
     },
-    bombplanted: {
+    C4planted: {
         COUNTDOWN_TIME: 50 * 20
     },
     roundEnd: {

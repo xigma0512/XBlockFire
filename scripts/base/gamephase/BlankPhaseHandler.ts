@@ -26,7 +26,7 @@ export class BlankPhase implements IPhaseHandler {
         const room = GameRoomManager.getRoom(this.roomId);
 
         switch(room.gameMode) {
-            case GameModeEnum.BombPlant: 
+            case GameModeEnum.C4Plant: 
                 room.phaseManager.updatePhase(new IdlePhase(this.roomId));
                 break;
         }

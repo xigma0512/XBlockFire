@@ -1,7 +1,7 @@
-import { BombStateEnum } from "../../../types/bombstate/BombStateEnum";
-import { BombIdleState } from "./Idle";
 import { GameRoomManager } from "../../gameroom/GameRoom";
+import { C4IdleState } from "./Idle";
 
+import { C4StateEnum } from "../../../types/bombstate/C4StateEnum";
 import { TeamEnum } from "../../../types/TeamEnum";
 
 import { entity_dynamic_property } from "../../../utils/Property";
@@ -16,9 +16,9 @@ const DROPPED_C4_ENTITY_ID = 'xblockfire:dropped_c4' as VanillaEntityIdentifier;
 const C4_ITEM_ID = 'xblockfire:c4';
 const ROTATION_SPEED = 7.5;
 
-export class BombDroppedState implements IBombStateHandler {
+export class C4DroppedState implements IC4StateHandler {
 
-    readonly stateTag = BombStateEnum.Dropped;
+    readonly stateTag = C4StateEnum.Dropped;
 
     private entity!: Entity;
 
@@ -37,13 +37,13 @@ export class BombDroppedState implements IBombStateHandler {
         this.entity = world.getDimension('overworld').spawnEntity(DROPPED_C4_ENTITY_ID, this.location);
         world.afterEvents.entityHitEntity.subscribe(this.afterEntityHitEntityListener);
         
-        console.warn(`[Room ${this.roomId}] Entry BombDropped state.`);
+        console.warn(`[Room ${this.roomId}] Entry C4Dropped state.`);
     }
     
     on_running() {
         if (!this.entity.isValid) {
             const room = GameRoomManager.getRoom(this.roomId);
-            room.bombManager.updateState(new BombIdleState(this.roomId));
+            room.C4Manager.updateState(new C4IdleState(this.roomId));
             return;
         }
 
@@ -57,7 +57,7 @@ export class BombDroppedState implements IBombStateHandler {
 
         this.entity.remove();
 
-        console.warn(`[Room ${this.roomId}] Exit BombDropped state.`);
+        console.warn(`[Room ${this.roomId}] Exit C4Dropped state.`);
     }
 
 
@@ -75,17 +75,14 @@ export class BombDroppedState implements IBombStateHandler {
         const playerTeam = entity_dynamic_property(player, 'player:team');
         if (playerTeam !== TeamEnum.Attacker) return;
 
-        const inventory = player.getComponent('inventory')?.container;
-        if (!inventory) return;
-
-        inventory.addItem(new ItemStack(C4_ITEM_ID));
+        player.getComponent('inventory')?.container.setItem(3, new ItemStack(C4_ITEM_ID));
         
         const room = GameRoomManager.getRoom(this.roomId);
         const attackers = room.memberManager.getPlayers({ team: TeamEnum.Attacker });
         
-        player.sendMessage(`${FC.Green}You pick up the bomb.`);
-        Broadcast.message(`${FC.Yellow}Player ${player.name} has picked up the bomb.`, attackers);
+        player.sendMessage(`${FC.Green}You pick up the C4.`);
+        Broadcast.message(`${FC.Yellow}Player ${player.name} has picked up the C4.`, attackers);
 
-        room.bombManager.updateState(new BombIdleState(this.roomId));
+        room.C4Manager.updateState(new C4IdleState(this.roomId));
     }
 }
