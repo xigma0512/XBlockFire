@@ -9,9 +9,10 @@ import { BombStateEnum } from "../../../types/bombstate/BombStateEnum";
 
 import { entity_dynamic_property } from "../../../utils/Property";
 import { FormatCode as FC } from "../../../utils/FormatCode";
+import { Broadcast } from "../../../utils/Broadcast";
 
 import { Vector3Utils } from "@minecraft/math";
-import { ItemStack, ItemStopUseAfterEvent, Player, system, world } from "@minecraft/server";
+import { ItemStopUseAfterEvent, Player, system, world } from "@minecraft/server";
 import { EntitySpawnAfterEvent, ItemUseBeforeEvent, ItemCompleteUseAfterEvent } from "@minecraft/server";
 
 const BOMB_TARGET_RANGE = 3;
@@ -68,24 +69,20 @@ export class BombIdleState implements IBombStateHandler {
     }
 
     private onItemCompleteUse(ev: ItemCompleteUseAfterEvent) {
-        try {
-            if (ev.itemStack.typeId !== C4_ITEM_ID) return;
-            
-            const room = GameRoomManager.getRoom(this.roomId);
-            if (!room.memberManager.includePlayer(ev.source)) throw '';
-            
-            const phase = room.phaseManager.getPhase();
-            if (phase.phaseTag !== BombPlantPhaseEnum.Action) throw '';
-            
-            room.bombManager.updateState(new BombPlantedState(this.roomId, ev.source));
+        if (ev.itemStack.typeId !== C4_ITEM_ID) return;
+        
+        const room = GameRoomManager.getRoom(this.roomId);
+        if (!room.memberManager.includePlayer(ev.source)) return;
+        
+        const phase = room.phaseManager.getPhase();
+        if (phase.phaseTag !== BombPlantPhaseEnum.Action) return;
+        
+        room.bombManager.updateState(new BombPlantedState(this.roomId, ev.source));
 
-            for (const player of room.memberManager.getPlayers()) {
-                player.playSound(C4_PLANTED_SOUND_ID);
-            }
-            
-        } catch {
-            ev.source.getComponent('inventory')?.container.setItem(3, new ItemStack(C4_ITEM_ID));
-        }
+        // eslint-disable-next-line
+        ev.source.runCommand('clear @s xblockfire:c4');
+        const players = room.memberManager.getPlayers();
+        Broadcast.sound(C4_PLANTED_SOUND_ID, {}, players);
     }
 
     private onEntitySpawn(ev: EntitySpawnAfterEvent) {
@@ -131,9 +128,8 @@ function canPlantBomb(roomId: number, source: Player) {
         }
 
         system.run(() => {
-            for (const player of world.getPlayers({excludeNames: [source.name]})) {
-                player.playSound(PLANTING_BROADCAST_SOUND_ID, { location: source.location, volume: 3 });
-            }
+            const players = world.getPlayers({excludeNames: [source.name]});
+            Broadcast.sound(PLANTING_BROADCAST_SOUND_ID, { location: source.location, volume: 3 }, players);
             source.playSound(PLANTING_SELF_SOUND_ID);
         });
 
