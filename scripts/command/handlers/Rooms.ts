@@ -3,6 +3,8 @@ import { GameModeEnum } from "../../types/gameroom/GameModeEnum";
 import { MemberManager } from "../../base/gameroom/member/MemberManager";
 import { PreRoundStartPhase } from "../../base/gamephase/bomb_plant/PreRoundStart";
 
+import { FormatCode as FC } from "../../utils/FormatCode";
+
 import { Player } from "@minecraft/server";
 
 function createRoom(executer: Player, ...args: string[]) {
@@ -10,7 +12,7 @@ function createRoom(executer: Player, ...args: string[]) {
     if (!gamemode || !mapId) throw Error("Missing argument '<gamemode>' or '<map_id>'. Usage: /scriptevent blockfire:room create <gamemode> <mapId>");
     
     const roomId = GameRoomManager.createRoom(Number(gamemode), Number(mapId));
-    executer.sendMessage(`Create room ${roomId} successfully.`);
+    executer.sendMessage(`${FC.Gray}>> ${FC.Yellow}Create room ${roomId} successfully.`);
 }
 
 function getRoomList(executer: Player) {
@@ -34,7 +36,7 @@ function playerJoinRoom(executer: Player, ...args: string[]) {
     }
 
     room.memberManager.joinRoom(executer);
-    executer.sendMessage(`Join room ${roomId}.`);
+    executer.sendMessage(`${FC.Gray}>> ${FC.Green}You join the room ${roomId}.`);
 }
 
 function playerLeaveRoom(executer: Player, ...args: string[]) {
@@ -45,7 +47,7 @@ function playerLeaveRoom(executer: Player, ...args: string[]) {
     if (!room.memberManager.includePlayer(executer)) throw Error(`You are not in room ${roomId}`);
 
     room.memberManager.leaveRoom(executer);
-    executer.sendMessage(`Leave room ${roomId}.`);
+    executer.sendMessage(`${FC.Gray}>> ${FC.Red}You leave the room ${roomId}.`);
 }
 
 function forceStart(executer: Player, ...args: string[]) {
@@ -57,7 +59,7 @@ function forceStart(executer: Player, ...args: string[]) {
         [GameModeEnum.C4Plant]: new PreRoundStartPhase(Number(roomId))
     };
     room.phaseManager.updatePhase(startPhase[room.gameMode]);
-    executer.sendMessage(`Force start ${roomId}`);
+    executer.sendMessage(`${FC.Gray}>> ${FC.LightPurple}Force start room ${roomId}`);
 }
 
 function roomCmd(executer: Player, ...args: string[]) {
@@ -72,7 +74,7 @@ function roomCmd(executer: Player, ...args: string[]) {
         case 'leave': playerLeaveRoom(executer, ...args); break;
         case 'start': forceStart(executer, ...args); break;
         default: 
-            executer.sendMessage(`there is no command type as ${cmdType}`)
+            throw Error(`there is no command type as ${cmdType}`);
             break;
     }
 }

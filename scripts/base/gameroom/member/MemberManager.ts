@@ -25,13 +25,13 @@ export class MemberManager {
     joinRoom(player: Player) {
         MemberManager.players.set(player, this.roomId);
         const room = GameRoomManager.getRoom(this.roomId);
-        Broadcast.message(`${FC.Green}${player.name} has joined the game.`, room.memberManager.getPlayers());
+        Broadcast.message(`${FC.Gray}>> ${FC.Green}${player.name} has joined the room.`, room.memberManager.getPlayers());
     }
     
     leaveRoom(player: Player) {
         MemberManager.players.delete(player);
         const room = GameRoomManager.getRoom(this.roomId);
-        Broadcast.message(`${FC.Red}${player.name} has left the game.`, room.memberManager.getPlayers());
+        Broadcast.message(`${FC.Gray}>> ${FC.Red}${player.name} has left the room.`, room.memberManager.getPlayers());
     }
 
     getPlayers(filter?: MemberFilter) {

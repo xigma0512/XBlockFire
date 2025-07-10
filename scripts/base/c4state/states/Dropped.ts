@@ -80,8 +80,8 @@ export class C4DroppedState implements IC4StateHandler {
         const room = GameRoomManager.getRoom(this.roomId);
         const attackers = room.memberManager.getPlayers({ team: TeamEnum.Attacker });
         
-        player.sendMessage(`${FC.Green}You pick up the C4.`);
-        Broadcast.message(`${FC.Yellow}Player ${player.name} has picked up the C4.`, attackers);
+        player.sendMessage(`${FC.Gray}>> ${FC.Green}You pick up the C4.`);
+        Broadcast.message(`${FC.Gray}>> ${FC.Yellow}Player ${player.name} has picked up the C4.`, attackers);
 
         room.C4Manager.updateState(new C4IdleState(this.roomId));
     }

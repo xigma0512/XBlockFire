@@ -23,24 +23,30 @@ const endReasonTable = {
     [EndReasonEnum['Time-up']]: {
         winner: TeamEnum.Attacker,
         message: [
-            `${FC.Yellow}C4 Has Exploded.\n`,
-            `${FC.Yellow}Attackers Win.\n`
+            `${FC.Gray}--- ${FC.Yellow}[ ROUND END ] ${FC.Gray}---`,
+            `${FC.Gray}>> ${FC.Red}C4 DETONATED!`,
+            `${FC.Gray}>> ${FC.Green}ATTACKERS win this round!`,
+            ``
         ],
         nextPhaseGenerator: (roomId: number) => new RoundEndPhase(roomId)
     },
     [EndReasonEnum['Defender-Eliminated']]: {
         winner: TeamEnum.Attacker,
         message: [
-            `${FC.Yellow}Defenders Have Been Eliminated.\n`,
-            `${FC.Yellow}Attackers Win.\n`
+            `${FC.Gray}--- ${FC.Yellow}[ ROUND END ] ${FC.Gray}---`,
+            `${FC.Red}All DEFENDERS ELIMINATED!`,
+            `${FC.Green}ATTACKERS WIN the round!`,
+            ``
         ],
         nextPhaseGenerator: (roomId: number) => new RoundEndPhase(roomId)
     },
     [EndReasonEnum['Defender-Disconnect']]: {
         winner: TeamEnum.Attacker,
         message: [
-            `${FC.Yellow}Defenders Have Been Eliminated.\n`,
-            `${FC.Yellow}Attackers Win.\n`
+            `${FC.Gray}--- ${FC.DarkPurple}[ GAME OVER ] ${FC.Gray}---\n`,
+            `${FC.Gray}>> ${FC.Red}All DEFENDERS disconnected.\n`,
+            `${FC.Gray}>> ${FC.Green}ATTACKERs win this game.\n`,
+            ''
         ],
         nextPhaseGenerator: (roomId: number) => new GameOverPhase(roomId)
     }
@@ -87,10 +93,9 @@ export class C4PlantedPhase implements IPhaseHandler {
         if (this.currentTick <= 0) endReason = EndReasonEnum['Time-up'];
 
         if (endReason) {
-            const separator = `${FC.White}---------------\n`;
             const result = endReasonTable[endReason];
 
-            Broadcast.message([separator, ...result.message, separator]);
+            Broadcast.message(result.message);
 
             set_variable(`${this.roomId}.round_winner`, result.winner);
             phase.updatePhase(result.nextPhaseGenerator(this.roomId));

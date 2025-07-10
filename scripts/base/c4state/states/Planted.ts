@@ -153,7 +153,7 @@ function defuseComplete(roomId: number, defuser: Player) {
 
     const players = room.memberManager.getPlayers();
     Broadcast.sound(COMPLETE_DEFUSED_SOUND_ID, {}, players);
-    Broadcast.message(`${FC.Yellow}C4 has been defused by ${defuser.name}.`, players);
+    Broadcast.message(`${FC.Gray}>> ${FC.Green}C4 has been defused by ${defuser.name}.`, players);
 }
 
 let soundPlayInterval = 20;
