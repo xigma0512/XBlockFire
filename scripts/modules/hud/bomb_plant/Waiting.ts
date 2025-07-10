@@ -35,9 +35,7 @@ export class WaitingHud implements InGameHud {
             Broadcast.message(`${FC.Gray}>> ${FC.Red}Not enough players. Waiting for more players.`, members);
         }
         
-        for (const player of members) {
-            HudTextController.add(player, 'subtitle', text);
-        }
+        Broadcast.subtitle(text, members);
     }
 
     private updateSidebar() {
