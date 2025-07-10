@@ -1,7 +1,7 @@
 import { PhaseManager } from "../gamephase/PhaseManager";
 import { EconomyManager } from "./economy/EconomyManager";
 import { MemberManager } from "./member/MemberManager";
-import { BombManager } from "../bombstate/BombManager";
+import { C4Manager } from "../c4state/C4Manager";
 import { AlliesMarker } from "../../modules/allies_mark/AlliesMarker";
 
 import { TeamEnum } from "../../types/TeamEnum";
@@ -18,7 +18,7 @@ class GameRoom {
     readonly memberManager: MemberManager;
     readonly phaseManager: PhaseManager;
     readonly economyManager: EconomyManager;
-    readonly bombManager: BombManager;
+    readonly C4Manager: C4Manager;
 
     private markerTaskId = -1;
 
@@ -30,7 +30,7 @@ class GameRoom {
         this.memberManager = new MemberManager(id);
         this.phaseManager = new PhaseManager(id);
         this.economyManager = new EconomyManager(id);
-        this.bombManager = new BombManager(id);
+        this.C4Manager = new C4Manager(id);
 
         this.markerTaskId = this.addMarkerTask();
     }
@@ -38,7 +38,7 @@ class GameRoom {
     private addMarkerTask() {
         switch(this.gameMode) {
             default:
-            case GameModeEnum.BombPlant: 
+            case GameModeEnum.C4Plant: 
                 return system.runInterval(() => {
                     AlliesMarker.updateMark(this.memberManager);
                 }, 3);

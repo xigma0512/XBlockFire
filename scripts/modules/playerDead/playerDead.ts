@@ -1,4 +1,4 @@
-import { BombDroppedState } from "../../base/bombstate/states/Dropped";
+import { C4DroppedState } from "../../base/c4state/states/Dropped";
 import { GameRoomManager } from "../../base/gameroom/GameRoom";
 import { MemberManager } from "../../base/gameroom/member/MemberManager";
 import { gameEvents } from "../../event/EventEmitter";
@@ -38,8 +38,8 @@ function dropC4(player: Player) {
 
     const roomId = MemberManager.getPlayerRoomId(player)!;
     const room = GameRoomManager.getRoom(roomId);
-    const bombManager = room.bombManager;
-    bombManager.updateState(new BombDroppedState(roomId, player.location));
+    const C4Manager = room.C4Manager;
+    C4Manager.updateState(new C4DroppedState(roomId, player.location));
 }
 
 function showDeathMessage(deadPlayer: Player, attacker: Player) {

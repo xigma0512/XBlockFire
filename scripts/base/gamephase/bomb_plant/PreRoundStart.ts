@@ -2,7 +2,7 @@ import { GameRoomManager } from "../../gameroom/GameRoom";
 import { HotbarManager, HotbarTemplate } from "../../../modules/hotbar/Hotbar";
 import { MapRegister } from "../../gamemap/MapRegister";
 import { BuyingPhase } from "./Buying";
-import { BombIdleState } from "../../bombstate/states/Idle";
+import { C4IdleState } from "../../c4state/states/Idle";
 
 import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPlantPhaseEnum";
 import { TeamEnum } from "../../../types/TeamEnum";
@@ -22,7 +22,7 @@ export class PreRoundStartPhase implements IPhaseHandler {
     constructor(private readonly roomId: number) {}
 
     on_entry() {
-        resetBombState(this.roomId);
+        resetC4State(this.roomId);
         teleportPlayers(this.roomId);
         resetPlayerInventory(this.roomId);
         initializePlayers(this.roomId);
@@ -43,10 +43,10 @@ export class PreRoundStartPhase implements IPhaseHandler {
     }
 }
 
-function resetBombState(roomId: number) {
+function resetC4State(roomId: number) {
     const room = GameRoomManager.getRoom(roomId);
-    const bombManager = room.bombManager;
-    bombManager.updateState(new BombIdleState(roomId));
+    const C4Manager = room.C4Manager;
+    C4Manager.updateState(new C4IdleState(roomId));
 }
 
 function initializePlayers(roomId: number) {
@@ -118,11 +118,11 @@ function resetPlayerInventory(roomId: number) {
 
     const attackers = member.getPlayers({ team: TeamEnum.Attacker });
     if (attackers.length > 0) {
-        const bombPlayer = attackers[Math.floor(Math.random() * attackers.length)];
+        const C4Player = attackers[Math.floor(Math.random() * attackers.length)];
 
-        const hotbar = HotbarManager.getPlayerHotbar(bombPlayer)
+        const hotbar = HotbarManager.getPlayerHotbar(C4Player)
         hotbar.items[3] = new ItemStack('xblockfire:c4');
-        HotbarManager.sendHotbar(bombPlayer, hotbar);
+        HotbarManager.sendHotbar(C4Player, hotbar);
     }
 
     const defenders = member.getPlayers({ team: TeamEnum.Defender });

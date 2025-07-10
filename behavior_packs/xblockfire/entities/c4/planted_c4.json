@@ -27,13 +27,13 @@
             },
             "minecraft:boss": {
                 "hud_range": 1000,
-                "name": "§d§lThe Bomb Has Been Planted.",
+                "name": "§d§lThe C4 Has Been Planted.",
                 "should_darken_sky": false
             },
             "minecraft:damage_sensor": {
                 "triggers": {
                     "cause": "all",
-                    "deals_damage": false,
+                    "deals_damage": "no",
                     "damage_modifier": -100
                 }
             },
