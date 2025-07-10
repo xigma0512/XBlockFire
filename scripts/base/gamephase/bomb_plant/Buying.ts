@@ -6,6 +6,7 @@ import { HotbarManager } from "../../../modules/hotbar/Hotbar";
 import { Config } from "./_config";
 import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPlantPhaseEnum";
 
+import { Broadcast } from "../../../utils/Broadcast";
 import { set_entity_native_property } from "../../../utils/Property";
 import { ItemStackFactory } from "../../../utils/ItemStackFactory";
 
@@ -31,8 +32,11 @@ export class BuyingPhase implements IPhaseHandler {
         console.warn(`[Room ${this.roomId}] Entry BP:buying phase.`);
     }
 
-    on_running() {
-        this._currentTick --;
+    on_running() {        
+        if (this._currentTick-- % 20 == 0) {
+            const room = GameRoomManager.getRoom(this.roomId);
+            Broadcast.sound("block.click", { pitch: 2 }, room.memberManager.getPlayers());
+        }
         this.hud.update();
         this.transitions();
     }
