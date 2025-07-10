@@ -5,7 +5,7 @@ export const Config = {
         COUNTDOWN_TIME: 30 * 20
     },
     buying: {
-        COUNTDOWN_TIME: 20 * 20
+        COUNTDOWN_TIME: 10 * 20
     },
     action: {
         ACTION_TIME: 120 * 20
@@ -15,7 +15,7 @@ export const Config = {
     },
     roundEnd: {
         INCOME: [4000, 2000],
-        WINNING_SCORE: 7,
+        WINNING_SCORE: 5,
         COUNTDOWN_TIME: 10 * 20
     },
     gameover: {
