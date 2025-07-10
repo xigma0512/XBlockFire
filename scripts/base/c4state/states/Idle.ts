@@ -30,8 +30,6 @@ export class C4IdleState implements IC4StateHandler {
     on_entry() {
         this.beforeItemUseListener = world.beforeEvents.itemUse.subscribe(this.onBeforeItemUse.bind(this));
         this.afterEntitySpawnListener = world.afterEvents.entitySpawn.subscribe(this.onEntitySpawn.bind(this));
-
-        console.warn(`[Room ${this.roomId}] Entry C4Idle state.`);
     }
 
     on_running() { }
@@ -39,8 +37,6 @@ export class C4IdleState implements IC4StateHandler {
     on_exit() {
         world.beforeEvents.itemUse.unsubscribe(this.beforeItemUseListener);
         world.afterEvents.entitySpawn.unsubscribe(this.afterEntitySpawnListener);
-
-        console.warn(`[Room ${this.roomId}] Exit C4Idle state.`);
     }
 
 

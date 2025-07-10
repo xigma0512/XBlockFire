@@ -11,7 +11,6 @@ export class BlankPhase implements IPhaseHandler {
     constructor(private readonly roomId: number) { }
 
     on_entry() {
-        console.warn(`[Room ${this.roomId}] Entry blank phase.`);
     }
 
     on_running() {
@@ -19,7 +18,6 @@ export class BlankPhase implements IPhaseHandler {
     }
 
     on_exit() {
-        console.warn(`[Room ${this.roomId}] Exit blank phase.`);
     }
 
     private transitions() {
