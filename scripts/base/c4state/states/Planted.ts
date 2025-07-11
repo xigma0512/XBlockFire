@@ -176,7 +176,7 @@ function playC4Effect(currentTick: number, entity: Entity) {
     const location = Vector3Utils.add(entity.location, { y: 0.3 });
 
     if (currentTick % soundPlayInterval === 0) {
-        entity.dimension.playSound("block.click", location, { pitch: 1.5, volume: 5 });
+        entity.dimension.playSound("xblockfire.c4_beep", location, { volume: 5 });
         try { entity.dimension.spawnParticle("minecraft:explosion_particle", location); } catch { }
     }
 }

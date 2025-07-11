@@ -61,6 +61,16 @@
             "category": "ambient",
             "max_distance": 256
         },
+        "xblockfire.c4_beep": {
+            "sounds": [
+                {
+                    "name": "sounds/c4/c4_beep",
+                    "volume": 5
+                } 
+            ],
+            "category": "ambient",
+            "max_distance": 256
+        },
 
         // grenades
         "xblockfire.smoke_explode": {
