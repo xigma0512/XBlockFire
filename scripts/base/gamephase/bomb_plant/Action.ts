@@ -69,7 +69,7 @@ const endReasonTable = {
         message: [
             `${FC.Bold}${FC.Gray}---- ${FC.DarkPurple}[ GAME OVER ] ${FC.Gray}----\n`,
             `${FC.Bold}${FC.Red}All DEFENDERS disconnected.\n`,
-            `${FC.Bold}${FC.Green}ATTACKERs win this game.\n`,
+            `${FC.Bold}${FC.Green}ATTACKERS win this game.\n`,
             `${FC.Bold}${FC.Gray}---`
         ],
         nextPhaseGenerator: () => new GameOverPhase()
