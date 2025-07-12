@@ -1,31 +1,35 @@
-import { GameRoomManager } from "../../gameroom/GameRoom";
+import { gameroom } from "../../gameroom/GameRoom";
+import { PhaseManager } from "../PhaseManager";
+import { MemberManager } from "../../gameroom/member/MemberManager";
+import { C4Manager } from "../../c4state/C4Manager";
 import { HotbarManager, HotbarTemplate } from "../../../modules/hotbar/Hotbar";
 import { MapRegister } from "../../gamemap/MapRegister";
-import { BuyingPhase } from "./Buying";
+
 import { C4IdleState } from "../../c4state/states/Idle";
+import { BuyingPhase } from "./Buying";
 
 import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPlantPhaseEnum";
 import { TeamEnum } from "../../../types/TeamEnum";
 
 import { entity_dynamic_property, set_entity_dynamic_property, set_entity_native_property } from "../../../utils/Property";
 import { ItemStackFactory } from "../../../utils/ItemStackFactory";
+import { UnCommonItems } from "../../../modules/uncommon_items/UnCommonItems";
 
 import { EquipmentSlot, GameMode, InputPermissionCategory, ItemLockMode } from "@minecraft/server";
 import { ItemStack } from "@minecraft/server";
-import { UnCommonItems } from "../../../modules/uncommon_items/UnCommonItems";
 
 export class PreRoundStartPhase implements IPhaseHandler {
     readonly phaseTag = BombPlantPhaseEnum.PreRoundStart;
     readonly hud!: InGameHud;
-    readonly currentTick: number = -1;
+    readonly currentTick = -1;
 
-    constructor(private readonly roomId: number) {}
+    constructor() {}
 
     on_entry() {
-        resetC4State(this.roomId);
-        teleportPlayers(this.roomId);
-        resetPlayerInventory(this.roomId);
-        initializePlayers(this.roomId);
+        resetC4State();
+        teleportPlayers();
+        resetPlayerInventory();
+        initializePlayers();
     }
 
     on_running() {
@@ -36,22 +40,16 @@ export class PreRoundStartPhase implements IPhaseHandler {
     }
 
     private transitions() {
-        const room = GameRoomManager.getRoom(this.roomId);
-        room.phaseManager.updatePhase(new BuyingPhase(this.roomId));
+        PhaseManager.updatePhase(new BuyingPhase());
     }
 }
 
-function resetC4State(roomId: number) {
-    const room = GameRoomManager.getRoom(roomId);
-    const C4Manager = room.C4Manager;
-    C4Manager.updateState(new C4IdleState(roomId));
+function resetC4State() {
+    C4Manager.updateState(new C4IdleState());
 }
 
-function initializePlayers(roomId: number) {
-    const room = GameRoomManager.getRoom(roomId);
-    const member = room.memberManager;
-
-    for (const player of member.getPlayers()) {
+function initializePlayers() {
+    for (const player of MemberManager.getPlayers()) {
         if (entity_dynamic_property(player, 'player:is_spectator')) continue;
 
         player.inputPermissions.setPermissionCategory(InputPermissionCategory.LateralMovement, false); 
@@ -66,10 +64,8 @@ function initializePlayers(roomId: number) {
     }
 }
 
-function teleportPlayers(roomId: number) {
-    const room = GameRoomManager.getRoom(roomId);
-    const member = room.memberManager;
-    const gameMap = MapRegister.getMap(room.gameMapId);
+function teleportPlayers() {
+    const gameMap = MapRegister.getMap(gameroom.gameMapId);
 
     const spawns = {
         [TeamEnum.Attacker]: gameMap.positions.attacker_spawns,
@@ -81,7 +77,7 @@ function teleportPlayers(roomId: number) {
         [TeamEnum.Defender]: 0
     }
 
-    for (const player of member.getPlayers()) {
+    for (const player of MemberManager.getPlayers()) {
         if (entity_dynamic_property(player, 'player:is_spectator')) continue;
 
         const playerTeam = entity_dynamic_property(player, 'player:team');
@@ -91,11 +87,8 @@ function teleportPlayers(roomId: number) {
     }
 }
 
-function resetPlayerInventory(roomId: number) {
-    const room = GameRoomManager.getRoom(roomId);
-    const member = room.memberManager;
-    
-    for (const player of member.getPlayers()) {
+function resetPlayerInventory() {
+    for (const player of MemberManager.getPlayers()) {
         // eslint-disable-next-line
         player.runCommand('clear @s xblockfire:c4');
 
@@ -108,13 +101,13 @@ function resetPlayerInventory(roomId: number) {
         }
     }
 
-    for (const player of member.getPlayers({team: TeamEnum.Defender})) {
+    for (const player of MemberManager.getPlayers({team: TeamEnum.Defender})) {
         const hotbar = HotbarManager.getPlayerHotbar(player)
         hotbar.items[3] = ItemStackFactory.new({ typeId: 'xblockfire:defuser', lockMode: ItemLockMode.slot });
         HotbarManager.sendHotbar(player, hotbar);
     }
 
-    const attackers = member.getPlayers({ team: TeamEnum.Attacker });
+    const attackers = MemberManager.getPlayers({ team: TeamEnum.Attacker });
     if (attackers.length > 0) {
         const C4Player = attackers[Math.floor(Math.random() * attackers.length)];
 
@@ -123,7 +116,7 @@ function resetPlayerInventory(roomId: number) {
         HotbarManager.sendHotbar(C4Player, hotbar);
     }
 
-    const defenders = member.getPlayers({ team: TeamEnum.Defender });
+    const defenders = MemberManager.getPlayers({ team: TeamEnum.Defender });
     for (const player of attackers) {
         const equippable = player.getComponent('equippable')!;
         equippable.setEquipment(EquipmentSlot.Head, UnCommonItems.getItem('attacker_helmet'));

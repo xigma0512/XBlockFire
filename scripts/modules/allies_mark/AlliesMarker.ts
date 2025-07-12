@@ -1,18 +1,19 @@
 import { MemberManager } from "../../base/gameroom/member/MemberManager";
 
+import { entity_dynamic_property } from "../../utils/Property";
+
 import { Vector3Builder, Vector3Utils } from "@minecraft/math";
 import { Direction, MolangVariableMap, Player } from "@minecraft/server";
-import { entity_dynamic_property } from "../../utils/Property";
 
 export class AlliesMarker {
 
-    static updateMark(member: MemberManager) {
-        const players = member.getPlayers();
+    static updateMark() {
+        const players = MemberManager.getPlayers();
         for (const viewer of players) {
 
             const team = entity_dynamic_property(viewer, 'player:team');
             const is_alive = entity_dynamic_property(viewer, 'player:is_alive');
-            const groupPlayers = member.getPlayers({ team, is_alive });
+            const groupPlayers = MemberManager.getPlayers({ team, is_alive });
             
             for (const ally of groupPlayers) {
                 if (ally.id === viewer.id) continue;

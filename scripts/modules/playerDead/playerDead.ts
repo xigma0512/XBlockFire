@@ -1,7 +1,8 @@
-import { C4DroppedState } from "../../base/c4state/states/Dropped";
-import { GameRoomManager } from "../../base/gameroom/GameRoom";
 import { MemberManager } from "../../base/gameroom/member/MemberManager";
+import { C4Manager } from "../../base/c4state/C4Manager";
 import { gameEvents } from "../../event/EventEmitter";
+
+import { C4DroppedState } from "../../base/c4state/states/Dropped";
 
 import { TeamEnum } from "../../types/TeamEnum";
 
@@ -9,10 +10,11 @@ import { Broadcast } from "../../utils/Broadcast";
 import { FormatCode as FC } from "../../utils/FormatCode";
 import { entity_dynamic_property, set_entity_dynamic_property } from "../../utils/Property";
 
-import { GameMode, ItemStack, Player, system, world } from "@minecraft/server";
+import { GameMode } from "@minecraft/server";
+import { ItemStack, Player, system, world } from "@minecraft/server";
 
 world.afterEvents.entityDie.subscribe(ev => {
-    if (!(ev.deadEntity instanceof Player) || !MemberManager.isInRoom(ev.deadEntity)) return;
+    if (!(ev.deadEntity instanceof Player) || !MemberManager.includePlayer(ev.deadEntity)) return;
     const deadPlayer = ev.deadEntity;
     const source = ev.damageSource;
     const attacker = source.damagingEntity;
@@ -20,7 +22,7 @@ world.afterEvents.entityDie.subscribe(ev => {
 })
 
 gameEvents.subscribe('playerDied', (ev) => {
-    if (!MemberManager.isInRoom(ev.deadPlayer)) return;
+    if (!MemberManager.includePlayer(ev.deadPlayer)) return;
     const deadPlayer = ev.deadPlayer;
     dropC4(deadPlayer);
     set_entity_dynamic_property(deadPlayer, 'player:is_alive', false);
@@ -36,15 +38,10 @@ function dropC4(player: Player) {
     const container = player.getComponent('inventory')!.container!;
     if (container.find(new ItemStack(C4_ITEM_ID)) === undefined) return;
 
-    const roomId = MemberManager.getPlayerRoomId(player)!;
-    const room = GameRoomManager.getRoom(roomId);
-    const C4Manager = room.C4Manager;
-    C4Manager.updateState(new C4DroppedState(roomId, player.location));
+    C4Manager.updateState(new C4DroppedState(player.location));
 }
 
 function showDeathMessage(deadPlayer: Player, attacker: Player) {
-    const roomId = MemberManager.getPlayerRoomId(deadPlayer)!;
-    const room = GameRoomManager.getRoom(roomId);
 
     const deadPlayerTeam = entity_dynamic_property(deadPlayer, 'player:team');
     const attackerTeam = entity_dynamic_property(attacker, 'player:team');
@@ -53,6 +50,6 @@ function showDeathMessage(deadPlayer: Player, attacker: Player) {
     
     Broadcast.message(
         `${FC.Bold}${playerTeamStr(attackerTeam, attacker.name)} ${FC.DarkRed}eliminated ${playerTeamStr(deadPlayerTeam, deadPlayer.name)}`,
-        room.memberManager.getPlayers()
+        MemberManager.getPlayers()
     );
 }

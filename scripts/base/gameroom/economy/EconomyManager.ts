@@ -2,14 +2,15 @@ import { Player } from "@minecraft/server";
 
 const LIMIT = 9000;
 
-export class EconomyManager {
+class _EconomyManager {
 
-    readonly roomId: number;
+    private static _instance: _EconomyManager;
+    static get instance() { return (this._instance || (this._instance = new this)); }
+
     private economies: Map<Player, number>;
 
-    constructor(roomId: number) {
+    constructor() {
         this.economies = new Map();
-        this.roomId = roomId;
     }
 
     initializePlayer(player: Player, startingBalance: number = 800) {
@@ -20,7 +21,6 @@ export class EconomyManager {
         this.economies.delete(player);
     }
 
-    
     modifyMoney(player: Player, value: number) {
         let money = this.getMoney(player);
         this.setMoney(player, (money + value > LIMIT) ? LIMIT : money + value);
@@ -40,3 +40,5 @@ export class EconomyManager {
     }
 
 }
+
+export const EconomyManager = _EconomyManager.instance; 

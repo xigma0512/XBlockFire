@@ -1,9 +1,11 @@
-import { GameRoomManager } from "../../gameroom/GameRoom";
-import { ActionPhase } from "./Action";
+import { MemberManager } from "../../gameroom/member/MemberManager";
+import { PhaseManager } from "../PhaseManager";
 import { ActionHud } from "../../../modules/hud/bomb_plant/Action";
 import { HotbarManager } from "../../../modules/hotbar/Hotbar";
 
+import { ActionPhase } from "./Action";
 import { Config } from "./_config";
+
 import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPlantPhaseEnum";
 
 import { Broadcast } from "../../../utils/Broadcast";
@@ -22,51 +24,43 @@ export class BuyingPhase implements IPhaseHandler {
     private _currentTick: number = config.COUNTDOWN_TIME;
     get currentTick() { return this._currentTick; }
 
-    constructor(private readonly roomId: number) {        
-        this.hud = new ActionHud(roomId);
+    constructor() {        
+        this.hud = new ActionHud();
     }
 
     on_entry() {
         this._currentTick = config.COUNTDOWN_TIME;
-        sendShopItem(this.roomId);
+        sendShopItem();
     }
 
     on_running() {        
         if (this._currentTick-- % 20 == 0) {
-            const room = GameRoomManager.getRoom(this.roomId);
-            Broadcast.sound("block.click", { pitch: 2 }, room.memberManager.getPlayers());
+            Broadcast.sound("block.click", { pitch: 2 }, MemberManager.getPlayers());
         }
         this.hud.update();
         this.transitions();
     }
 
     on_exit() {
-        restorePlayerDefaults(this.roomId);        
+        restorePlayerDefaults();        
     }
 
     private transitions() {
-        const room = GameRoomManager.getRoom(this.roomId);
-        if (this.currentTick <= 0) room.phaseManager.updatePhase(new ActionPhase(this.roomId));
+        if (this.currentTick <= 0) PhaseManager.updatePhase(new ActionPhase());
     }
 
 }
 
-function sendShopItem(roomId: number) {
-    const room = GameRoomManager.getRoom(roomId);
-    const member = room.memberManager;
-
-    for (const player of member.getPlayers()) {
+function sendShopItem() {
+    for (const player of MemberManager.getPlayers()) {
         const hotbar = HotbarManager.getPlayerHotbar(player)
         hotbar.items[8] = ItemStackFactory.new({ typeId: 'minecraft:feather', lockMode: ItemLockMode.slot });
         HotbarManager.sendHotbar(player, hotbar);
     }
 }
 
-function restorePlayerDefaults(roomId: number) {
-    const room = GameRoomManager.getRoom(roomId);
-    const member = room.memberManager;
-
-    for (const player of member.getPlayers()) {
+function restorePlayerDefaults() {
+    for (const player of MemberManager.getPlayers()) {
         player.inputPermissions.setPermissionCategory(InputPermissionCategory.LateralMovement, true);
         set_entity_native_property(player, 'player:can_use_item', true);
 

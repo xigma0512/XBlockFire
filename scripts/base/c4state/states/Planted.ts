@@ -1,10 +1,12 @@
-import { GameRoomManager } from "../../gameroom/GameRoom";
+import { PhaseManager } from "../../gamephase/PhaseManager";
+import { MemberManager } from "../../gameroom/member/MemberManager";
+import { C4Manager } from "../C4Manager";
 import { HudTextController } from "../../../modules/hud/HudTextController";
 
 import { C4IdleState } from "./Idle";
-
 import { C4PlantedPhase } from "../../gamephase/bomb_plant/C4Planted";
 import { RoundEndPhase } from "../../gamephase/bomb_plant/RoundEnd";
+import { Config as BP_Config } from "../../gamephase/bomb_plant/_config";
 
 import { C4StateEnum } from "../../../types/bombstate/C4StateEnum";
 import { TeamEnum } from "../../../types/TeamEnum";
@@ -14,7 +16,6 @@ import { set_variable, variable } from "../../../utils/Variable";
 import { Broadcast } from "../../../utils/Broadcast";
 import { FormatCode as FC } from "../../../utils/FormatCode";
 import { progressBar } from "../../../utils/others/Format";
-import { Config as BP_Config } from "../../gamephase/bomb_plant/_config";
 
 import { Vector3Utils } from "@minecraft/math";
 import { VanillaEntityIdentifier } from "@minecraft/server";
@@ -41,7 +42,6 @@ export class C4PlantedState implements IC4StateHandler {
     private afterItemCompleteUseListener = (ev: ItemCompleteUseAfterEvent) => { };
 
     constructor(
-        private readonly roomId: number,
         private readonly position: DimensionLocation
     ) { }
 
@@ -49,20 +49,19 @@ export class C4PlantedState implements IC4StateHandler {
         this.beforeItemUseListener = world.beforeEvents.itemUse.subscribe(this.onBeforeItemUse.bind(this));
         this.afterItemCompleteUseListener = world.afterEvents.itemCompleteUse.subscribe(this.onItemCompleteUse.bind(this));
         this.entity = this.position.dimension.spawnEntity(PLANTED_C4_ENTITY_ID, this.position);
-        
-        const room = GameRoomManager.getRoom(this.roomId);
-        if (room.phaseManager.getPhase().phaseTag === BombPlantPhaseEnum.Action) {
-            room.phaseManager.updatePhase(new C4PlantedPhase(this.roomId));
+
+        if (PhaseManager.getPhase().phaseTag === BombPlantPhaseEnum.Action) {
+            PhaseManager.updatePhase(new C4PlantedPhase());
         }
 
-        const siteIndex = String.fromCharCode(65 + (variable(`${this.roomId}.c4.plant_site_index`) ?? 0));
-        Broadcast.message(`${FC.Bold}${FC.MinecoinGold}C4 HAS BEEN PLANTED AT SITE ${siteIndex}.` ,room.memberManager.getPlayers());
+        const siteIndex = String.fromCharCode(65 + (variable(`c4.plant_site_index`) ?? 0));
+        Broadcast.message(`${FC.Bold}${FC.MinecoinGold}C4 HAS BEEN PLANTED AT SITE ${siteIndex}.` , MemberManager.getPlayers());
     }
     
     on_running() {
         playC4Effect(this.currentTick, this.entity);
         this.currentTick --;
-        if (this.currentTick <= 0) c4Explosion(this.roomId, this.entity);
+        if (this.currentTick <= 0) c4Explosion(this.entity);
     }
 
     on_exit() {
@@ -75,8 +74,8 @@ export class C4PlantedState implements IC4StateHandler {
     private onBeforeItemUse(ev: ItemUseBeforeEvent) {
         if (ev.itemStack.typeId !== DEFUSER_ITEM_ID) return;
 
-        const room = GameRoomManager.getRoom(this.roomId);
-        if (!room.memberManager.includePlayer(ev.source)) return;
+        
+        if (!MemberManager.includePlayer(ev.source)) return;
         
         ev.cancel = !canDefuseC4(this.entity, ev.source);
 
@@ -92,11 +91,9 @@ export class C4PlantedState implements IC4StateHandler {
 
     private onItemCompleteUse(ev: ItemCompleteUseAfterEvent) {
         if (ev.itemStack.typeId !== DEFUSER_ITEM_ID) return;
+        if (!MemberManager.includePlayer(ev.source)) return;
 
-        const room = GameRoomManager.getRoom(this.roomId);
-        if (!room.memberManager.includePlayer(ev.source)) return;
-
-        defuseComplete(this.roomId, ev.source);
+        defuseComplete(ev.source);
     }
 
 }
@@ -128,28 +125,25 @@ function displayDefusingProgress(source: Player) {
     })
 }
 
-function c4Explosion(roomId: number, C4Entity: Entity) {
+function c4Explosion(C4Entity: Entity) {
     const location = C4Entity.location;
     const volume = 3;
     Broadcast.sound(EXPLOSION_SOUND_ID, { location, volume });
     
     C4Entity.dimension.createExplosion(C4Entity.location, 20, { causesFire: false, breaksBlocks: false });    
 
-    const room = GameRoomManager.getRoom(roomId);
-    room.C4Manager.updateState(new C4IdleState(roomId));
+    C4Manager.updateState(new C4IdleState());
 }
 
-function defuseComplete(roomId: number, defuser: Player) {
-    const room = GameRoomManager.getRoom(roomId);
-    
-    if (room.phaseManager.getPhase().phaseTag === BombPlantPhaseEnum.C4Planted) {
-        set_variable(`${roomId}.round_winner`, TeamEnum.Defender);
-        room.phaseManager.updatePhase(new RoundEndPhase(roomId));
+function defuseComplete(defuser: Player) {    
+    if (PhaseManager.getPhase().phaseTag === BombPlantPhaseEnum.C4Planted) {
+        set_variable(`round_winner`, TeamEnum.Defender);
+        PhaseManager.updatePhase(new RoundEndPhase());
     }
 
-    room.C4Manager.updateState(new C4IdleState(roomId));
+    C4Manager.updateState(new C4IdleState());
 
-    const players = room.memberManager.getPlayers();
+    const players = MemberManager.getPlayers();
     Broadcast.sound(COMPLETE_DEFUSED_SOUND_ID, {}, players);
     
     const message = [

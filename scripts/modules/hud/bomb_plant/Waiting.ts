@@ -1,9 +1,9 @@
-import { GameRoomManager } from "../../../base/gameroom/GameRoom";
-import { HudTextController } from "../HudTextController";
+import { gameroom } from "../../../base/gameroom/GameRoom";
+import { MemberManager } from "../../../base/gameroom/member/MemberManager";
+import { PhaseManager } from "../../../base/gamephase/PhaseManager";
 import { MapRegister } from "../../../base/gamemap/MapRegister";
 
 import { Config } from "../../../base/gamephase/bomb_plant/_config";
-import { GameModeEnumTable } from "../../../types/gameroom/GameModeEnum";
 
 import { FormatCode as FC } from "../../../utils/FormatCode";
 import { Broadcast } from "../../../utils/Broadcast";
@@ -12,7 +12,7 @@ const config = Config.idle;
 
 export class WaitingHud implements InGameHud {
     
-    constructor(private readonly roomId: number) { }
+    constructor() { }
 
     update() {
         this.updateSubtitle();
@@ -20,10 +20,10 @@ export class WaitingHud implements InGameHud {
     }
 
     private updateSubtitle() {
-        const room = GameRoomManager.getRoom(this.roomId);
-        const phase = room.phaseManager.getPhase();
-        const members = room.memberManager.getPlayers();
-        const playerAmount = members.length;
+        const players = MemberManager.getPlayers();
+        const playerAmount = players.length;
+
+        const phase = PhaseManager.getPhase();
         
         let text = `${FC.Yellow}Waiting for more players...`;
         
@@ -32,31 +32,30 @@ export class WaitingHud implements InGameHud {
         }
         
         if (phase.currentTick !== config.COUNTDOWN_TIME && playerAmount < config.AUTO_START_MIN_PLAYER) {
-            Broadcast.message(`${FC.Bold}${FC.Red}Not enough players. Waiting for more players.`, members);
+            Broadcast.message(`${FC.Bold}${FC.Red}Not enough players. Waiting for more players.`, players);
         }
         
-        Broadcast.subtitle(text, members);
+        Broadcast.subtitle(text, players);
     }
 
     private updateSidebar() {
-        const room = GameRoomManager.getRoom(this.roomId);
-        const players = room.memberManager.getPlayers();
+        const players = MemberManager.getPlayers();
         
         const date = new Date();
         const todayStr = `${date.getFullYear()}/${String(date.getMonth()).padStart(2, '0')}/${String(date.getDay()).padStart(2, '0')}`;
         
-        const map = MapRegister.getMap(room.gameMapId);
+        const map = MapRegister.getMap(gameroom.gameMapId);
         const playerCount = players.length;
 
         const message = [
             `${FC.Bold}${FC.Yellow}   XBlockFire   `,
-            `${FC.Gray}${todayStr} ${FC.DarkGray}Room${this.roomId}`,
+            `${FC.Gray}${todayStr} ${FC.DarkGray}`,
             '',
             `Map: ${FC.Green}${map.name}`,
             `Players: ${FC.Green}${playerCount}`,
             '',
             `Mode:`,
-            `${FC.Green}${GameModeEnumTable[room.gameMode]}`,
+            `${FC.Green}${gameroom.gameMode}`,
             ''
         ];
 
