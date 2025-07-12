@@ -17,14 +17,16 @@ export class BlankPhase implements IPhaseHandler {
     }
 
     on_running() {
+        if (!gameroom()) return;
         this.transitions();
     }
 
     on_exit() {
+        console.warn('leave');
     }
 
     private transitions() {
-        switch(gameroom.gameMode) {
+        switch(gameroom().gameMode) {
             case GameModeEnum.BombPlant: 
                 PhaseManager.updatePhase(new IdlePhase());
                 break;

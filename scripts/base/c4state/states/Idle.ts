@@ -86,7 +86,7 @@ function canPlantC4(source: Player) {
             throw new Error(`You are not at Attacker team.`);
         }
 
-        const mapInfo = MapRegister.getMap(gameroom.gameMapId);
+        const mapInfo = MapRegister.getMap(gameroom().gameMapId);
         const isAtTarget = mapInfo.positions.C4_targets.some((target, index) => {
             const distance = Vector3Utils.distance(source.location, target);
             if (distance <= C4_TARGET_RANGE) {
