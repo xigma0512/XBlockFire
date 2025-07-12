@@ -65,7 +65,7 @@ function initializePlayers() {
 }
 
 function teleportPlayers() {
-    const gameMap = MapRegister.getMap(gameroom.gameMapId);
+    const gameMap = MapRegister.getMap(gameroom().gameMapId);
 
     const spawns = {
         [TeamEnum.Attacker]: gameMap.positions.attacker_spawns,

@@ -43,7 +43,7 @@ function forceStart(executer: Player) {
     const startPhase = {
         [GameModeEnum.BombPlant]: new PreRoundStartPhase()
     };
-    PhaseManager.updatePhase(startPhase[gameroom.gameMode]);
+    PhaseManager.updatePhase(startPhase[gameroom().gameMode]);
     executer.sendMessage(`${FC.Gray}>> ${FC.LightPurple}Force start.`);
 }
 

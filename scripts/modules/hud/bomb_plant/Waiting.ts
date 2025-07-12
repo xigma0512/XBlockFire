@@ -44,7 +44,7 @@ export class WaitingHud implements InGameHud {
         const date = new Date();
         const todayStr = `${date.getFullYear()}/${String(date.getMonth()).padStart(2, '0')}/${String(date.getDay()).padStart(2, '0')}`;
         
-        const map = MapRegister.getMap(gameroom.gameMapId);
+        const map = MapRegister.getMap(gameroom().gameMapId);
         const playerCount = players.length;
 
         const message = [
@@ -55,7 +55,7 @@ export class WaitingHud implements InGameHud {
             `Players: ${FC.Green}${playerCount}`,
             '',
             `Mode:`,
-            `${FC.Green}${gameroom.gameMode}`,
+            `${FC.Green}${gameroom().gameMode}`,
             ''
         ];
 

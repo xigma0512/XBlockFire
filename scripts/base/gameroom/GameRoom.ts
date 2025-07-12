@@ -42,4 +42,4 @@ export class GameRoomFactory {
     }
 }
 
-export const gameroom = GameRoom.gameroom;
+export const gameroom = () => GameRoom.gameroom;
