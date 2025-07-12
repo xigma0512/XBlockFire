@@ -17,8 +17,9 @@ export class WeaponInfo implements InGameHud {
                     value: true
                 },
                 {
-                    propertyId: 'player:is_reloading',
-                    value: false
+                    propertyId: 'player:state.reload',
+                    exclude: true,
+                    value: 'reloading'
                 }
             ]
         });
