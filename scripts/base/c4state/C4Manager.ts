@@ -2,15 +2,16 @@ import { C4IdleState } from "./states/Idle";
 
 import { system } from "@minecraft/server";
 
-export class C4Manager {
+class _C4Manager {
 
-    readonly roomId: number;
+    private static _instance: _C4Manager;
+    static get instance() { return (this._instance || (this._instance = new this)); }
+
     private stateHandler: IC4StateHandler;
     private taskId: number;
 
-    constructor(roomId: number) {
-        this.roomId = roomId;
-        this.stateHandler = new C4IdleState(roomId); 
+    constructor() {
+        this.stateHandler = new C4IdleState(); 
         system.run(() => this.stateHandler.on_entry());
         this.taskId = this.taskId = system.runInterval(() => this.stateHandler.on_running());
     }
@@ -29,3 +30,5 @@ export class C4Manager {
     }
 
 }
+
+export const C4Manager = _C4Manager.instance;

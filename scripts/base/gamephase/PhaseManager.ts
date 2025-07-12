@@ -1,15 +1,17 @@
-import { system } from "@minecraft/server";
 import { BlankPhase } from "./BlankPhaseHandler";
 
-export class PhaseManager {
+import { system } from "@minecraft/server";
+
+class _PhaseManager {
+
+    private static _instance: _PhaseManager;
+    static get instance() { return (this._instance || (this._instance = new this)); }
     
-    readonly roomId: number;
     private phaseHandler: IPhaseHandler;
     private taskId: number;
 
-    constructor(roomId: number) {
-        this.roomId = roomId;
-        this.phaseHandler = new BlankPhase(roomId);
+    private constructor() {
+        this.phaseHandler = new BlankPhase();
         this.phaseHandler.on_entry();
         this.taskId = system.runInterval(() => this.phaseHandler.on_running());
     }
@@ -30,3 +32,5 @@ export class PhaseManager {
     }
 
 }
+
+export const PhaseManager = _PhaseManager.instance;

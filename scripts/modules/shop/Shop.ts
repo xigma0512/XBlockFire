@@ -1,4 +1,5 @@
-import { GameRoomManager } from "../../base/gameroom/GameRoom";
+import { EconomyManager } from "../../base/gameroom/economy/EconomyManager";
+import { PhaseManager } from "../../base/gamephase/PhaseManager";
 import { MemberManager } from "../../base/gameroom/member/MemberManager";
 import { HotbarManager } from "../hotbar/Hotbar";
 
@@ -8,6 +9,7 @@ import { AK47 } from "../../base/weapon/actors/item/AK47";
 import { M4A4 } from "../../base/weapon/actors/item/M4A4";
 
 import { PhaseEnum as BombPlantPhaseEnum } from "../../types/gamephase/BombPlantPhaseEnum";
+
 import { ItemStackFactory } from "../../utils/ItemStackFactory";
 
 import { ItemLockMode, Player, system, world } from "@minecraft/server";
@@ -132,12 +134,8 @@ class _Shop {
     }
 
     private pay(player: Player, price: number) {
-        const playerRoomId = MemberManager.getPlayerRoomId(player)!;
-        const playerRoom = GameRoomManager.getRoom(playerRoomId);
-        const economy = playerRoom.economyManager;
-
-        if (economy.canBeAfforded(player, price)) {
-            economy.modifyMoney(player, -price);
+        if (EconomyManager.canBeAfforded(player, price)) {
+            EconomyManager.modifyMoney(player, -price);
         } else {
             throw Error("You don't have enough money to buy this.")
         }
@@ -150,11 +148,9 @@ const openShopListener = world.beforeEvents.itemUse.subscribe(ev => {
     if (ev.itemStack.typeId !== 'minecraft:feather') return;
 
     const player = ev.source;
-    if (!MemberManager.isInRoom(player)) return;
+    if (!MemberManager.includePlayer(player)) return;
 
-    const playerRoomId = MemberManager.getPlayerRoomId(player)!;
-    const playerRoom = GameRoomManager.getRoom(playerRoomId);
-    const phase = playerRoom.phaseManager.getPhase();
+    const phase = PhaseManager.getPhase();
 
     if (phase.phaseTag !== BombPlantPhaseEnum.Buying) return;
 

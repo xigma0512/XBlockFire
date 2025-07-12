@@ -1,4 +1,6 @@
-import { GameRoomManager } from "../../gameroom/GameRoom";
+import { MemberManager } from "../../gameroom/member/MemberManager";
+import { C4Manager } from "../C4Manager";
+
 import { C4IdleState } from "./Idle";
 
 import { C4StateEnum } from "../../../types/bombstate/C4StateEnum";
@@ -24,10 +26,7 @@ export class C4DroppedState implements IC4StateHandler {
 
     private afterEntityHitEntityListener: (ev: EntityHitEntityAfterEvent) => void;
 
-    constructor(
-        private readonly roomId: number, 
-        private location: Vector3
-    ) {
+    constructor(private location: Vector3) {
         this.location = location;
 
         this.afterEntityHitEntityListener = this.onEntityHit.bind(this);
@@ -40,8 +39,7 @@ export class C4DroppedState implements IC4StateHandler {
     
     on_running() {
         if (!this.entity.isValid) {
-            const room = GameRoomManager.getRoom(this.roomId);
-            room.C4Manager.updateState(new C4IdleState(this.roomId));
+            C4Manager.updateState(new C4IdleState());
             return;
         }
 
@@ -72,12 +70,11 @@ export class C4DroppedState implements IC4StateHandler {
 
         player.getComponent('inventory')?.container.setItem(3, new ItemStack(C4_ITEM_ID));
         
-        const room = GameRoomManager.getRoom(this.roomId);
-        const attackers = room.memberManager.getPlayers({ team: TeamEnum.Attacker });
+        const attackers = MemberManager.getPlayers({ team: TeamEnum.Attacker });
         
         player.sendMessage(`${FC.Gray}>> ${FC.Green}You pick up the C4.`);
         Broadcast.message(`${FC.Bold}${FC.Yellow}Player ${player.name} has picked up the C4.`, attackers);
 
-        room.C4Manager.updateState(new C4IdleState(this.roomId));
+        C4Manager.updateState(new C4IdleState());
     }
 }

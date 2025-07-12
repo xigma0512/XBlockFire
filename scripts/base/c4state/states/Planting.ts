@@ -1,5 +1,7 @@
+import { PhaseManager } from "../../gamephase/PhaseManager";
+import { MemberManager } from "../../gameroom/member/MemberManager";
+import { C4Manager } from "../C4Manager";
 import { HudTextController } from "../../../modules/hud/HudTextController";
-import { GameRoomManager } from "../../gameroom/GameRoom";
 
 import { C4PlantedState } from "./Planted";
 import { C4IdleState } from "./Idle";
@@ -29,7 +31,6 @@ export class C4PlantingState implements IC4StateHandler {
     private currentTime = C4_PLANTING_TIME;
 
     constructor(
-        private readonly roomId: number,
         private readonly source: Player
     ) { }
 
@@ -55,26 +56,26 @@ export class C4PlantingState implements IC4StateHandler {
         if (ev.itemStack.typeId !== C4_ITEM_ID) return;
         if (ev.source.id !== this.source.id) return;
         
-        const room = GameRoomManager.getRoom(this.roomId);        
-        const phase = room.phaseManager.getPhase();
+                
+        const phase = PhaseManager.getPhase();
         if (phase.phaseTag !== BombPlantPhaseEnum.Action) return;
         
         // eslint-disable-next-line
         ev.source.runCommand('clear @s xblockfire:c4');
-        const players = room.memberManager.getPlayers();
+        const players = MemberManager.getPlayers();
         Broadcast.sound(C4_PLANTED_SOUND_ID, {}, players);
 
         const dimension = ev.source.dimension;
         const location = ev.source.location;
-        room.C4Manager.updateState(new C4PlantedState(this.roomId, { dimension, ...location }));
+        C4Manager.updateState(new C4PlantedState({ dimension, ...location }));
     }
 
     private onItemStopUse(ev: ItemStopUseAfterEvent) {
         if (!ev.itemStack || ev.itemStack.typeId !== C4_ITEM_ID) return;
         if (ev.source.id !== this.source.id) return;
 
-        const room = GameRoomManager.getRoom(this.roomId);
-        room.C4Manager.updateState(new C4IdleState(this.roomId));
+        
+        C4Manager.updateState(new C4IdleState());
         
         ev.source.stopSound(PLANTING_SELF_SOUND_ID);
     }

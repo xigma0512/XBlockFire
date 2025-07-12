@@ -1,12 +1,14 @@
-import { GameRoomManager } from "../../gameroom/GameRoom";
+import { MemberManager } from "../../gameroom/member/MemberManager";
+import { PhaseManager } from "../PhaseManager";
+import { ActionHud } from "../../../modules/hud/bomb_plant/Action";
+
 import { RoundEndPhase } from "./RoundEnd";
 import { GameOverPhase } from "./Gameover";
-import { ActionHud } from "../../../modules/hud/bomb_plant/Action";
+import { Config } from "./_config";
 
 import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPlantPhaseEnum";
 import { TeamEnum } from "../../../types/TeamEnum";
 
-import { Config } from "./_config";
 import { set_variable } from "../../../utils/Variable";
 import { FormatCode as FC } from "../../../utils/FormatCode";
 import { Broadcast } from "../../../utils/Broadcast";
@@ -28,7 +30,7 @@ const endReasonTable = {
             `${FC.Bold}${FC.Green}ATTACKERS win this round!\n`,
             `${FC.Bold}${FC.Gray}---`
         ],
-        nextPhaseGenerator: (roomId: number) => new RoundEndPhase(roomId)
+        nextPhaseGenerator: () => new RoundEndPhase()
     },
     [EndReasonEnum['Defender-Eliminated']]: {
         winner: TeamEnum.Attacker,
@@ -38,7 +40,7 @@ const endReasonTable = {
             `${FC.Bold}${FC.Green}ATTACKERS WIN this round!\n`,
             `${FC.Bold}${FC.Gray}---`
         ],
-        nextPhaseGenerator: (roomId: number) => new RoundEndPhase(roomId)
+        nextPhaseGenerator: () => new RoundEndPhase()
     },
     [EndReasonEnum['Defender-Disconnect']]: {
         winner: TeamEnum.Attacker,
@@ -48,7 +50,7 @@ const endReasonTable = {
             `${FC.Bold}${FC.Green}ATTACKERs win this game.\n`,
             `${FC.Bold}${FC.Gray}---`
         ],
-        nextPhaseGenerator: (roomId: number) => new GameOverPhase(roomId)
+        nextPhaseGenerator: () => new GameOverPhase()
     }
 }
 
@@ -59,8 +61,8 @@ export class C4PlantedPhase implements IPhaseHandler {
     private _currentTick: number = config.COUNTDOWN_TIME;
     get currentTick() { return this._currentTick; }
 
-    constructor(private readonly roomId: number) {
-        this.hud = new ActionHud(roomId);
+    constructor() {
+        this.hud = new ActionHud();
     }
 
     on_entry() {
@@ -77,14 +79,11 @@ export class C4PlantedPhase implements IPhaseHandler {
     }
 
     private transitions() {
-        const room = GameRoomManager.getRoom(this.roomId);
-        const member = room.memberManager;
-        const phase = room.phaseManager;
 
         let endReason: EndReasonEnum | null = null;
     
-        const defenders = member.getPlayers({ team: TeamEnum.Defender });
-        const defendersAlive = member.getPlayers({ team: TeamEnum.Defender, is_alive: true });
+        const defenders = MemberManager.getPlayers({ team: TeamEnum.Defender });
+        const defendersAlive = MemberManager.getPlayers({ team: TeamEnum.Defender, is_alive: true });
     
         if (defendersAlive.length === 0) endReason = EndReasonEnum['Defender-Eliminated'];
         if (defenders.length === 0) endReason = EndReasonEnum['Defender-Disconnect'];
@@ -95,8 +94,8 @@ export class C4PlantedPhase implements IPhaseHandler {
 
             Broadcast.message(result.message);
 
-            set_variable(`${this.roomId}.round_winner`, result.winner);
-            phase.updatePhase(result.nextPhaseGenerator(this.roomId));
+            set_variable(`round_winner`, result.winner);
+            PhaseManager.updatePhase(result.nextPhaseGenerator());
         }
     }
 

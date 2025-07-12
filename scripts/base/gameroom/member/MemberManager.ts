@@ -1,6 +1,5 @@
-import { GameRoomManager } from "../GameRoom";
-
 import { TeamEnum } from "../../../types/TeamEnum";
+
 import { FormatCode as FC } from "../../../utils/FormatCode";
 import { Broadcast } from "../../../utils/Broadcast"; 
 import { entity_dynamic_property } from "../../../utils/Property";
@@ -13,34 +12,33 @@ interface MemberFilter {
     is_alive?: boolean;
 }
 
-export class MemberManager {
+class _MemberManager {
     
-    readonly roomId: number;
-    private static players = new Map<Player, number>();
+    private static _instance: _MemberManager;
+    static get instance() { return (this._instance || (this._instance = new this)); }
 
-    constructor(roomId: number) {
-        this.roomId = roomId;
+    private players: Set<Player>;
+
+    private constructor() { 
+        this.players = new Set();
     }
 
     joinRoom(player: Player) {
-        MemberManager.players.set(player, this.roomId);
-        const room = GameRoomManager.getRoom(this.roomId);
-        Broadcast.message(`${FC.Bold}${FC.Green}${player.name} has joined the room.`, room.memberManager.getPlayers());
+        this.players.add(player);
+        Broadcast.message(`${FC.Bold}${FC.Green}${player.name} has joined the room.`, this.getPlayers());
     }
     
     leaveRoom(player: Player) {
-        MemberManager.players.delete(player);
-        const room = GameRoomManager.getRoom(this.roomId);
-        Broadcast.message(`${FC.Bold}${FC.Red}${player.name} has left the room.`, room.memberManager.getPlayers());
+        this.players.delete(player);
+        Broadcast.message(`${FC.Bold}${FC.Red}${player.name} has left the room.`, this.getPlayers());
     }
 
-    getPlayers(filter?: MemberFilter) {
-        let result = Array.from(MemberManager.players.keys());
-        result = result.filter(p => MemberManager.players.get(p) === this.roomId);
+    getPlayers(filter?: MemberFilter) {        
+        const allPlayers = Array.from(this.players.keys());
         
-        if (!filter) return result;
-        
-        return result.filter(p => {
+        if (!filter) return allPlayers;
+
+        return allPlayers.filter(p => {
             if (filter.team && filter.team !== entity_dynamic_property(p, 'player:team')) return false;
             if (filter.is_alive && filter.is_alive !== entity_dynamic_property(p, 'player:is_alive')) return false;
             return true;
@@ -48,22 +46,13 @@ export class MemberManager {
     }
 
     includePlayer(player: Player) {
-        return MemberManager.players.get(player) === this.roomId;
-    }
-
-    static isInRoom(player: Player) {
-        return MemberManager.players.has(player);
-    }
-
-    static getPlayerRoomId(player: Player) {
-        return this.players.get(player);
+        return this.players.has(player);
     }
     
 }
 
+export const MemberManager = _MemberManager.instance;
+
 const playerLeaveGameListener = world.beforeEvents.playerLeave.subscribe(ev => {
-    if (!MemberManager.isInRoom(ev.player)) return;
-    const roomId = MemberManager.getPlayerRoomId(ev.player)!;
-    const room = GameRoomManager.getRoom(roomId);
-    room.memberManager.leaveRoom(ev.player);
+    MemberManager.leaveRoom(ev.player);
 });

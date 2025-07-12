@@ -1,4 +1,6 @@
-import { GameRoomManager } from "../../../base/gameroom/GameRoom";
+import { PhaseManager } from "../../../base/gamephase/PhaseManager";
+import { MemberManager } from "../../../base/gameroom/member/MemberManager";
+import { EconomyManager } from "../../../base/gameroom/economy/EconomyManager";
 import { HudTextController } from "../HudTextController";
 
 import { TeamEnum } from "../../../types/TeamEnum";
@@ -11,7 +13,7 @@ import { Broadcast } from "../../../utils/Broadcast";
 
 export class ActionHud implements InGameHud {
     
-    constructor(private readonly roomId: number) { }
+    constructor() { }
     
     update() {
         this.updateSubtitle();
@@ -19,8 +21,8 @@ export class ActionHud implements InGameHud {
     }
 
     private updateSubtitle() {
-        const room = GameRoomManager.getRoom(this.roomId);
-        const phase = room.phaseManager.getPhase();
+        
+        const phase = PhaseManager.getPhase();
 
         let text: string | string[] = '';
         switch (phase.phaseTag) {
@@ -39,21 +41,20 @@ export class ActionHud implements InGameHud {
         }
 
         if (text === '') return;
-        const members = room.memberManager.getPlayers();
+        const members = MemberManager.getPlayers();
         Broadcast.subtitle(text, members);
     }
 
     private updateSidebar() {
-        const room = GameRoomManager.getRoom(this.roomId);
-        const players = room.memberManager.getPlayers();
-        const phase = room.phaseManager.getPhase();
-        const economy = room.economyManager;
+        
+        const players = MemberManager.getPlayers();
+        const phase = PhaseManager.getPhase();
 
-        const attackerScore = variable(`${this.roomId}.attacker_score`);
-        const defenderScore = variable(`${this.roomId}.defender_score`);
+        const attackerScore = variable(`attacker_score`);
+        const defenderScore = variable(`defender_score`);
 
-        const attackerPlayers = room.memberManager.getPlayers({ team: TeamEnum.Attacker, is_alive: true });
-        const defenderPlayers = room.memberManager.getPlayers({ team: TeamEnum.Defender, is_alive: true });
+        const attackerPlayers = MemberManager.getPlayers({ team: TeamEnum.Attacker, is_alive: true });
+        const defenderPlayers = MemberManager.getPlayers({ team: TeamEnum.Defender, is_alive: true });
 
         const seconds = Number((phase.currentTick / 20).toFixed(0));
         
@@ -73,7 +74,7 @@ export class ActionHud implements InGameHud {
                 `${FC.Bold}${FC.Red}Attackers - ${attackerScore}`,
                 `${attackerPlayers.length} alive`,
                 '',
-                `Money: ${FC.Green}${economy.getMoney(player)}`,
+                `Money: ${FC.Green}${EconomyManager.getMoney(player)}`,
                 '',
                 `${FC.Bold}Your Team:`,
                 `${FC.Bold}${playerTeamStr}`,
