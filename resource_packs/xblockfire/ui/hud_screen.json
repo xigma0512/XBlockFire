@@ -19,7 +19,7 @@
                     "color": "$title_command_text_color",
                     "text": "$subtitle_text",
                     "localize": false,
-                    "font_size": "large",
+                    "font_size": "normal",
                     "shadow": true,
                     "size": [
                         "100%",
