@@ -32,12 +32,6 @@ export class ActionHud implements InGameHud {
                     `Right-click the feather to open the shop.`
                 ];
                 break;
-            case BombPlantPhaseEnum.RoundEnd:
-                text = `${FC.Yellow}Next round start in ${(phase.currentTick / 20).toFixed(0)} seconds.`;
-                break;
-            case BombPlantPhaseEnum.Gameover:
-                text = `${FC.Yellow}Return lobby in ${(phase.currentTick / 20).toFixed(0)}`;
-                break;
         }
 
         if (text === '') return;

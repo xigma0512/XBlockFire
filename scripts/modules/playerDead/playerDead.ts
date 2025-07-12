@@ -1,6 +1,7 @@
 import { MemberManager } from "../../base/gameroom/member/MemberManager";
 import { C4Manager } from "../../base/c4state/C4Manager";
 import { gameEvents } from "../../event/EventEmitter";
+import { HudTextController } from "../hud/HudTextController";
 
 import { C4DroppedState } from "../../base/c4state/states/Dropped";
 
@@ -52,4 +53,11 @@ function showDeathMessage(deadPlayer: Player, attacker: Player) {
         `${FC.Bold}${playerTeamStr(attackerTeam, attacker.name)} ${FC.DarkRed}eliminated ${playerTeamStr(deadPlayerTeam, deadPlayer.name)}`,
         MemberManager.getPlayers()
     );
+    
+    const taskId = system.runInterval(() => {
+        HudTextController.add(attacker, 'subtitle', `${FC.Bold}\uE109${FC.DarkRed}${deadPlayer.name}`);
+    });
+    system.runTimeout(() => {
+        system.clearRun(taskId);
+    }, 3 * 20);
 }
