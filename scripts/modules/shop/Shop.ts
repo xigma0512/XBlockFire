@@ -4,9 +4,10 @@ import { MemberManager } from "../../base/gameroom/member/MemberManager";
 import { HotbarManager } from "../hotbar/Hotbar";
 
 import { ItemActor } from "../../base/weapon/actors/Actor";
-import { Glock17 } from "../../base/weapon/actors/item/Glock17";
 import { AK47 } from "../../base/weapon/actors/item/AK47";
 import { M4A4 } from "../../base/weapon/actors/item/M4A4";
+import { Glock17 } from "../../base/weapon/actors/item/Glock17";
+import { Deagle } from "../../base/weapon/actors/item/Deagle";
 
 import { PhaseEnum as BombPlantPhaseEnum } from "../../types/gamephase/BombPlantPhaseEnum";
 
@@ -58,8 +59,17 @@ const productTable: Product[] = [
         iconPath: 'textures/items/gun/glock17'
     },
     {
+        name: "Deagle",
+        price: 600,
+        max_amount: 1,
+        hotbar_slot: 1,
+        itemActor: Deagle,
+        description: "This is a good and classic weapon.",
+        iconPath: 'textures/items/gun/glock17'
+    },
+    {
         name: "SmokeGrenade",
-        price: 300,
+        price: 200,
         max_amount: 2,
         hotbar_slot: 4,
         itemStackTypeId: 'xblockfire:smoke_grenade_item',
@@ -67,7 +77,7 @@ const productTable: Product[] = [
     },
     {
         name: "Flashbang",
-        price: 300,
+        price: 350,
         max_amount: 2,
         hotbar_slot: 5,
         itemStackTypeId: 'xblockfire:flashbang_item',

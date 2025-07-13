@@ -161,6 +161,24 @@
             ],
             "category": "ambient"
         },
+        "xblockfire.deagle_fire": {
+            "sounds": [
+                {
+                    "name": "sounds/gun/deagle_fire",
+                    "is3D": false
+                }
+            ],
+            "category": "ambient"
+        },
+        "xblockfire.deagle_reload": {
+            "sounds": [
+                {
+                    "name": "sounds/gun/deagle_reload",
+                    "is3D": false
+                }
+            ],
+            "category": "ambient"
+        },
 
         "xblockfire.ak47_fire.3d": {
             "sounds": [
@@ -193,6 +211,24 @@
             "sounds": [
                 {
                     "name": "sounds/gun/m4a4_reload",
+                    "volume": 2
+                }
+            ],
+            "category": "ambient"
+        },
+        "xblockfire.deagle_fire.3d": {
+            "sounds": [
+                {
+                    "name": "sounds/gun/deagle_fire",
+                    "volume": 5
+                }
+            ],
+            "category": "ambient"
+        },
+        "xblockfire.deagle_reload.3d": {
+            "sounds": [
+                {
+                    "name": "sounds/gun/deagle_reload",
                     "volume": 2
                 }
             ],
