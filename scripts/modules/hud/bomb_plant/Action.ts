@@ -58,15 +58,12 @@ export class ActionHud implements InGameHud {
             const playerTeamStr = (playerTeam === TeamEnum.Attacker) ? `${FC.Red}Attacker` : `${FC.Aqua}Defender`;
 
             const message = [
-                `${FC.Bold}${FC.Yellow}   XBlockFire   `,
+                `     ${FC.Bold}${FC.Gold}Round ${defenderScore + attackerScore + 1}${FC.Reset}  `,
                 '',
-                `Round Time: ${FC.Gray}${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')}`,
+                ` Round Time: ${FC.Gray}${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')}`,
                 '',
-                `${FC.Bold}${FC.Aqua}Defenders - ${defenderScore}`,
-                `${defenderPlayers.length} alive`,
-                '',
-                `${FC.Bold}${FC.Red}Attackers - ${attackerScore}`,
-                `${attackerPlayers.length} alive`,
+                `   ${FC.Aqua}D - ${defenderScore}   ${FC.Red}A - ${attackerScore}   `,
+                `       ${FC.Aqua}${defenderPlayers.length} ${FC.White}VS ${FC.Red}${attackerPlayers.length}`,
                 '',
                 `Money: ${FC.Green}${EconomyManager.getMoney(player)}`,
                 '',

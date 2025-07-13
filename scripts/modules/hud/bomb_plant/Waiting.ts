@@ -48,7 +48,7 @@ export class WaitingHud implements InGameHud {
         const playerCount = players.length;
 
         const message = [
-            `${FC.Bold}${FC.Yellow}   XBlockFire   `,
+            `${FC.Bold}${FC.Yellow}  XBlockFire  `,
             `${FC.Gray}${todayStr} ${FC.DarkGray}`,
             '',
             `Map: ${FC.Green}${map.name}`,
