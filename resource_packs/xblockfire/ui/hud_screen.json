@@ -32,7 +32,7 @@
                 "sidebar": {
                     "type": "image",
                     "size": [
-                        "100%cm+5px",
+                        "100%cm+7.5px",
                         "100%c+5px"
                     ],
                     "texture": "textures/ui/hud_tip_text_background",
