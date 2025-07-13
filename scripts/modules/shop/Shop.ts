@@ -10,6 +10,7 @@ import { M4A4 } from "../../base/weapon/actors/item/M4A4";
 
 import { PhaseEnum as BombPlantPhaseEnum } from "../../types/gamephase/BombPlantPhaseEnum";
 
+import { FormatCode as FC } from "../../utils/FormatCode";
 import { ItemStackFactory } from "../../utils/ItemStackFactory";
 
 import { ItemLockMode, Player, system, world } from "@minecraft/server";
@@ -31,7 +32,7 @@ interface Product {
 const productTable: Product[] = [
     {
         name: "AK47",
-        price: 0,
+        price: 2900,
         max_amount: 1,
         hotbar_slot: 0,
         itemActor: AK47,
@@ -40,7 +41,7 @@ const productTable: Product[] = [
     },
     {
         name: "M4A4",
-        price: 0,
+        price: 2900,
         max_amount: 1,
         hotbar_slot: 0,
         itemActor: M4A4,
@@ -85,7 +86,7 @@ class _Shop {
             .body('Select an item to purchase:')
 
         for (const product of productTable) {
-            const name = `${product.name} | ${product.price}$\n${product.description ?? ''}`;
+            const name = `${FC.White}${product.name} | ${FC.Yellow}${product.price}$\n${FC.Gray}${product.description ?? ''}`;
             form.button(name, product.iconPath);
         }
 
