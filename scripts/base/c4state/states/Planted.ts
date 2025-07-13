@@ -35,7 +35,9 @@ export class C4PlantedState implements IC4StateHandler {
 
     readonly stateTag = C4StateEnum.Planted;
     
-    private entity!: Entity;
+    private _entity!: Entity;
+    get entity() { return this._entity; }
+    
     private currentTick = BP_Config.C4planted.COUNTDOWN_TIME;
 
     private beforeItemUseListener = (ev: ItemUseBeforeEvent) => { };
@@ -48,7 +50,7 @@ export class C4PlantedState implements IC4StateHandler {
     on_entry() {
         this.beforeItemUseListener = world.beforeEvents.itemUse.subscribe(this.onBeforeItemUse.bind(this));
         this.afterItemCompleteUseListener = world.afterEvents.itemCompleteUse.subscribe(this.onItemCompleteUse.bind(this));
-        this.entity = this.position.dimension.spawnEntity(PLANTED_C4_ENTITY_ID, this.position);
+        this._entity = this.position.dimension.spawnEntity(PLANTED_C4_ENTITY_ID, this.position);
 
         if (PhaseManager.getPhase().phaseTag === BombPlantPhaseEnum.Action) {
             PhaseManager.updatePhase(new C4PlantedPhase());
