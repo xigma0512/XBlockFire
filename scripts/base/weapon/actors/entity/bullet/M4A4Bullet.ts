@@ -18,9 +18,9 @@ export class M4A4Bullet extends EntityActor {
                 flightSpeed: 1000
             }))
             .set('bullet_damage', new BulletDamageComponent({
-                near: { head: 16, body: 8, legs: 6 },
-                medium: { head: 12, body: 6, legs: 5 },
-                far: { head: 7, body: 4, legs: 3 } 
+                near: { head: 8, body: 4, legs: 3 },
+                medium: { head: 6, body: 3, legs: 2 },
+                far: { head: 4, body: 2, legs: 1 } 
             }));
         
         this.setEntity();
