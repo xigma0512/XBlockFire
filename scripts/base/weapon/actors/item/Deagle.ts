@@ -44,8 +44,8 @@ export class Deagle extends ItemActor {
                 }
             )).set('gun_recoil', new GunRecoilComponent(
                 {
-                    shacking_level: 0.1,
-                    shacking_duration: 0.1
+                    shacking_level: 0.02,
+                    shacking_duration: 0.12
                 }
             )).set('gun_reload', new GunReloadComponent(
                 {
@@ -53,9 +53,9 @@ export class Deagle extends ItemActor {
                     reload_sound: "xblockfire.deagle_reload"
                 }
             )).set('gun_offset', new GunOffsetComponent({
-                scope: 0.1,
-                hipfire: 1,
-                movement: 2
+                scope: 0.2,
+                hipfire: 1.5,
+                movement: 4
             }));
 
         this.setItem();

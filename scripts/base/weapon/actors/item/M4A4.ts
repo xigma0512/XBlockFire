@@ -44,8 +44,8 @@ export class M4A4 extends ItemActor {
                 }
             )).set('gun_recoil', new GunRecoilComponent(
                 {
-                    shacking_level: 0.1,
-                    shacking_duration: 0.08
+                    shacking_level: 0.05,
+                    shacking_duration: 0.15
                 }
             )).set('gun_reload', new GunReloadComponent(
                 {

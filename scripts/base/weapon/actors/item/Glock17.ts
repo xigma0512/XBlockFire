@@ -44,8 +44,8 @@ export class Glock17 extends ItemActor {
                 }
             )).set('gun_recoil', new GunRecoilComponent(
                 {
-                    shacking_level: 0.1,
-                    shacking_duration: 0.1
+                    shacking_level: 0.01,
+                    shacking_duration: 0.12
                 }
             )).set('gun_reload', new GunReloadComponent(
                 {
@@ -53,9 +53,9 @@ export class Glock17 extends ItemActor {
                     reload_sound: "xblockfire.glock17_reload"
                 }
             )).set('gun_offset', new GunOffsetComponent({
-                scope: 0.3,
-                hipfire: 2,
-                movement: 3
+                scope: 0.1,
+                hipfire: 1,
+                movement: 2
             }));
 
         this.setItem();
