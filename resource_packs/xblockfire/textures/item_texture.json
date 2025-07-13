@@ -8,9 +8,9 @@
 		"smoke_grenade_item": {
 			"textures": "textures/items/grenade/smoke_grenade_item"
 		},
-        
-        "glock17": {
-            "textures": "textures/items/gun/glock17"
+
+        "spyglass": {
+            "textures": "textures/items/gun/awp"
         },
         "ak47": {
             "textures": "textures/items/gun/ak47"
@@ -20,6 +20,9 @@
         },
         "m4a4": {
             "textures": "textures/items/gun/m4a4"
+        },
+        "glock17": {
+            "textures": "textures/items/gun/glock17"
         },
         "deagle": {
             "textures": "textures/items/gun/deagle"
