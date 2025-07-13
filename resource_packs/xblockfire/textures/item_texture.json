@@ -8,6 +8,7 @@
 		"smoke_grenade_item": {
 			"textures": "textures/items/grenade/smoke_grenade_item"
 		},
+        
         "glock17": {
             "textures": "textures/items/gun/glock17"
         },
@@ -17,6 +18,10 @@
         "m4a4": {
             "textures": "textures/items/gun/m4a4"
         },
+        "deagle": {
+            "textures": "textures/items/gun/deagle"
+        },
+
         "defuser": {
             "textures": "textures/items/defuser"
         },
