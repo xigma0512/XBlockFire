@@ -7,8 +7,8 @@ import { entity_dynamic_property } from "../../../../utils/Property";
 import { Vector3Utils } from "@minecraft/math";
 import { Player, Vector3 } from "@minecraft/server";
 
-const NEAR_DISTANCE = 15;
-const MEDIUM_DISTANCE = 45;
+const NEAR_DISTANCE = 10;
+const MEDIUM_DISTANCE = 30;
 
 export class DamageSystem {
     
