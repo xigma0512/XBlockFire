@@ -42,7 +42,9 @@ export const BulletSystem = _BulletSystem.instance;
 const bulletHitEntity = world.afterEvents.projectileHitEntity.subscribe(ev => {
     const attacker = ev.source;
     if (attacker === undefined || !(attacker instanceof Player)) return;
+    
     const hitEntity = ev.getEntityHit().entity!;
+    if (!(hitEntity instanceof Player)) return;
     
     const projectile = ev.projectile;
     if (projectile.typeId !== 'xblockfire:bullet') return;
