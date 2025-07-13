@@ -41,15 +41,16 @@ export class WaitingHud implements InGameHud {
     private updateSidebar() {
         const players = MemberManager.getPlayers();
         
+        const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
         const date = new Date();
-        const todayStr = `${date.getFullYear()}/${String(date.getMonth()).padStart(2, '0')}/${String(date.getDay()).padStart(2, '0')}`;
+        const todayStr = `${String(date.getFullYear()).slice(-2)}/${String(date.getMonth() + 1).padStart(2, '0')}/${String(date.getDate()).padStart(2, '0')} (${daysOfWeek[date.getDay()]})`;
         
         const map = MapRegister.getMap(gameroom().gameMapId);
         const playerCount = players.length;
 
         const message = [
             `${FC.Bold}${FC.Yellow}  XBlockFire  `,
-            `${FC.Gray}${todayStr} ${FC.DarkGray}`,
+            ` ${FC.Gray}${todayStr}`,
             '',
             `Map: ${FC.Green}${map.name}`,
             `Players: ${FC.Green}${playerCount}`,
