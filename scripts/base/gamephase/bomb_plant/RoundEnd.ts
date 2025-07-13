@@ -86,6 +86,12 @@ function switchSide() {
 
     set_variable(`attacker_score`, defender_score);
     set_variable(`defender_score`, attacker_score);
+
+    Broadcast.message([
+        `${FC.Bold}${FC.White}--- --- ---`,
+        `${FC.Bold}${FC.Yellow}- Switch Side -`,
+        `${FC.Bold}${FC.White}--- --- ---`,
+    ], MemberManager.getPlayers());
 }
 
 function processWinner() {
@@ -100,6 +106,6 @@ function processWinner() {
         const playerTeam = entity_dynamic_property(player, 'player:team');
         const earn = config.INCOME[(playerTeam === winnerTeam) ? 0 : 1];
         EconomyManager.modifyMoney(player, earn);
-        player.sendMessage(`${FC.Gray}Round Income: +${earn}`);
+        player.sendMessage(`${FC.Gray}>> ${FC.DarkGray}Round Income: +${earn}`);
     }
 }

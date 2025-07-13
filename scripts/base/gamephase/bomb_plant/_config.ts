@@ -5,7 +5,7 @@ export const Config = {
         COUNTDOWN_TIME: 30 * 20
     },
     buying: {
-        COUNTDOWN_TIME: 15 * 20
+        COUNTDOWN_TIME: 20 * 20
     },
     action: {
         ACTION_TIME: 120 * 20

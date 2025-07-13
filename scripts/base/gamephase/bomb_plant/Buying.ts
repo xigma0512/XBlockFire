@@ -2,6 +2,7 @@ import { MemberManager } from "../../gameroom/member/MemberManager";
 import { PhaseManager } from "../PhaseManager";
 import { ActionHud } from "../../../modules/hud/bomb_plant/Action";
 import { HotbarManager } from "../../../modules/hotbar/Hotbar";
+import { PurchaseHistory } from "../../../modules/shop/Shop";
 
 import { ActionPhase } from "./Action";
 import { Config } from "./_config";
@@ -13,6 +14,7 @@ import { set_entity_native_property } from "../../../utils/Property";
 import { ItemStackFactory } from "../../../utils/ItemStackFactory";
 
 import { InputPermissionCategory, ItemLockMode } from "@minecraft/server";
+import { uiManager } from "@minecraft/server-ui";
 
 const config = Config.buying;
 
@@ -52,6 +54,7 @@ export class BuyingPhase implements IPhaseHandler {
 }
 
 function sendShopItem() {
+    PurchaseHistory.clearAll();
     for (const player of MemberManager.getPlayers()) {
         const hotbar = HotbarManager.getPlayerHotbar(player)
         hotbar.items[8] = ItemStackFactory.new({ typeId: 'minecraft:feather', lockMode: ItemLockMode.slot });
@@ -68,5 +71,7 @@ function restorePlayerDefaults() {
         const hotbar = HotbarManager.getPlayerHotbar(player)
         hotbar.items[8] = undefined;
         HotbarManager.sendHotbar(player, hotbar);
+
+        uiManager.closeAllForms(player);
     }
 }
