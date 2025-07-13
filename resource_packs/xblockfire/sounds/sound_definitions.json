@@ -161,6 +161,24 @@
             ],
             "category": "ambient"
         },
+        "xblockfire.glock17_fire": {
+            "sounds": [
+                {
+                    "name": "sounds/gun/glock17_fire",
+                    "is3D": false
+                }
+            ],
+            "category": "ambient"
+        },
+        "xblockfire.glock17_reload": {
+            "sounds": [
+                {
+                    "name": "sounds/gun/glock17_reload",
+                    "is3D": false
+                }
+            ],
+            "category": "ambient"
+        },
         "xblockfire.deagle_fire": {
             "sounds": [
                 {
@@ -211,6 +229,24 @@
             "sounds": [
                 {
                     "name": "sounds/gun/m4a4_reload",
+                    "volume": 2
+                }
+            ],
+            "category": "ambient"
+        },
+        "xblockfire.glock17_fire.3d": {
+            "sounds": [
+                {
+                    "name": "sounds/gun/glock17_fire",
+                    "volume": 5
+                }
+            ],
+            "category": "ambient"
+        },
+        "xblockfire.glock17_reload.3d": {
+            "sounds": [
+                {
+                    "name": "sounds/gun/glock17_reload",
                     "volume": 2
                 }
             ],

@@ -36,10 +36,11 @@ export class Glock17 extends ItemActor {
                 }
             )).set('gun_fire', new GunFireComponent(
                 {
-                    fire_mode: FireModeEnum["Fully-Auto"],
+                    fire_mode: FireModeEnum['Semi-Auto'],
                     release_to_fire: false,
                     bullet_spread: 1,
-                    fire_rate: 7
+                    fire_rate: 2,
+                    fire_sound: "xblockfire.glock17_fire"
                 }
             )).set('gun_recoil', new GunRecoilComponent(
                 {
@@ -48,7 +49,8 @@ export class Glock17 extends ItemActor {
                 }
             )).set('gun_reload', new GunReloadComponent(
                 {
-                    reload_time: 30
+                    reload_time: 25,
+                    reload_sound: "xblockfire.glock17_reload"
                 }
             )).set('gun_offset', new GunOffsetComponent({
                 scope: 0.3,
