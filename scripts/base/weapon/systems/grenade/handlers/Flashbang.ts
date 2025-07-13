@@ -1,5 +1,7 @@
-import { EntityActor } from "../../../actors/Actor";
+import { MemberManager } from "../../../../gameroom/member/MemberManager";
 import { GrenadeHandler } from "./GrenadeHandler";
+
+import { EntityActor } from "../../../actors/Actor";
 
 import { Player, system, Vector3 } from "@minecraft/server";
 import { Vector3Builder, Vector3Utils } from "@minecraft/math";
@@ -19,10 +21,8 @@ export class FlashbangHandler extends GrenadeHandler {
         system.runTimeout(() => this.execute(), grenadeComp.executeDelay);
     }
 
-    execute() {
-        const dimension = this.entityActor.entity.dimension;
-        
-        for (const player of dimension.getPlayers()) {
+    execute() {        
+        for (const player of MemberManager.getPlayers({ is_alive: true })) {
             const raycast = this.detectObstacle(player);
             if (raycast === undefined) {
                 const blindLevel = this.getBlindLevel(player);
