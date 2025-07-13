@@ -8,10 +8,12 @@ import { DeagleBullet } from "./entity/bullet/DeagleBullet";
 
 import { Flashbang } from "./entity/grenade/Flashbang";
 import { SmokeGrenade } from "./entity/grenade/SmokeGrenade";
+import { SG200Bullet } from "./entity/bullet/SG200Bullet";
 
 export const BulletActorTable = {
     [GunTypeEnum.AK47]: AK47Bullet,
     [GunTypeEnum.M4A4]: M4A4Bullet,
+    [GunTypeEnum.SG200]: SG200Bullet,
 
     [GunTypeEnum.Glock17]: Glock17Bullet,
     [GunTypeEnum.Deagle]: DeagleBullet

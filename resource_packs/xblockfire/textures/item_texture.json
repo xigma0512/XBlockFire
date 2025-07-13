@@ -15,6 +15,9 @@
         "ak47": {
             "textures": "textures/items/gun/ak47"
         },
+        "sg200": {
+            "textures": "textures/items/gun/sg200"
+        },
         "m4a4": {
             "textures": "textures/items/gun/m4a4"
         },
