@@ -125,6 +125,25 @@
             "category": "ambient"
         },
 
+
+        "xblockfire.awp_fire": {
+            "sounds": [
+                {
+                    "name": "sounds/gun/awp_fire",
+                    "is3D": false
+                }
+            ],
+            "category": "ambient"
+        },
+        "xblockfire.awp_reload": {
+            "sounds": [
+                {
+                    "name": "sounds/gun/awp_reload",
+                    "is3D": false
+                }
+            ],
+            "category": "ambient"
+        },
         "xblockfire.ak47_fire": {
             "sounds": [
                 {
@@ -216,6 +235,24 @@
             "category": "ambient"
         },
 
+        "xblockfire.awp_fire.3d": {
+            "sounds": [
+                {
+                    "name": "sounds/gun/awp_fire",
+                    "volume": 5
+                }
+            ],
+            "category": "ambient"
+        },
+        "xblockfire.awp_reload.3d": {
+            "sounds": [
+                {
+                    "name": "sounds/gun/awp_reload",
+                    "volume": 2
+                }
+            ],
+            "category": "ambient"
+        },
         "xblockfire.ak47_fire.3d": {
             "sounds": [
                 {

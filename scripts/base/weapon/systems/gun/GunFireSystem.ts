@@ -50,14 +50,14 @@ class _GunFireSystem {
     }
 
     private semiAutoFire(player: Player, actor: ItemActor) {
-        if (this._cooldowns.has(player)) return;
-
+        
         const gunFireComp = actor.getComponent('gun_fire')!;
         const fireRate = gunFireComp.fire_rate;
-                
+        
         if (gunFireComp.release_to_fire) 
         {
             const callback = world.afterEvents.itemReleaseUse.subscribe(ev => {
+                if (this._cooldowns.has(player)) return;
                 if (ev.source.id !== player.id) return;
                 this.fire(player, actor);
                 
@@ -68,6 +68,8 @@ class _GunFireSystem {
         }
         else 
         {
+            if (this._cooldowns.has(player)) return;
+
             this.fire(player, actor);
             this._cooldowns.add(player);
             system.runTimeout(() => this._cooldowns.delete(player), fireRate);
@@ -131,7 +133,7 @@ const startFireTrigger = world.afterEvents.itemStartUse.subscribe(ev => {
     if (!ActorManager.isActor(handItem)) return;
     const actor = ActorManager.getActor(handItem) as ItemActor;
 
-    if (handItem.hasTag('xblockfire:gun')) {
+    if (actor.hasComponent('gun')) {
         GunFireSystem.startFiring(player, actor);
     }
 });

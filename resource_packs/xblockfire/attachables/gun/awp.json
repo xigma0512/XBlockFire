@@ -1,36 +1,34 @@
 {
-	"format_version": "1.20.0",
-	"minecraft:attachable": {
-		"description": {
-			"identifier": "minecraft:spyglass",
-			"materials": {
-				"default": "entity_alphatest",
-				"enchanted": "entity_alphatest_glint"
-			},
-			"textures": {
-				"default": "textures/models/gun/awp",
-				"enchanted": "textures/misc/enchanted_item_glint"
-			},
-			"geometry": {
-				"default": "geometry.awp"
-			},
+    "format_version": "1.20.0",
+    "minecraft:attachable": {
+        "description": {
+            "identifier": "minecraft:spyglass",
+            "materials": {
+                "default": "entity_alphatest",
+                "enchanted": "entity_alphatest_glint"
+            },
+            "textures": {
+                "default": "textures/models/gun/awp",
+                "enchanted": "textures/misc/enchanted_item_glint"
+            },
+            "geometry": {
+                "default": "geometry.awp"
+            },
             "animations": {
                 "fpp_hold": "animation.awp.fpp_hold",
-                "tpp_hold": "animation.awp.tpp_hold"
+                "tpp_hold": "animation.awp.tpp_hold",
+                "fpp_controller": "controller.animation.item.fpp_awp",
+                "tpp_controller": "controller.animation.item.tpp_awp"
             },
-			"scripts": {
+            "scripts": {
                 "animate": [
-                    {
-                        "fpp_hold": "c.is_first_person"
-                    },
-                    {
-                        "tpp_hold": "!c.is_first_person"
-                    }
+                    { "fpp_controller": "c.is_first_person" },
+                    { "tpp_controller": "!c.is_first_person" }
                 ]
             },
-			"render_controllers": [
-				"controller.render.item_default"
-			]
-		}
-	}
+            "render_controllers": [
+                "controller.render.item_default"
+            ]
+        }
+    }
 }

@@ -4,6 +4,7 @@ export const enum FireModeEnum {
 }
 
 export const enum GunTypeEnum {
+    'AWP',
     'AK47',
     'M4A4',
     'SG200',
