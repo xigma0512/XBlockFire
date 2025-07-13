@@ -1,9 +1,12 @@
+import { C4Manager } from "../../base/c4state/C4Manager";
 import { MemberManager } from "../../base/gameroom/member/MemberManager";
+import { C4StateEnum } from "../../types/bombstate/C4StateEnum";
+import { TeamEnum } from "../../types/TeamEnum";
 
 import { entity_dynamic_property } from "../../utils/Property";
 
 import { Vector3Builder, Vector3Utils } from "@minecraft/math";
-import { Direction, MolangVariableMap, Player } from "@minecraft/server";
+import { Direction, Entity, MolangVariableMap, Player, RGBA } from "@minecraft/server";
 
 export class AlliesMarker {
 
@@ -24,10 +27,28 @@ export class AlliesMarker {
 
                 viewer.spawnParticle('xblockfire:allies_mark', location, varMap);
             }
+
+            if (team === TeamEnum.Attacker) {
+                const c4state = C4Manager.getHandler();
+                if (c4state.stateTag === C4StateEnum.Dropped) {
+                    const c4 = c4state.entity as Entity;
+
+                    const { location, hasObstacle } = this.getSpawnLocation(viewer, c4);
+                    const size = this.getSize(viewer, c4, hasObstacle);
+                    const varMap = this.getVarMap(size, {
+                        red: 0,
+                        green: 0,
+                        blue: 1,
+                        alpha: 1
+                    });
+
+                    viewer.spawnParticle('xblockfire:allies_mark', location, varMap);
+                }
+            }
         }
     }
 
-    private static getSpawnLocation(viewer: Player, ally: Player) {
+    private static getSpawnLocation(viewer: Player, ally: Entity) {
         const startLocation = Vector3Utils.add(viewer.getHeadLocation(), { y: 0.1 });
         const endLocation = Vector3Utils.add(ally.location, { y: 2.3 }); 
 
@@ -60,7 +81,7 @@ export class AlliesMarker {
         }
     }
 
-    private static getSize(viewer: Player, ally: Player, hasObstacle: boolean) {
+    private static getSize(viewer: Player, ally: Entity, hasObstacle: boolean) {
         const distance = Vector3Utils.distance(viewer.location, ally.location);
 
         const minSize = 0.02;
@@ -77,10 +98,10 @@ export class AlliesMarker {
         return size;
     }
 
-    private static getVarMap(size: number) {
+    private static getVarMap(size: number, color?: RGBA) {
         const varMap = new MolangVariableMap();
 
-        varMap.setColorRGBA('color', {
+        varMap.setColorRGBA('color', color ?? {
             red: 0,
             green: 1,
             blue: 0,

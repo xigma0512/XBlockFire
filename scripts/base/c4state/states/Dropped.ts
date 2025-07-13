@@ -22,7 +22,8 @@ export class C4DroppedState implements IC4StateHandler {
 
     readonly stateTag = C4StateEnum.Dropped;
 
-    private entity!: Entity;
+    private _entity!: Entity;
+    get entity() { return this._entity; }
 
     private afterEntityHitEntityListener: (ev: EntityHitEntityAfterEvent) => void;
 
@@ -33,8 +34,10 @@ export class C4DroppedState implements IC4StateHandler {
     }
 
     on_entry() {
-        this.entity = world.getDimension('overworld').spawnEntity(DROPPED_C4_ENTITY_ID, this.location);
+        this._entity = world.getDimension('overworld').spawnEntity(DROPPED_C4_ENTITY_ID, this.location);
         world.afterEvents.entityHitEntity.subscribe(this.afterEntityHitEntityListener);
+
+        Broadcast.message(`${FC.Bold}${FC.Blue}C4 Has Been Dropped.`, MemberManager.getPlayers({team: TeamEnum.Attacker}));
     }
     
     on_running() {
