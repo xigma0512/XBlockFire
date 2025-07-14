@@ -10,13 +10,13 @@ export const Config = {
     action: {
         ACTION_TIME: 120 * 20
     },
-    bombplanted: {
+    C4planted: {
         COUNTDOWN_TIME: 50 * 20
     },
     roundEnd: {
-        INCOME: [4000, 2000],
+        INCOME: [3000, 1500],
         WINNING_SCORE: 7,
-        COUNTDOWN_TIME: 10 * 20
+        COUNTDOWN_TIME: 5 * 20
     },
     gameover: {
         COUNTDOWN_TIME: 10 * 20

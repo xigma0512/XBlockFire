@@ -1,0 +1,25 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"animation.ak47.tpp_hold": {
+			"loop": true,
+			"bones": {
+				"bone": {
+					"rotation": [90, 0, -90],
+					"position": [0, 20.4, -1],
+					"scale": 1.2
+				}
+			}
+		},
+		"animation.ak47.fpp_hold": {
+			"loop": true,
+			"bones": {
+				"bone": {
+					"rotation": [26.29532, -1.91778, -134.96479],
+					"position": [-8.3, 30.8, -8.8],
+					"scale": 1.2
+				}
+			}
+		}
+	}
+}

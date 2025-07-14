@@ -1,8 +1,9 @@
-import { GameRoomManager } from "../../../base/gameroom/GameRoom";
-import { HudTextController } from "../HudTextController";
+import { gameroom } from "../../../base/gameroom/GameRoom";
+import { MemberManager } from "../../../base/gameroom/member/MemberManager";
+import { PhaseManager } from "../../../base/gamephase/PhaseManager";
+import { MapRegister } from "../../../base/gamemap/MapRegister";
 
 import { Config } from "../../../base/gamephase/bomb_plant/_config";
-import { GameModeEnumTable } from "../../../types/gameroom/GameModeEnum";
 
 import { FormatCode as FC } from "../../../utils/FormatCode";
 import { Broadcast } from "../../../utils/Broadcast";
@@ -11,7 +12,7 @@ const config = Config.idle;
 
 export class WaitingHud implements InGameHud {
     
-    constructor(private readonly roomId: number) { }
+    constructor() { }
 
     update() {
         this.updateSubtitle();
@@ -19,10 +20,10 @@ export class WaitingHud implements InGameHud {
     }
 
     private updateSubtitle() {
-        const room = GameRoomManager.instance.getRoom(this.roomId);
-        const phase = room.phaseManager.getPhase();
-        const members = room.memberManager.getPlayers();
-        const playerAmount = members.length;
+        const players = MemberManager.getPlayers();
+        const playerAmount = players.length;
+
+        const phase = PhaseManager.getPhase();
         
         let text = `${FC.Yellow}Waiting for more players...`;
         
@@ -31,31 +32,34 @@ export class WaitingHud implements InGameHud {
         }
         
         if (phase.currentTick !== config.COUNTDOWN_TIME && playerAmount < config.AUTO_START_MIN_PLAYER) {
-            Broadcast.message(`${FC.Red}Not enough players. Waiting for more players.`, members);
+            Broadcast.message(`${FC.Bold}${FC.Red}Not enough players. Waiting for more players.`, players);
         }
         
-        for (const player of members) {
-            HudTextController.add(player, 'subtitle', text);
-        }
+        Broadcast.subtitle(text, players);
     }
 
     private updateSidebar() {
-        const room = GameRoomManager.instance.getRoom(this.roomId);
-        const players = room.memberManager.getPlayers();
+        const players = MemberManager.getPlayers();
         
+        const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        const date = new Date();
+        const todayStr = `${String(date.getFullYear()).slice(-2)}/${String(date.getMonth() + 1).padStart(2, '0')}/${String(date.getDate()).padStart(2, '0')} (${daysOfWeek[date.getDay()]})`;
+        
+        const map = MapRegister.getMap(gameroom().gameMapId);
         const playerCount = players.length;
-        const maxPlayers = 10;
 
-        const sidebarMessage = [
-            `${FC.Bold}${FC.White}Info:`,
-            `  ${FC.Gold}Room Number: ${FC.White}${this.roomId}`,
-            `  ${FC.MaterialCopper}Gamemode: ${FC.White}${GameModeEnumTable[room.gameMode]}`,
-            `  ${FC.Aqua}Players: ${FC.White}${playerCount}/${maxPlayers}`,
-            ...players.map(player => `  ${FC.Gray}- ${player.name}`)
+        const message = [
+            `${FC.Bold}${FC.Yellow}  XBlockFire  `,
+            ` ${FC.Gray}${todayStr}`,
+            '',
+            `Map: ${FC.Green}${map.name}`,
+            `Players: ${FC.Green}${playerCount}`,
+            '',
+            `Mode:`,
+            `${FC.Green}${gameroom().gameMode}`,
+            ''
         ];
-        
-        for (const player of players) {
-            HudTextController.add(player, 'sidebar', sidebarMessage);
-        }
+
+        Broadcast.sidebar(message, players);
     }
 }

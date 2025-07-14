@@ -26,6 +26,14 @@ class _HudTextController {
         this.hud.get(player)![type].push(text);
     }
 
+    clear(player: Player, type: keyof PlayerHudText) {
+        if (!this.hud.has(player)) {
+            this.initializePlayer(player);
+            return;
+        }
+        this.hud.get(player)![type] = [];
+    }
+
     private update() {
         for (const [player, text] of this.hud) {
             if (text.sidebar.length == 0) text.sidebar = ['\u{E107}'];

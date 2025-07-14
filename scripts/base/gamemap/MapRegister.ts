@@ -1,8 +1,8 @@
 import GameMap from "./GameMap";
 
-export class MapRegister {
+class _MapRegister {
     
-    private static _instance: MapRegister;
+    private static _instance: _MapRegister;
     static get instance() { return (this._instance || (this._instance = new this())); }
     
     readonly availableMaps: Map<number, GameMapType>;
@@ -26,3 +26,5 @@ export class MapRegister {
     }
 
 }
+
+export const MapRegister = _MapRegister.instance;

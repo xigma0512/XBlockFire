@@ -1,6 +1,6 @@
-import { Glock17 } from "../weapon/actors/item/Glock17";
-import { ActorManager } from "../weapon/systems/ActorManager";
-import { ItemActor } from "../weapon/actors/Actor";
+import { Glock17 } from "../../base/weapon/actors/item/Glock17";
+import { ActorManager } from "../../base/weapon/systems/ActorManager";
+import { ItemActor } from "../../base/weapon/actors/Actor";
 import { ItemStackFactory } from "../../utils/ItemStackFactory";
 
 import { ItemLockMode, ItemStack, Player } from "@minecraft/server";
@@ -75,12 +75,11 @@ export class HotbarManager {
 }
 
 export class HotbarTemplate {
-    static initSpawn(isDefender: boolean) {
+    static initSpawn() {
         const hotbar = new Hotbar();
         
         hotbar.items[1] = new Glock17().item;
         hotbar.items[2] = ItemStackFactory.new({ typeId: 'minecraft:diamond_sword', lockMode: ItemLockMode.slot });
-        hotbar.items[3] = isDefender ? ItemStackFactory.new({ typeId: 'xblockfire:defuser', lockMode: ItemLockMode.slot }) : undefined;
         
         return hotbar;
     }

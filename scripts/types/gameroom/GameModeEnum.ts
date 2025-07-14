@@ -1,7 +1,3 @@
-export const enum GameModeEnum {
-    'BombPlant'
-}
-
-export const GameModeEnumTable = {
-    [GameModeEnum.BombPlant]: 'BombPlant'
+export enum GameModeEnum {
+    'BombPlant' = 'BombPlant'
 }
