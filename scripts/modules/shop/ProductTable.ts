@@ -64,7 +64,7 @@ export const ProductTable: IProduct[] = [
         iconPath: 'textures/items/gun/sg200'
     },
     {
-        id: 2,
+        id: 3,
 
         price: 5000,
         max_amount: 1,
