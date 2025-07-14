@@ -1,0 +1,23 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"animation.deagle.fpp_hold": {
+			"loop": true,
+			"bones": {
+				"bone": {
+					"rotation": [152.47944, -176.71839, 42.97368],
+					"position": [-8.3, 30.3, -7.7]
+				}
+			}
+		},
+		"animation.deagle.tpp_hold": {
+			"loop": true,
+			"bones": {
+				"bone": {
+					"rotation": [90, -174, 90],
+					"position": [-0.4, 21.2, -0.9]
+				}
+			}
+		}
+	}
+}

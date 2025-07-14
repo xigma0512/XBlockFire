@@ -1,33 +1,34 @@
-import { GameModeEnum } from "../../types/gameroom/GameModeEnum";
-import { GameRoomManager } from "../gameroom/GameRoom";
+import { gameroom } from "../gameroom/GameRoom";
+import { PhaseManager } from "./PhaseManager";
 
 import { IdlePhase } from "./bomb_plant/Idle";
+
+import { GameModeEnum } from "../../types/gameroom/GameModeEnum";
 
 export class BlankPhase implements IPhaseHandler {
 
     readonly phaseTag = -1;
     readonly hud!: InGameHud;
     readonly currentTick = -1;
-    constructor(private readonly roomId: number) { }
+    
+    constructor() { }
 
     on_entry() {
-        console.warn(`[Room ${this.roomId}] Entry blank phase.`);
     }
 
     on_running() {
+        if (!gameroom()) return;
         this.transitions();
     }
 
     on_exit() {
-        console.warn(`[Room ${this.roomId}] Exit blank phase.`);
+        console.warn('leave');
     }
 
     private transitions() {
-        const room = GameRoomManager.instance.getRoom(this.roomId);
-
-        switch(room.gameMode) {
+        switch(gameroom().gameMode) {
             case GameModeEnum.BombPlant: 
-                room.phaseManager.updatePhase(new IdlePhase(this.roomId));
+                PhaseManager.updatePhase(new IdlePhase());
                 break;
         }
     }

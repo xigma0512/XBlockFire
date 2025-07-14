@@ -1,4 +1,6 @@
-import { GameRoomManager } from "../../../base/gameroom/GameRoom";
+import { PhaseManager } from "../../../base/gamephase/PhaseManager";
+import { MemberManager } from "../../../base/gameroom/member/MemberManager";
+import { EconomyManager } from "../../../base/gameroom/economy/EconomyManager";
 import { HudTextController } from "../HudTextController";
 
 import { TeamEnum } from "../../../types/TeamEnum";
@@ -7,12 +9,11 @@ import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPl
 import { FormatCode as FC } from "../../../utils/FormatCode";
 import { entity_dynamic_property } from "../../../utils/Property";
 import { variable } from "../../../utils/Variable";
-
-import { Player } from "@minecraft/server";
+import { Broadcast } from "../../../utils/Broadcast";
 
 export class ActionHud implements InGameHud {
     
-    constructor(private readonly roomId: number) { }
+    constructor() { }
     
     update() {
         this.updateSubtitle();
@@ -20,79 +21,58 @@ export class ActionHud implements InGameHud {
     }
 
     private updateSubtitle() {
-        const room = GameRoomManager.instance.getRoom(this.roomId);
-        const phase = room.phaseManager.getPhase();
+        
+        const phase = PhaseManager.getPhase();
 
         let text: string | string[] = '';
         switch (phase.phaseTag) {
             case BombPlantPhaseEnum.Buying:
                 text = [
-                    `Buying phase will end in ${(phase.currentTick / 20).toFixed(0)} seconds.`, 
+                    `> ${(phase.currentTick / 20).toFixed(0)} <`, 
                     `Right-click the feather to open the shop.`
                 ];
-                break;
-            case BombPlantPhaseEnum.RoundEnd:
-                text = `${FC.Yellow}Next round start in ${(phase.currentTick / 20).toFixed(0)} seconds.`;
-                break;
-            case BombPlantPhaseEnum.Gameover:
-                text = `${FC.Yellow}Return lobby in ${(phase.currentTick / 20).toFixed(0)}`;
                 break;
         }
 
         if (text === '') return;
-        const members = room.memberManager.getPlayers();
-        for (const player of members) {
-            HudTextController.add(player, 'subtitle', text);
-        }
+        const members = MemberManager.getPlayers();
+        Broadcast.subtitle(text, members);
     }
 
     private updateSidebar() {
-        const room = GameRoomManager.instance.getRoom(this.roomId);
-        const players = room.memberManager.getPlayers();
+        
+        const players = MemberManager.getPlayers();
+        const phase = PhaseManager.getPhase();
+
+        const attackerScore = variable(`attacker_score`);
+        const defenderScore = variable(`defender_score`);
+
+        const attackerPlayers = MemberManager.getPlayers({ team: TeamEnum.Attacker, is_alive: true });
+        const defenderPlayers = MemberManager.getPlayers({ team: TeamEnum.Defender, is_alive: true });
+
+        const seconds = Number((phase.currentTick / 20).toFixed(0));
         
         for (const player of players) {
-            const sidebarMessage = this.getSidebarMessage(player);
-            HudTextController.add(player, 'sidebar', sidebarMessage);
+
+            const playerTeam = entity_dynamic_property(player, 'player:team');
+            const playerTeamStr = (playerTeam === TeamEnum.Attacker) ? `${FC.Red}Attacker` : `${FC.Aqua}Defender`;
+
+            const message = [
+                `     ${FC.Bold}${FC.Gold}Round ${defenderScore + attackerScore + 1}${FC.Reset}  `,
+                '',
+                ` Round Time: ${FC.Gray}${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')}`,
+                '',
+                `   ${FC.Aqua}D - ${defenderScore}   ${FC.Red}A - ${attackerScore}   `,
+                `       ${FC.Aqua}${defenderPlayers.length} ${FC.White}VS ${FC.Red}${attackerPlayers.length}`,
+                '',
+                `Money: ${FC.Green}${EconomyManager.getMoney(player)}`,
+                '',
+                `${FC.Bold}Your Team:`,
+                `${FC.Bold}${playerTeamStr}`,
+                ''
+            ];
+        
+            HudTextController.add(player, 'sidebar', message);
         }
-    }
-    
-    private getSidebarMessage(player: Player) {
-        const room = GameRoomManager.instance.getRoom(this.roomId);
-        const playerTeam = entity_dynamic_property(player, 'player:team') as TeamEnum;
-        const teamStr = 
-        (playerTeam === TeamEnum.Attacker) ? `${FC.Red}Attacker` :
-        (playerTeam === TeamEnum.Defender) ? `${FC.Aqua}Defender` : `${FC.Gray}Spectator` 
-        
-        const sidebarMessage = [
-            `Money: ${FC.Green}${room.economyManager.getMoney(player)}`,
-            `Team: ${teamStr}`
-        ];
-        
-        return sidebarMessage;
-    }
-    
-    private getTopbarMessage(player: Player) {
-
-        const room = GameRoomManager.instance.getRoom(this.roomId);
-        const currentTick = room.phaseManager.getPhase().currentTick;
-        
-        const attackerScore = variable(`${this.roomId}.attacker_score`);
-        const defenderScore = variable(`${this.roomId}.defender_score`);
-        
-        const attackerPlayers = room.memberManager.getPlayers({ team: TeamEnum.Attacker, is_alive: true });
-        const defenderPlayers = room.memberManager.getPlayers({ team: TeamEnum.Defender, is_alive: true });
-
-        const playerTeam = entity_dynamic_property(player, 'player:team') as TeamEnum;
-
-        const [allies, allyTeamScore] = (playerTeam === TeamEnum.Attacker) ? [attackerPlayers, attackerScore] : [defenderPlayers, defenderScore];
-        const [enemies, enemyTeamScore] = (playerTeam === TeamEnum.Attacker) ? [defenderPlayers, defenderScore] : [attackerPlayers, attackerScore];
-
-        const seconds = Number((currentTick / 20).toFixed(0));
-        const topbarMessage = [
-            `[ ${allyTeamScore} ] - [ ${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')} ] - [ ${enemyTeamScore} ]`,
-            `[ ${FC.Green}${allies.map(p => p.name.substring(0, 3)).join(' ')}${FC.Reset} ] VS [ ${FC.Red}${enemies.map(p => p.name.substring(0, 3)).join(' ')}${FC.Reset} ]`
-        ];
-
-        return topbarMessage;
     }
 }

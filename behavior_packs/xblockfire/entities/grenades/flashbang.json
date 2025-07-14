@@ -67,8 +67,7 @@
             "minecraft:type_family": {
                 "family": [
                     "projectile",
-                    "grenade",
-                    "flashbang"
+                    "grenade"
                 ]
             },
 			"minecraft:collision_box": {
@@ -120,20 +119,6 @@
                 },
                 "set_property": {
                     "grenade:throwing_type": 1
-                }
-            },
-            "explode_sound": {
-                "queue_command": {
-                    "command": [
-                        "playsound xigmaguns.flash_explode @a ~~~ 5 1"
-                    ]
-                }
-            },
-            "throwing_sound": {
-                "queue_command": {
-                    "command": [
-                        "playsound xigmaguns.throwing_flash @a ~~~ 1 1"
-                    ]
                 }
             }
         }

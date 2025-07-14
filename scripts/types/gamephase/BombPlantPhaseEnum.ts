@@ -5,5 +5,5 @@ export const enum PhaseEnum {
     Action,
     RoundEnd,
     Gameover,
-    BombPlanted
+    C4Planted
 }

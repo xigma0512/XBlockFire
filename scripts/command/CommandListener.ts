@@ -1,5 +1,6 @@
 import { Player, system, world } from "@minecraft/server";
 import { Commands } from "./Commands";
+import { FormatCode as FC } from "../utils/FormatCode";
 
 const COMMAND_IDENTIFIER = 'blockfire:'
 const COMMAND_PREFIX = './bf';
@@ -24,7 +25,7 @@ system.afterEvents.scriptEventReceive.subscribe(ev => {
         console.error(`sender: ${ev.sourceEntity?.nameTag} | id: ${ev.id} | message: ${ev.message}`);
         console.error(`error: ${err}`);
         
-        if (ev.sourceEntity instanceof Player) ev.sourceEntity?.sendMessage(err.message);
+        if (ev.sourceEntity instanceof Player) ev.sourceEntity?.sendMessage(`${FC.Gray}>> ${FC.DarkRed}` + err.message);
     }
 });
 

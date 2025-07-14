@@ -19,7 +19,7 @@
                     "color": "$title_command_text_color",
                     "text": "$subtitle_text",
                     "localize": false,
-                    "font_size": "large",
+                    "font_size": "normal",
                     "shadow": true,
                     "size": [
                         "100%",
@@ -32,7 +32,7 @@
                 "sidebar": {
                     "type": "image",
                     "size": [
-                        "100%cm+5px",
+                        "100%cm+7.5px",
                         "100%c+5px"
                     ],
                     "texture": "textures/ui/hud_tip_text_background",
@@ -53,32 +53,6 @@
                             }
                         }
                     ]
-                }
-            }
-        ]
-    },
-    "hud_actionbar_text": {
-        "type": "image",
-        "size": [
-            "100%c + 12 px",
-            "100%c + 5px"
-        ],
-        "offset": [
-            0,
-            "35%"
-        ],
-        "texture": "textures/ui/hud_tip_text_background",
-        "controls": [
-            {
-                "actionbar_message": {
-                    "type": "label",
-                    "anchor_from": "center",
-                    "anchor_to": "center",
-                    "color": "$tool_tip_text",
-                    "text": "$actionbar_text",
-                    "localize": false,
-                    "alpha": "@hud.anim_actionbar_text_alpha_out",
-                    "text_alignment": "center"
                 }
             }
         ]

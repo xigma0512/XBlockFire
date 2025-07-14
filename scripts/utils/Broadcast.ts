@@ -1,4 +1,4 @@
-import { Player, world } from "@minecraft/server";
+import { Player, PlayerSoundOptions, world } from "@minecraft/server";
 import { HudTextController } from "../modules/hud/HudTextController";
 
 export class Broadcast {
@@ -22,6 +22,12 @@ export class Broadcast {
     static subtitle(message: string | string[], players?: Player[]) {
         for (const p of (players ?? world.getAllPlayers())) {
             HudTextController.add(p, 'subtitle', message);
+        }
+    }
+
+    static sound(soundId: string, options: PlayerSoundOptions, players?: Player[]) {
+        for (const p of (players ?? world.getAllPlayers())) {
+            p.playSound(soundId, options);
         }
     }
 

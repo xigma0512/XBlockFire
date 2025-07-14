@@ -11,6 +11,6 @@ declare interface GameMapType {
     positions: {
         attacker_spawns: Position[],
         defender_spawns: Position[],
-        bomb_targets: Position[]
+        C4_targets: Position[]
     }
 }

@@ -1,0 +1,24 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"animation.m4a4.fpp_hold": {
+			"loop": true,
+			"bones": {
+				"bone": {
+					"rotation": [87.74507, 61.79534, -47.38126],
+					"position": [7.52281, 27.96927, -9.09594]
+				}
+			}
+		},
+		"animation.m4a4.tpp_hold": {
+			"loop": true,
+			"bones": {
+				"bone": {
+					"rotation": [90, 0, 0],
+					"position": [5.5, 14, 2],
+					"scale": 0.7
+				}
+			}
+		}
+	}
+}
