@@ -18,8 +18,8 @@ export class SG200Bullet extends EntityActor {
                 flightSpeed: 1000
             }))
             .set('bullet_damage', new BulletDamageComponent({
-                near: { head: 3, body: 2, legs: 1 },
-                medium: { head: 1, body: 1, legs: 0 },
+                near: { head: 4, body: 3, legs: 2 },
+                medium: { head: 3, body: 2, legs: 1 },
                 far: { head: 0, body: 0, legs: 0 }
             }));
         

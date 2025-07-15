@@ -31,7 +31,7 @@ export class SG200 extends ItemActor {
                 }
             )).set('gun_magazine', new GunMagazineComponent(
                 {
-                    ammo: 8,
+                    ammo: 10,
                     count: 3
                 }
             )).set('gun_fire', new GunFireComponent(
@@ -53,9 +53,9 @@ export class SG200 extends ItemActor {
                     reload_sound: 'xblockfire.sg200_reload'
                 }
             )).set('gun_offset', new GunOffsetComponent({
-                scope: 3,
-                hipfire: 4,
-                movement: 2
+                scope: 1.5,
+                hipfire: 3,
+                movement: 1
             }));
 
         this.setItem();

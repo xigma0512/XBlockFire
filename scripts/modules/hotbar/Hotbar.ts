@@ -79,7 +79,7 @@ export class HotbarTemplate {
         const hotbar = new Hotbar();
         
         hotbar.items[1] = new Glock17().item;
-        hotbar.items[2] = ItemStackFactory.new({ typeId: 'minecraft:diamond_sword', lockMode: ItemLockMode.slot });
+        hotbar.items[2] = ItemStackFactory.new({ typeId: 'minecraft:stone_sword', lockMode: ItemLockMode.slot });
         
         return hotbar;
     }

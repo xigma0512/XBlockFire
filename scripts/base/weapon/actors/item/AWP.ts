@@ -44,7 +44,7 @@ export class AWP extends ItemActor {
                 }
             )).set('gun_recoil', new GunRecoilComponent(
                 {
-                    shacking_level: 0.1,
+                    shacking_level: 0.11,
                     shacking_duration: 0.15
                 }
             )).set('gun_reload', new GunReloadComponent(
@@ -54,7 +54,7 @@ export class AWP extends ItemActor {
                 }
             )).set('gun_offset', new GunOffsetComponent({
                 scope: 0.1,
-                hipfire: 5,
+                hipfire: 1,
                 movement: 12
             }));
 
