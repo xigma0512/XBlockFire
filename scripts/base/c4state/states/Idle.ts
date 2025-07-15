@@ -31,6 +31,9 @@ export class C4IdleState implements IC4StateHandler {
     constructor() { }
 
     on_entry() {
+        
+        world.getDimension('overworld').getEntities({families: ['c4']}).forEach(c4 => c4.remove());
+
         this.beforeItemUseListener = world.beforeEvents.itemUse.subscribe(this.onBeforeItemUse.bind(this));
         this.afterEntitySpawnListener = world.afterEvents.entitySpawn.subscribe(this.onEntitySpawn.bind(this));
     }
