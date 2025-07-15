@@ -28,8 +28,8 @@ const endReasonTable = {
         winner: TeamEnum.Defender,
         message: [
             `${FC.Bold}${FC.Gray}---- ${FC.Yellow}[ ROUND END ] ${FC.Gray}----\n`,
-            `${FC.Bold}${FC.Red}ATTACKERS ran out of time.\n`,
-            `${FC.Bold}${FC.Green}DEFENDERS win this round.\n`,
+            `${FC.Bold}${FC.Red}Attackers ran out of time.\n`,
+            `${FC.Bold}${FC.Green}Defenders win this round.\n`,
             `${FC.Bold}${FC.Gray}---`
         ],
         nextPhaseGenerator: () => new RoundEndPhase()
@@ -38,8 +38,8 @@ const endReasonTable = {
         winner: TeamEnum.Defender,
         message: [
             `${FC.Bold}${FC.Gray}---- ${FC.Yellow}[ ROUND END ] ${FC.Gray}----\n`,
-            `${FC.Bold}${FC.Red}ATTACKERS have been eliminated.\n`,
-            `${FC.Bold}${FC.Green}DEFENDERS win this round.\n`,
+            `${FC.Bold}${FC.Red}All Attackers Eliminated.\n`,
+            `${FC.Bold}${FC.Green}Defenders win this round.\n`,
             `${FC.Bold}${FC.Gray}---`
         ],
         nextPhaseGenerator: () => new RoundEndPhase()
@@ -48,8 +48,8 @@ const endReasonTable = {
         winner: TeamEnum.Defender,
         message: [
             `${FC.Bold}${FC.Gray}---- ${FC.DarkPurple}[ GAME OVER ] ${FC.Gray}----\n`,
-            `${FC.Bold}${FC.Red}All ATTACKERS disconnected.\n`,
-            `${FC.Bold}${FC.Green}DEFENDERS win this game.\n`,
+            `${FC.Bold}${FC.Red}All Attackers Disconnected.\n`,
+            `${FC.Bold}${FC.Yellow}Defenders win\n`,
             `${FC.Bold}${FC.Gray}---`
         ],
         nextPhaseGenerator: () => new GameOverPhase()
@@ -58,8 +58,8 @@ const endReasonTable = {
         winner: TeamEnum.Attacker,
         message: [
             `${FC.Bold}${FC.Gray}---- ${FC.Yellow}[ ROUND END ] ${FC.Gray}----\n`,
-            `${FC.Bold}${FC.Red}DEFENDERS have been eliminated.\n`,
-            `${FC.Bold}${FC.Green}ATTACKERS win this round.\n`,
+            `${FC.Bold}${FC.Red}Defenders Eliminated.\n`,
+            `${FC.Bold}${FC.Green}Attackers win this round.\n`,
             `${FC.Bold}${FC.Gray}---`
         ],
         nextPhaseGenerator: () => new RoundEndPhase()
@@ -68,8 +68,8 @@ const endReasonTable = {
         winner: TeamEnum.Attacker,
         message: [
             `${FC.Bold}${FC.Gray}---- ${FC.DarkPurple}[ GAME OVER ] ${FC.Gray}----\n`,
-            `${FC.Bold}${FC.Red}All DEFENDERS disconnected.\n`,
-            `${FC.Bold}${FC.Green}ATTACKERS win this game.\n`,
+            `${FC.Bold}${FC.Red}All Defenders Disconnected.\n`,
+            `${FC.Bold}${FC.Yellow}Attackers win.\n`,
             `${FC.Bold}${FC.Gray}---`
         ],
         nextPhaseGenerator: () => new GameOverPhase()
