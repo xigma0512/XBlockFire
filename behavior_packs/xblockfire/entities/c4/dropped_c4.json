@@ -9,6 +9,11 @@
         },
         "component_groups": {},
         "components": {
+            "minecraft:type_family": {
+                "family": [
+                    "c4"
+                ]
+            },
             "minecraft:pushable": {
                 "is_pushable": false,
                 "is_pushable_by_piston": false
