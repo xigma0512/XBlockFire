@@ -16,7 +16,7 @@
 <h1 align="center">XBlockFire</h1>
 
   <p align="center">
-    一款基於 Minecraft Bedrock Edition 所打造的開源第一人稱射擊（FPS）遊戲插件。透過 Script API 打造遊戲系統，結合行為&資源包設計槍枝物品，並引進最經典的爆破模式，讓玩家能夠在 Minecraft 的世界中體驗第一人稱射擊的樂趣。
+    一款基於 Minecraft Bedrock Edition 所打造的開源第一人稱射擊（FPS）遊戲。
     <br />
     <a href="https://github.com/xigma0512/XBlockFire/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
     &middot;
@@ -24,6 +24,61 @@
   </p>
 </div>
 
+Getting Started
+--
+
+### 安裝
+* 遊玩
+* 設定
+### 協作
+
+License
+--
+Distributed under the Apache-2.0 license. See [LICENSE](https://github.com/xigma0512/XBlockFire/blob/master/LICENSE) for more information.
+
+Contributing
+--
+
+We highly welcome and appreciate contributions in any form! Your help is crucial to this project.
+
+### How to Contribute?
+* **Report Issues or Suggest Features (Issues & Feature Requests)**: If you find any bugs, have questions, or new feature suggestions for the project, please feel free to open an issue on our [GitHub Issues](https://github.com/xigma0512/XBlockFire/issues/new) page.
+
+* **Provide Technical Support**:
+    * Animations: Including reload, firing, switching, etc.
+    * Models: High-quality 3D gun models.
+    * Sound Effects: Firing, reloading, bolt-catch/slide-lock, etc., sound effects.
+    * Other: Any other technical assistance.
+
+* **Contribute code or features directly:**
+    * Fork the Project
+    * Create your Feature Branch (git checkout -b feature/AmazingFeature)
+    * Commit your Changes (git commit -m 'Add some AmazingFeature')
+    * Push to the Branch (git push origin feature/AmazingFeature)
+    * Open a Pull Request
+
+If you can provide relevant resources, or know where to find high-quality free/open-source resources, please [contact us](#Contact).
+
+### Top Contributors
+<a href="https://github.com/xigma0512/XBlockFire/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=xigma0512/XBlockFire" alt="contrib.rocks image" />
+</a>
+
+Contact
+--
+**Discord**: @xigma0512
+
+**Discord Community**: https://discord.gg/mUwJukn23N
+
+**Project Link**: https://github.com/xigma0512/XBlockFire
+
+Acknowledgments
+--
+這裡是該專案使用到的工具或有幫助的網站。
+
+* [Script API Reference Documentation](https://learn.microsoft.com/en-us/minecraft/creator/scriptapi/?view=minecraft-bedrock-experimental)
+* [bedrock-samples](https://github.com/Mojang/bedrock-samples)
+* [Bedrock Wiki](https://wiki.bedrock.dev/)
 
 [contributors-shield]: https://img.shields.io/github/contributors/xigma0512/XBlockFire.svg?style=for-the-badge
 [contributors-url]: https://github.com/xigma0512/XBlockFire/graphs/contributors
