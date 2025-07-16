@@ -28,7 +28,7 @@ const endReasonTable = {
             `${FC.Bold}${FC.Gray}---- ${FC.Yellow}[ ROUND END ] ${FC.Gray}----\n`,
             `${FC.Bold}${FC.Red}C4 Detonated!\n`,
             `${FC.Bold}${FC.Green}Attackers win this round!\n`,
-            `${FC.Bold}${FC.Gray}---`
+            `${FC.Bold}${FC.Gray}--------------------`
         ],
         nextPhaseGenerator: () => new RoundEndPhase()
     },
@@ -38,7 +38,7 @@ const endReasonTable = {
             `${FC.Bold}${FC.Gray}---- ${FC.Yellow}[ ROUND END ] ${FC.Gray}----\n`,
             `${FC.Bold}${FC.Red}All Defenders Eliminated!\n`,
             `${FC.Bold}${FC.Green}Attackers win this round!\n`,
-            `${FC.Bold}${FC.Gray}---`
+            `${FC.Bold}${FC.Gray}--------------------`
         ],
         nextPhaseGenerator: () => new RoundEndPhase()
     },
@@ -48,7 +48,7 @@ const endReasonTable = {
             `${FC.Bold}${FC.Gray}---- ${FC.DarkPurple}[ GAME OVER ] ${FC.Gray}----\n`,
             `${FC.Bold}${FC.Red}All Defenders disconnected.\n`,
             `${FC.Bold}${FC.Yellow}Attacker win.\n`,
-            `${FC.Bold}${FC.Gray}---`
+            `${FC.Bold}${FC.Gray}--------------------`
         ],
         nextPhaseGenerator: () => new GameOverPhase()
     }
