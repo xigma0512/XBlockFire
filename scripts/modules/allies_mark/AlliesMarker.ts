@@ -15,7 +15,7 @@ export class AlliesMarker {
         for (const viewer of players) {
 
             const team = entity_dynamic_property(viewer, 'player:team');
-            const is_alive = entity_dynamic_property(viewer, 'player:is_alive');
+            const is_alive = true;
             const groupPlayers = MemberManager.getPlayers({ team, is_alive });
             
             for (const ally of groupPlayers) {
