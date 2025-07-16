@@ -119,7 +119,9 @@ class _Shop {
             throw Error(`You should refund your ${historyProduct.name} first.`);
         }
 
-        if (hotbarItem && hotbarItem.amount >= product.max_amount) {
+        const productItem = (product.itemActor) ? new product.itemActor().item
+                                                : ItemStackFactory.new({ typeId: product.itemStackTypeId!, lockMode: ItemLockMode.slot });
+        if (hotbarItem && hotbarItem.typeId === productItem.typeId && hotbarItem.amount >= product.max_amount) {
             throw Error('You have reached purchase limit.');
         }
 
