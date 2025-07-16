@@ -25,12 +25,12 @@ class _MemberManager {
 
     joinRoom(player: Player) {
         this.players.add(player);
-        Broadcast.message(`${FC.Bold}${FC.Green}${player.name} has joined the room.`, this.getPlayers());
+        Broadcast.message(`${FC.Bold}${FC.Green}${player.name} join the room.`, this.getPlayers());
     }
     
     leaveRoom(player: Player) {
         this.players.delete(player);
-        Broadcast.message(`${FC.Bold}${FC.Red}${player.name} has left the room.`, this.getPlayers());
+        Broadcast.message(`${FC.Bold}${FC.Red}${player.name} leave the room.`, this.getPlayers());
     }
 
     getPlayers(filter?: MemberFilter) {        
