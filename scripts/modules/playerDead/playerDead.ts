@@ -14,16 +14,26 @@ import { entity_dynamic_property, set_entity_dynamic_property } from "../../util
 import { GameMode } from "@minecraft/server";
 import { ItemStack, Player, system, world } from "@minecraft/server";
 
+const deathPlayers = new Set<Player>();
+
 world.afterEvents.entityDie.subscribe(ev => {
     if (!(ev.deadEntity instanceof Player) || !MemberManager.includePlayer(ev.deadEntity)) return;
     const deadPlayer = ev.deadEntity;
     const source = ev.damageSource;
     const attacker = source.damagingEntity;
-    system.runTimeout(() => gameEvents.emit('playerDied', { deadPlayer, attacker }), 3);
+    system.runTimeout(() => gameEvents.emit('playerDied', { deadPlayer, attacker }), 5);
 })
 
 gameEvents.subscribe('playerDied', (ev) => {
     if (!MemberManager.includePlayer(ev.deadPlayer)) return;
+
+    if (deathPlayers.has(ev.deadPlayer)) return;
+    
+    deathPlayers.add(ev.deadPlayer);
+    system.runTimeout(() => {
+        deathPlayers.delete(ev.deadPlayer);
+    }, 20);
+
     const deadPlayer = ev.deadPlayer;
     dropC4(deadPlayer);
     set_entity_dynamic_property(deadPlayer, 'player:is_alive', false);
@@ -56,8 +66,9 @@ function showDeathMessage(deadPlayer: Player, attacker: Player) {
     
     const taskId = system.runInterval(() => {
         HudTextController.add(attacker, 'subtitle', `${FC.Bold}\uE109${FC.DarkRed}${deadPlayer.name}`);
+        HudTextController.add(deadPlayer, 'subtitle', `${FC.Bold}${FC.Red}${attacker.name} KILLED YOU`);
     });
     system.runTimeout(() => {
         system.clearRun(taskId);
-    }, 3 * 20);
+    }, 4 * 20);
 }
