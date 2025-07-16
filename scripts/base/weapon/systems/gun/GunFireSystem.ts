@@ -57,12 +57,12 @@ class _GunFireSystem {
         if (gunFireComp.release_to_fire) 
         {
             const callback = world.afterEvents.itemReleaseUse.subscribe(ev => {
-                if (this._cooldowns.has(player)) return;
-                if (ev.source.id !== player.id) return;
-                this.fire(player, actor);
-                
-                this._cooldowns.add(player);
-                system.runTimeout(() => this._cooldowns.delete(player), fireRate);
+                if (!this._cooldowns.has(player) && ev.source.id === player.id) {
+                    this.fire(player, actor);
+                    
+                    this._cooldowns.add(player);
+                    system.runTimeout(() => this._cooldowns.delete(player), fireRate);
+                }
                 world.afterEvents.itemReleaseUse.unsubscribe(callback);
             });
         }
@@ -128,9 +128,7 @@ const startFireTrigger = world.afterEvents.itemStartUse.subscribe(ev => {
     if (isReloading === 'reloading') return;
     
     const handItem = getPlayerHandItem(player);
-    if (handItem === undefined) return;
-    
-    if (!ActorManager.isActor(handItem)) return;
+    if (handItem === undefined || !ActorManager.isActor(handItem)) return;
     const actor = ActorManager.getActor(handItem) as ItemActor;
 
     if (actor.hasComponent('gun')) {
