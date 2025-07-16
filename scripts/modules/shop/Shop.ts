@@ -49,7 +49,7 @@ class _Shop {
     async openShop(player: Player) {
         const form = new ActionFormData();
         form.title('SHOP')
-            .body(`${FC.MinecoinGold}Select an item to purchase:`)
+            .body(`Select an item to purchase:\nYour Money: ${FC.MinecoinGold}${EconomyManager.getMoney(player)}`)
 
         for (const product of ProductTable) {
             const canBeRefund = this.checkRefund(player, product);
