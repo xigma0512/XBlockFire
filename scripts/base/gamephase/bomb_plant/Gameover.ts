@@ -4,7 +4,14 @@ import { ActionHud } from "../../../modules/hud/bomb_plant/Action";
 import { IdlePhase } from "./Idle";
 import { Config } from "./_config";
 
+import { TeamEnum } from "../../../types/TeamEnum";
 import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPlantPhaseEnum";
+
+import { Broadcast } from "../../../utils/Broadcast";
+import { FormatCode as FC } from "../../../utils/FormatCode";
+import { variable } from "../../../utils/Variable";
+
+import { GameMode, world } from "@minecraft/server";
 
 const config = Config.gameover;
 
@@ -21,19 +28,48 @@ export class GameOverPhase implements IPhaseHandler {
 
     on_entry() {
         this._currentTick = config.COUNTDOWN_TIME;
+        switch (variable('winner')) {
+            case TeamEnum.Attacker:
+                Broadcast.message([
+                    '\n',
+                    `${FC.Bold}${FC.Gray}---- ${FC.DarkPurple}[ GAME OVER ] ${FC.Gray}----\n`,
+                    `${FC.Bold}${FC.Yellow}Attackers win this game.\n`,
+                    `${FC.Bold}${FC.Gray}--------------------`,
+                    '\n'
+                ]);
+                break;
+            case TeamEnum.Defender:
+                Broadcast.message([
+                    '\n',
+                    `${FC.Bold}${FC.Gray}---- ${FC.DarkPurple}[ GAME OVER ] ${FC.Gray}----\n`,
+                    `${FC.Bold}${FC.Yellow}Defenders win this game.\n`,
+                    `${FC.Bold}${FC.Gray}--------------------`,
+                    '\n'
+                ]);
+        }
     }
 
     on_running() {
-        this._currentTick --;
+        if (this._currentTick-- % 20 == 0) {
+            Broadcast.sound("firework.launch", {}, world.getAllPlayers());
+        }
         this.hud.update();
         this.transitions();
     }
 
     on_exit() {
+        respawnPlayers();
     }
 
     private transitions() {
         if (this.currentTick <= 0) PhaseManager.updatePhase(new IdlePhase());
     }
 
+}
+
+function respawnPlayers() {
+    for (const player of world.getAllPlayers()) {
+        player.setGameMode(GameMode.Adventure);
+        player.teleport(world.getDefaultSpawnLocation());
+    }
 }
