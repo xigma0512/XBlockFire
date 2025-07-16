@@ -39,8 +39,8 @@ class _MemberManager {
         if (!filter) return allPlayers;
 
         return allPlayers.filter(p => {
-            if (filter.team && filter.team !== entity_dynamic_property(p, 'player:team')) return false;
-            if (filter.is_alive && filter.is_alive !== entity_dynamic_property(p, 'player:is_alive')) return false;
+            if (filter.team !== undefined && filter.team !== entity_dynamic_property(p, 'player:team')) return false;
+            if (filter.is_alive !== undefined && filter.is_alive !== entity_dynamic_property(p, 'player:is_alive')) return false;
             return true;
         });
     }
