@@ -30,7 +30,7 @@ const endReasonTable = {
             `${FC.Bold}${FC.Gray}---- ${FC.Yellow}[ ROUND END ] ${FC.Gray}----\n`,
             `${FC.Bold}${FC.Red}Attackers ran out of time.\n`,
             `${FC.Bold}${FC.Green}Defenders win this round.\n`,
-            `${FC.Bold}${FC.Gray}---`
+            `${FC.Bold}${FC.Gray}--------------------`
         ],
         nextPhaseGenerator: () => new RoundEndPhase()
     },
@@ -40,7 +40,7 @@ const endReasonTable = {
             `${FC.Bold}${FC.Gray}---- ${FC.Yellow}[ ROUND END ] ${FC.Gray}----\n`,
             `${FC.Bold}${FC.Red}All Attackers Eliminated.\n`,
             `${FC.Bold}${FC.Green}Defenders win this round.\n`,
-            `${FC.Bold}${FC.Gray}---`
+            `${FC.Bold}${FC.Gray}--------------------`
         ],
         nextPhaseGenerator: () => new RoundEndPhase()
     },
@@ -50,7 +50,7 @@ const endReasonTable = {
             `${FC.Bold}${FC.Gray}---- ${FC.DarkPurple}[ GAME OVER ] ${FC.Gray}----\n`,
             `${FC.Bold}${FC.Red}All Attackers Disconnected.\n`,
             `${FC.Bold}${FC.Yellow}Defenders win\n`,
-            `${FC.Bold}${FC.Gray}---`
+            `${FC.Bold}${FC.Gray}--------------------`
         ],
         nextPhaseGenerator: () => new GameOverPhase()
     },
@@ -60,7 +60,7 @@ const endReasonTable = {
             `${FC.Bold}${FC.Gray}---- ${FC.Yellow}[ ROUND END ] ${FC.Gray}----\n`,
             `${FC.Bold}${FC.Red}Defenders Eliminated.\n`,
             `${FC.Bold}${FC.Green}Attackers win this round.\n`,
-            `${FC.Bold}${FC.Gray}---`
+            `${FC.Bold}${FC.Gray}--------------------`
         ],
         nextPhaseGenerator: () => new RoundEndPhase()
     },
@@ -70,7 +70,7 @@ const endReasonTable = {
             `${FC.Bold}${FC.Gray}---- ${FC.DarkPurple}[ GAME OVER ] ${FC.Gray}----\n`,
             `${FC.Bold}${FC.Red}All Defenders Disconnected.\n`,
             `${FC.Bold}${FC.Yellow}Attackers win.\n`,
-            `${FC.Bold}${FC.Gray}---`
+            `${FC.Bold}${FC.Gray}--------------------`
         ],
         nextPhaseGenerator: () => new GameOverPhase()
     }
