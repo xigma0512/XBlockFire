@@ -12,9 +12,9 @@ import { set_variable } from "../../../utils/Variable";
 import { FormatCode as FC } from "../../../utils/FormatCode";
 import { Broadcast } from "../../../utils/Broadcast";
 
-import { bombplant } from "../../../settings/config";
+import { Config } from "../../../settings/config";
 
-const config = bombplant.C4planted;
+const config = Config.bombplant.C4planted;
 
 const enum EndReasonEnum {
     'Time-up' = 1,

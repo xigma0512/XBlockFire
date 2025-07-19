@@ -12,9 +12,9 @@ import { variable } from "../../../utils/Variable";
 
 import { GameMode, world } from "@minecraft/server";
 
-import { bombplant } from "../../../settings/config";
+import { Config } from "../../../settings/config";
 
-const config = bombplant.gameover;
+const config = Config.bombplant.gameover;
 
 export class GameOverPhase implements IPhaseHandler {
 
