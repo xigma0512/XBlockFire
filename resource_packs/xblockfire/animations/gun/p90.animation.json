@@ -1,0 +1,23 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"animation.p90.fpp_hold": {
+			"loop": true,
+			"bones": {
+				"bone": {
+					"rotation": [-271.04882, 27.02872, 130.07036],
+					"position": [-8, 31.4, -5]
+				}
+			}
+		},
+		"animation.p90.tpp_hold": {
+			"loop": true,
+			"bones": {
+				"bone": {
+					"rotation": [90, 87.5, -180],
+					"position": [-0.9, 22, -0.3]
+				}
+			}
+		}
+	}
+}

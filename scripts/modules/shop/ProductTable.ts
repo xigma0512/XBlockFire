@@ -4,6 +4,7 @@ import { AK47 } from "../../base/weapon/actors/item/AK47";
 import { M4A4 } from "../../base/weapon/actors/item/M4A4";
 import { SG200 } from "../../base/weapon/actors/item/SG200";
 import { AWP } from "../../base/weapon/actors/item/AWP";
+import { P90 } from "../../base/weapon/actors/item/P90";
 
 import { Glock17 } from "../../base/weapon/actors/item/Glock17";
 import { Deagle } from "../../base/weapon/actors/item/Deagle";
@@ -75,6 +76,19 @@ export const ProductTable: IProduct[] = [
         name: "AWP",
         description: "能夠在遠距離一槍了結對手的強力武器。",
         iconPath: 'textures/items/gun/awp'
+    },
+    {
+        id: 4,
+
+        price: 1950,
+        max_amount: 1,
+        slot: 0,
+        
+        itemActor: P90,
+        
+        name: "P90",
+        description: "射速高但傷害較低的衝鋒槍。",
+        iconPath: 'textures/items/gun/p90'
     },
     {
         id: 100,

@@ -27,6 +27,9 @@
         "deagle": {
             "textures": "textures/items/gun/deagle"
         },
+        "p90": {
+            "textures": "textures/items/gun/p90"
+        },
 
         "defuser": {
             "textures": "textures/items/defuser"
