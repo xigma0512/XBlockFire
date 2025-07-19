@@ -1,6 +1,7 @@
 import { Player } from "@minecraft/server";
+import { economy } from "../../settings/config";
 
-const LIMIT = 9000;
+const LIMIT = economy.LIMIT;
 
 export class EconomyManager {
 

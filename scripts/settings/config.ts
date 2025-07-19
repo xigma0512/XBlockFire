@@ -22,3 +22,7 @@ export const bombplant = {
         COUNTDOWN_TIME: 10 * 20
     }
 }
+
+export const economy = {
+    LIMIT: 9000
+}

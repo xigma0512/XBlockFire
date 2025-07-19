@@ -14,7 +14,7 @@ import { entity_dynamic_property, set_entity_dynamic_property } from "../../../u
 import { set_variable, variable } from "../../../utils/Variable";
 import { Broadcast } from "../../../utils/Broadcast";
 
-import { bombplant } from "../../../config";
+import { bombplant } from "../../../settings/config";
 
 const config = bombplant.roundEnd;
 

@@ -21,7 +21,7 @@ import { VanillaEntityIdentifier } from "@minecraft/server";
 import { DimensionLocation, Entity, Player, system, world } from "@minecraft/server";
 import { ItemUseBeforeEvent, ItemCompleteUseAfterEvent } from "@minecraft/server"
 
-import { bombplant } from "../../../config";
+import { bombplant } from "../../../settings/config";
 
 const DEFUSER_ITEM_ID = 'xblockfire:defuser';
 const PLANTED_C4_ENTITY_ID = 'xblockfire:planted_c4' as VanillaEntityIdentifier;

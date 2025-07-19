@@ -16,7 +16,7 @@ import { ItemStackFactory } from "../../../utils/ItemStackFactory";
 
 import { ItemLockMode } from "@minecraft/server";
 
-import { bombplant } from "../../../config";
+import { bombplant } from "../../../settings/config";
 
 const config = bombplant.idle;
 

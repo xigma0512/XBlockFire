@@ -1,4 +1,4 @@
-import GameMap from "./GameMap";
+import GameMap from "../../settings/game_maps";
 
 class _MapRegister {
     
