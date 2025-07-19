@@ -12,28 +12,21 @@ interface MemberFilter {
     is_alive?: boolean;
 }
 
-class _MemberManager {
-    
-    private static _instance: _MemberManager;
-    static get instance() { return (this._instance || (this._instance = new this)); }
+export class MemberManager {
 
-    private players: Set<Player>;
+    private static players = new Set<Player>();
 
-    private constructor() { 
-        this.players = new Set();
-    }
-
-    joinRoom(player: Player) {
+    static joinRoom(player: Player) {
         this.players.add(player);
         Broadcast.message(`${FC.Bold}${FC.Green}${player.name} join the room.`, this.getPlayers());
     }
     
-    leaveRoom(player: Player) {
+    static leaveRoom(player: Player) {
         this.players.delete(player);
         Broadcast.message(`${FC.Bold}${FC.Red}${player.name} leave the room.`, this.getPlayers());
     }
 
-    getPlayers(filter?: MemberFilter) {        
+    static getPlayers(filter?: MemberFilter) {        
         const allPlayers = Array.from(this.players.keys());
         
         if (!filter) return allPlayers;
@@ -45,13 +38,11 @@ class _MemberManager {
         });
     }
 
-    includePlayer(player: Player) {
+    static includePlayer(player: Player) {
         return this.players.has(player);
     }
     
 }
-
-export const MemberManager = _MemberManager.instance;
 
 const playerLeaveGameListener = world.beforeEvents.playerLeave.subscribe(ev => {
     MemberManager.leaveRoom(ev.player);

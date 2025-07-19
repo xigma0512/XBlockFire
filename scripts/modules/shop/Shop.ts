@@ -41,12 +41,9 @@ export class PurchaseHistory {
 
 }
 
-class _Shop {
+export class Shop {
 
-    private static _instance: _Shop;
-    static get instance() { return (this._instance || (this._instance = new this)); }
-
-    async openShop(player: Player) {
+    static async openShop(player: Player) {
         const form = new ActionFormData();
         form.title('SHOP')
             .body(`Select an item to purchase:\nYour Money: ${FC.MinecoinGold}${EconomyManager.getMoney(player)}`)
@@ -60,7 +57,7 @@ class _Shop {
         this.purchaseResponse(player, await form.show(player));
     }
 
-    private purchaseResponse(player: Player, response: ActionFormResponse) {
+    private static purchaseResponse(player: Player, response: ActionFormResponse) {
         try 
         {
             if (response.canceled) return;
@@ -82,7 +79,7 @@ class _Shop {
         }
     }
 
-    private checkRefund(player: Player, product: IProduct) {
+    private static checkRefund(player: Player, product: IProduct) {
         const playerHistory = PurchaseHistory.get(player);
 
         const playerHotbar = HotbarManager.getPlayerHotbar(player);
@@ -91,7 +88,7 @@ class _Shop {
         return (product.id === playerHistory[product.slot] && product.max_amount === hotbarItem?.amount);
     }
 
-    private refund(player: Player, product: IProduct) {
+    private static refund(player: Player, product: IProduct) {
         const hotbar = HotbarManager.getPlayerHotbar(player);
         const originalHotbarItem = hotbar.items[product.slot]!;
         hotbar.items[product.slot] = undefined;
@@ -110,7 +107,7 @@ class _Shop {
         player.sendMessage(`${FC.Gray}>> ${FC.Yellow}You refund ${product.name}. ${FC.Green}(+${refundMoney}$)`);
     }
 
-    private purchase(player: Player, product: IProduct) {
+    private static purchase(player: Player, product: IProduct) {
         const hotbar = HotbarManager.getPlayerHotbar(player);
         const hotbarItem = hotbar.items.at(product.slot);
         
@@ -139,7 +136,7 @@ class _Shop {
         player.sendMessage(`${FC.Gray}>> ${FC.Yellow}You bought ${product.name}. ${FC.Red}(-${product.price}$)`);
     }
 
-    private sendProduct(player: Player, product: IProduct) {
+    private static sendProduct(player: Player, product: IProduct) {
         const productItem = (product.itemActor) ? new product.itemActor().item
                                                 : ItemStackFactory.new({ typeId: product.itemStackTypeId!, lockMode: ItemLockMode.slot });
 
@@ -159,8 +156,6 @@ class _Shop {
         HotbarManager.sendHotbar(player, hotbar);
     }
 }
-
-export const Shop = _Shop.instance;
 
 const openShopListener = world.beforeEvents.itemUse.subscribe(ev => {
     if (ev.itemStack.typeId !== 'minecraft:feather') return;
