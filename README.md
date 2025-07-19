@@ -51,9 +51,9 @@
 
 ### 遊玩
 
-經過測試能夠穩定運作的版本會打包成 **`.mcaddon` 檔案** 並發佈在 [發布頁面 (Releases)](https://github.com/xigma0512/XBlockFire/releases)。
+經過測試能夠穩定運作的版本會打包成 **`.mcaddon` 檔案** 並發佈在 [Releases](https://github.com/xigma0512/XBlockFire/releases)。
 
-本附加包已在特定 Minecraft Bedrock Edition 版本上進行測試。請確保你的遊戲版本與 [發布頁面 (Releases)](https://github.com/xigma0512/XBlockFire/releases) 中標註的推薦版本相符，以確保最佳的遊戲體驗。
+本附加包已在特定 Minecraft Bedrock Edition 版本上進行測試。請確保你的遊戲版本與 [Releases](https://github.com/xigma0512/XBlockFire/releases) 中標註的推薦版本相符，以確保最佳的遊戲體驗。
 
 ### 設定
 
@@ -151,7 +151,7 @@
 
 ### 如何貢獻？
 
-* **回報問題或建議功能 (Issues & Feature Requests)**：如果您發現任何錯誤、有疑問或對專案有新功能建議，請隨時在我們的 [GitHub 議題](https://github.com/xigma0512/XBlockFire/issues/new) 頁面開啟一個議題。
+* **回報問題或建議功能 (Issues & Feature Requests)**：如果您發現任何錯誤、有疑問或對專案有新功能建議，請隨時在我們的 [Issue](https://github.com/xigma0512/XBlockFire/issues/new) 頁面開啟一個議題。
 
 * **提供技術支援**：
     * 動畫：包括換彈、射擊、切換武器等。
