@@ -1,5 +1,5 @@
 import { PhaseManager } from "../../gamephase/PhaseManager";
-import { MemberManager } from "../../gameroom/member/MemberManager";
+import { MemberManager } from "../../member/MemberManager";
 import { C4Manager } from "../C4Manager";
 import { HudTextController } from "../../../modules/hud/HudTextController";
 

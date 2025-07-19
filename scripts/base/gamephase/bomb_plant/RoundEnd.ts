@@ -1,5 +1,5 @@
-import { MemberManager } from "../../gameroom/member/MemberManager";
-import { EconomyManager } from "../../gameroom/economy/EconomyManager";
+import { MemberManager } from "../../member/MemberManager";
+import { EconomyManager } from "../../economy/EconomyManager";
 import { PhaseManager } from "../PhaseManager";
 import { ActionHud } from "../../../modules/hud/bomb_plant/Action"; 
 

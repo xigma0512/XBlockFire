@@ -1,4 +1,4 @@
-import { MemberManager } from "../../gameroom/member/MemberManager";
+import { MemberManager } from "../../member/MemberManager";
 import { PhaseManager } from "../PhaseManager";
 import { ActionHud } from "../../../modules/hud/bomb_plant/Action";
 import { HotbarManager } from "../../../modules/hotbar/Hotbar";

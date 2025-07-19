@@ -1,4 +1,4 @@
-import { MemberManager } from "../../../../gameroom/member/MemberManager";
+import { MemberManager } from "../../../../member/MemberManager";
 import { GrenadeHandler } from "./GrenadeHandler";
 
 import { EntityActor } from "../../../actors/Actor";

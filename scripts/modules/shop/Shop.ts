@@ -1,6 +1,6 @@
-import { EconomyManager } from "../../base/gameroom/economy/EconomyManager";
+import { EconomyManager } from "../../base/economy/EconomyManager";
 import { PhaseManager } from "../../base/gamephase/PhaseManager";
-import { MemberManager } from "../../base/gameroom/member/MemberManager";
+import { MemberManager } from "../../base/member/MemberManager";
 import { HotbarManager } from "../hotbar/Hotbar";
 
 import { Glock17 } from "../../base/weapon/actors/item/Glock17";

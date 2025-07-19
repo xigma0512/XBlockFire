@@ -1,5 +1,5 @@
-import { MemberManager } from "../../gameroom/member/MemberManager";
-import { EconomyManager } from "../../gameroom/economy/EconomyManager";
+import { MemberManager } from "../../member/MemberManager";
+import { EconomyManager } from "../../economy/EconomyManager";
 import { PhaseManager } from "../PhaseManager";
 import { HotbarManager, HotbarTemplate } from "../../../modules/hotbar/Hotbar";
 import { WaitingHud } from "../../../modules/hud/bomb_plant/Waiting";

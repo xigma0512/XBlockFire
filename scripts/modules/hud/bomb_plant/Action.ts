@@ -1,6 +1,6 @@
 import { PhaseManager } from "../../../base/gamephase/PhaseManager";
-import { MemberManager } from "../../../base/gameroom/member/MemberManager";
-import { EconomyManager } from "../../../base/gameroom/economy/EconomyManager";
+import { MemberManager } from "../../../base/member/MemberManager";
+import { EconomyManager } from "../../../base/economy/EconomyManager";
 import { HudTextController } from "../HudTextController";
 
 import { TeamEnum } from "../../../types/TeamEnum";

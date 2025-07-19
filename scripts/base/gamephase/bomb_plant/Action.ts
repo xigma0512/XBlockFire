@@ -1,4 +1,4 @@
-import { MemberManager } from "../../gameroom/member/MemberManager";
+import { MemberManager } from "../../member/MemberManager";
 import { PhaseManager } from "../PhaseManager";
 
 import { GameOverPhase } from "./Gameover";
