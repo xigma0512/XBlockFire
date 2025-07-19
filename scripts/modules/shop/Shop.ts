@@ -71,11 +71,13 @@ export class Shop {
                 this.purchase(player, product);
             }
             
+            player.playSound('mob.villager.yes');
             this.openShop(player);
         }
         catch (err: any)
         {
             player.sendMessage(`${FC.Gray}>> ${FC.Red}${err.message}.`);
+            player.playSound('mob.villager.no');
         }
     }
 
