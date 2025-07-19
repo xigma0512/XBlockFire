@@ -6,7 +6,6 @@ import { HudTextController } from "../../../modules/hud/HudTextController";
 import { C4IdleState } from "./Idle";
 import { C4PlantedPhase } from "../../gamephase/bomb_plant/C4Planted";
 import { RoundEndPhase } from "../../gamephase/bomb_plant/RoundEnd";
-import { Config as BP_Config } from "../../gamephase/bomb_plant/_config";
 
 import { C4StateEnum } from "../../../types/bombstate/C4StateEnum";
 import { TeamEnum } from "../../../types/TeamEnum";
@@ -21,6 +20,8 @@ import { Vector3Utils } from "@minecraft/math";
 import { VanillaEntityIdentifier } from "@minecraft/server";
 import { DimensionLocation, Entity, Player, system, world } from "@minecraft/server";
 import { ItemUseBeforeEvent, ItemCompleteUseAfterEvent } from "@minecraft/server"
+
+import { bombplant } from "../../../config";
 
 const DEFUSER_ITEM_ID = 'xblockfire:defuser';
 const PLANTED_C4_ENTITY_ID = 'xblockfire:planted_c4' as VanillaEntityIdentifier;
@@ -38,7 +39,7 @@ export class C4PlantedState implements IC4StateHandler {
     private _entity!: Entity;
     get entity() { return this._entity; }
     
-    private currentTick = BP_Config.C4planted.COUNTDOWN_TIME;
+    private currentTick = bombplant.C4planted.COUNTDOWN_TIME;
 
     private beforeItemUseListener = (ev: ItemUseBeforeEvent) => { };
     private afterItemCompleteUseListener = (ev: ItemCompleteUseAfterEvent) => { };
@@ -159,7 +160,7 @@ function defuseComplete(defuser: Player) {
 
 let soundPlayInterval = 20;
 function playC4Effect(currentTick: number, entity: Entity) {
-    const totalTime = BP_Config.C4planted.COUNTDOWN_TIME;
+    const totalTime = bombplant.C4planted.COUNTDOWN_TIME;
 
     const bar = progressBar(totalTime, currentTick, 30);
     entity.nameTag = `| ${bar} |`;

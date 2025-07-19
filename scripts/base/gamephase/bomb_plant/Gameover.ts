@@ -2,7 +2,6 @@ import { PhaseManager } from "../PhaseManager";
 
 import { ActionHud } from "../../../modules/hud/bomb_plant/Action";
 import { IdlePhase } from "./Idle";
-import { Config } from "./_config";
 
 import { TeamEnum } from "../../../types/TeamEnum";
 import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPlantPhaseEnum";
@@ -13,7 +12,9 @@ import { variable } from "../../../utils/Variable";
 
 import { GameMode, world } from "@minecraft/server";
 
-const config = Config.gameover;
+import { bombplant } from "../../../config";
+
+const config = bombplant.gameover;
 
 export class GameOverPhase implements IPhaseHandler {
 

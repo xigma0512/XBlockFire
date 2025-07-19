@@ -5,7 +5,6 @@ import { ActionHud } from "../../../modules/hud/bomb_plant/Action";
 
 import { GameOverPhase } from "./Gameover";
 import { PreRoundStartPhase } from "./PreRoundStart";
-import { Config } from "./_config";
 
 import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPlantPhaseEnum";
 import { TeamEnum } from "../../../types/TeamEnum";
@@ -15,7 +14,9 @@ import { entity_dynamic_property, set_entity_dynamic_property } from "../../../u
 import { set_variable, variable } from "../../../utils/Variable";
 import { Broadcast } from "../../../utils/Broadcast";
 
-const config = Config.roundEnd;
+import { bombplant } from "../../../config";
+
+const config = bombplant.roundEnd;
 
 export class RoundEndPhase implements IPhaseHandler {
 

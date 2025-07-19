@@ -5,7 +5,6 @@ import { HotbarManager, HotbarTemplate } from "../../../modules/hotbar/Hotbar";
 import { WaitingHud } from "../../../modules/hud/bomb_plant/Waiting";
 
 import { BuyingPhase } from "./Buying";
-import { Config } from "./_config";
 
 import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPlantPhaseEnum";
 import { TeamEnum } from "../../../types/TeamEnum";
@@ -17,7 +16,9 @@ import { ItemStackFactory } from "../../../utils/ItemStackFactory";
 
 import { ItemLockMode } from "@minecraft/server";
 
-const config = Config.idle;
+import { bombplant } from "../../../config";
+
+const config = bombplant.idle;
 
 export class IdlePhase implements IPhaseHandler {
 

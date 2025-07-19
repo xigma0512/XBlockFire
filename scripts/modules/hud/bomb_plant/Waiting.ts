@@ -3,12 +3,12 @@ import { MemberManager } from "../../../base/member/MemberManager";
 import { PhaseManager } from "../../../base/gamephase/PhaseManager";
 import { MapRegister } from "../../../base/gamemap/MapRegister";
 
-import { Config } from "../../../base/gamephase/bomb_plant/_config";
-
 import { FormatCode as FC } from "../../../utils/FormatCode";
 import { Broadcast } from "../../../utils/Broadcast";
 
-const config = Config.idle;
+import { bombplant } from "../../../config";
+
+const config = bombplant.idle;
 
 export class WaitingHud implements InGameHud {
     
