@@ -1,7 +1,7 @@
 import { Player } from "@minecraft/server";
-import { economy } from "../../settings/config";
+import { Config } from "../../settings/config";
 
-const LIMIT = economy.LIMIT;
+const LIMIT = Config.economy.LIMIT;
 
 export class EconomyManager {
 

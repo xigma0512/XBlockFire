@@ -16,9 +16,9 @@ import { ItemStackFactory } from "../../../utils/ItemStackFactory";
 
 import { ItemLockMode } from "@minecraft/server";
 
-import { bombplant } from "../../../settings/config";
+import { Config } from "../../../settings/config";
 
-const config = bombplant.idle;
+const config = Config.bombplant.idle;
 
 export class IdlePhase implements IPhaseHandler {
 

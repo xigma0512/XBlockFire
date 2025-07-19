@@ -18,8 +18,10 @@ import { Vector3Utils } from "@minecraft/math";
 import { Player, system, world } from "@minecraft/server";
 import { EntitySpawnAfterEvent, ItemUseBeforeEvent } from "@minecraft/server";
 
-const C4_TARGET_RANGE = 4.5;
+import { Config } from "../../../settings/config";
+
 const C4_ITEM_ID = 'xblockfire:c4';
+const C4_TARGET_RANGE = Config.c4.C4_TARGET_RANGE;
 
 export class C4IdleState implements IC4StateHandler {
 
