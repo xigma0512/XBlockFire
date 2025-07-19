@@ -50,9 +50,9 @@ export class Glock17 extends ItemActor {
                 }
             )).set('gun_damage', new GunDamageComponent(
                 {
-                    near: { head: 1, body: 1, legs: 1 },
-                    medium: { head: 1, body: 1, legs: 1 },
-                    far: { head: 1, body: 1, legs: 1 }
+                    near: { head: 10, body: 5, legs: 3 },
+                    medium: { head: 8, body: 4, legs: 2 },
+                    far: { head: 6, body: 3, legs: 1 }
                 }
             )).set('gun_reload', new GunReloadComponent(
                 {
@@ -61,8 +61,8 @@ export class Glock17 extends ItemActor {
                 }
             )).set('gun_offset', new GunOffsetComponent({
                 scope: 0,
-                hipfire: 1,
-                movement: 2
+                hipfire: 0.005,
+                movement: 0.005
             }));
 
         this.setItem();

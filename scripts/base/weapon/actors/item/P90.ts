@@ -50,9 +50,9 @@ export class P90 extends ItemActor {
                 }
                 )).set('gun_damage', new GunDamageComponent(
                     {
-                        near: { head: 6, body: 5, legs: 4 },
-                        medium: { head: 4, body: 3, legs: 2 },
-                        far: { head: 2, body: 1, legs: 0 }
+                        near: { head: 5, body: 4, legs: 3 },
+                        medium: { head: 2, body: 1, legs: 1 },
+                        far: { head: 1, body: 1, legs: 0 }
                     }
                 )).set('gun_reload', new GunReloadComponent(
                 {

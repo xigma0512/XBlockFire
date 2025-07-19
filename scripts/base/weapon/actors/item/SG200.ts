@@ -48,21 +48,21 @@ export class SG200 extends ItemActor {
                     shacking_level: 0.12,
                     shacking_duration: 0.2
                 }
-            )).set('gun_damage', new GunDamageComponent(
-                {
-                    near: { head: 1, body: 1, legs: 1 },
-                    medium: { head: 1, body: 1, legs: 1 },
-                    far: { head: 1, body: 1, legs: 1 }
-                }
-            )).set('gun_reload', new GunReloadComponent(
+                )).set('gun_damage', new GunDamageComponent(
+                    {
+                        near: { head: 7, body: 6, legs: 4 },
+                        medium: { head: 2, body: 1, legs: 1 },
+                        far: { head: 1, body: 0, legs: 0 }
+                    }
+                )).set('gun_reload', new GunReloadComponent(
                 {
                     reload_time: 40,
                     reload_sound: 'xblockfire.sg200_reload'
                 }
             )).set('gun_offset', new GunOffsetComponent({
-                scope: 1.5,
-                hipfire: 3,
-                movement: 1
+                scope: 0.05,
+                hipfire: 0.07,
+                movement: 0.05
             }));
 
         this.setItem();

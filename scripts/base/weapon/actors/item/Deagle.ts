@@ -50,9 +50,9 @@ export class Deagle extends ItemActor {
                 }
             )).set('gun_damage', new GunDamageComponent(
                 {
-                    near: { head: 1, body: 1, legs: 1 },
-                    medium: { head: 1, body: 1, legs: 1 },
-                    far: { head: 1, body: 1, legs: 1 }
+                    near: { head: 16, body: 8, legs: 6 },
+                    medium: { head: 13, body: 6, legs: 4 },
+                    far: { head: 8, body: 4, legs: 3 }
                 }
             )).set('gun_reload', new GunReloadComponent(
                 {
@@ -60,9 +60,9 @@ export class Deagle extends ItemActor {
                     reload_sound: "xblockfire.deagle_reload"
                 }
             )).set('gun_offset', new GunOffsetComponent({
-                scope: 0.2,
-                hipfire: 1.5,
-                movement: 4
+                scope: 0.001,
+                hipfire: 0.007,
+                movement: 0.01
             }));
 
         this.setItem();
