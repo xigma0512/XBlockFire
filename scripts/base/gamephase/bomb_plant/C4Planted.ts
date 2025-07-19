@@ -4,7 +4,6 @@ import { ActionHud } from "../../../modules/hud/bomb_plant/Action";
 
 import { RoundEndPhase } from "./RoundEnd";
 import { GameOverPhase } from "./Gameover";
-import { Config } from "./_config";
 
 import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPlantPhaseEnum";
 import { TeamEnum } from "../../../types/TeamEnum";
@@ -13,7 +12,9 @@ import { set_variable } from "../../../utils/Variable";
 import { FormatCode as FC } from "../../../utils/FormatCode";
 import { Broadcast } from "../../../utils/Broadcast";
 
-const config = Config.C4planted;
+import { bombplant } from "../../../config";
+
+const config = bombplant.C4planted;
 
 const enum EndReasonEnum {
     'Time-up' = 1,

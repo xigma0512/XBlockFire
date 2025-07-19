@@ -5,7 +5,6 @@ import { HotbarManager } from "../../../modules/hotbar/Hotbar";
 import { PurchaseHistory } from "../../../modules/shop/Shop";
 
 import { ActionPhase } from "./Action";
-import { Config } from "./_config";
 
 import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPlantPhaseEnum";
 
@@ -16,7 +15,9 @@ import { ItemStackFactory } from "../../../utils/ItemStackFactory";
 import { InputPermissionCategory, ItemLockMode } from "@minecraft/server";
 import { uiManager } from "@minecraft/server-ui";
 
-const config = Config.buying;
+import { bombplant } from "../../../config";
+
+const config = bombplant.buying;
 
 export class BuyingPhase implements IPhaseHandler {
 
