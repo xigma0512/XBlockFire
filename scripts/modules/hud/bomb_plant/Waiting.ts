@@ -6,7 +6,7 @@ import { MapRegister } from "../../../base/gamemap/MapRegister";
 import { FormatCode as FC } from "../../../utils/FormatCode";
 import { Broadcast } from "../../../utils/Broadcast";
 
-import { bombplant } from "../../../config";
+import { bombplant } from "../../../settings/config";
 
 const config = bombplant.idle;
 

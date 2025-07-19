@@ -12,7 +12,7 @@ import { variable } from "../../../utils/Variable";
 
 import { GameMode, world } from "@minecraft/server";
 
-import { bombplant } from "../../../config";
+import { bombplant } from "../../../settings/config";
 
 const config = bombplant.gameover;
 

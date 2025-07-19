@@ -15,7 +15,7 @@ import { ItemStackFactory } from "../../../utils/ItemStackFactory";
 import { InputPermissionCategory, ItemLockMode } from "@minecraft/server";
 import { uiManager } from "@minecraft/server-ui";
 
-import { bombplant } from "../../../config";
+import { bombplant } from "../../../settings/config";
 
 const config = bombplant.buying;
 
