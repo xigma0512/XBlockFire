@@ -1,10 +1,12 @@
 import { ItemActor } from "../../actors/Actor";
-
-import { Vector3Utils } from "@minecraft/math";
-import { BlockRaycastHit, DimensionLocation, Direction, Player, system, Vector3 } from "@minecraft/server";
 import { OffsetCalculator } from "./OffsetCaculator";
 import { getPlayerGunOffset } from "../gun/GunOffsetSystem";
 import { DamageSystem } from "./BulletDamage";
+
+import { entity_dynamic_property } from "../../../../utils/Property";
+
+import { Vector3Utils } from "@minecraft/math";
+import { BlockRaycastHit, DimensionLocation, Direction, Player, system, Vector3 } from "@minecraft/server";
 
 const MAX_DISTANCE = 100;
 
@@ -61,7 +63,7 @@ export class BulletSystem {
         const hitEntities = dimension.getEntitiesFromRay(location, shootVector, { 
             excludeNames: [ shooterName ],
             maxDistance: distance
-        });
+        }).filter(raycast => entity_dynamic_property(raycast.entity, 'player:is_alive'));
         
         if (hitEntities.length > 0) {
             return hitEntities.at(0);
