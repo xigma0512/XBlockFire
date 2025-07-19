@@ -35,7 +35,7 @@ export class BulletSystem {
 
             if (hitEntity && hitEntity.entity instanceof Player) {
                 const hitHeight = eyeLocation.y + shootVector.y * hitEntity.distance;
-                new DamageSystem(owner, hitEntity.entity).applyBulletDamage(gunActor, hitHeight);
+                DamageSystem.applyBulletDamage(owner, hitEntity.entity, gunActor, hitHeight);
             }
         });
     }
