@@ -4,9 +4,7 @@ import { GunFireComponent } from "./gun/GunFireComponent";
 import { GunReloadComponent } from "./gun/GunReloadComponent";
 import { GunOffsetComponent } from "./gun/GunOffsetComponent";
 import { GunMagazineComponent } from "./gun/GunMagazineComponent";
-
-import { BulletComponent } from "./bullet/BulletComponent";
-import { BulletDamageComponent } from "./bullet/BulletDamageComponent";
+import { GunDamageComponent } from "./gun/GunDamageComponent";
 
 import { EntityComponent } from "./EntityComponent";
 import { ItemComponent } from "./ItemComponent";
@@ -20,9 +18,7 @@ export type ComponentTypes = {
     'gun_reload': GunReloadComponent;
     'gun_offset': GunOffsetComponent
     'gun_magazine': GunMagazineComponent;
-    
-    'bullet': BulletComponent;
-    'bullet_damage': BulletDamageComponent;
+    'gun_damage': GunDamageComponent;
 
     'item': ItemComponent;
     'entity': EntityComponent;

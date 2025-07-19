@@ -9,6 +9,7 @@ import { GunFireComponent } from "../../components/gun/GunFireComponent";
 import { GunRecoilComponent } from "../../components/gun/GunRecoilComponent";
 import { GunReloadComponent } from "../../components/gun/GunReloadComponent";
 import { GunOffsetComponent } from "../../components/gun/GunOffsetComponent";
+import { GunDamageComponent } from "../../components/gun/GunDamageComponent";
 
 export class M4A4 extends ItemActor {
 
@@ -47,15 +48,21 @@ export class M4A4 extends ItemActor {
                     shacking_level: 0.05,
                     shacking_duration: 0.15
                 }
+            )).set('gun_damage', new GunDamageComponent(
+                {
+                    near: { head: 1, body: 1, legs: 1 },
+                    medium: { head: 1, body: 1, legs: 1 },
+                    far: { head: 1, body: 1, legs: 1 }
+                }
             )).set('gun_reload', new GunReloadComponent(
                 {
                     reload_time: 40,
                     reload_sound: 'xblockfire.m4a4_reload'
                 }
             )).set('gun_offset', new GunOffsetComponent({
-                scope: 0.2,
-                hipfire: 4,
-                movement: 9
+                scope: 0.01,
+                hipfire: 0.05,
+                movement: 0.05
             }));
 
         this.setItem();

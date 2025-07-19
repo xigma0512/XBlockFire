@@ -6,18 +6,17 @@ type ComponentDataType = {
     far: IDamageTable
 }
 
-export class BulletDamageComponent extends Component {
-    
+export class GunDamageComponent extends Component {
+
     readonly near: IDamageTable;
     readonly medium: IDamageTable;
     readonly far: IDamageTable;
 
     constructor(data: ComponentDataType) {
-        super('bullet_damage');
+        super('gun_damage');
 
         this.near = data.near;
         this.medium = data.medium;
         this.far = data.far;
     }
-
 }

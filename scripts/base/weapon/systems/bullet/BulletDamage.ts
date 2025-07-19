@@ -1,11 +1,11 @@
 import { gameEvents } from "../../../../event/EventEmitter";
 
-import { EntityActor } from "../../actors/Actor";
+import { ItemActor } from "../../actors/Actor";
 
 import { entity_dynamic_property } from "../../../../utils/Property";
 
 import { Vector3Utils } from "@minecraft/math";
-import { EntityDamageCause, Player, Vector3 } from "@minecraft/server";
+import { EntityDamageCause, Player } from "@minecraft/server";
 
 const NEAR_DISTANCE = 10;
 const MEDIUM_DISTANCE = 30;
@@ -20,16 +20,18 @@ export class DamageSystem {
         this.target = target;
     }
 
-    applyBulletDamage(bulletActor: EntityActor, hitLocation: Vector3) {
+    applyBulletDamage(gunActor: ItemActor, hitHeight: number) {
 
         const attackerTeam = entity_dynamic_property(this.attacker, 'player:team');
         const targetTeam = entity_dynamic_property(this.target, 'player:team');
         if (attackerTeam === targetTeam) return;
         
         const distance = this.getDistance() as DamageDistanceType;
-        const hitPart = this.getHitPart(hitLocation) as BulletHitPartType;
+        const hitPart = this.getHitPart(hitHeight) as BulletHitPartType;
+
+        this.attacker.sendMessage(hitPart);
         
-        const damageComp = bulletActor.getComponent('bullet_damage')!;
+        const damageComp = gunActor.getComponent('gun_damage')!;
         const damage = damageComp[distance][hitPart];
         
         if (!this.target.hasComponent('health')) return;
@@ -56,11 +58,11 @@ export class DamageSystem {
         return 'far';
     }
 
-    private getHitPart(hitLocation: Vector3) {
+    private getHitPart(hitHeight: number) {
         if (!(this.target instanceof Player)) return 'head';
         const targetFeetHeight = this.target.location.y;
 
-        const height = Math.abs(hitLocation.y - targetFeetHeight);
+        const height = Math.abs(hitHeight - targetFeetHeight);
 
         if (height <= 0.85) return 'legs';
         if (height <= 1.45) return 'body';

@@ -9,6 +9,7 @@ import { GunFireComponent } from "../../components/gun/GunFireComponent";
 import { GunRecoilComponent } from "../../components/gun/GunRecoilComponent";
 import { GunReloadComponent } from "../../components/gun/GunReloadComponent";
 import { GunOffsetComponent } from "../../components/gun/GunOffsetComponent";
+import { GunDamageComponent } from "../../components/gun/GunDamageComponent";
 
 export class AK47 extends ItemActor {
 
@@ -46,6 +47,12 @@ export class AK47 extends ItemActor {
                 {
                     shacking_level: 0.06,
                     shacking_duration: 0.15
+                }
+            )).set('gun_damage', new GunDamageComponent(
+                {
+                    near: { head: 14, body: 11, legs: 9 },
+                    medium: { head: 11, body: 9, legs: 7 },
+                    far: { head: 7, body: 5, legs: 4 }
                 }
             )).set('gun_reload', new GunReloadComponent(
                 {

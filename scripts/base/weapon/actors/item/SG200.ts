@@ -9,6 +9,7 @@ import { GunFireComponent } from "../../components/gun/GunFireComponent";
 import { GunRecoilComponent } from "../../components/gun/GunRecoilComponent";
 import { GunReloadComponent } from "../../components/gun/GunReloadComponent";
 import { GunOffsetComponent } from "../../components/gun/GunOffsetComponent";
+import { GunDamageComponent } from "../../components/gun/GunDamageComponent";
 
 export class SG200 extends ItemActor {
 
@@ -46,6 +47,12 @@ export class SG200 extends ItemActor {
                 {
                     shacking_level: 0.12,
                     shacking_duration: 0.2
+                }
+            )).set('gun_damage', new GunDamageComponent(
+                {
+                    near: { head: 1, body: 1, legs: 1 },
+                    medium: { head: 1, body: 1, legs: 1 },
+                    far: { head: 1, body: 1, legs: 1 }
                 }
             )).set('gun_reload', new GunReloadComponent(
                 {
