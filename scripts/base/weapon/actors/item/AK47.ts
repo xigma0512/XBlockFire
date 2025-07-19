@@ -50,9 +50,9 @@ export class AK47 extends ItemActor {
                 }
             )).set('gun_damage', new GunDamageComponent(
                 {
-                    near: { head: 14, body: 11, legs: 9 },
-                    medium: { head: 11, body: 9, legs: 7 },
-                    far: { head: 7, body: 5, legs: 4 }
+                    near: { head: 16, body: 11, legs: 9 },
+                    medium: { head: 13, body: 10, legs: 8 },
+                    far: { head: 12, body: 8, legs: 6 }
                 }
             )).set('gun_reload', new GunReloadComponent(
                 {
@@ -60,9 +60,9 @@ export class AK47 extends ItemActor {
                     reload_sound: 'xblockfire.ak47_reload'
                 }
             )).set('gun_offset', new GunOffsetComponent({
-                scope: 0.2,
-                hipfire: 4,
-                movement: 9
+                scope: 0.001,
+                hipfire: 0.03,
+                movement: 0.03
             }));
 
         this.setItem();

@@ -50,9 +50,9 @@ export class M4A4 extends ItemActor {
                 }
             )).set('gun_damage', new GunDamageComponent(
                 {
-                    near: { head: 1, body: 1, legs: 1 },
-                    medium: { head: 1, body: 1, legs: 1 },
-                    far: { head: 1, body: 1, legs: 1 }
+                    near: { head: 12, body: 8, legs: 6 },
+                    medium: { head: 10, body: 7, legs: 4 },
+                    far: { head: 7, body: 4, legs: 3 }
                 }
             )).set('gun_reload', new GunReloadComponent(
                 {
@@ -60,9 +60,9 @@ export class M4A4 extends ItemActor {
                     reload_sound: 'xblockfire.m4a4_reload'
                 }
             )).set('gun_offset', new GunOffsetComponent({
-                scope: 0.01,
-                hipfire: 0.05,
-                movement: 0.05
+                scope: 0.001,
+                hipfire: 0.03,
+                movement: 0.02
             }));
 
         this.setItem();

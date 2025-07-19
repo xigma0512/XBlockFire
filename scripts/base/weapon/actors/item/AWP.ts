@@ -50,9 +50,9 @@ export class AWP extends ItemActor {
                 }
             )).set('gun_damage', new GunDamageComponent(
                 {
-                    near: { head: 20, body: 20, legs: 18 },
-                    medium: { head: 20, body: 20, legs: 16 },
-                    far: { head: 20, body: 20, legs: 14 }
+                    near: { head: 200, body: 200, legs: 30 },
+                    medium: { head: 200, body: 200, legs: 30 },
+                    far: { head: 200, body: 200, legs: 25 }
                 }
             )).set('gun_reload', new GunReloadComponent(
                 {
@@ -60,9 +60,9 @@ export class AWP extends ItemActor {
                     reload_sound: 'xblockfire.awp_reload'
                 }
             )).set('gun_offset', new GunOffsetComponent({
-                scope: 0.1,
-                hipfire: 1,
-                movement: 12
+                scope: 0,
+                hipfire: 0.005,
+                movement: 0.5
             }));
 
         this.setItem();
