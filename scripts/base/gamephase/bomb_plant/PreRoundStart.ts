@@ -57,6 +57,7 @@ function initializePlayers() {
         set_entity_native_property(player, 'player:can_use_item', false);
         player.setGameMode(GameMode.Adventure);
         player.addEffect('regeneration', 100, { amplifier: 255 });
+        player.addEffect('health_boost', 20000000, { amplifier: 4, showParticles: false });
         
         player.removeTag('attacker');
         player.removeTag('defender');

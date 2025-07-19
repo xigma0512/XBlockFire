@@ -129,10 +129,39 @@
             }
         },
         "components": {
+            "minecraft:damage_sensor": {
+                "triggers": [
+                    {
+                        "on_damage": {
+                            "filters": {
+                                "any_of": [
+                                    {
+                                        "all_of": [
+                                            { "test": "has_tag", "value": "attacker" },
+                                            { "test": "has_tag", "subject": "other", "value": "attacker" }
+                                        ]
+                                    },
+                                    {
+                                        "all_of": [
+                                            { "test": "has_tag", "value": "defender" },
+                                            { "test": "has_tag", "subject": "other", "value": "defender" }
+                                        ]
+                                    }
+                                ]
+                            }
+                        },
+                        "deals_damage": false
+                    }
+                ]
+            },
             "minecraft:type_family": {
                 "family": [
                     "player"
                 ]
+            },
+            "minecraft:health": {
+                "value": 20,
+                "max": 20
             },
             "minecraft:is_hidden_when_invisible": {},
             "minecraft:collision_box": {
