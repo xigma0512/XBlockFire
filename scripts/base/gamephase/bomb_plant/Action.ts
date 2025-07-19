@@ -16,6 +16,8 @@ import { Config } from "../../../settings/config";
 
 const config = Config.bombplant.action;
 
+const VOICE_30_SEC_LEFT_SOUND_ID = 'xblockfire.30_sec_left';
+
 const enum EndReasonEnum {
     'Time-up' = 1,
     'Attacker-Eliminated',
@@ -95,6 +97,7 @@ export class ActionPhase implements IPhaseHandler {
 
     on_running() {
         this._currentTick --;
+        voiceBroadcast(this.currentTick);
         this.hud.update();
         this.transitions();
     }
@@ -127,4 +130,10 @@ export class ActionPhase implements IPhaseHandler {
         }
     }
 
+}
+
+function voiceBroadcast(currentTick: number) {
+    if (currentTick === 30 * 20) {
+        Broadcast.sound(VOICE_30_SEC_LEFT_SOUND_ID, {}, MemberManager.getPlayers());
+    }
 }
