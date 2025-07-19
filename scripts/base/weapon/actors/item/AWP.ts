@@ -9,6 +9,7 @@ import { GunFireComponent } from "../../components/gun/GunFireComponent";
 import { GunRecoilComponent } from "../../components/gun/GunRecoilComponent";
 import { GunReloadComponent } from "../../components/gun/GunReloadComponent";
 import { GunOffsetComponent } from "../../components/gun/GunOffsetComponent";
+import { GunDamageComponent } from "../../components/gun/GunDamageComponent";
 
 export class AWP extends ItemActor {
 
@@ -46,6 +47,12 @@ export class AWP extends ItemActor {
                 {
                     shacking_level: 0.11,
                     shacking_duration: 0.15
+                }
+            )).set('gun_damage', new GunDamageComponent(
+                {
+                    near: { head: 20, body: 20, legs: 18 },
+                    medium: { head: 20, body: 20, legs: 16 },
+                    far: { head: 20, body: 20, legs: 14 }
                 }
             )).set('gun_reload', new GunReloadComponent(
                 {
