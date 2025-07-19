@@ -30,6 +30,23 @@ export namespace Config {
 
     export const c4 = {
         // C4可以被安裝在目標點範圍多少格內
-        C4_TARGET_RANGE: 4.5
+        C4_TARGET_RANGE: 4.5,
+        // C4可以在多少格內被拆除
+        DEFUSE_RANGE: 1.5
+    }
+
+    export const uncommon_items = {
+        CONTAINER_LOCATION: { x: 281, y: 79, z: 489 },
+        ITEM_LIST: {
+            'defender_helmet': 0,
+            'defender_chestplate': 1,
+            'defender_leggings': 2,
+            'defender_boots': 3,
+
+            'attacker_helmet': 4,
+            'attacker_chestplate': 5,
+            'attacker_leggings': 6,
+            'attacker_boots': 7,
+        }
     }
 }

@@ -25,7 +25,7 @@ import { Config } from "../../../settings/config";
 
 const DEFUSER_ITEM_ID = 'xblockfire:defuser';
 const PLANTED_C4_ENTITY_ID = 'xblockfire:planted_c4' as VanillaEntityIdentifier;
-const DEFUSE_RANGE = 1.5;
+const DEFUSE_RANGE = Config.c4.DEFUSE_RANGE;
 const DEFUSING_TIME = 5 * 20;
 
 const EXPLOSION_SOUND_ID = 'xblockfire.c4_explosion';
