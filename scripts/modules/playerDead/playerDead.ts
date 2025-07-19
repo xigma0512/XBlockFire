@@ -1,4 +1,4 @@
-import { MemberManager } from "../../base/gameroom/member/MemberManager";
+import { MemberManager } from "../../base/member/MemberManager";
 import { C4Manager } from "../../base/c4state/C4Manager";
 import { gameEvents } from "../../event/EventEmitter";
 import { HudTextController } from "../hud/HudTextController";

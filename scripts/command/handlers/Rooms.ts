@@ -1,6 +1,6 @@
 import { gameroom, GameRoomFactory } from "../../base/gameroom/GameRoom";
 import { PhaseManager } from "../../base/gamephase/PhaseManager";
-import { MemberManager } from "../../base/gameroom/member/MemberManager";
+import { MemberManager } from "../../base/member/MemberManager";
 
 import { PreRoundStartPhase } from "../../base/gamephase/bomb_plant/PreRoundStart";
 

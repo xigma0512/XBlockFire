@@ -1,5 +1,5 @@
 import { gameroom } from "../../gameroom/GameRoom";
-import { MemberManager } from "../../gameroom/member/MemberManager";
+import { MemberManager } from "../../member/MemberManager";
 import { C4Manager } from "../C4Manager";
 import { MapRegister } from "../../gamemap/MapRegister";
 import { HudTextController } from "../../../modules/hud/HudTextController";

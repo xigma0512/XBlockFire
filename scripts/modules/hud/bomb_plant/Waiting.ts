@@ -1,5 +1,5 @@
 import { gameroom } from "../../../base/gameroom/GameRoom";
-import { MemberManager } from "../../../base/gameroom/member/MemberManager";
+import { MemberManager } from "../../../base/member/MemberManager";
 import { PhaseManager } from "../../../base/gamephase/PhaseManager";
 import { MapRegister } from "../../../base/gamemap/MapRegister";
 

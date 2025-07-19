@@ -1,6 +1,6 @@
 import { gameroom } from "../../gameroom/GameRoom";
 import { PhaseManager } from "../PhaseManager";
-import { MemberManager } from "../../gameroom/member/MemberManager";
+import { MemberManager } from "../../member/MemberManager";
 import { C4Manager } from "../../c4state/C4Manager";
 import { HotbarManager, HotbarTemplate } from "../../../modules/hotbar/Hotbar";
 import { MapRegister } from "../../gamemap/MapRegister";

@@ -1,8 +1,8 @@
-import { TeamEnum } from "../../../types/TeamEnum";
+import { TeamEnum } from "../../types/TeamEnum";
 
-import { FormatCode as FC } from "../../../utils/FormatCode";
-import { Broadcast } from "../../../utils/Broadcast"; 
-import { entity_dynamic_property } from "../../../utils/Property";
+import { FormatCode as FC } from "../../utils/FormatCode";
+import { Broadcast } from "../../utils/Broadcast"; 
+import { entity_dynamic_property } from "../../utils/Property";
 
 import { Player, world } from "@minecraft/server";
 

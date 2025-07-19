@@ -1,4 +1,4 @@
-import { MemberManager } from "../../gameroom/member/MemberManager";
+import { MemberManager } from "../../member/MemberManager";
 import { C4Manager } from "../C4Manager";
 
 import { C4IdleState } from "./Idle";

@@ -1,5 +1,5 @@
 import { C4Manager } from "../../base/c4state/C4Manager";
-import { MemberManager } from "../../base/gameroom/member/MemberManager";
+import { MemberManager } from "../../base/member/MemberManager";
 import { C4StateEnum } from "../../types/bombstate/C4StateEnum";
 import { TeamEnum } from "../../types/TeamEnum";
 
