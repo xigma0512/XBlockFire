@@ -209,6 +209,24 @@
             ],
             "category": "ambient"
         },
+        "xblockfire.p90_fire": {
+            "sounds": [
+                {
+                    "name": "sounds/gun/p90_fire",
+                    "is3D": false
+                }
+            ],
+            "category": "ambient"
+        },
+        "xblockfire.p90_reload": {
+            "sounds": [
+                {
+                    "name": "sounds/gun/p90_reload",
+                    "is3D": false
+                }
+            ],
+            "category": "ambient"
+        },
         "xblockfire.glock17_fire": {
             "sounds": [
                 {
@@ -313,6 +331,24 @@
             "sounds": [
                 {
                     "name": "sounds/gun/sg200_reload",
+                    "volume": 2
+                }
+            ],
+            "category": "ambient"
+        },
+        "xblockfire.p90_fire.3d": {
+            "sounds": [
+                {
+                    "name": "sounds/gun/p90_fire",
+                    "volume": 5
+                }
+            ],
+            "category": "ambient"
+        },
+        "xblockfire.p90_reload.3d": {
+            "sounds": [
+                {
+                    "name": "sounds/gun/p90_reload",
                     "volume": 2
                 }
             ],

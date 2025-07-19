@@ -8,6 +8,7 @@ export const enum GunTypeEnum {
     'AK47',
     'M4A4',
     'SG200',
+    'P90',
     'Glock17',
     'Deagle'
 }
