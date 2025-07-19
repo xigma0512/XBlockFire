@@ -15,9 +15,9 @@ export namespace Config {
             COUNTDOWN_TIME: 50 * 20
         },
         roundEnd: {
-            INCOME: [3000, 1500],
+            INCOME: [3500, 2000],
             WINNING_SCORE: 7,
-            COUNTDOWN_TIME: 5 * 20
+            COUNTDOWN_TIME: 10 * 20
         },
         gameover: {
             COUNTDOWN_TIME: 10 * 20
