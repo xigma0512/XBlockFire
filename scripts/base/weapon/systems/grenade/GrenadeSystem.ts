@@ -12,32 +12,23 @@ import { Entity, world } from "@minecraft/server";
 import { Direction } from "@minecraft/server";
 
 
-class _GrenadeSystem {
+export class GrenadeSystem {
 
-    private static _instance: _GrenadeSystem;
-    static get instance() { return (this._instance || (this._instance = new this())); }
+    private static _grenades = new Map<Entity, GrenadeHandler>();
 
-    private _grenades: Map<Entity, GrenadeHandler>;
-
-    constructor() {
-        this._grenades = new Map();
-    }
-
-    getHandler(entity: Entity) {
+    static getHandler(entity: Entity) {
         return this._grenades.get(entity);
     }
 
-    setHandler(entity: Entity, handler: GrenadeHandler) {
+    static setHandler(entity: Entity, handler: GrenadeHandler) {
         this._grenades.set(entity, handler);
     }
 
-    removeHandler(entity: Entity) {
+    static removeHandler(entity: Entity) {
         this._grenades.delete(entity);
     }
 
 }
-
-export const GrenadeSystem = _GrenadeSystem.instance;
 
 const handlerRegister = world.afterEvents.entitySpawn.subscribe(ev => {
     if (!ev.entity.isValid) return;
