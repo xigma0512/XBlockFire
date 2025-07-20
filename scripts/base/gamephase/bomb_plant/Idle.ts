@@ -11,7 +11,7 @@ import { TeamEnum } from "../../../types/TeamEnum";
 
 import { FormatCode as FC } from "../../../utils/FormatCode";
 import { set_entity_dynamic_property } from "../../../utils/Property";
-import { set_variable } from "../../../utils/Variable";
+import { reset_variables, set_variable } from "../../../utils/Variable";
 import { ItemStackFactory } from "../../../utils/ItemStackFactory";
 
 import { ItemLockMode } from "@minecraft/server";
@@ -94,6 +94,7 @@ function initializePlayers() {
 }
 
 function initializeVariable() {
+    reset_variables();
     set_variable(`attacker_score`, 0);
     set_variable(`defender_score`, 0);
     for (const player of MemberManager.getPlayers()) {
