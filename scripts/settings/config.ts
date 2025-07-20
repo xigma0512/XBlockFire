@@ -2,7 +2,7 @@ export namespace Config {
     export const game = {
         AUTO_START: true,
         AUTO_START_MIN_PLAYER: 10,
-        RANDOM_ASSIGNED: true
+        RANDOM_ASSIGNED: false
     }
 
     export const bombplant = {
@@ -20,7 +20,7 @@ export namespace Config {
         },
         roundEnd: {
             INCOME: [3500, 2200],
-            WINNING_SCORE: 12,
+            WINNING_SCORE: 13,
             COUNTDOWN_TIME: 10 * 20
         },
         gameover: {
@@ -40,7 +40,7 @@ export namespace Config {
     }
 
     export const uncommon_items = {
-        CONTAINER_LOCATION: { x: 281, y: 79, z: 489 },
+        CONTAINER_LOCATION: { x: 155, y: 123, z: -2 },
         ITEM_LIST: {
             'defender_helmet': 0,
             'defender_chestplate': 1,
