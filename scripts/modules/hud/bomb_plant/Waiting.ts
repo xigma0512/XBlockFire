@@ -8,7 +8,8 @@ import { Broadcast } from "../../../utils/Broadcast";
 
 import { Config } from "../../../settings/config";
 
-const config = Config.bombplant.idle;
+const game_config = Config.game;
+const idle_config = Config.bombplant.idle;
 
 export class WaitingHud implements InGameHud {
     
@@ -27,11 +28,11 @@ export class WaitingHud implements InGameHud {
         
         let text = `${FC.Yellow}Waiting for more players...`;
         
-        if (config.AUTO_START && playerAmount >= config.AUTO_START_MIN_PLAYER) {
+        if (game_config.AUTO_START && playerAmount >= game_config.AUTO_START_MIN_PLAYER) {
             text = `${FC.Green}Game will start in ${(phase.currentTick / 20).toFixed(0)} seconds.`;
         }
         
-        if (phase.currentTick !== config.COUNTDOWN_TIME && playerAmount < config.AUTO_START_MIN_PLAYER) {
+        if (phase.currentTick !== idle_config.COUNTDOWN_TIME && playerAmount < game_config.AUTO_START_MIN_PLAYER) {
             Broadcast.message(`${FC.Bold}${FC.Red}Not enough players. Waiting for more players.`, players);
         }
         
