@@ -2,6 +2,7 @@ import { PhaseManager } from "../../gamephase/PhaseManager";
 import { MemberManager } from "../../member/MemberManager";
 import { C4Manager } from "../C4Manager";
 import { HudTextController } from "../../../modules/hud/HudTextController";
+import { EconomyManager } from "../../economy/EconomyManager";
 
 import { C4IdleState } from "./Idle";
 import { C4PlantedPhase } from "../../gamephase/bomb_plant/C4Planted";
@@ -59,6 +60,11 @@ export class C4PlantedState implements IC4StateHandler {
 
         const siteIndex = String.fromCharCode(65 + (variable(`c4.plant_site_index`) ?? 0));
         Broadcast.message(`${FC.Bold}${FC.MinecoinGold}C4 HAS BEEN PLANTED AT SITE ${siteIndex}.` , MemberManager.getPlayers());
+        
+        for (const player of MemberManager.getPlayers({team: TeamEnum.Attacker})) {
+            EconomyManager.setMoney(player, EconomyManager.getMoney(player) + 300);
+            player.sendMessage(`${FC.Gray}>> C4 Planted reward: +300$`);
+        }
     }
     
     on_running() {
