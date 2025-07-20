@@ -1,4 +1,4 @@
-export const enum TeamEnum {
+export enum TeamEnum {
     Attacker = "Attacker",
     Defender = "Defender"
 }
