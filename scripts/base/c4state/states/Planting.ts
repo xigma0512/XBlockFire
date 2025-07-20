@@ -15,7 +15,7 @@ import { ItemCompleteUseAfterEvent, ItemStopUseAfterEvent } from "@minecraft/ser
 import { Player, world } from "@minecraft/server";
 
 const C4_ITEM_ID = 'xblockfire:c4';
-const C4_PLANTING_TIME = 3 * 20;
+const C4_PLANTING_TIME = 4 * 20;
 
 const C4_PLANTED_SOUND_ID = 'xblockfire.c4_planted';
 const PLANTING_SELF_SOUND_ID = 'xblockfire.planting.self';
