@@ -10,6 +10,7 @@ import { TeamEnum } from "../../types/TeamEnum";
 import { Broadcast } from "../../utils/Broadcast";
 import { FormatCode as FC } from "../../utils/FormatCode";
 import { entity_dynamic_property, set_entity_dynamic_property } from "../../utils/Property";
+import { set_variable, variable } from "../../utils/Variable";
 
 import { GameMode } from "@minecraft/server";
 import { ItemStack, Player, system, world } from "@minecraft/server";
@@ -40,7 +41,12 @@ gameEvents.subscribe('playerDied', (ev) => {
     deadPlayer.getComponent('inventory')?.container.clearAll();
     deadPlayer.setGameMode(GameMode.Spectator);
 
-    if (ev.attacker && ev.attacker instanceof Player) showDeathMessage(deadPlayer, ev.attacker);
+    set_variable(`${deadPlayer.name}.deaths`, variable(`${deadPlayer.name}.deaths`) + 1);
+    
+    if (ev.attacker && ev.attacker instanceof Player) {
+        showDeathMessage(deadPlayer, ev.attacker);
+        set_variable(`${ev.attacker.name}.kills`, variable(`${ev.attacker.name}.kills`) + 1);
+    }
 });
 
 

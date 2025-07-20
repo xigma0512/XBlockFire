@@ -96,4 +96,8 @@ function initializePlayers() {
 function initializeVariable() {
     set_variable(`attacker_score`, 0);
     set_variable(`defender_score`, 0);
+    for (const player of MemberManager.getPlayers()) {
+        set_variable(`${player.name}.kills`, 0);
+        set_variable(`${player.name}.deaths`, 0);
+    }
 }

@@ -67,6 +67,7 @@ export class ActionHud implements InGameHud {
                 `${FC.Aqua}D-${defenderScore} ${FC.White}| ${FC.Bold}${FC.Aqua}${'O '.repeat(defenderPlayers.length)}${FC.Gray}${'X '.repeat(defenderDeadPlayers.length)}`,
                 `${FC.Red}A-${attackerScore} ${FC.White}| ${FC.Bold}${FC.Red}${'O '.repeat(attackerPlayers.length)}${FC.Gray}${'X '.repeat(attackerDeadPlayers.length)}`,
                 '',
+                `K/D: ${FC.Green}${variable(`${player.name}.kills`)}/${variable(`${player.name}.deaths`)}`,
                 `Money: ${FC.Green}${EconomyManager.getMoney(player)}`,
                 '',
                 `${FC.Bold}Your Team:`,

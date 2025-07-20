@@ -1,4 +1,5 @@
 import { PhaseManager } from "../PhaseManager";
+import { MemberManager } from "../../member/MemberManager";
 
 import { ActionHud } from "../../../modules/hud/bomb_plant/Action";
 import { IdlePhase } from "./Idle";
@@ -60,6 +61,7 @@ export class GameOverPhase implements IPhaseHandler {
 
     on_exit() {
         respawnPlayers();
+        showScoreboard();
     }
 
     private transitions() {
@@ -73,4 +75,12 @@ function respawnPlayers() {
         player.setGameMode(GameMode.Adventure);
         player.teleport(world.getDefaultSpawnLocation());
     }
+}
+
+function showScoreboard() {
+    let stat = `--- [ Scoreboard ] ---\n`;
+    for (const player of MemberManager.getPlayers()) {
+        stat += `${player.name} | K:${variable(`${player.name}.kills`)} D:${variable(`${player.name}.deaths`)}\n`;
+    }
+    Broadcast.message(stat);
 }
