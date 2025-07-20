@@ -1,8 +1,12 @@
 export namespace Config {
+    export const game = {
+        AUTO_START: true,
+        AUTO_START_MIN_PLAYER: 10,
+        RANDOM_ASSIGNED: true
+    }
+
     export const bombplant = {
         idle: {
-            AUTO_START: true,
-            AUTO_START_MIN_PLAYER: 10,
             COUNTDOWN_TIME: 30 * 20
         },
         buying: {
@@ -15,8 +19,8 @@ export namespace Config {
             COUNTDOWN_TIME: 50 * 20
         },
         roundEnd: {
-            INCOME: [3500, 2000],
-            WINNING_SCORE: 7,
+            INCOME: [3500, 2200],
+            WINNING_SCORE: 12,
             COUNTDOWN_TIME: 10 * 20
         },
         gameover: {
