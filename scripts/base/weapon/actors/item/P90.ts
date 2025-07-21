@@ -50,8 +50,8 @@ export class P90 extends ItemActor {
                 }
                 )).set('gun_damage', new GunDamageComponent(
                     {
-                        near: { head: 5, body: 4, legs: 3 },
-                        medium: { head: 2, body: 1, legs: 1 },
+                        near: { head: 5, body: 4, legs: 4 },
+                        medium: { head: 3, body: 2, legs: 1 },
                         far: { head: 1, body: 1, legs: 0 }
                     }
                 )).set('gun_reload', new GunReloadComponent(
@@ -61,8 +61,8 @@ export class P90 extends ItemActor {
                 }
             )).set('gun_offset', new GunOffsetComponent({
                 scope: 0.01,
-                hipfire: 0.04,
-                movement: 0.05
+                hipfire: 0.02,
+                movement: 0.01
             }));
 
         this.setItem();
