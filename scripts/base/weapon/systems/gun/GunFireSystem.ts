@@ -50,14 +50,20 @@ export class GunFireSystem {
         if (gunFireComp.release_to_fire) 
         {
             system.run(() => {
-                const callback = world.afterEvents.itemReleaseUse.subscribe(ev => {
+                const releaseUseCallback = world.afterEvents.itemReleaseUse.subscribe(ev => {
                     if (!this._cooldowns.has(player) && ev.source.id === player.id) {
                         this.fire(player, actor);
                         
                         this._cooldowns.add(player);
                         system.runTimeout(() => this._cooldowns.delete(player), fireRate);
                     }
-                    world.afterEvents.itemReleaseUse.unsubscribe(callback);
+                    world.afterEvents.itemReleaseUse.unsubscribe(releaseUseCallback);
+                });
+                const stopUseCallback = world.afterEvents.itemStopUse.subscribe(ev => {
+                    if (ev.source.id === player.id) {
+                        world.afterEvents.itemReleaseUse.unsubscribe(releaseUseCallback);
+                        world.afterEvents.itemStopUse.unsubscribe(stopUseCallback);
+                    }
                 });
             });
         }
