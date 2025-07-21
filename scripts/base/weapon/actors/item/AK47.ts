@@ -50,9 +50,9 @@ export class AK47 extends ItemActor {
                 }
             )).set('gun_damage', new GunDamageComponent(
                 {
-                    near: { head: 16, body: 11, legs: 9 },
-                    medium: { head: 13, body: 10, legs: 8 },
-                    far: { head: 12, body: 8, legs: 6 }
+                    near: { head: 14, body: 11, legs: 9 },
+                    medium: { head: 12, body: 10, legs: 8 },
+                    far: { head: 10, body: 8, legs: 6 }
                 }
             )).set('gun_reload', new GunReloadComponent(
                 {

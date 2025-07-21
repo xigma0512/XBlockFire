@@ -62,7 +62,7 @@ export class Deagle extends ItemActor {
             )).set('gun_offset', new GunOffsetComponent({
                 scope: 0.001,
                 hipfire: 0.007,
-                movement: 0.01
+                movement: 0.003
             }));
 
         this.setItem();
