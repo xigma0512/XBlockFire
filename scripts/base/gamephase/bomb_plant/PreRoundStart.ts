@@ -53,11 +53,17 @@ function initializePlayers() {
         if (entity_dynamic_property(player, 'player:is_spectator')) continue;
 
         player.inputPermissions.setPermissionCategory(InputPermissionCategory.LateralMovement, false); 
+        
         set_entity_dynamic_property(player, 'player:is_alive', true);
         set_entity_native_property(player, 'player:can_use_item', false);
+
         player.setGameMode(GameMode.Adventure);
+        
         player.addEffect('regeneration', 100, { amplifier: 255 });
         player.addEffect('health_boost', 20000000, { amplifier: 4, showParticles: false });
+        player.addEffect('saturation', 1, { amplifier: 255, showParticles: false });
+        player.addEffect('hunger', 60, { amplifier: 200, showParticles: false });
+        player.getComponent('movement')?.setCurrentValue(0.11);
         
         player.removeTag('attacker');
         player.removeTag('defender');
