@@ -163,6 +163,10 @@
                 "value": 20,
                 "max": 20
             },
+            "minecraft:player.saturation": {
+                "value": 5,
+                "max": 20
+            },
             "minecraft:is_hidden_when_invisible": {},
             "minecraft:collision_box": {
                 "width": 0.6,
