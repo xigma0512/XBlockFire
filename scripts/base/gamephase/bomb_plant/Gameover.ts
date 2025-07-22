@@ -1,7 +1,9 @@
 import { PhaseManager } from "../PhaseManager";
 import { MemberManager } from "../../member/MemberManager";
+import { C4Manager } from "../../c4state/C4Manager";
 
 import { ActionHud } from "../../../modules/hud/bomb_plant/Action";
+import { C4IdleState } from "../../c4state/states/Idle";
 import { IdlePhase } from "./Idle";
 
 import { TeamEnum } from "../../../types/TeamEnum";
@@ -60,6 +62,7 @@ export class GameOverPhase implements IPhaseHandler {
     }
 
     on_exit() {
+        resetC4State();
         respawnPlayers();
         showScoreboard();
     }
@@ -68,6 +71,10 @@ export class GameOverPhase implements IPhaseHandler {
         if (this.currentTick <= 0) PhaseManager.updatePhase(new IdlePhase());
     }
 
+}
+
+function resetC4State() {
+    C4Manager.updateState(new C4IdleState());
 }
 
 function respawnPlayers() {
