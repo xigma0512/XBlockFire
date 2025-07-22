@@ -169,7 +169,7 @@
             },
             "minecraft:is_hidden_when_invisible": {},
             "minecraft:collision_box": {
-                "width": 0.6,
+                "width": 0.7,
                 "height": 1.8
             },
             "minecraft:movement": {
