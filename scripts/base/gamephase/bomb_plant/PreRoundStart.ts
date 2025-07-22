@@ -15,7 +15,7 @@ import { entity_dynamic_property, set_entity_dynamic_property, set_entity_native
 import { ItemStackFactory } from "../../../utils/ItemStackFactory";
 import { UnCommonItems } from "../../../modules/uncommon_items/UnCommonItems";
 
-import { EquipmentSlot, GameMode, InputPermissionCategory, ItemLockMode } from "@minecraft/server";
+import { EquipmentSlot, GameMode, InputPermissionCategory, ItemLockMode, system } from "@minecraft/server";
 import { ItemStack } from "@minecraft/server";
 
 export class PreRoundStartPhase implements IPhaseHandler {
@@ -58,12 +58,15 @@ function initializePlayers() {
         set_entity_native_property(player, 'player:can_use_item', false);
 
         player.setGameMode(GameMode.Adventure);
-        
-        player.addEffect('regeneration', 100, { amplifier: 255 });
+
+        player.addEffect('regeneration', 400, { amplifier: 255 });
         player.addEffect('health_boost', 20000000, { amplifier: 4, showParticles: false });
-        player.addEffect('saturation', 1, { amplifier: 255, showParticles: false });
-        player.addEffect('hunger', 60, { amplifier: 200, showParticles: false });
+        player.addEffect('hunger', 100, { amplifier: 255, showParticles: false });
         player.getComponent('movement')?.setCurrentValue(0.11);
+
+        system.runTimeout(() => {
+            player.addEffect('saturation', 1, { amplifier: 5, showParticles: false });
+        }, 120);
         
         player.removeTag('attacker');
         player.removeTag('defender');
