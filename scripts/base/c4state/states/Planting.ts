@@ -55,10 +55,9 @@ export class C4PlantingState implements IC4StateHandler {
     private onItemCompleteUse(ev: ItemCompleteUseAfterEvent) {
         if (ev.itemStack.typeId !== C4_ITEM_ID) return;
         if (ev.source.id !== this.source.id) return;
-        
-                
+
         const phase = PhaseManager.getPhase();
-        if (phase.phaseTag !== BombPlantPhaseEnum.Action) return;
+        if (phase.phaseTag !== BombPlantPhaseEnum.Action && phase.phaseTag !== BombPlantPhaseEnum.RoundEnd) return;
         
         // eslint-disable-next-line
         ev.source.runCommand('clear @s xblockfire:c4');
@@ -74,7 +73,6 @@ export class C4PlantingState implements IC4StateHandler {
         if (!ev.itemStack || ev.itemStack.typeId !== C4_ITEM_ID) return;
         if (ev.source.id !== this.source.id) return;
 
-        
         C4Manager.updateState(new C4IdleState());
         
         ev.source.stopSound(PLANTING_SELF_SOUND_ID);
