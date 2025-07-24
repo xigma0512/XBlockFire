@@ -8,91 +8,133 @@ import { GameModeEnum } from "../../types/gameroom/GameModeEnum";
 
 import { FormatCode as FC } from "../../utils/FormatCode";
 
-import { Player } from "@minecraft/server";
 import { TeamEnum } from "../../types/TeamEnum";
 import { Broadcast } from "../../utils/Broadcast";
 import { MapRegister } from "../../base/gamemap/MapRegister";
 
-function setRoomGameMode(executer: Player, ...args: string[]) {
+import { CommandPermissionLevel, CustomCommandOrigin, CustomCommandParamType, Player } from "@minecraft/server";
+import { CommandRegistry } from "../CommandRegistry";
+
+function setting_gamemode(origin: CustomCommandOrigin, ...args: any[]) {
     const [gamemode] = args;
 
-    if (gamemode === undefined) {
-        throw Error("Missing argument '<gamemode>'. Usage: /scriptevent blockfire:room set_gamemode <gamemode>");
-    }
-
     if (!Object.values<string>(GameModeEnum).includes(gamemode)) {
-        throw Error(`Unknown mode ${gamemode}.`);
+        return { message: `${FC.Gray}>> ${FC.Red}未知的遊戲模式`, status: 1 }
     }
 
     GameRoomFactory.createRoom(gamemode as GameModeEnum, gameroom().gameMapId);
-    executer.sendMessage(`${FC.Gray}>> ${FC.Yellow}設定遊戲模式為 ${FC.Green}${gamemode}`);
+    return { message: `${FC.Gray}>> ${FC.Yellow}設定遊戲模式為 ${FC.Green}${gamemode}`, status: 0 }
 }
 
-function setRoomMap(executer: Player, ...args: string[]) {
-    const [mapId] = args;
-
-    if (mapId === undefined) {
-        throw Error("Missing argument '<mapId>'. Usage: /scriptevent blockfire:room set_map <mapId>");
+function setting_map(origin: CustomCommandOrigin, ...args: any[]) {
+    const mapId = Number(args[0]);
+    if (!MapRegister.availableMaps.has(mapId)) {
+        return { message: `${FC.Gray}>> ${FC.Red}未知的地圖編號`, status: 1 }
     }
-
-    const map = MapRegister.getMap(Number(mapId))
-
-    GameRoomFactory.createRoom(gameroom().gameMode, Number(mapId));
-    executer.sendMessage(`${FC.Gray}>> ${FC.Yellow}設定遊戲地圖為 ${FC.Green}${map.name}`);
+    
+    const map = MapRegister.getMap(mapId);
+    GameRoomFactory.createRoom(gameroom().gameMode, mapId);
+    return { message: `${FC.Gray}>> ${FC.Yellow}設定遊戲地圖為 ${FC.Green}${map.name}`, status: 0 };
 }
 
-function playerJoin(executer: Player) {    
-    if (MemberManager.includePlayer(executer)) throw Error(`You are already in the game.`);
-
-    MemberManager.joinRoom(executer);
-    executer.sendMessage(`${FC.Gray}>> ${FC.Green}You join the room `);
-}
-
-function playerLeave(executer: Player) {
-    if (MemberManager.includePlayer(executer)) throw Error(`You are not in the game.`);
-
-    MemberManager.leaveRoom(executer);
-    executer.sendMessage(`${FC.Gray}>> ${FC.Red}You leave the room `);
-}
-
-function forceStart(executer: Player) {
+function forcestart(origin: CustomCommandOrigin, ...args: any[]) {
     const startPhase = {
         [GameModeEnum.BombPlant]: new PreRoundStartPhase()
     };
     PhaseManager.updatePhase(startPhase[gameroom().gameMode]);
-    executer.sendMessage(`${FC.Gray}>> ${FC.LightPurple}Force start.`);
+    return { message: `${FC.Gray}>> ${FC.LightPurple}Force start.`, status: 0 };
 }
 
-function selectTeam(executer: Player, ...args: string[]) {
-    const [team] = args;
-    if (team === undefined) {
-        throw Error("Missing argument '<team>'. Usage: /scriptevent blockfire:room select_team <team>");
+function select_team(origin: CustomCommandOrigin, ...args: any[]) {
+    const executer = origin.sourceEntity;
+    if (executer === undefined || !(executer instanceof Player)) {
+        return { message: `${FC.Gray}>> ${FC.Red}請用玩家身分執行指令`, status: 1 }
     }
 
+    const [team] = args;
     if (!Object.values<string>(TeamEnum).includes(team)) {
-        throw Error(`Unknown mode ${team}.`);
+        return { message: `${FC.Gray}>> ${FC.Red}未知的隊伍名稱`, status: 1 }
     }
 
     MemberManager.setPlayerTeam(executer, team as TeamEnum);
-    Broadcast.message(`${FC.Gold}${executer.name} join [${team}]`);
+    Broadcast.message(`${FC.Gold}${executer.name} 加入 [${team}]`);
 }
 
-function roomCmd(executer: Player, ...args: string[]) {
-    const cmdType = args[0];
-    if (!cmdType) throw Error('Missing arguments <type>. Usage: /scriptevent blockfire:room <type> <...args>');
+function admin_select_team(origin: CustomCommandOrigin, ...args: any[]) {
 
-    args.splice(0, 1);
-    switch(cmdType) {
-        case 'set_gamemode': setRoomGameMode(executer, ...args); break;
-        case 'set_map': setRoomMap(executer, ...args); break;
-        case 'join': playerJoin(executer); break;
-        case 'leave': playerLeave(executer); break;
-        case 'start': forceStart(executer); break;
-        case 'select_team': selectTeam(executer, ...args); break;
-        default: 
-            throw Error(`there is no command type as ${cmdType}`);
-            break;
+    const players: Player[] = args[0];
+    const team: TeamEnum = args[1];
+
+    if (!Object.values<string>(TeamEnum).includes(team)) {
+        return { message: `${FC.Gray}>> ${FC.Red}未知的隊伍名稱`, status: 1 }
+    }
+
+    for (const p of players) {
+        MemberManager.setPlayerTeam(p, team as TeamEnum);
+        Broadcast.message(`${FC.Gold}${p.name} 加入 [${team}]`);
     }
 }
 
-export { roomCmd };
+export function register() {
+
+    CommandRegistry.addCustomCommandEnum('xblockfire:enum.gamemode', Object.values(GameModeEnum));
+    CommandRegistry.addCustomCommandEnum('xblockfire:enum.team', Object.values(TeamEnum));
+
+    CommandRegistry.addCustomCommand({
+        name: "xblockfire:setting.gamemode",
+        description: "設定遊戲模式",
+        permissionLevel: CommandPermissionLevel.Admin,
+        mandatoryParameters: [
+            {
+                type: CustomCommandParamType.Enum,
+                name: 'xblockfire:enum.gamemode'
+            }
+        ]
+    }, setting_gamemode);
+
+    CommandRegistry.addCustomCommand({
+        name: "xblockfire:setting.gamemap",
+        description: "設定遊戲地圖",
+        permissionLevel: CommandPermissionLevel.Admin,
+        mandatoryParameters: [
+            {
+                type: CustomCommandParamType.Integer,
+                name: 'int.map_id'
+            }
+        ]
+    }, setting_map);
+
+    CommandRegistry.addCustomCommand({
+        name: "xblockfire:select_team",
+        description: "選擇隊伍",
+        permissionLevel: CommandPermissionLevel.Any,
+        mandatoryParameters: [
+            {
+                type: CustomCommandParamType.Enum,
+                name: 'xblockfire:enum.team'
+            }
+        ]
+    }, select_team);
+
+    CommandRegistry.addCustomCommand({
+        name: "xblockfire:admin.select_team",
+        description: "[管理員] 選擇隊伍",
+        permissionLevel: CommandPermissionLevel.Admin,
+        mandatoryParameters: [
+            {
+                type: CustomCommandParamType.PlayerSelector,
+                name: 'selector.player'
+            },
+            {
+                type: CustomCommandParamType.Enum,
+                name: 'xblockfire:enum.team'
+            }
+        ]
+    }, admin_select_team);
+
+    CommandRegistry.addCustomCommand({
+        name: "xblockfire:forcestart",
+        description: "強制開始遊戲",
+        permissionLevel: CommandPermissionLevel.Admin
+    }, forcestart);
+}
