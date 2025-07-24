@@ -11,20 +11,34 @@ import { FormatCode as FC } from "../../utils/FormatCode";
 import { Player } from "@minecraft/server";
 import { TeamEnum } from "../../types/TeamEnum";
 import { Broadcast } from "../../utils/Broadcast";
+import { MapRegister } from "../../base/gamemap/MapRegister";
 
-function createRoom(executer: Player, ...args: string[]) {
-    const [gamemode, mapId] = args;
+function setRoomGameMode(executer: Player, ...args: string[]) {
+    const [gamemode] = args;
 
-    if (gamemode === undefined || mapId === undefined) {
-        throw Error("Missing argument '<gamemode>' or '<map_id>'. Usage: /scriptevent blockfire:room create <gamemode> <mapId>");
+    if (gamemode === undefined) {
+        throw Error("Missing argument '<gamemode>'. Usage: /scriptevent blockfire:room set_gamemode <gamemode>");
     }
 
     if (!Object.values<string>(GameModeEnum).includes(gamemode)) {
         throw Error(`Unknown mode ${gamemode}.`);
     }
 
-    GameRoomFactory.createRoom(gamemode as GameModeEnum, Number(mapId));
-    executer.sendMessage(`${FC.Gray}>> ${FC.Yellow}Created room.`);
+    GameRoomFactory.createRoom(gamemode as GameModeEnum, gameroom().gameMapId);
+    executer.sendMessage(`${FC.Gray}>> ${FC.Yellow}設定遊戲模式為 ${FC.Green}${gamemode}`);
+}
+
+function setRoomMap(executer: Player, ...args: string[]) {
+    const [mapId] = args;
+
+    if (mapId === undefined) {
+        throw Error("Missing argument '<mapId>'. Usage: /scriptevent blockfire:room set_map <mapId>");
+    }
+
+    const map = MapRegister.getMap(Number(mapId))
+
+    GameRoomFactory.createRoom(gameroom().gameMode, Number(mapId));
+    executer.sendMessage(`${FC.Gray}>> ${FC.Yellow}設定遊戲地圖為 ${FC.Green}${map.name}`);
 }
 
 function playerJoin(executer: Player) {    
@@ -69,7 +83,8 @@ function roomCmd(executer: Player, ...args: string[]) {
 
     args.splice(0, 1);
     switch(cmdType) {
-        case 'create': createRoom(executer, ...args); break;
+        case 'set_gamemode': setRoomGameMode(executer, ...args); break;
+        case 'set_map': setRoomMap(executer, ...args); break;
         case 'join': playerJoin(executer); break;
         case 'leave': playerLeave(executer); break;
         case 'start': forceStart(executer); break;
