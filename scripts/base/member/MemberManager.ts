@@ -19,11 +19,13 @@ export class MemberManager {
 
     static joinRoom(player: Player) {
         this.players.add(player);
+        this.playerTeam.set(player, TeamEnum.Spectator);
         Broadcast.message(`${FC.Bold}${FC.Green}${player.name} join the room.`, this.getPlayers());
     }
     
     static leaveRoom(player: Player) {
         this.players.delete(player);
+        this.playerTeam.delete(player);
         Broadcast.message(`${FC.Bold}${FC.Red}${player.name} leave the room.`, this.getPlayers());
     }
 
@@ -33,7 +35,7 @@ export class MemberManager {
         if (!filter) return allPlayers;
 
         return allPlayers.filter(p => {
-            if (filter.team !== undefined && this.getPlayerTeam(p) === filter.team) return false;
+            if (filter.team !== undefined && this.getPlayerTeam(p) !== filter.team) return false;
             if (filter.is_alive !== undefined && filter.is_alive !== entity_dynamic_property(p, 'player:is_alive')) return false;
             return true;
         });

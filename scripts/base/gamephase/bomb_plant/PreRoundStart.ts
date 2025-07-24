@@ -51,6 +51,11 @@ function resetC4State() {
 function initializePlayers() {
     for (const player of MemberManager.getPlayers()) {
 
+        if (MemberManager.getPlayerTeam(player) === TeamEnum.Spectator) {
+            player.setGameMode(GameMode.Spectator);
+            continue;
+        }
+
         player.inputPermissions.setPermissionCategory(InputPermissionCategory.LateralMovement, false); 
         
         set_entity_dynamic_property(player, 'player:is_alive', true);
