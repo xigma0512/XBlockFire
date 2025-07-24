@@ -53,7 +53,7 @@ export class WaitingHud implements InGameHud {
 
         const defenders = MemberManager.getPlayers({team: TeamEnum.Defender});
         const attackers = MemberManager.getPlayers({team: TeamEnum.Attacker});
-        const no_team = MemberManager.getPlayers().filter(p => MemberManager.getPlayerTeam(p) === undefined);
+        const spectators = MemberManager.getPlayers({team: TeamEnum.Spectator});
 
         const message = [
             `${FC.Bold}${FC.Yellow}  XBlockFire  `,
@@ -63,7 +63,7 @@ export class WaitingHud implements InGameHud {
             `Players: ${FC.Green}${playerCount} ${FC.White}(${FC.Aqua}${defenders.length}${FC.White}/${FC.Red}${attackers.length}${FC.White})`,
             ...defenders.map(p => `${FC.Gray}- ${FC.Aqua}${p.name}`),
             ...attackers.map(p => `${FC.Gray}- ${FC.Red}${p.name}`),
-            ...no_team.map(p => `${FC.Gray}- ${p.name}`),
+            ...spectators.map(p => `${FC.Gray}- ${p.name}`),
             '',
             `Mode:`,
             `${FC.Green}${gameroom().gameMode}`,

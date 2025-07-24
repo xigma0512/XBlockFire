@@ -9,8 +9,11 @@ declare interface GameMapType {
     name: string;
     description: string;
     positions: {
-        attacker_spawns: Position[],
-        defender_spawns: Position[],
+        spawns: {
+            'Attacker': Position[],
+            'Defender': Position[],
+            'Spectator': Position[],
+        },
         C4_targets: Position[]
     }
 }

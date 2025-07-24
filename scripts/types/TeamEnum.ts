@@ -1,4 +1,5 @@
 export enum TeamEnum {
     Attacker = "Attacker",
-    Defender = "Defender"
+    Defender = "Defender",
+    Spectator = "Spectator"
 }
