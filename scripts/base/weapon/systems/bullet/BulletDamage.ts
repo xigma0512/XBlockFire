@@ -32,6 +32,7 @@ export class DamageSystem {
             });
         }
 
+        target.addEffect('slowness', 5, {amplifier: 0, showParticles: false})
         target.playSound('random.hurt');
         target.applyDamage(0.001, {cause: EntityDamageCause.override});
         attacker.playSound('random.orb');

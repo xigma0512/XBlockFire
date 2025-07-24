@@ -31,7 +31,7 @@ export class AWP extends ItemActor {
                 }
             )).set('item_weight', new ItemWeightComponent(
                 {
-                    weight: 0.08
+                    weight: 0.085
                 }
             )).set('gun', new GunComponent(
                 {
@@ -52,8 +52,8 @@ export class AWP extends ItemActor {
                 }
             )).set('gun_recoil', new GunRecoilComponent(
                 {
-                    shacking_level: 0.11,
-                    shacking_duration: 0.15
+                    scope_recoil: { level: 0.06, duration: 0.2 },
+                    hipfire_recoil: { level: 0.1, duration: 0.2 }
                 }
             )).set('gun_damage', new GunDamageComponent(
                 {

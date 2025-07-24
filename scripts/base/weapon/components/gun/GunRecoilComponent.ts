@@ -1,20 +1,25 @@
 import { Component } from "../Component";
 
+interface Recoil {
+    level: number;
+    duration: number;
+}
+
 type ComponentDataType = {
-    shacking_level: number;
-    shacking_duration: number;
+    scope_recoil: Recoil;
+    hipfire_recoil: Recoil;
 }
 
 export class GunRecoilComponent extends Component {
 
-    readonly shacking_level: number;
-    readonly shacking_duration: number;
+    readonly scope_recoil: Recoil;
+    readonly hipfire_recoil: Recoil;
 
     constructor(data: ComponentDataType) {
         super('gun_recoil');
 
-        this.shacking_level = data.shacking_level;
-        this.shacking_duration = data.shacking_duration;
+        this.scope_recoil = data.scope_recoil;
+        this.hipfire_recoil = data.hipfire_recoil;
     }
 
 }

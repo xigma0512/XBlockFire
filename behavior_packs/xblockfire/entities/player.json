@@ -173,7 +173,7 @@
                 "height": 1.8
             },
             "minecraft:movement": {
-                "value": 0.12
+                "value": 0.115
             },
             "minecraft:can_climb": {},
             "minecraft:attack": {
