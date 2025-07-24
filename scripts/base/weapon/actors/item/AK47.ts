@@ -31,7 +31,7 @@ export class AK47 extends ItemActor {
                 }
             )).set('item_weight', new ItemWeightComponent(
                 {
-                    weight: 0.1
+                    weight: 0.09
                 }
             )).set('gun', new GunComponent(
                 {
