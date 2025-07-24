@@ -42,4 +42,9 @@ export class GameRoomFactory {
     }
 }
 
-export const gameroom = () => GameRoom.gameroom;
+export const gameroom = () => {
+    if (!GameRoom.gameroom) {
+        GameRoom.gameroom = new GameRoom(GameModeEnum.BombPlant, 0);
+    }
+    return GameRoom.gameroom; 
+}
