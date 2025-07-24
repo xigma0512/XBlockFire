@@ -5,7 +5,6 @@ import { MapRegister } from "../../../base/gamemap/MapRegister";
 
 import { TeamEnum } from "../../../types/TeamEnum";
 
-import { entity_dynamic_property } from "../../../utils/Property";
 import { FormatCode as FC } from "../../../utils/FormatCode";
 import { Broadcast } from "../../../utils/Broadcast";
 
@@ -54,7 +53,7 @@ export class WaitingHud implements InGameHud {
 
         const defenders = MemberManager.getPlayers({team: TeamEnum.Defender});
         const attackers = MemberManager.getPlayers({team: TeamEnum.Attacker});
-        const no_team = MemberManager.getPlayers().filter(p => entity_dynamic_property(p, 'player:team') === undefined);
+        const no_team = MemberManager.getPlayers().filter(p => MemberManager.getPlayerTeam(p) === undefined);
 
         const message = [
             `${FC.Bold}${FC.Yellow}  XBlockFire  `,

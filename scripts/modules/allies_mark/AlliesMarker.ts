@@ -3,8 +3,6 @@ import { MemberManager } from "../../base/member/MemberManager";
 import { C4StateEnum } from "../../types/bombstate/C4StateEnum";
 import { TeamEnum } from "../../types/TeamEnum";
 
-import { entity_dynamic_property } from "../../utils/Property";
-
 import { Vector3Builder, Vector3Utils } from "@minecraft/math";
 import { Direction, Entity, MolangVariableMap, Player, RGBA } from "@minecraft/server";
 
@@ -14,7 +12,7 @@ export class AlliesMarker {
         const players = MemberManager.getPlayers();
         for (const viewer of players) {
 
-            const team = entity_dynamic_property(viewer, 'player:team');
+            const team = MemberManager.getPlayerTeam(viewer);
             const is_alive = true;
             const groupPlayers = MemberManager.getPlayers({ team, is_alive });
             

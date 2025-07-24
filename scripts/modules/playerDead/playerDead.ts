@@ -10,7 +10,7 @@ import { TeamEnum } from "../../types/TeamEnum";
 
 import { Broadcast } from "../../utils/Broadcast";
 import { FormatCode as FC } from "../../utils/FormatCode";
-import { entity_dynamic_property, set_entity_dynamic_property } from "../../utils/Property";
+import { set_entity_dynamic_property } from "../../utils/Property";
 import { set_variable, variable } from "../../utils/Variable";
 
 import { GameMode } from "@minecraft/server";
@@ -64,8 +64,8 @@ function dropC4(player: Player) {
 
 function showDeathMessage(deadPlayer: Player, attacker: Player) {
 
-    const deadPlayerTeam = entity_dynamic_property(deadPlayer, 'player:team');
-    const attackerTeam = entity_dynamic_property(attacker, 'player:team');
+    const deadPlayerTeam = MemberManager.getPlayerTeam(deadPlayer);
+    const attackerTeam = MemberManager.getPlayerTeam(attacker);
 
     const playerTeamStr = (team: TeamEnum, name: string) => (team === TeamEnum.Attacker) ? `${FC.Red}[A]${name}` : `${FC.Aqua}[D]${name}`;
     

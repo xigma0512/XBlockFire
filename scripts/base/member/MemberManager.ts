@@ -15,6 +15,7 @@ interface MemberFilter {
 export class MemberManager {
 
     private static players = new Set<Player>();
+    private static playerTeam = new Map<Player, TeamEnum>();
 
     static joinRoom(player: Player) {
         this.players.add(player);
@@ -32,7 +33,7 @@ export class MemberManager {
         if (!filter) return allPlayers;
 
         return allPlayers.filter(p => {
-            if (filter.team !== undefined && filter.team !== entity_dynamic_property(p, 'player:team')) return false;
+            if (filter.team !== undefined && this.getPlayerTeam(p) === filter.team) return false;
             if (filter.is_alive !== undefined && filter.is_alive !== entity_dynamic_property(p, 'player:is_alive')) return false;
             return true;
         });
@@ -40,6 +41,17 @@ export class MemberManager {
 
     static includePlayer(player: Player) {
         return this.players.has(player);
+    }
+
+    static setPlayerTeam(player: Player, team: TeamEnum) {
+        this.playerTeam.set(player, team);
+    }
+
+    static getPlayerTeam(player: Player) {
+        if (!this.playerTeam.has(player)) {
+            this.playerTeam.set(player, TeamEnum.Spectator);
+        }
+        return this.playerTeam.get(player)!;
     }
     
 }

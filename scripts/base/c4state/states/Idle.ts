@@ -11,7 +11,6 @@ import { C4StateEnum } from "../../../types/bombstate/C4StateEnum";
 import { TeamEnum } from "../../../types/TeamEnum";
 
 import { set_variable } from "../../../utils/Variable";
-import { entity_dynamic_property } from "../../../utils/Property";
 import { FormatCode as FC } from "../../../utils/FormatCode";
 
 import { Vector3Utils } from "@minecraft/math";
@@ -86,7 +85,7 @@ export class C4IdleState implements IC4StateHandler {
 
 function canPlantC4(source: Player) {
     try {
-        const sourceTeam = entity_dynamic_property(source, 'player:team');
+        const sourceTeam = MemberManager.getPlayerTeam(source);
         if (sourceTeam !== TeamEnum.Attacker) {
             throw new Error(`You are not at Attacker team.`);
         }
