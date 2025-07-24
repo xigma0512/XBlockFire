@@ -1,15 +1,18 @@
 import { ItemActor } from "../Actor";
-import { GunComponent } from "../../components/gun/GunComponent";
-import { ItemComponent } from "../../components/ItemComponent";
-import { GunMagazineComponent } from "../../components/gun/GunMagazineComponent";
-import { FireModeEnum, GunTypeEnum } from "../../../../types/weapon/WeaponEnum";
 
-import { ItemLockMode, ItemStack } from "@minecraft/server";
+import { ItemComponent } from "../../components/ItemComponent";
+import { ItemWeightComponent } from "../../components/ItemWeightComponent";
+
+import { GunComponent } from "../../components/gun/GunComponent";
 import { GunFireComponent } from "../../components/gun/GunFireComponent";
+import { GunMagazineComponent } from "../../components/gun/GunMagazineComponent";
 import { GunRecoilComponent } from "../../components/gun/GunRecoilComponent";
 import { GunReloadComponent } from "../../components/gun/GunReloadComponent";
 import { GunOffsetComponent } from "../../components/gun/GunOffsetComponent";
 import { GunDamageComponent } from "../../components/gun/GunDamageComponent";
+
+import { FireModeEnum, GunTypeEnum } from "../../../../types/weapon/WeaponEnum";
+import { ItemLockMode, ItemStack } from "@minecraft/server";
 
 export class AK47 extends ItemActor {
 
@@ -25,6 +28,10 @@ export class AK47 extends ItemActor {
                     lore: [ "I'M A GUN!!!" ],
                     keepOnDeath: true,
                     lockMode: ItemLockMode.slot
+                }
+            )).set('item_weight', new ItemWeightComponent(
+                {
+                    weight: 0.1
                 }
             )).set('gun', new GunComponent(
                 {
@@ -59,11 +66,13 @@ export class AK47 extends ItemActor {
                     reload_time: 45,
                     reload_sound: 'xblockfire.ak47_reload'
                 }
-            )).set('gun_offset', new GunOffsetComponent({
-                scope: 0.001,
-                hipfire: 0.03,
-                movement: 0.03
-            }));
+            )).set('gun_offset', new GunOffsetComponent(
+                {
+                    scope: 0.001,
+                    hipfire: 0.03,
+                    movement: 0.03
+                }
+            ));
 
         this.setItem();
     }
