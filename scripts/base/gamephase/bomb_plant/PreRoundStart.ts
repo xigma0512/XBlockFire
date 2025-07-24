@@ -62,7 +62,6 @@ function initializePlayers() {
         player.addEffect('regeneration', 400, { amplifier: 255 });
         player.addEffect('health_boost', 20000000, { amplifier: 4, showParticles: false });
         player.addEffect('hunger', 100, { amplifier: 255, showParticles: false });
-        player.getComponent('movement')?.setCurrentValue(0.11);
 
         system.runTimeout(() => {
             player.addEffect('saturation', 1, { amplifier: 5, showParticles: false });
