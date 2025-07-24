@@ -50,7 +50,6 @@ function resetC4State() {
 
 function initializePlayers() {
     for (const player of MemberManager.getPlayers()) {
-        if (entity_dynamic_property(player, 'player:is_spectator')) continue;
 
         player.inputPermissions.setPermissionCategory(InputPermissionCategory.LateralMovement, false); 
         
@@ -69,28 +68,22 @@ function initializePlayers() {
         
         player.removeTag('attacker');
         player.removeTag('defender');
-        player.addTag(entity_dynamic_property(player, 'player:team') === TeamEnum.Attacker ? 'attacker' : 'defender');
+        player.addTag(MemberManager.getPlayerTeam(player) === TeamEnum.Attacker ? 'attacker' : 'defender');
     }
 }
 
 function teleportPlayers() {
     const gameMap = MapRegister.getMap(gameroom().gameMapId);
 
-    const spawns = {
-        [TeamEnum.Attacker]: gameMap.positions.attacker_spawns,
-        [TeamEnum.Defender]: gameMap.positions.defender_spawns,
-    }
-
     let nextSpawnIndex = {
         [TeamEnum.Attacker]: 0,
-        [TeamEnum.Defender]: 0
+        [TeamEnum.Defender]: 0,
+        [TeamEnum.Spectator]: 0
     }
 
     for (const player of MemberManager.getPlayers()) {
-        if (entity_dynamic_property(player, 'player:is_spectator')) continue;
-
-        const playerTeam = entity_dynamic_property(player, 'player:team');
-        const playerTeamSpawns = spawns[playerTeam];
+        const playerTeam = MemberManager.getPlayerTeam(player);
+        const playerTeamSpawns = gameMap.positions.spawns[playerTeam];
         const spawnIndex = nextSpawnIndex[playerTeam]++ % playerTeamSpawns.length;
         player.teleport(playerTeamSpawns[spawnIndex]);
     }

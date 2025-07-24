@@ -6,7 +6,6 @@ import { C4IdleState } from "./Idle";
 import { C4StateEnum } from "../../../types/bombstate/C4StateEnum";
 import { TeamEnum } from "../../../types/TeamEnum";
 
-import { entity_dynamic_property } from "../../../utils/Property";
 import { FormatCode as FC } from "../../../utils/FormatCode";
 import { Broadcast } from "../../../utils/Broadcast";
 
@@ -68,7 +67,7 @@ export class C4DroppedState implements IC4StateHandler {
 
 
     private attemptToPickup(player: Player) {
-        const playerTeam = entity_dynamic_property(player, 'player:team');
+        const playerTeam = MemberManager.getPlayerTeam(player);
         if (playerTeam !== TeamEnum.Attacker) return;
 
         player.getComponent('inventory')?.container.setItem(3, new ItemStack(C4_ITEM_ID));

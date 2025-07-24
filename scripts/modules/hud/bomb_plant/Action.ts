@@ -7,7 +7,6 @@ import { TeamEnum } from "../../../types/TeamEnum";
 import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPlantPhaseEnum";
 
 import { FormatCode as FC } from "../../../utils/FormatCode";
-import { entity_dynamic_property } from "../../../utils/Property";
 import { variable } from "../../../utils/Variable";
 import { Broadcast } from "../../../utils/Broadcast";
 
@@ -57,7 +56,7 @@ export class ActionHud implements InGameHud {
         
         for (const player of players) {
 
-            const playerTeam = entity_dynamic_property(player, 'player:team');
+            const playerTeam = MemberManager.getPlayerTeam(player);
             const playerTeamStr = (playerTeam === TeamEnum.Attacker) ? `${FC.Red}Attacker` : `${FC.Aqua}Defender`;
 
             const message = [

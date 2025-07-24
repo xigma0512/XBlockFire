@@ -7,7 +7,6 @@ import { PreRoundStartPhase } from "../../base/gamephase/bomb_plant/PreRoundStar
 import { GameModeEnum } from "../../types/gameroom/GameModeEnum";
 
 import { FormatCode as FC } from "../../utils/FormatCode";
-import { set_entity_dynamic_property } from "../../utils/Property";
 
 import { Player } from "@minecraft/server";
 import { TeamEnum } from "../../types/TeamEnum";
@@ -60,7 +59,7 @@ function selectTeam(executer: Player, ...args: string[]) {
         throw Error(`Unknown mode ${team}.`);
     }
 
-    set_entity_dynamic_property(executer, 'player:team', team as TeamEnum);
+    MemberManager.setPlayerTeam(executer, team as TeamEnum);
     Broadcast.message(`${FC.Gold}${executer.name} join [${team}]`);
 }
 

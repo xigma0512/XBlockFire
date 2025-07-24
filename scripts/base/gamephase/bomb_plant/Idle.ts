@@ -10,7 +10,6 @@ import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPl
 import { TeamEnum } from "../../../types/TeamEnum";
 
 import { FormatCode as FC } from "../../../utils/FormatCode";
-import { set_entity_dynamic_property } from "../../../utils/Property";
 import { reset_variables, set_variable } from "../../../utils/Variable";
 import { ItemStackFactory } from "../../../utils/ItemStackFactory";
 
@@ -69,11 +68,11 @@ function randomTeam() {
     let defenderTeamCount = 0;
     for (const player of shuffledPlayers) {
         if (attackTeamCount <= defenderTeamCount) {
-            set_entity_dynamic_property(player, 'player:team', TeamEnum.Attacker);
+            MemberManager.setPlayerTeam(player, TeamEnum.Attacker);
             attackTeamCount++;
             player.sendMessage(`${FC.Gray}>> ${FC.Yellow}You have been assigned to the Attacker Team.`);
         } else {
-            set_entity_dynamic_property(player, 'player:team', TeamEnum.Defender);
+            MemberManager.setPlayerTeam(player, TeamEnum.Defender);
             defenderTeamCount++;
             player.sendMessage(`${FC.Gray}>> ${FC.Yellow}You have been assigned to the Defender Team.`);
         }
