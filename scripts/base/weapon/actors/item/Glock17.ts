@@ -31,7 +31,7 @@ export class Glock17 extends ItemActor {
                 }
             )).set('item_weight', new ItemWeightComponent(
                 {
-                    weight: 0.115
+                    weight: 0.105
                 }
             )).set('gun', new GunComponent(
                 {
@@ -52,8 +52,8 @@ export class Glock17 extends ItemActor {
                 }
             )).set('gun_recoil', new GunRecoilComponent(
                 {
-                    shacking_level: 0.01,
-                    shacking_duration: 0.12
+                    scope_recoil: { level: 0.02, duration: 0.2 },
+                    hipfire_recoil: { level: 0.04, duration: 0.2 }
                 }
             )).set('gun_damage', new GunDamageComponent(
                 {

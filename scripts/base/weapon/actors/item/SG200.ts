@@ -31,7 +31,7 @@ export class SG200 extends ItemActor {
                 }
             )).set('item_weight', new ItemWeightComponent(
                 {
-                    weight: 0.1
+                    weight: 0.095
                 }
             )).set('gun', new GunComponent(
                 {
@@ -52,8 +52,8 @@ export class SG200 extends ItemActor {
                 }
             )).set('gun_recoil', new GunRecoilComponent(
                 {
-                    shacking_level: 0.12,
-                    shacking_duration: 0.2
+                    scope_recoil: { level: 0.08, duration: 0.2 },
+                    hipfire_recoil: { level: 0.12, duration: 0.2 }
                 }
                 )).set('gun_damage', new GunDamageComponent(
                     {

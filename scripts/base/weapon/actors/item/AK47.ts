@@ -52,8 +52,8 @@ export class AK47 extends ItemActor {
                 }
             )).set('gun_recoil', new GunRecoilComponent(
                 {
-                    shacking_level: 0.06,
-                    shacking_duration: 0.15
+                    scope_recoil: { level: 0.02, duration: 0.2 },
+                    hipfire_recoil: { level: 0.06, duration: 0.2 }
                 }
             )).set('gun_damage', new GunDamageComponent(
                 {
