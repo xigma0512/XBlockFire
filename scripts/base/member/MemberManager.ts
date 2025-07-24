@@ -58,6 +58,18 @@ export class MemberManager {
     
 }
 
+const worldLoadListener = world.afterEvents.worldLoad.subscribe(() => {
+    for (const player of world.getAllPlayers()) {
+        MemberManager.joinRoom(player);
+    }
+});
+
+const playerJoinGameListener = world.afterEvents.playerSpawn.subscribe(ev => {
+    if (ev.initialSpawn) {
+        MemberManager.joinRoom(ev.player);
+    }
+});
+
 const playerLeaveGameListener = world.beforeEvents.playerLeave.subscribe(ev => {
     MemberManager.leaveRoom(ev.player);
 });
