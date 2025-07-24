@@ -1,15 +1,18 @@
 import { ItemActor } from "../Actor";
-import { GunComponent } from "../../components/gun/GunComponent";
-import { ItemComponent } from "../../components/ItemComponent";
-import { GunMagazineComponent } from "../../components/gun/GunMagazineComponent";
-import { FireModeEnum, GunTypeEnum } from "../../../../types/weapon/WeaponEnum";
 
-import { ItemLockMode, ItemStack } from "@minecraft/server";
+import { ItemComponent } from "../../components/ItemComponent";
+import { ItemWeightComponent } from "../../components/ItemWeightComponent";
+
+import { GunComponent } from "../../components/gun/GunComponent";
+import { GunMagazineComponent } from "../../components/gun/GunMagazineComponent";
 import { GunFireComponent } from "../../components/gun/GunFireComponent";
 import { GunRecoilComponent } from "../../components/gun/GunRecoilComponent";
 import { GunReloadComponent } from "../../components/gun/GunReloadComponent";
 import { GunOffsetComponent } from "../../components/gun/GunOffsetComponent";
 import { GunDamageComponent } from "../../components/gun/GunDamageComponent";
+
+import { FireModeEnum, GunTypeEnum } from "../../../../types/weapon/WeaponEnum";
+import { ItemLockMode, ItemStack } from "@minecraft/server";
 
 export class P90 extends ItemActor {
 
@@ -26,9 +29,9 @@ export class P90 extends ItemActor {
                     keepOnDeath: true,
                     lockMode: ItemLockMode.slot
                 }
-            )).set('gun', new GunComponent(
+            )).set('item_weight', new ItemWeightComponent(
                 {
-                    gunTypeId: GunTypeEnum.P90
+                    weight: 0.1
                 }
             )).set('gun_magazine', new GunMagazineComponent(
                 {
