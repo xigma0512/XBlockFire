@@ -1,18 +1,18 @@
-import { gameroom, GameRoomFactory } from "../../../base/gameroom/GameRoom";
-import { PhaseManager } from "../../../base/gamephase/PhaseManager";
-import { MemberManager } from "../../../base/member/MemberManager";
+import { gameroom, GameRoomFactory } from "../../../domain/gameroom/GameRoom";
+import { GamePhaseManager } from "../../../domain/fsm/gamephase/GamePhaseManager";
+import { MemberManager } from "../../../domain/player/MemberManager";
 
-import { PreRoundStartPhase } from "../../../base/gamephase/bomb_plant/PreRoundStart";
+import { PreRoundStartPhase } from "../../../domain/fsm/gamephase/bomb_plant/PreRoundStart";
 
-import { GameModeEnum } from "../../../shared/types/gameroom/GameModeEnum";
+import { GameModeEnum } from "../../../declarations/enum/GameModeEnum";
 
-import { FormatCode as FC } from "../../../shared/utils/FormatCode";
+import { FormatCode as FC } from "../../../declarations/enum/FormatCode";
 
-import { TeamEnum } from "../../../shared/types/TeamEnum";
-import { Broadcast } from "../../../shared/utils/Broadcast";
-import { MapRegister } from "../../../base/gamemap/MapRegister";
+import { TeamEnum } from "../../../declarations/enum/TeamEnum";
+import { Broadcast } from "../../../infrastructure/utils/Broadcast";
+import { MapRegister } from "../../../domain/gameroom/MapRegister";
 
-import { CommandPermissionLevel, CustomCommandOrigin, CustomCommandParamType, Player } from "@minecraft/server";
+import { CommandPermissionLevel, CustomCommandOrigin, CustomCommandParamType, GameMode, Player } from "@minecraft/server";
 import { CommandRegistry } from "../CommandRegistry";
 
 function setting_gamemode(origin: CustomCommandOrigin, ...args: any[]) {
@@ -41,7 +41,7 @@ function forcestart(origin: CustomCommandOrigin, ...args: any[]) {
     const startPhase = {
         [GameModeEnum.BombPlant]: new PreRoundStartPhase()
     };
-    PhaseManager.updatePhase(startPhase[gameroom().gameMode]);
+    GamePhaseManager.updatePhase(startPhase[gameroom().gameMode]);
     return { message: `${FC.Gray}>> ${FC.LightPurple}Force start.`, status: 0 };
 }
 

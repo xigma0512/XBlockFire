@@ -1,9 +1,9 @@
 import { world } from "@minecraft/server";
-import { Deagle } from "./base/weapon/actors/item/Deagle";
-import { SG200 } from "./base/weapon/actors/item/SG200";
-import { AWP } from "./base/weapon/actors/item/AWP";
-import { P90 } from "./base/weapon/actors/item/P90";
-import { set_entity_native_property } from "./shared/utils/Property";
+import { Deagle } from "./domain/weapon/actors/item/Deagle";
+import { SG200 } from "./domain/weapon/actors/item/SG200";
+import { AWP } from "./domain/weapon/actors/item/AWP";
+import { P90 } from "./domain/weapon/actors/item/P90";
+import { set_entity_native_property } from "./infrastructure/data/Property";
 
 world.afterEvents.chatSend.subscribe(ev => {
     if (ev.message === 'test') {

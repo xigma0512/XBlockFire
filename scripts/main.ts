@@ -1,4 +1,4 @@
-import './base/__entry__'
-import './modules/__entry__'
+import './domain/__entry__'
+import './domain/modules/__entry__'
 import './interface/command/CommandRegistry'
 import './test'

@@ -1,14 +1,14 @@
-import { PhaseManager } from "../../../../base/gamephase/PhaseManager";
-import { MemberManager } from "../../../../base/member/MemberManager";
-import { EconomyManager } from "../../../../base/economy/EconomyManager";
+import { GamePhaseManager } from "../../../../domain/fsm/gamephase/GamePhaseManager";
+import { MemberManager } from "../../../../domain/player/MemberManager";
+import { EconomyManager } from "../../../../domain/economy/EconomyManager";
 import { HudTextController } from "../../HudTextController";
 
-import { TeamEnum } from "../../../../shared/types/TeamEnum";
-import { PhaseEnum as BombPlantPhaseEnum } from "../../../../shared/types/gamephase/BombPlantPhaseEnum";
+import { TeamEnum } from "../../../../declarations/enum/TeamEnum";
+import { BombPlantPhaseEnum } from "../../../../declarations/enum/PhaseEnum";
 
-import { FormatCode as FC } from "../../../../shared/utils/FormatCode";
-import { variable } from "../../../../shared/utils/Variable";
-import { Broadcast } from "../../../../shared/utils/Broadcast";
+import { FormatCode as FC } from "../../../../declarations/enum/FormatCode";
+import { variable } from "../../../../infrastructure/data/Variable";
+import { Broadcast } from "../../../../infrastructure/utils/Broadcast";
 
 export class ActionHud implements InGameHud {
     
@@ -21,7 +21,7 @@ export class ActionHud implements InGameHud {
 
     private updateSubtitle() {
         
-        const phase = PhaseManager.getPhase();
+        const phase = GamePhaseManager.getPhase();
 
         let text: string | string[] = '';
         switch (phase.phaseTag) {
@@ -41,7 +41,7 @@ export class ActionHud implements InGameHud {
     private updateSidebar() {
         
         const players = MemberManager.getPlayers();
-        const phase = PhaseManager.getPhase();
+        const phase = GamePhaseManager.getPhase();
 
         const attackerScore = variable(`attacker_score`);
         const defenderScore = variable(`defender_score`);

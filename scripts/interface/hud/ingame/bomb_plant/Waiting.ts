@@ -1,12 +1,12 @@
-import { gameroom } from "../../../../base/gameroom/GameRoom";
-import { MemberManager } from "../../../../base/member/MemberManager";
-import { PhaseManager } from "../../../../base/gamephase/PhaseManager";
-import { MapRegister } from "../../../../base/gamemap/MapRegister";
+import { gameroom } from "../../../../domain/gameroom/GameRoom";
+import { MemberManager } from "../../../../domain/player/MemberManager";
+import { GamePhaseManager } from "../../../../domain/fsm/gamephase/GamePhaseManager";
+import { MapRegister } from "../../../../domain/gameroom/MapRegister";
 
-import { TeamEnum } from "../../../../shared/types/TeamEnum";
+import { TeamEnum } from "../../../../declarations/enum/TeamEnum";
 
-import { FormatCode as FC } from "../../../../shared/utils/FormatCode";
-import { Broadcast } from "../../../../shared/utils/Broadcast";
+import { FormatCode as FC } from "../../../../declarations/enum/FormatCode";
+import { Broadcast } from "../../../../infrastructure/utils/Broadcast";
 
 import { Config } from "../../../../settings/config";
 
@@ -26,7 +26,7 @@ export class WaitingHud implements InGameHud {
         const players = MemberManager.getPlayers();
         const playerAmount = players.length;
 
-        const phase = PhaseManager.getPhase();
+        const phase = GamePhaseManager.getPhase();
         
         let text = `${FC.Yellow}Waiting for more players...`;
         
