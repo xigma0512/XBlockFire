@@ -1,14 +1,14 @@
-import { MemberManager } from "../../domain/player/MemberManager";
-import { BombStateManager } from "../../domain/fsm/bombstate/BombStateManager";
-import { gameEvents } from "./EventEmitter";
+import { MemberManager } from "./MemberManager";
+import { BombStateManager } from "../fsm/bombstate/BombStateManager";
+import { gameEvents } from "../../infrastructure/event/EventEmitter";
 import { HudTextController } from "../../interface/hud/HudTextController";
-import { EconomyManager } from "../../domain/economy/EconomyManager";
+import { EconomyManager } from "../economy/EconomyManager";
 
-import { C4DroppedState } from "../../domain/fsm/bombstate/states/Dropped";
+import { C4DroppedState } from "../fsm/bombstate/states/Dropped";
 
 import { TeamEnum } from "../../declarations/enum/TeamEnum";
 
-import { Broadcast } from "../utils/Broadcast";
+import { Broadcast } from "../../infrastructure/utils/Broadcast";
 import { FormatCode as FC } from "../../declarations/enum/FormatCode";
 import { set_entity_dynamic_property } from "../../infrastructure/data/Property";
 import { set_variable, variable } from "../../infrastructure/data/Variable";
