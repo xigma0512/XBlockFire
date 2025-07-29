@@ -6,10 +6,10 @@ import { HudTextController } from "../../../modules/hud/HudTextController";
 import { C4PlantedState } from "./Planted";
 import { C4IdleState } from "./Idle";
 
-import { C4StateEnum } from "../../../types/bombstate/C4StateEnum";
-import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPlantPhaseEnum";
-import { Broadcast } from "../../../utils/Broadcast";
-import { progressBar } from "../../../utils/others/Format";
+import { C4StateEnum } from "../../../shared/types/bombstate/C4StateEnum";
+import { PhaseEnum as BombPlantPhaseEnum } from "../../../shared/types/gamephase/BombPlantPhaseEnum";
+import { Broadcast } from "../../../shared/utils/Broadcast";
+import { progressBar } from "../../../shared/utils/others/Format";
 
 import { ItemCompleteUseAfterEvent, ItemStopUseAfterEvent } from "@minecraft/server";
 import { Player, world } from "@minecraft/server";

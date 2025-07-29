@@ -3,7 +3,7 @@ import { PhaseManager } from "./PhaseManager";
 
 import { IdlePhase } from "./bomb_plant/Idle";
 
-import { GameModeEnum } from "../../types/gameroom/GameModeEnum";
+import { GameModeEnum } from "../../shared/types/gameroom/GameModeEnum";
 
 export class BlankPhase implements IPhaseHandler {
 

@@ -1,4 +1,4 @@
-import { GrenadeTypeEnum } from "../../../types/weapon/WeaponEnum";
+import { GrenadeTypeEnum } from "../../../shared/types/weapon/WeaponEnum";
 import { Component } from "./Component";
 
 type ComponentDataType = {

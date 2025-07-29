@@ -1,4 +1,4 @@
-import { entity_dynamic_property, set_entity_dynamic_property } from "../../../utils/Property";
+import { entity_dynamic_property, set_entity_dynamic_property } from "../../../shared/utils/Property";
 import { ActorType } from "../actors/Actor";
 
 import { system, world } from "@minecraft/server";

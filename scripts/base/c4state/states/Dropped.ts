@@ -3,11 +3,11 @@ import { C4Manager } from "../C4Manager";
 
 import { C4IdleState } from "./Idle";
 
-import { C4StateEnum } from "../../../types/bombstate/C4StateEnum";
-import { TeamEnum } from "../../../types/TeamEnum";
+import { C4StateEnum } from "../../../shared/types/bombstate/C4StateEnum";
+import { TeamEnum } from "../../../shared/types/TeamEnum";
 
-import { FormatCode as FC } from "../../../utils/FormatCode";
-import { Broadcast } from "../../../utils/Broadcast";
+import { FormatCode as FC } from "../../../shared/utils/FormatCode";
+import { Broadcast } from "../../../shared/utils/Broadcast";
 
 import { Entity, ItemStack, Player, world } from "@minecraft/server";
 import { EntityHitEntityAfterEvent } from "@minecraft/server";

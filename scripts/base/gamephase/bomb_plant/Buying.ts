@@ -6,11 +6,11 @@ import { PurchaseHistory } from "../../../modules/shop/Shop";
 
 import { ActionPhase } from "./Action";
 
-import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPlantPhaseEnum";
+import { PhaseEnum as BombPlantPhaseEnum } from "../../../shared/types/gamephase/BombPlantPhaseEnum";
 
-import { Broadcast } from "../../../utils/Broadcast";
-import { set_entity_native_property } from "../../../utils/Property";
-import { ItemStackFactory } from "../../../utils/ItemStackFactory";
+import { Broadcast } from "../../../shared/utils/Broadcast";
+import { set_entity_native_property } from "../../../shared/utils/Property";
+import { ItemStackFactory } from "../../../shared/utils/ItemStackFactory";
 
 import { InputPermissionCategory, ItemLockMode } from "@minecraft/server";
 import { uiManager } from "@minecraft/server-ui";

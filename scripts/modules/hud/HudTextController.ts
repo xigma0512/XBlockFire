@@ -1,4 +1,4 @@
-import { FormatCode } from "../../utils/FormatCode";
+import { FormatCode } from "../../shared/utils/FormatCode";
 import { Player, system } from "@minecraft/server";
 
 interface PlayerHudText {

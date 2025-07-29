@@ -6,12 +6,12 @@ import { ActionHud } from "../../../modules/hud/bomb_plant/Action";
 import { C4IdleState } from "../../c4state/states/Idle";
 import { IdlePhase } from "./Idle";
 
-import { TeamEnum } from "../../../types/TeamEnum";
-import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPlantPhaseEnum";
+import { TeamEnum } from "../../../shared/types/TeamEnum";
+import { PhaseEnum as BombPlantPhaseEnum } from "../../../shared/types/gamephase/BombPlantPhaseEnum";
 
-import { Broadcast } from "../../../utils/Broadcast";
-import { FormatCode as FC } from "../../../utils/FormatCode";
-import { variable } from "../../../utils/Variable";
+import { Broadcast } from "../../../shared/utils/Broadcast";
+import { FormatCode as FC } from "../../../shared/utils/FormatCode";
+import { variable } from "../../../shared/utils/Variable";
 
 import { GameMode, world } from "@minecraft/server";
 

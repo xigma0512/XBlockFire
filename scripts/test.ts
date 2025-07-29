@@ -1,9 +1,9 @@
 import { world } from "@minecraft/server";
-import { set_entity_native_property } from "./utils/Property";
 import { Deagle } from "./base/weapon/actors/item/Deagle";
 import { SG200 } from "./base/weapon/actors/item/SG200";
 import { AWP } from "./base/weapon/actors/item/AWP";
 import { P90 } from "./base/weapon/actors/item/P90";
+import { set_entity_native_property } from "./shared/utils/Property";
 
 world.afterEvents.chatSend.subscribe(ev => {
     if (ev.message === 'test') {

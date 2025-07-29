@@ -1,10 +1,10 @@
 import { EntityActor } from "../../Actor";
 import { ProjectileReboundComponent } from "../../../components/ProjectileReboundComponent";
-import { entity_native_property } from "../../../../../utils/Property";
+import { entity_native_property } from "../../../../../shared/utils/Property";
 
 import { Entity } from "@minecraft/server";
 import { GrenadeComponent } from "../../../components/GrenadeComponent";
-import { GrenadeTypeEnum } from "../../../../../types/weapon/WeaponEnum";
+import { GrenadeTypeEnum } from "../../../../../shared/types/weapon/WeaponEnum";
 
 export class Flashbang extends EntityActor {
 

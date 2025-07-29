@@ -3,10 +3,10 @@ import { MemberManager } from "../../../base/member/MemberManager";
 import { PhaseManager } from "../../../base/gamephase/PhaseManager";
 import { MapRegister } from "../../../base/gamemap/MapRegister";
 
-import { TeamEnum } from "../../../types/TeamEnum";
+import { TeamEnum } from "../../../shared/types/TeamEnum";
 
-import { FormatCode as FC } from "../../../utils/FormatCode";
-import { Broadcast } from "../../../utils/Broadcast";
+import { FormatCode as FC } from "../../../shared/utils/FormatCode";
+import { Broadcast } from "../../../shared/utils/Broadcast";
 
 import { Config } from "../../../settings/config";
 

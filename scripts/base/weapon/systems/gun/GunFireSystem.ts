@@ -3,10 +3,10 @@ import { BulletSystem } from "../bullet/BulletSystem";
 import { ActorManager } from "../ActorManager";
 import { GunAnimations } from "./GunAnimations";
 
-import { FireModeEnum } from "../../../../types/weapon/WeaponEnum";
+import { FireModeEnum } from "../../../../shared/types/weapon/WeaponEnum";
 
-import { getPlayerHandItem } from "../../../../utils/others/Entity";
-import { entity_native_property } from "../../../../utils/Property";
+import { getPlayerHandItem } from "../../../../shared/utils/others/Entity";
+import { entity_native_property } from "../../../../shared/utils/Property";
 
 import { Player, system, world } from "@minecraft/server";
 

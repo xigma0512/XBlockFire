@@ -1,4 +1,4 @@
-import { FormatCode as FC } from "../../utils/FormatCode";
+import { FormatCode as FC } from "../../shared/utils/FormatCode";
 import { Difficulty, HudElement, HudVisibility, system, world } from "@minecraft/server";
 
 world.afterEvents.worldLoad.subscribe(() => {

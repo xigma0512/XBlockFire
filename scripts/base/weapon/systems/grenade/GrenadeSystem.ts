@@ -1,11 +1,11 @@
 import { GrenadeHandler } from "./handlers/GrenadeHandler";
 
-import { GrenadeTypeEnum } from "../../../../types/weapon/WeaponEnum";
+import { GrenadeTypeEnum } from "../../../../shared/types/weapon/WeaponEnum";
 import { GrenadeActorTable } from "../../actors/ActorTypeTables";
 import { SmokeGrenadeHandler } from "./handlers/SmokeGrenade";
 import { FlashbangHandler } from "./handlers/Flashbang";
 
-import { entity_native_property } from "../../../../utils/Property";
+import { entity_native_property } from "../../../../shared/utils/Property";
 
 import { Vector3Utils } from "@minecraft/math";
 import { Entity, world } from "@minecraft/server";

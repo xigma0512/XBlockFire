@@ -4,12 +4,12 @@ import { MemberManager } from "../../base/member/MemberManager";
 
 import { PreRoundStartPhase } from "../../base/gamephase/bomb_plant/PreRoundStart";
 
-import { GameModeEnum } from "../../types/gameroom/GameModeEnum";
+import { GameModeEnum } from "../../shared/types/gameroom/GameModeEnum";
 
-import { FormatCode as FC } from "../../utils/FormatCode";
+import { FormatCode as FC } from "../../shared/utils/FormatCode";
 
-import { TeamEnum } from "../../types/TeamEnum";
-import { Broadcast } from "../../utils/Broadcast";
+import { TeamEnum } from "../../shared/types/TeamEnum";
+import { Broadcast } from "../../shared/utils/Broadcast";
 import { MapRegister } from "../../base/gamemap/MapRegister";
 
 import { CommandPermissionLevel, CustomCommandOrigin, CustomCommandParamType, Player } from "@minecraft/server";

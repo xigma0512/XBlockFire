@@ -3,7 +3,7 @@ import { OffsetCalculator } from "./OffsetCaculator";
 import { getPlayerGunOffset } from "../gun/GunOffsetSystem";
 import { DamageSystem } from "./BulletDamage";
 
-import { entity_dynamic_property } from "../../../../utils/Property";
+import { entity_dynamic_property } from "../../../../shared/utils/Property";
 
 import { Vector3Utils } from "@minecraft/math";
 import { BlockRaycastHit, DimensionLocation, Direction, Player, system, Vector3 } from "@minecraft/server";

@@ -1,4 +1,4 @@
-import { entity_native_property } from "../../../../utils/Property";
+import { entity_native_property } from "../../../../shared/utils/Property";
 import { ItemActor } from "../../actors/Actor";
 
 import { Player } from "@minecraft/server";

@@ -5,12 +5,12 @@ import { GameOverPhase } from "./Gameover";
 import { RoundEndPhase } from "./RoundEnd";
 import { ActionHud } from "../../../modules/hud/bomb_plant/Action";
 
-import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPlantPhaseEnum"
-import { TeamEnum } from "../../../types/TeamEnum";
+import { PhaseEnum as BombPlantPhaseEnum } from "../../../shared/types/gamephase/BombPlantPhaseEnum"
+import { TeamEnum } from "../../../shared/types/TeamEnum";
 
-import { FormatCode as FC } from "../../../utils/FormatCode";
-import { Broadcast } from "../../../utils/Broadcast";
-import { set_variable } from "../../../utils/Variable";
+import { FormatCode as FC } from "../../../shared/utils/FormatCode";
+import { Broadcast } from "../../../shared/utils/Broadcast";
+import { set_variable } from "../../../shared/utils/Variable";
 
 import { Config } from "../../../settings/config";
 

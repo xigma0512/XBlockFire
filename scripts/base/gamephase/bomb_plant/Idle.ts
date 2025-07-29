@@ -6,12 +6,12 @@ import { WaitingHud } from "../../../modules/hud/bomb_plant/Waiting";
 
 import { BuyingPhase } from "./Buying";
 
-import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPlantPhaseEnum";
-import { TeamEnum } from "../../../types/TeamEnum";
+import { PhaseEnum as BombPlantPhaseEnum } from "../../../shared/types/gamephase/BombPlantPhaseEnum";
+import { TeamEnum } from "../../../shared/types/TeamEnum";
 
-import { FormatCode as FC } from "../../../utils/FormatCode";
-import { reset_variables, set_variable } from "../../../utils/Variable";
-import { ItemStackFactory } from "../../../utils/ItemStackFactory";
+import { FormatCode as FC } from "../../../shared/utils/FormatCode";
+import { reset_variables, set_variable } from "../../../shared/utils/Variable";
+import { ItemStackFactory } from "../../../shared/utils/ItemStackFactory";
 
 import { ItemLockMode } from "@minecraft/server";
 

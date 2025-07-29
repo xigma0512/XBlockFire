@@ -1,5 +1,5 @@
 import { system, world } from "@minecraft/server";
-import { getPlayerHandItem } from "../../../utils/others/Entity";
+import { getPlayerHandItem } from "../../../shared/utils/others/Entity";
 import { ActorManager } from "../../../base/weapon/systems/ActorManager";
 import { HudTextController } from "../HudTextController";
 

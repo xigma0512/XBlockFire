@@ -8,14 +8,14 @@ import { C4IdleState } from "./Idle";
 import { C4PlantedPhase } from "../../gamephase/bomb_plant/C4Planted";
 import { RoundEndPhase } from "../../gamephase/bomb_plant/RoundEnd";
 
-import { C4StateEnum } from "../../../types/bombstate/C4StateEnum";
-import { TeamEnum } from "../../../types/TeamEnum";
-import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPlantPhaseEnum";
+import { C4StateEnum } from "../../../shared/types/bombstate/C4StateEnum";
+import { TeamEnum } from "../../../shared/types/TeamEnum";
+import { PhaseEnum as BombPlantPhaseEnum } from "../../../shared/types/gamephase/BombPlantPhaseEnum";
 
-import { set_variable, variable } from "../../../utils/Variable";
-import { Broadcast } from "../../../utils/Broadcast";
-import { FormatCode as FC } from "../../../utils/FormatCode";
-import { progressBar } from "../../../utils/others/Format";
+import { set_variable, variable } from "../../../shared/utils/Variable";
+import { Broadcast } from "../../../shared/utils/Broadcast";
+import { FormatCode as FC } from "../../../shared/utils/FormatCode";
+import { progressBar } from "../../../shared/utils/others/Format";
 
 import { Vector3Utils } from "@minecraft/math";
 import { VanillaEntityIdentifier } from "@minecraft/server";

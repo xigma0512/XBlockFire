@@ -1,8 +1,8 @@
 import { ActorManager } from "../ActorManager";
 import { ItemActor } from "../../actors/Actor";
-import { set_entity_native_property, entity_native_property } from "../../../../utils/Property";
-import { getPlayerHandItem } from "../../../../utils/others/Entity";
-import { progressBar } from "../../../../utils/others/Format";
+import { set_entity_native_property, entity_native_property } from "../../../../shared/utils/Property";
+import { getPlayerHandItem } from "../../../../shared/utils/others/Entity";
+import { progressBar } from "../../../../shared/utils/others/Format";
 
 import { Player, system, world } from "@minecraft/server";
 import { GunAnimations } from "./GunAnimations";

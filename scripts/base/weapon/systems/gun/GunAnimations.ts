@@ -1,4 +1,4 @@
-import { Broadcast } from "../../../../utils/Broadcast";
+import { Broadcast } from "../../../../shared/utils/Broadcast";
 import { ItemActor } from "../../actors/Actor";
 
 import { Player, world } from "@minecraft/server";

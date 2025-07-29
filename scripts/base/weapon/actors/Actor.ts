@@ -1,7 +1,7 @@
 import { Component, ComponentTypes } from "../components/Component";
 import { ActorManager } from "../systems/ActorManager";
 
-import { randomUUID } from "../../../utils/others/Common";
+import { randomUUID } from "../../../shared/utils/others/Common";
 
 import { Dimension, Entity, ItemStack, Vector3 } from "@minecraft/server";
 

@@ -11,7 +11,7 @@ import { GunReloadComponent } from "../../components/gun/GunReloadComponent";
 import { GunOffsetComponent } from "../../components/gun/GunOffsetComponent";
 import { GunDamageComponent } from "../../components/gun/GunDamageComponent";
 
-import { FireModeEnum, GunTypeEnum } from "../../../../types/weapon/WeaponEnum";
+import { FireModeEnum, GunTypeEnum } from "../../../../shared/types/weapon/WeaponEnum";
 import { ItemLockMode, ItemStack } from "@minecraft/server";
 
 export class SG200 extends ItemActor {
