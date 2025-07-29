@@ -1,5 +1,5 @@
 import { Player, PlayerSoundOptions, world } from "@minecraft/server";
-import { HudTextController } from "../../modules/hud/HudTextController";
+import { HudTextController } from "../../interface/hud/HudTextController";
 
 export class Broadcast {
     

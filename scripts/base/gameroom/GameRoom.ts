@@ -1,4 +1,4 @@
-import { AlliesMarker } from "../../modules/allies_mark/AlliesMarker";
+import { AlliesMarker } from "../../modules/AlliesMarker";
 
 import { GameModeEnum } from "../../shared/types/gameroom/GameModeEnum";
 

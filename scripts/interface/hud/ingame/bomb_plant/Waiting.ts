@@ -1,14 +1,14 @@
-import { gameroom } from "../../../base/gameroom/GameRoom";
-import { MemberManager } from "../../../base/member/MemberManager";
-import { PhaseManager } from "../../../base/gamephase/PhaseManager";
-import { MapRegister } from "../../../base/gamemap/MapRegister";
+import { gameroom } from "../../../../base/gameroom/GameRoom";
+import { MemberManager } from "../../../../base/member/MemberManager";
+import { PhaseManager } from "../../../../base/gamephase/PhaseManager";
+import { MapRegister } from "../../../../base/gamemap/MapRegister";
 
-import { TeamEnum } from "../../../shared/types/TeamEnum";
+import { TeamEnum } from "../../../../shared/types/TeamEnum";
 
-import { FormatCode as FC } from "../../../shared/utils/FormatCode";
-import { Broadcast } from "../../../shared/utils/Broadcast";
+import { FormatCode as FC } from "../../../../shared/utils/FormatCode";
+import { Broadcast } from "../../../../shared/utils/Broadcast";
 
-import { Config } from "../../../settings/config";
+import { Config } from "../../../../settings/config";
 
 const game_config = Config.game;
 const idle_config = Config.bombplant.idle;

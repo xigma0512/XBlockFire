@@ -1,5 +1,5 @@
 import { Container, ItemLockMode, world } from "@minecraft/server"
-import { Config } from "../../settings/config";
+import { Config } from "../settings/config";
 
 const CONTAINER_LOCATION = Config.uncommon_items.CONTAINER_LOCATION;
 

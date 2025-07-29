@@ -1,7 +1,7 @@
 import { MemberManager } from "../../member/MemberManager";
 import { EconomyManager } from "../../economy/EconomyManager";
 import { PhaseManager } from "../PhaseManager";
-import { ActionHud } from "../../../modules/hud/bomb_plant/Action"; 
+import { ActionHud } from "../../../interface/hud/ingame/bomb_plant/Action"; 
 
 import { GameOverPhase } from "./Gameover";
 import { PreRoundStartPhase } from "./PreRoundStart";

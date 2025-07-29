@@ -1,14 +1,14 @@
-import { PhaseManager } from "../../../base/gamephase/PhaseManager";
-import { MemberManager } from "../../../base/member/MemberManager";
-import { EconomyManager } from "../../../base/economy/EconomyManager";
-import { HudTextController } from "../HudTextController";
+import { PhaseManager } from "../../../../base/gamephase/PhaseManager";
+import { MemberManager } from "../../../../base/member/MemberManager";
+import { EconomyManager } from "../../../../base/economy/EconomyManager";
+import { HudTextController } from "../../HudTextController";
 
-import { TeamEnum } from "../../../shared/types/TeamEnum";
-import { PhaseEnum as BombPlantPhaseEnum } from "../../../shared/types/gamephase/BombPlantPhaseEnum";
+import { TeamEnum } from "../../../../shared/types/TeamEnum";
+import { PhaseEnum as BombPlantPhaseEnum } from "../../../../shared/types/gamephase/BombPlantPhaseEnum";
 
-import { FormatCode as FC } from "../../../shared/utils/FormatCode";
-import { variable } from "../../../shared/utils/Variable";
-import { Broadcast } from "../../../shared/utils/Broadcast";
+import { FormatCode as FC } from "../../../../shared/utils/FormatCode";
+import { variable } from "../../../../shared/utils/Variable";
+import { Broadcast } from "../../../../shared/utils/Broadcast";
 
 export class ActionHud implements InGameHud {
     

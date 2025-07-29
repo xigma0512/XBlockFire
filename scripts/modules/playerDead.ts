@@ -1,17 +1,17 @@
-import { MemberManager } from "../../base/member/MemberManager";
-import { C4Manager } from "../../base/c4state/C4Manager";
-import { gameEvents } from "../../event/EventEmitter";
-import { HudTextController } from "../hud/HudTextController";
-import { EconomyManager } from "../../base/economy/EconomyManager";
+import { MemberManager } from "../base/member/MemberManager";
+import { C4Manager } from "../base/c4state/C4Manager";
+import { gameEvents } from "../event/EventEmitter";
+import { HudTextController } from "../interface/hud/HudTextController";
+import { EconomyManager } from "../base/economy/EconomyManager";
 
-import { C4DroppedState } from "../../base/c4state/states/Dropped";
+import { C4DroppedState } from "../base/c4state/states/Dropped";
 
-import { TeamEnum } from "../../shared/types/TeamEnum";
+import { TeamEnum } from "../shared/types/TeamEnum";
 
-import { Broadcast } from "../../shared/utils/Broadcast";
-import { FormatCode as FC } from "../../shared/utils/FormatCode";
-import { set_entity_dynamic_property } from "../../shared/utils/Property";
-import { set_variable, variable } from "../../shared/utils/Variable";
+import { Broadcast } from "../shared/utils/Broadcast";
+import { FormatCode as FC } from "../shared/utils/FormatCode";
+import { set_entity_dynamic_property } from "../shared/utils/Property";
+import { set_variable, variable } from "../shared/utils/Variable";
 
 import { GameMode } from "@minecraft/server";
 import { ItemStack, Player, system, world } from "@minecraft/server";

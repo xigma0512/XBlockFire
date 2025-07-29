@@ -1,16 +1,16 @@
-import { gameroom, GameRoomFactory } from "../../base/gameroom/GameRoom";
-import { PhaseManager } from "../../base/gamephase/PhaseManager";
-import { MemberManager } from "../../base/member/MemberManager";
+import { gameroom, GameRoomFactory } from "../../../base/gameroom/GameRoom";
+import { PhaseManager } from "../../../base/gamephase/PhaseManager";
+import { MemberManager } from "../../../base/member/MemberManager";
 
-import { PreRoundStartPhase } from "../../base/gamephase/bomb_plant/PreRoundStart";
+import { PreRoundStartPhase } from "../../../base/gamephase/bomb_plant/PreRoundStart";
 
-import { GameModeEnum } from "../../shared/types/gameroom/GameModeEnum";
+import { GameModeEnum } from "../../../shared/types/gameroom/GameModeEnum";
 
-import { FormatCode as FC } from "../../shared/utils/FormatCode";
+import { FormatCode as FC } from "../../../shared/utils/FormatCode";
 
-import { TeamEnum } from "../../shared/types/TeamEnum";
-import { Broadcast } from "../../shared/utils/Broadcast";
-import { MapRegister } from "../../base/gamemap/MapRegister";
+import { TeamEnum } from "../../../shared/types/TeamEnum";
+import { Broadcast } from "../../../shared/utils/Broadcast";
+import { MapRegister } from "../../../base/gamemap/MapRegister";
 
 import { CommandPermissionLevel, CustomCommandOrigin, CustomCommandParamType, Player } from "@minecraft/server";
 import { CommandRegistry } from "../CommandRegistry";

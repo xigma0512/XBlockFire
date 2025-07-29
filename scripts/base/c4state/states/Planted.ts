@@ -1,7 +1,7 @@
 import { PhaseManager } from "../../gamephase/PhaseManager";
 import { MemberManager } from "../../member/MemberManager";
 import { C4Manager } from "../C4Manager";
-import { HudTextController } from "../../../modules/hud/HudTextController";
+import { HudTextController } from "../../../interface/hud/HudTextController";
 import { EconomyManager } from "../../economy/EconomyManager";
 
 import { C4IdleState } from "./Idle";

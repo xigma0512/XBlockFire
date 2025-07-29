@@ -1,6 +1,6 @@
 import { MemberManager } from "../../member/MemberManager";
 import { PhaseManager } from "../PhaseManager";
-import { ActionHud } from "../../../modules/hud/bomb_plant/Action";
+import { ActionHud } from "../../../interface/hud/ingame/bomb_plant/Action";
 
 import { RoundEndPhase } from "./RoundEnd";
 import { GameOverPhase } from "./Gameover";

@@ -2,7 +2,7 @@ import { PhaseManager } from "../PhaseManager";
 import { MemberManager } from "../../member/MemberManager";
 import { C4Manager } from "../../c4state/C4Manager";
 
-import { ActionHud } from "../../../modules/hud/bomb_plant/Action";
+import { ActionHud } from "../../../interface/hud/ingame/bomb_plant/Action";
 import { C4IdleState } from "../../c4state/states/Idle";
 import { IdlePhase } from "./Idle";
 

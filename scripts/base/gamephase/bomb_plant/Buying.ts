@@ -1,8 +1,8 @@
 import { MemberManager } from "../../member/MemberManager";
 import { PhaseManager } from "../PhaseManager";
-import { ActionHud } from "../../../modules/hud/bomb_plant/Action";
-import { HotbarManager } from "../../../modules/hotbar/Hotbar";
-import { PurchaseHistory } from "../../../modules/shop/Shop";
+import { ActionHud } from "../../../interface/hud/ingame/bomb_plant/Action";
+import { HotbarManager } from "../../../modules/Hotbar";
+import { PurchaseHistory } from "../../economy/Shop";
 
 import { ActionPhase } from "./Action";
 

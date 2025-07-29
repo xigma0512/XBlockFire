@@ -2,7 +2,7 @@ import { gameroom } from "../../gameroom/GameRoom";
 import { MemberManager } from "../../member/MemberManager";
 import { C4Manager } from "../C4Manager";
 import { MapRegister } from "../../gamemap/MapRegister";
-import { HudTextController } from "../../../modules/hud/HudTextController";
+import { HudTextController } from "../../../interface/hud/HudTextController";
 
 import { C4DroppedState } from "./Dropped";
 import { C4PlantingState } from "./Planting";

@@ -1,8 +1,8 @@
 import { MemberManager } from "../../member/MemberManager";
 import { EconomyManager } from "../../economy/EconomyManager";
 import { PhaseManager } from "../PhaseManager";
-import { HotbarManager, HotbarTemplate } from "../../../modules/hotbar/Hotbar";
-import { WaitingHud } from "../../../modules/hud/bomb_plant/Waiting";
+import { HotbarManager, HotbarTemplate } from "../../../modules/Hotbar";
+import { WaitingHud } from "../../../interface/hud/ingame/bomb_plant/Waiting";
 
 import { BuyingPhase } from "./Buying";
 

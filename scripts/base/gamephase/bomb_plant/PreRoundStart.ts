@@ -2,7 +2,7 @@ import { gameroom } from "../../gameroom/GameRoom";
 import { PhaseManager } from "../PhaseManager";
 import { MemberManager } from "../../member/MemberManager";
 import { C4Manager } from "../../c4state/C4Manager";
-import { HotbarManager, HotbarTemplate } from "../../../modules/hotbar/Hotbar";
+import { HotbarManager, HotbarTemplate } from "../../../modules/Hotbar";
 import { MapRegister } from "../../gamemap/MapRegister";
 
 import { C4IdleState } from "../../c4state/states/Idle";
@@ -13,7 +13,7 @@ import { TeamEnum } from "../../../shared/types/TeamEnum";
 
 import { entity_dynamic_property, set_entity_dynamic_property, set_entity_native_property } from "../../../shared/utils/Property";
 import { ItemStackFactory } from "../../../shared/utils/ItemStackFactory";
-import { UnCommonItems } from "../../../modules/uncommon_items/UnCommonItems";
+import { UnCommonItems } from "../../../modules/UnCommonItems";
 
 import { EquipmentSlot, GameMode, InputPermissionCategory, ItemLockMode, system } from "@minecraft/server";
 import { ItemStack } from "@minecraft/server";

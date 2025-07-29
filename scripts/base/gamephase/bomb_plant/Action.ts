@@ -3,7 +3,7 @@ import { PhaseManager } from "../PhaseManager";
 
 import { GameOverPhase } from "./Gameover";
 import { RoundEndPhase } from "./RoundEnd";
-import { ActionHud } from "../../../modules/hud/bomb_plant/Action";
+import { ActionHud } from "../../../interface/hud/ingame/bomb_plant/Action";
 
 import { PhaseEnum as BombPlantPhaseEnum } from "../../../shared/types/gamephase/BombPlantPhaseEnum"
 import { TeamEnum } from "../../../shared/types/TeamEnum";

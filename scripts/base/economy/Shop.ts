@@ -1,7 +1,7 @@
 import { EconomyManager } from "../../base/economy/EconomyManager";
 import { PhaseManager } from "../../base/gamephase/PhaseManager";
 import { MemberManager } from "../../base/member/MemberManager";
-import { HotbarManager } from "../hotbar/Hotbar";
+import { HotbarManager } from "../../modules/Hotbar";
 
 import { Glock17 } from "../../base/weapon/actors/item/Glock17";
 
