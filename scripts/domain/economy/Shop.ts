@@ -163,8 +163,6 @@ const openShopListener = world.beforeEvents.itemUse.subscribe(ev => {
     if (ev.itemStack.typeId !== 'minecraft:feather') return;
 
     const player = ev.source;
-    if (!MemberManager.includePlayer(player)) return;
-
     const phase = GamePhaseManager.getPhase();
 
     if (phase.phaseTag !== BombPlantPhaseEnum.Buying) return;

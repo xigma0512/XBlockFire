@@ -51,7 +51,6 @@ export class C4IdleState implements IBombStateHandler {
         if (ev.itemStack.typeId !== C4_ITEM_ID) return;
 
         const { source } = ev;
-        if (!MemberManager.includePlayer(source)) return;
 
         ev.cancel = !canPlantC4(source);
         if (!ev.cancel) {
@@ -68,9 +67,11 @@ export class C4IdleState implements IBombStateHandler {
         const itemComp = entity.getComponent('item')!;
         if (itemComp.itemStack.typeId !== C4_ITEM_ID) return;
 
-        const player = entity.dimension
-            .getEntities({ location: entity.location, maxDistance: 2, type: 'minecraft:player' })
-            .find(p => MemberManager.includePlayer(p as Player));
+        const player = entity.dimension.getEntities({ 
+            location: entity.location, 
+            maxDistance: 2, 
+            type: 'minecraft:player' 
+        });
         
         if (!player || !(player instanceof Player)) {
             entity.remove();

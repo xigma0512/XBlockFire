@@ -83,9 +83,6 @@ export class C4PlantedState implements IBombStateHandler {
     private onBeforeItemUse(ev: ItemUseBeforeEvent) {
         if (ev.itemStack.typeId !== DEFUSER_ITEM_ID) return;
 
-        
-        if (!MemberManager.includePlayer(ev.source)) return;
-        
         ev.cancel = !canDefuseC4(this.entity, ev.source);
 
         if (!ev.cancel) {
@@ -100,7 +97,6 @@ export class C4PlantedState implements IBombStateHandler {
 
     private onItemCompleteUse(ev: ItemCompleteUseAfterEvent) {
         if (ev.itemStack.typeId !== DEFUSER_ITEM_ID) return;
-        if (!MemberManager.includePlayer(ev.source)) return;
 
         defuseComplete(ev.source);
     }

@@ -19,7 +19,7 @@ import { ItemStack, Player, system, world } from "@minecraft/server";
 const deathPlayers = new Set<Player>();
 
 world.afterEvents.entityDie.subscribe(ev => {
-    if (!(ev.deadEntity instanceof Player) || !MemberManager.includePlayer(ev.deadEntity)) return;
+    if (!(ev.deadEntity instanceof Player)) return;
     const deadPlayer = ev.deadEntity;
     const source = ev.damageSource;
     const attacker = source.damagingEntity;
@@ -27,8 +27,6 @@ world.afterEvents.entityDie.subscribe(ev => {
 })
 
 gameEvents.subscribe('playerDied', (ev) => {
-    if (!MemberManager.includePlayer(ev.deadPlayer)) return;
-
     if (deathPlayers.has(ev.deadPlayer)) return;
     
     deathPlayers.add(ev.deadPlayer);
