@@ -7,28 +7,37 @@ class _GamePhaseManager {
     private static _instance: _GamePhaseManager;
     static get instance() { return (this._instance || (this._instance = new this)); }
     
-    private phaseHandler: IPhaseHandler;
-    private taskId: number;
+    currentTick: number = -1;
+
+    private _phaseHandler: IPhaseHandler;
+    get phaseHandler() { return this._phaseHandler; }
+
+    private _taskId: number;
 
     private constructor() {
-        this.phaseHandler = new BlankPhase();
-        this.phaseHandler.on_entry();
-        this.taskId = system.runInterval(() => this.phaseHandler.on_running());
-    }
-
-    updatePhase(newPhase: IPhaseHandler) {
-        this.phaseHandler.on_exit();
-        system.clearRun(this.taskId);
-
-        system.waitTicks(5).then(() => { 
-            this.phaseHandler = newPhase;
-            this.phaseHandler.on_entry();
-            this.taskId = system.runInterval(() => this.phaseHandler.on_running());
+        this._phaseHandler = new BlankPhase();
+        this._phaseHandler.on_entry();
+        this._taskId = system.runInterval(() => {
+            this._phaseHandler.on_running();
+            this._phaseHandler.hud?.update();
+            this._phaseHandler.transitions();
         });
     }
+    
+    updatePhase(newPhase: IPhaseHandler) {
+        this._phaseHandler.on_exit();
+        system.clearRun(this._taskId);
+        
+        system.waitTicks(5).then(() => { 
+            this._phaseHandler = newPhase;
+            this._phaseHandler.on_entry();
 
-    getPhase() {
-        return this.phaseHandler;
+            this._taskId = system.runInterval(() => {
+                this._phaseHandler.on_running();
+                this._phaseHandler.hud?.update();
+                this._phaseHandler.transitions();
+            });
+        });
     }
 
 }

@@ -23,10 +23,9 @@ export class GameOverPhase implements IPhaseHandler {
 
     readonly phaseTag = BombPlantPhaseEnum.Gameover;
     readonly hud: ActionHud;
-    private _currentTick: number = config.COUNTDOWN_TIME;
-    get currentTick() { return this._currentTick; }
 
     constructor() {
+        this.phaseTag = BombPlantPhaseEnum.Gameover;
         this.hud = new ActionHud();
     }
 
@@ -57,8 +56,6 @@ export class GameOverPhase implements IPhaseHandler {
         if (this._currentTick-- % 20 == 0) {
             Broadcast.sound("firework.launch", {}, world.getAllPlayers());
         }
-        this.hud.update();
-        this.transitions();
     }
 
     on_exit() {

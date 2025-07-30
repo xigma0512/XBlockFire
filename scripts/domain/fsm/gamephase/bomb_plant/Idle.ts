@@ -20,13 +20,11 @@ const idle_config = Config.bombplant.idle;
 
 export class IdlePhase implements IPhaseHandler {
 
-    readonly phaseTag = BombPlantPhaseEnum.Idle;
-    readonly hud: WaitingHud;
-    
-    private _currentTick: number = idle_config.COUNTDOWN_TIME;
-    get currentTick() { return this._currentTick; }
+    readonly phaseTag;
+    readonly hud;
 
     constructor() { 
+        this.phaseTag = BombPlantPhaseEnum.Idle;
         this.hud = new WaitingHud();
     }
 
@@ -40,9 +38,6 @@ export class IdlePhase implements IPhaseHandler {
 
         if (game_config.AUTO_START && playerAmount >= game_config.AUTO_START_MIN_PLAYER) this._currentTick --;
         if (this.currentTick !== idle_config.COUNTDOWN_TIME && playerAmount < game_config.AUTO_START_MIN_PLAYER) this._currentTick = idle_config.COUNTDOWN_TIME;
-
-        this.hud.update();
-        this.transitions();
     }
 
     on_exit() {
@@ -51,7 +46,7 @@ export class IdlePhase implements IPhaseHandler {
         initializeVariable();
     }
 
-    private transitions() {
+    transitions() {
         if (this.currentTick <= 0) return GamePhaseManager.updatePhase(new BuyingPhase());
     }
 

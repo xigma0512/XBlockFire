@@ -1,5 +1,4 @@
-import { EquipmentSlot, GameMode, InputPermissionCategory, ItemLockMode, system } from "@minecraft/server";
-import { ItemStack } from "@minecraft/server";
+import { EquipmentSlot, GameMode, InputPermissionCategory, system } from "@minecraft/server";
 
 import { HotbarService } from "../../../../application/services/HotbarService";
 
@@ -13,15 +12,13 @@ import { C4IdleState } from "../../bombstate/states/Idle";
 import { BuyingPhase } from "./Buying";
 
 import { entity_dynamic_property, set_entity_dynamic_property, set_entity_native_property } from "../../../../infrastructure/data/Property";
-import { ItemStackFactory } from "../../../../infrastructure/utils/ItemStackFactory";
 
 import { BombPlantPhaseEnum } from "../../../../declarations/enum/PhaseEnum";
 import { TeamEnum } from "../../../../declarations/enum/TeamEnum";
 
 export class PreRoundStartPhase implements IPhaseHandler {
+
     readonly phaseTag = BombPlantPhaseEnum.PreRoundStart;
-    readonly hud!: InGameHud;
-    readonly currentTick = -1;
 
     constructor() {}
 
@@ -33,13 +30,12 @@ export class PreRoundStartPhase implements IPhaseHandler {
     }
 
     on_running() {
-        this.transitions();
     }
 
     on_exit() {
     }
 
-    private transitions() {
+    transitions() {
         GamePhaseManager.updatePhase(new BuyingPhase());
     }
 }

@@ -81,13 +81,11 @@ const endReasonTable = {
 
 export class ActionPhase implements IPhaseHandler {
 
-    readonly phaseTag = BombPlantPhaseEnum.Action;
-    readonly hud: ActionHud;
-    
-    private _currentTick: number = config.ACTION_TIME;
-    get currentTick() { return this._currentTick; }
+    readonly phaseTag;
+    readonly hud;
 
     constructor() {
+        this.phaseTag = BombPlantPhaseEnum.Action;
         this.hud = new ActionHud();
     }
 
@@ -98,14 +96,12 @@ export class ActionPhase implements IPhaseHandler {
     on_running() {
         this._currentTick --;
         voiceBroadcast(this.currentTick);
-        this.hud.update();
-        this.transitions();
     }
     
     on_exit() {
     }
 
-    private transitions() {
+    transitions() {
         let endReason: EndReasonEnum | null = null;
 
         const attackers = MemberManager.getPlayers({ team: TeamEnum.Attacker });

@@ -21,13 +21,11 @@ const config = Config.bombplant.buying;
 
 export class BuyingPhase implements IPhaseHandler {
 
-    readonly hud: ActionHud;
-    readonly phaseTag = BombPlantPhaseEnum.Buying;
-
-    private _currentTick: number = config.COUNTDOWN_TIME;
-    get currentTick() { return this._currentTick; }
+    readonly phaseTag;
+    readonly hud;
 
     constructor() {        
+        this.phaseTag = BombPlantPhaseEnum.Buying;
         this.hud = new ActionHud();
     }
 
@@ -40,15 +38,13 @@ export class BuyingPhase implements IPhaseHandler {
         if (this._currentTick-- % 20 == 0) {
             Broadcast.sound("block.click", { pitch: 2 }, MemberManager.getPlayers());
         }
-        this.hud.update();
-        this.transitions();
     }
 
     on_exit() {
         restorePlayerDefaults();        
     }
 
-    private transitions() {
+    transitions() {
         if (this.currentTick <= 0) GamePhaseManager.updatePhase(new ActionPhase());
     }
 

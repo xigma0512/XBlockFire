@@ -8,8 +8,6 @@ import { GameModeEnum } from "../../../declarations/enum/GameModeEnum";
 export class BlankPhase implements IPhaseHandler {
 
     readonly phaseTag = -1;
-    readonly hud!: InGameHud;
-    readonly currentTick = -1;
     
     constructor() { }
 
@@ -17,18 +15,14 @@ export class BlankPhase implements IPhaseHandler {
     }
 
     on_running() {
-        if (!gameroom()) return;
-        this.transitions();
     }
 
     on_exit() {
     }
 
-    private transitions() {
+    transitions() {
         switch(gameroom().gameMode) {
-            case GameModeEnum.BombPlant: 
-                GamePhaseManager.updatePhase(new IdlePhase());
-                break;
+            case GameModeEnum.BombPlant: GamePhaseManager.updatePhase(new IdlePhase()); break;
         }
     }
 

@@ -57,12 +57,11 @@ const endReasonTable = {
 
 export class C4PlantedPhase implements IPhaseHandler {
 
-    readonly phaseTag = BombPlantPhaseEnum.C4Planted;
-    readonly hud: ActionHud;
-    private _currentTick: number = config.COUNTDOWN_TIME;
-    get currentTick() { return this._currentTick; }
+    readonly phaseTag;
+    readonly hud;
 
     constructor() {
+        this.phaseTag = BombPlantPhaseEnum.C4Planted;
         this.hud = new ActionHud();
     }
 
@@ -72,8 +71,6 @@ export class C4PlantedPhase implements IPhaseHandler {
 
     on_running() {
         this._currentTick --;
-        this.hud.update();
-        this.transitions();
     }
 
     on_exit() {

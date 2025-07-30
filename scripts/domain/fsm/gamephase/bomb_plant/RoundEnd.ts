@@ -20,12 +20,11 @@ const config = Config.bombplant.roundEnd;
 
 export class RoundEndPhase implements IPhaseHandler {
 
-    readonly phaseTag = BombPlantPhaseEnum.RoundEnd;
-    readonly hud: ActionHud;
-    private _currentTick = config.COUNTDOWN_TIME;
-    get currentTick() { return this._currentTick; }
+    readonly phaseTag;
+    readonly hud;
 
     constructor() {
+        this.phaseTag = BombPlantPhaseEnum.RoundEnd;
         this.hud = new ActionHud();
     }
 
@@ -38,8 +37,6 @@ export class RoundEndPhase implements IPhaseHandler {
         if (this._currentTick-- % 20 == 0) {
             Broadcast.sound("firework.launch", {}, MemberManager.getPlayers());
         }
-        this.hud.update();
-        this.transitions();
     }
 
     on_exit() {
