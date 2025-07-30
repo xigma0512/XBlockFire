@@ -15,7 +15,7 @@ import { variable } from "../../../../infrastructure/data/Variable";
 
 import { GameMode, world } from "@minecraft/server";
 
-import { Config } from "../../../../settings/config";
+import { BombPlant as Config } from "../../../../settings/config";
 
 export class GameOverPhase implements IPhaseHandler {
 
@@ -25,7 +25,7 @@ export class GameOverPhase implements IPhaseHandler {
     constructor() {
         this.phaseTag = BombPlantPhaseEnum.Gameover;
         this.hud = new ActionHud();
-        GamePhaseManager.currentTick = Config.bombplant.gameover.COUNTDOWN_TIME;
+        GamePhaseManager.currentTick = Config.phaseTime.gameover;
     }
 
     on_entry() {
@@ -53,7 +53,7 @@ export class GameOverPhase implements IPhaseHandler {
     on_running() {
         const currentTick = GamePhaseManager.currentTick;
         if (currentTick % 20 == 0) {
-            Broadcast.sound("firework.launch", {}, world.getAllPlayers());
+            Broadcast.sound("firework.launch", {});
         }
         return true;
     }

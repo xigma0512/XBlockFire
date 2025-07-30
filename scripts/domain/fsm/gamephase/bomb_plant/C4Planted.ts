@@ -12,7 +12,7 @@ import { set_variable } from "../../../../infrastructure/data/Variable";
 import { FormatCode as FC } from "../../../../declarations/enum/FormatCode";
 import { Broadcast } from "../../../../infrastructure/utils/Broadcast";
 
-import { Config } from "../../../../settings/config";
+import { BombPlant as Config } from "../../../../settings/config";
 
 const enum EndReasonEnum {
     'Time-up' = 1,
@@ -61,7 +61,7 @@ export class C4PlantedPhase implements IPhaseHandler {
     constructor() {
         this.phaseTag = BombPlantPhaseEnum.C4Planted;
         this.hud = new ActionHud();
-        GamePhaseManager.currentTick = Config.bombplant.C4planted.COUNTDOWN_TIME;
+        GamePhaseManager.currentTick = Config.phaseTime.c4planted;
     }
 
     on_entry() {

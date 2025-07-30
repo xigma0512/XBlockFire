@@ -12,7 +12,7 @@ import { FormatCode as FC } from "../../../../declarations/enum/FormatCode";
 import { Broadcast } from "../../../../infrastructure/utils/Broadcast";
 import { set_variable } from "../../../../infrastructure/data/Variable";
 
-import { Config } from "../../../../settings/config";
+import { BombPlant as Config } from "../../../../settings/config";
 
 const VOICE_30_SEC_LEFT_SOUND_ID = 'xblockfire.30_sec_left';
 
@@ -85,7 +85,7 @@ export class ActionPhase implements IPhaseHandler {
     constructor() {
         this.phaseTag = BombPlantPhaseEnum.Action;
         this.hud = new ActionHud();
-        GamePhaseManager.currentTick = Config.bombplant.action.ACTION_TIME;
+        GamePhaseManager.currentTick = Config.phaseTime.action;
     }
 
     on_entry() {

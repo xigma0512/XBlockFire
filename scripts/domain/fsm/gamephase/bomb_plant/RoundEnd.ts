@@ -14,7 +14,7 @@ import { BombPlantPhaseEnum } from "../../../../declarations/enum/PhaseEnum";
 import { TeamEnum } from "../../../../declarations/enum/TeamEnum";
 import { FormatCode as FC } from "../../../../declarations/enum/FormatCode";
 
-import { Config } from "../../../../settings/config";
+import { BombPlant as Config } from "../../../../settings/config";
 
 export class RoundEndPhase implements IPhaseHandler {
 
@@ -24,7 +24,7 @@ export class RoundEndPhase implements IPhaseHandler {
     constructor() {
         this.phaseTag = BombPlantPhaseEnum.RoundEnd;
         this.hud = new ActionHud();
-        GamePhaseManager.currentTick = Config.bombplant.roundEnd.COUNTDOWN_TIME;
+        GamePhaseManager.currentTick = Config.phaseTime.roundend;
     }
 
     on_entry() {
@@ -48,8 +48,8 @@ export class RoundEndPhase implements IPhaseHandler {
         const defenderScore = variable(`defender_score`);
 
         let winner = null;
-        if (attackerScore >= Config.game.WINNING_SCORE) winner = TeamEnum.Attacker;
-        if (defenderScore >= Config.game.WINNING_SCORE) winner = TeamEnum.Defender;
+        if (attackerScore >= Config.game.winning_score) winner = TeamEnum.Attacker;
+        if (defenderScore >= Config.game.winning_score) winner = TeamEnum.Defender;
 
         if (winner) {
             set_variable(`winner`, winner);
@@ -59,7 +59,7 @@ export class RoundEndPhase implements IPhaseHandler {
 
         if (currentTick <= 0) {
             
-            if (attackerScore + defenderScore == Config.game.WINNING_SCORE - 1) {
+            if (attackerScore + defenderScore == Config.game.winning_score - 1) {
                 switchSide();
             }
             
@@ -103,7 +103,7 @@ function processWinner() {
 
     for (const player of MemberManager.getPlayers()) {
         const playerTeam = MemberManager.getPlayerTeam(player);
-        const earn = Config.game.ROUND_INCOME[(playerTeam === winnerTeam) ? 0 : 1];
+        const earn = Config.economic.round_income[(playerTeam === winnerTeam) ? 0 : 1];
         EconomyManager.modifyMoney(player, earn);
         player.sendMessage(`${FC.Gray}>> ${FC.DarkGray}Round Income: +${earn}`);
     }

@@ -13,7 +13,7 @@ import { BombPlantPhaseEnum } from "../../../../declarations/enum/PhaseEnum";
 import { TeamEnum } from "../../../../declarations/enum/TeamEnum";
 import { FormatCode as FC } from "../../../../declarations/enum/FormatCode";
 
-import { Config } from "../../../../settings/config";
+import { BombPlant as Config } from "../../../../settings/config";
 
 export class IdlePhase implements IPhaseHandler {
 
@@ -23,7 +23,7 @@ export class IdlePhase implements IPhaseHandler {
     constructor() { 
         this.phaseTag = BombPlantPhaseEnum.Idle;
         this.hud = new WaitingHud();
-        GamePhaseManager.currentTick = Config.bombplant.idle.COUNTDOWN_TIME;
+        GamePhaseManager.currentTick = Config.phaseTime.idle;
     }
 
     on_entry() {
@@ -33,14 +33,14 @@ export class IdlePhase implements IPhaseHandler {
         let currentTick = GamePhaseManager.currentTick;
         const playerAmount = MemberManager.getPlayers().length;
 
-        const isAutoStartEnable = Config.game.AUTO_START;
-        const autoStartPlayerNeed = Config.game.AUTO_START_MIN_PLAYER;
+        const isAutoStartEnable = Config.game.auto_start;
+        const autoStartPlayerNeed = Config.game.auto_start_need_players;
         
         if (!isAutoStartEnable || playerAmount < autoStartPlayerNeed) {
             return false;
         }
 
-        const originalTime = Config.bombplant.idle.COUNTDOWN_TIME;
+        const originalTime = Config.phaseTime.idle;
         if (currentTick !== originalTime && playerAmount < autoStartPlayerNeed) {
             currentTick = originalTime;
             return false;
@@ -50,7 +50,7 @@ export class IdlePhase implements IPhaseHandler {
     }
 
     on_exit() {
-        const isRandomAssignedEnable = Config.game.RANDOM_ASSIGNED;
+        const isRandomAssignedEnable = Config.game.random_assigned;
         if (isRandomAssignedEnable) {
             randomTeam();
         }

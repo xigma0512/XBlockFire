@@ -1,49 +1,37 @@
 export const language = 'ZH-TW';
 
-export namespace Config {
-    export const game = {
-        AUTO_START: true,
-        AUTO_START_MIN_PLAYER: 10,
-        RANDOM_ASSIGNED: false,
-        WINNING_SCORE: 7,
-        ROUND_INCOME: [3500, 2500]
-    }
-
-    export const bombplant = {
-        idle: {
-            COUNTDOWN_TIME: 30 * 20
-        },
-        buying: {
-            COUNTDOWN_TIME: 20 * 20
-        },
-        action: {
-            ACTION_TIME: 120 * 20
-        },
-        C4planted: {
-            COUNTDOWN_TIME: 50 * 20
-        },
-        roundEnd: {
-            COUNTDOWN_TIME: 10 * 20
-        },
-        gameover: {
-            COUNTDOWN_TIME: 10 * 20
-        }
-    }
+export const BombPlant = {
+    game: {
+        auto_start: true,
+        auto_start_need_players: 10,
+        random_assigned: false,
+        winning_score: 7,
+    },
     
-    export const economy = {
-        LIMIT: 9000
-    }
+    economic: {
+        round_income: [3500, 2500],
+        limit: 9000
+    },
 
-    export const c4 = {
+    c4: {
         // C4可以被安裝在目標點範圍多少格內
-        C4_TARGET_RANGE: 4.5,
+        target_range: 4.5,
         // C4可以在多少格內被拆除
-        DEFUSE_RANGE: 1.5
-    }
+        defuse_range: 1.5
+    },
 
-    export const uncommon_items = {
-        CONTAINER_LOCATION: { x: 155, y: 123, z: -2 },
-        ITEM_LIST: {
+    phaseTime: {
+        idle: 30 * 20,
+        buying: 20 * 20,
+        action: 120 * 20,
+        c4planted: 50 * 20,
+        roundend: 10 * 20,
+        gameover: 10 * 20
+    },
+
+    uncommon_items: {
+        location: { x: 155, y: 123, z: -2 },
+        items: {
             'defender_helmet': 0,
             'defender_chestplate': 1,
             'defender_leggings': 2,
@@ -55,4 +43,5 @@ export namespace Config {
             'attacker_boots': 7,
         }
     }
+
 }

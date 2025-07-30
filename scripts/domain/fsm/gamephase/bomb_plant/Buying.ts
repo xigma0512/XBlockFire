@@ -15,7 +15,7 @@ import { ItemStackFactory } from "../../../../infrastructure/utils/ItemStackFact
 
 import { BombPlantPhaseEnum } from "../../../../declarations/enum/PhaseEnum";
 
-import { Config } from "../../../../settings/config";
+import { BombPlant as Config } from "../../../../settings/config";
 
 export class BuyingPhase implements IPhaseHandler {
 
@@ -25,7 +25,7 @@ export class BuyingPhase implements IPhaseHandler {
     constructor() {        
         this.phaseTag = BombPlantPhaseEnum.Buying;
         this.hud = new ActionHud();
-        GamePhaseManager.currentTick = Config.bombplant.buying.COUNTDOWN_TIME;
+        GamePhaseManager.currentTick = Config.phaseTime.buying;
     }
 
     on_entry() {
