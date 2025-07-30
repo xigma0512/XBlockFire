@@ -56,7 +56,7 @@ export class C4PlantingState implements IBombStateHandler {
         if (ev.itemStack.typeId !== C4_ITEM_ID) return;
         if (ev.source.id !== this.source.id) return;
 
-        const phase = GamePhaseManager.getPhase();
+        const phase = GamePhaseManager.phaseHandler;
         if (phase.phaseTag !== BombPlantPhaseEnum.Action && phase.phaseTag !== BombPlantPhaseEnum.RoundEnd) return;
         
         // eslint-disable-next-line

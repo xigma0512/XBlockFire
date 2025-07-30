@@ -7,12 +7,9 @@ import { TeamEnum } from "../../../../declarations/enum/TeamEnum";
 
 import { FormatCode as FC } from "../../../../declarations/enum/FormatCode";
 import { Broadcast } from "../../../../infrastructure/utils/Broadcast";
-
-import { Config } from "../../../../settings/config";
 import { lang } from "../../../../infrastructure/Language";
 
-const game_config = Config.game;
-const idle_config = Config.bombplant.idle;
+import { BombPlant as Config } from "../../../../settings/config";
 
 export class WaitingHud implements InGameHud {
     
@@ -24,22 +21,23 @@ export class WaitingHud implements InGameHud {
     }
 
     private updateSubtitle() {
-        const players = MemberManager.getPlayers();
-        const playerAmount = players.length;
-
-        const phase = GamePhaseManager.getPhase();
-        
+        const currentTick = GamePhaseManager.currentTick;
+        const playerAmount = MemberManager.getPlayers().length;
+    
         let text = lang('hud.bombplant.waiting.waiting_for_players.subtitle');
-        
-        if (game_config.AUTO_START && playerAmount >= game_config.AUTO_START_MIN_PLAYER) {
-            text = lang('hud.bombplant.waiting.count_down.subtitle', (phase.currentTick / 20).toFixed(0));
+
+        const isAutoStartEnable = Config.game.auto_start;
+        const autoStartPlayerNeed = Config.game.auto_start_need_players;
+        if (isAutoStartEnable && playerAmount >= autoStartPlayerNeed) {
+            text = lang('hud.bombplant.waiting.count_down.subtitle', (currentTick / 20).toFixed(0));
         }
         
-        if (phase.currentTick !== idle_config.COUNTDOWN_TIME && playerAmount < game_config.AUTO_START_MIN_PLAYER) {
+        const originalTime = Config.phaseTime.idle;
+        if (currentTick !== originalTime && playerAmount < autoStartPlayerNeed) {
             Broadcast.message(lang('hud.bombplant.waiting.not_enough_player'));
         }
         
-        Broadcast.subtitle(text, players);
+        Broadcast.subtitle(text);
     }
 
     private updateSidebar() {

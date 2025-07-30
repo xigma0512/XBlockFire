@@ -1,7 +1,7 @@
 import { Player } from "@minecraft/server";
-import { Config } from "../../settings/config";
+import { BombPlant as Config } from "../../settings/config";
 
-const LIMIT = Config.economy.LIMIT;
+const LIMIT = Config.economic.limit;
 
 export class EconomyManager {
 

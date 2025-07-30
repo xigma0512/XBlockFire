@@ -21,14 +21,14 @@ export class ActionHud implements InGameHud {
     }
 
     private updateSubtitle() {
-        
-        const phase = GamePhaseManager.getPhase();
+        const currentTick = GamePhaseManager.currentTick;
+        const phase = GamePhaseManager.phaseHandler;
 
         let text: string | string[] = '';
         switch (phase.phaseTag) {
             case BombPlantPhaseEnum.Buying:
                 text = [
-                    lang('hud.bombplant.action.buying_message.subtitle.1', (phase.currentTick / 20).toFixed(0)),
+                    lang('hud.bombplant.action.buying_message.subtitle.1', (currentTick / 20).toFixed(0)),
                     lang('hud.bombplant.action.buying_message.subtitle.2')
                 ];
                 break;
@@ -39,9 +39,8 @@ export class ActionHud implements InGameHud {
     }
 
     private updateSidebar() {
-        
+        const currentTick = GamePhaseManager.currentTick;
         const players = MemberManager.getPlayers();
-        const phase = GamePhaseManager.getPhase();
 
         const attackerScore = variable(`attacker_score`);
         const defenderScore = variable(`defender_score`);
@@ -52,7 +51,7 @@ export class ActionHud implements InGameHud {
         const attackerDeadPlayers = MemberManager.getPlayers({ team: TeamEnum.Attacker, is_alive: false });
         const defenderDeadPlayers = MemberManager.getPlayers({ team: TeamEnum.Defender, is_alive: false });
 
-        const seconds = Number((phase.currentTick / 20).toFixed(0));
+        const seconds = Number((currentTick / 20).toFixed(0));
         
         for (const player of players) {
 

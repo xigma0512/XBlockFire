@@ -17,10 +17,10 @@ import { Vector3Utils } from "@minecraft/math";
 import { Player, system, world } from "@minecraft/server";
 import { EntitySpawnAfterEvent, ItemUseBeforeEvent } from "@minecraft/server";
 
-import { Config } from "../../../../settings/config";
+import { BombPlant as Config } from "../../../../settings/config";
 
 const C4_ITEM_ID = 'xblockfire:c4';
-const C4_TARGET_RANGE = Config.c4.C4_TARGET_RANGE;
+const C4_TARGET_RANGE = Config.c4.target_range;
 
 export class C4IdleState implements IBombStateHandler {
 

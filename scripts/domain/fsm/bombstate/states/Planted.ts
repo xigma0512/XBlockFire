@@ -22,11 +22,11 @@ import { VanillaEntityIdentifier } from "@minecraft/server";
 import { DimensionLocation, Entity, Player, system, world } from "@minecraft/server";
 import { ItemUseBeforeEvent, ItemCompleteUseAfterEvent } from "@minecraft/server"
 
-import { Config } from "../../../../settings/config";
+import { BombPlant as Config } from "../../../../settings/config";
 
 const DEFUSER_ITEM_ID = 'xblockfire:defuser';
 const PLANTED_C4_ENTITY_ID = 'xblockfire:planted_c4' as VanillaEntityIdentifier;
-const DEFUSE_RANGE = Config.c4.DEFUSE_RANGE;
+const DEFUSE_RANGE = Config.c4.defuse_range;
 const DEFUSING_TIME = 6 * 20;
 
 const EXPLOSION_SOUND_ID = 'xblockfire.c4_explosion';
@@ -40,7 +40,7 @@ export class C4PlantedState implements IBombStateHandler {
     private _entity!: Entity;
     get entity() { return this._entity; }
     
-    private currentTick = Config.bombplant.C4planted.COUNTDOWN_TIME;
+    private currentTick = Config.phaseTime.c4planted;
 
     private beforeItemUseListener = (ev: ItemUseBeforeEvent) => { };
     private afterItemCompleteUseListener = (ev: ItemCompleteUseAfterEvent) => { };
@@ -54,7 +54,7 @@ export class C4PlantedState implements IBombStateHandler {
         this.afterItemCompleteUseListener = world.afterEvents.itemCompleteUse.subscribe(this.onItemCompleteUse.bind(this));
         this._entity = this.position.dimension.spawnEntity(PLANTED_C4_ENTITY_ID, this.position);
 
-        if (GamePhaseManager.getPhase().phaseTag === BombPlantPhaseEnum.Action) {
+        if (GamePhaseManager.phaseHandler.phaseTag === BombPlantPhaseEnum.Action) {
             GamePhaseManager.updatePhase(new C4PlantedPhase());
         }
 
@@ -141,7 +141,7 @@ function c4Explosion(C4Entity: Entity) {
 }
 
 function defuseComplete(defuser: Player) {    
-    if (GamePhaseManager.getPhase().phaseTag === BombPlantPhaseEnum.C4Planted) {
+    if (GamePhaseManager.phaseHandler.phaseTag === BombPlantPhaseEnum.C4Planted) {
         set_variable(`round_winner`, TeamEnum.Defender);
         GamePhaseManager.updatePhase(new RoundEndPhase());
     }
@@ -162,7 +162,7 @@ function defuseComplete(defuser: Player) {
 
 let soundPlayInterval = 20;
 function playC4Effect(currentTick: number, entity: Entity) {
-    const totalTime = Config.bombplant.C4planted.COUNTDOWN_TIME;
+    const totalTime = Config.phaseTime.c4planted;
 
     const bar = progressBar(totalTime, currentTick, 30);
     entity.nameTag = `| ${bar} |`;
