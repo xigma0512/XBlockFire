@@ -1,7 +1,4 @@
 import { TeamEnum } from "../../declarations/enum/TeamEnum";
-
-import { FormatCode as FC } from "../../declarations/enum/FormatCode";
-import { Broadcast } from "../../infrastructure/utils/Broadcast"; 
 import { entity_dynamic_property } from "../../infrastructure/data/Property";
 
 import { Player, world } from "@minecraft/server";
@@ -20,13 +17,11 @@ export class MemberManager {
     static joinRoom(player: Player) {
         this.players.add(player);
         this.playerTeam.set(player, TeamEnum.Spectator);
-        Broadcast.message(`${FC.Bold}${FC.Green}${player.name} join the room.`);
     }
     
     static leaveRoom(player: Player) {
         this.players.delete(player);
         this.playerTeam.delete(player);
-        Broadcast.message(`${FC.Bold}${FC.Red}${player.name} leave the room.`);
     }
 
     static getPlayers(filter?: MemberFilter) {        
@@ -54,18 +49,18 @@ export class MemberManager {
     
 }
 
-const worldLoadListener = world.afterEvents.worldLoad.subscribe(() => {
+world.afterEvents.worldLoad.subscribe(() => {
     for (const player of world.getAllPlayers()) {
         MemberManager.joinRoom(player);
     }
 });
 
-const playerJoinGameListener = world.afterEvents.playerSpawn.subscribe(ev => {
+world.afterEvents.playerSpawn.subscribe(ev => {
     if (ev.initialSpawn) {
         MemberManager.joinRoom(ev.player);
     }
 });
 
-const playerLeaveGameListener = world.beforeEvents.playerLeave.subscribe(ev => {
+world.beforeEvents.playerLeave.subscribe(ev => {
     MemberManager.leaveRoom(ev.player);
 });
