@@ -1,10 +1,11 @@
 import { BombStateManager } from "../../domain/fsm/bombstate/BombStateManager";
 import { MemberManager } from "../../domain/player/MemberManager";
+
 import { BombStateEnum } from "../../declarations/enum/BombStateEnum";
 import { TeamEnum } from "../../declarations/enum/TeamEnum";
 
 import { Vector3Builder, Vector3Utils } from "@minecraft/math";
-import { Direction, Entity, MolangVariableMap, Player, RGBA } from "@minecraft/server";
+import { Direction, Entity, MolangVariableMap, Player, RGBA, system, world } from "@minecraft/server";
 
 export class AlliesMarker {
 
@@ -112,3 +113,7 @@ export class AlliesMarker {
         return varMap;
     }
 }
+
+world.afterEvents.worldLoad.subscribe(() => {
+    system.runInterval(() => AlliesMarker.updateMark());
+});
