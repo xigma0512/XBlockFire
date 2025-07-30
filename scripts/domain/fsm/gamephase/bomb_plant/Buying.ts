@@ -1,3 +1,6 @@
+import { InputPermissionCategory, ItemLockMode } from "@minecraft/server";
+import { uiManager } from "@minecraft/server-ui";
+
 import { MemberManager } from "../../../player/MemberManager";
 import { GamePhaseManager } from "../GamePhaseManager";
 import { PurchaseHistory } from "../../../economy/PurchaseHistory";
@@ -6,18 +9,13 @@ import { ActionPhase } from "./Action";
 
 import { ActionHud } from "../../../../interface/hud/ingame/bomb_plant/Action";
 
-import { BombPlantPhaseEnum } from "../../../../declarations/enum/PhaseEnum";
-
 import { Broadcast } from "../../../../infrastructure/utils/Broadcast";
 import { set_entity_native_property } from "../../../../infrastructure/data/Property";
 import { ItemStackFactory } from "../../../../infrastructure/utils/ItemStackFactory";
 
-import { InputPermissionCategory, ItemLockMode } from "@minecraft/server";
-import { uiManager } from "@minecraft/server-ui";
+import { BombPlantPhaseEnum } from "../../../../declarations/enum/PhaseEnum";
 
 import { Config } from "../../../../settings/config";
-
-const config = Config.bombplant.buying;
 
 export class BuyingPhase implements IPhaseHandler {
 
@@ -27,25 +25,29 @@ export class BuyingPhase implements IPhaseHandler {
     constructor() {        
         this.phaseTag = BombPlantPhaseEnum.Buying;
         this.hud = new ActionHud();
+        GamePhaseManager.currentTick = Config.bombplant.buying.COUNTDOWN_TIME;
     }
 
     on_entry() {
-        this._currentTick = config.COUNTDOWN_TIME;
         sendShopItem();
     }
 
-    on_running() {        
-        if (this._currentTick-- % 20 == 0) {
-            Broadcast.sound("block.click", { pitch: 2 }, MemberManager.getPlayers());
+    on_running() {
+        const currentTick = GamePhaseManager.currentTick;
+        if (currentTick % 20 == 0) {
+            Broadcast.sound("block.click", { pitch: 2 });
         }
+        return true;
     }
 
     on_exit() {
-        restorePlayerDefaults();        
+        closeShop();
     }
 
     transitions() {
-        if (this.currentTick <= 0) GamePhaseManager.updatePhase(new ActionPhase());
+        if (GamePhaseManager.currentTick <= 0) {
+            GamePhaseManager.updatePhase(new ActionPhase());
+        }
     }
 
 }
@@ -59,7 +61,7 @@ function sendShopItem() {
     }
 }
 
-function restorePlayerDefaults() {
+function closeShop() {
     for (const player of MemberManager.getPlayers()) {
         player.inputPermissions.setPermissionCategory(InputPermissionCategory.LateralMovement, true);
         set_entity_native_property(player, 'player:can_use_item', true);

@@ -4,7 +4,9 @@ export namespace Config {
     export const game = {
         AUTO_START: true,
         AUTO_START_MIN_PLAYER: 10,
-        RANDOM_ASSIGNED: false
+        RANDOM_ASSIGNED: false,
+        WINNING_SCORE: 7,
+        ROUND_INCOME: [3500, 2500]
     }
 
     export const bombplant = {
@@ -21,8 +23,6 @@ export namespace Config {
             COUNTDOWN_TIME: 50 * 20
         },
         roundEnd: {
-            INCOME: [3500, 2200],
-            WINNING_SCORE: 13,
             COUNTDOWN_TIME: 10 * 20
         },
         gameover: {

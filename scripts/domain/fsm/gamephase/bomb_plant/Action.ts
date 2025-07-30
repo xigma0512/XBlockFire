@@ -14,8 +14,6 @@ import { set_variable } from "../../../../infrastructure/data/Variable";
 
 import { Config } from "../../../../settings/config";
 
-const config = Config.bombplant.action;
-
 const VOICE_30_SEC_LEFT_SOUND_ID = 'xblockfire.30_sec_left';
 
 const enum EndReasonEnum {
@@ -87,21 +85,25 @@ export class ActionPhase implements IPhaseHandler {
     constructor() {
         this.phaseTag = BombPlantPhaseEnum.Action;
         this.hud = new ActionHud();
+        GamePhaseManager.currentTick = Config.bombplant.action.ACTION_TIME;
     }
 
     on_entry() {
-        this._currentTick = config.ACTION_TIME;
     }
 
     on_running() {
-        this._currentTick --;
-        voiceBroadcast(this.currentTick);
+        const currentTick = GamePhaseManager.currentTick;
+        if (currentTick === 30 * 20) {
+            Broadcast.sound(VOICE_30_SEC_LEFT_SOUND_ID, {});
+        }
+        return true;
     }
     
     on_exit() {
     }
 
     transitions() {
+        const currentTick = GamePhaseManager.currentTick;
         let endReason: EndReasonEnum | null = null;
 
         const attackers = MemberManager.getPlayers({ team: TeamEnum.Attacker });
@@ -114,7 +116,7 @@ export class ActionPhase implements IPhaseHandler {
         if (defendersAlive.length === 0) endReason = EndReasonEnum['Defender-Eliminated'];
         if (attackers.length === 0) endReason = EndReasonEnum['Attacker-Disconnect'];
         if (defenders.length === 0) endReason = EndReasonEnum['Defender-Disconnect'];
-        if (this.currentTick <= 0) endReason = EndReasonEnum['Time-up'];
+        if (currentTick <= 0) endReason = EndReasonEnum['Time-up'];
     
         if (endReason) {
             const result = endReasonTable[endReason];
@@ -126,10 +128,4 @@ export class ActionPhase implements IPhaseHandler {
         }
     }
 
-}
-
-function voiceBroadcast(currentTick: number) {
-    if (currentTick === 30 * 20) {
-        Broadcast.sound(VOICE_30_SEC_LEFT_SOUND_ID, {}, MemberManager.getPlayers());
-    }
 }

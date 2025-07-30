@@ -17,11 +17,7 @@ class _GamePhaseManager {
     private constructor() {
         this._phaseHandler = new BlankPhase();
         this._phaseHandler.on_entry();
-        this._taskId = system.runInterval(() => {
-            this._phaseHandler.on_running();
-            this._phaseHandler.hud?.update();
-            this._phaseHandler.transitions();
-        });
+        this._taskId = system.runInterval(this.runTick.bind(this));
     }
     
     updatePhase(newPhase: IPhaseHandler) {
@@ -31,13 +27,17 @@ class _GamePhaseManager {
         system.waitTicks(5).then(() => { 
             this._phaseHandler = newPhase;
             this._phaseHandler.on_entry();
-
-            this._taskId = system.runInterval(() => {
-                this._phaseHandler.on_running();
-                this._phaseHandler.hud?.update();
-                this._phaseHandler.transitions();
-            });
+            
+            this._taskId = system.runInterval(this.runTick.bind(this));
         });
+    }
+
+    private runTick() {
+        if (this._phaseHandler.on_running()) {
+            this._phaseHandler.hud?.update();
+            this._phaseHandler.transitions();
+            this.currentTick --;
+        }
     }
 
 }

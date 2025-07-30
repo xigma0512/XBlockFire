@@ -15,9 +15,6 @@ import { FormatCode as FC } from "../../../../declarations/enum/FormatCode";
 
 import { Config } from "../../../../settings/config";
 
-const game_config = Config.game;
-const idle_config = Config.bombplant.idle;
-
 export class IdlePhase implements IPhaseHandler {
 
     readonly phaseTag;
@@ -26,28 +23,46 @@ export class IdlePhase implements IPhaseHandler {
     constructor() { 
         this.phaseTag = BombPlantPhaseEnum.Idle;
         this.hud = new WaitingHud();
+        GamePhaseManager.currentTick = Config.bombplant.idle.COUNTDOWN_TIME;
     }
 
     on_entry() {
-        this._currentTick = idle_config.COUNTDOWN_TIME;
     }
 
     on_running() {
-        const members = MemberManager.getPlayers();
-        const playerAmount = members.length;
+        let currentTick = GamePhaseManager.currentTick;
+        const playerAmount = MemberManager.getPlayers().length;
 
-        if (game_config.AUTO_START && playerAmount >= game_config.AUTO_START_MIN_PLAYER) this._currentTick --;
-        if (this.currentTick !== idle_config.COUNTDOWN_TIME && playerAmount < game_config.AUTO_START_MIN_PLAYER) this._currentTick = idle_config.COUNTDOWN_TIME;
+        const isAutoStartEnable = Config.game.AUTO_START;
+        const autoStartPlayerNeed = Config.game.AUTO_START_MIN_PLAYER;
+        
+        if (!isAutoStartEnable || playerAmount < autoStartPlayerNeed) {
+            return false;
+        }
+
+        const originalTime = Config.bombplant.idle.COUNTDOWN_TIME;
+        if (currentTick !== originalTime && playerAmount < autoStartPlayerNeed) {
+            currentTick = originalTime;
+            return false;
+        }
+        
+        return true;
     }
 
     on_exit() {
-        if (game_config.RANDOM_ASSIGNED) randomTeam();
+        const isRandomAssignedEnable = Config.game.RANDOM_ASSIGNED;
+        if (isRandomAssignedEnable) {
+            randomTeam();
+        }
+
         initializePlayers();
         initializeVariable();
     }
 
     transitions() {
-        if (this.currentTick <= 0) return GamePhaseManager.updatePhase(new BuyingPhase());
+        if (GamePhaseManager.currentTick <= 0) {
+            GamePhaseManager.updatePhase(new BuyingPhase());
+        }
     }
 
 }
@@ -73,15 +88,10 @@ function randomTeam() {
 }
 
 function initializePlayers() {
-
     for (const player of MemberManager.getPlayers()) {
         EconomyManager.initializePlayer(player);
         HotbarService.clearHotbar(player);
         HotbarService.sendDefaultKit(player);
-    }
-
-    for (const player of MemberManager.getPlayers({team: TeamEnum.Defender})) {
-        HotbarService.sendDefuserKit(player);
     }
 }
 

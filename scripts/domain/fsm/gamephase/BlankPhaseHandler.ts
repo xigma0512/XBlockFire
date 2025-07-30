@@ -15,6 +15,7 @@ export class BlankPhase implements IPhaseHandler {
     }
 
     on_running() {
+        return true;
     }
 
     on_exit() {

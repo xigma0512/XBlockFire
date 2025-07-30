@@ -14,8 +14,6 @@ import { Broadcast } from "../../../../infrastructure/utils/Broadcast";
 
 import { Config } from "../../../../settings/config";
 
-const config = Config.bombplant.C4planted;
-
 const enum EndReasonEnum {
     'Time-up' = 1,
     'Defender-Eliminated',
@@ -63,21 +61,21 @@ export class C4PlantedPhase implements IPhaseHandler {
     constructor() {
         this.phaseTag = BombPlantPhaseEnum.C4Planted;
         this.hud = new ActionHud();
+        GamePhaseManager.currentTick = Config.bombplant.C4planted.COUNTDOWN_TIME;
     }
 
     on_entry() {
-        this._currentTick = config.COUNTDOWN_TIME;
     }
 
     on_running() {
-        this._currentTick --;
+        return true;
     }
 
     on_exit() {
     }
 
-    private transitions() {
-
+    transitions() {
+        const currentTick = GamePhaseManager.currentTick;
         let endReason: EndReasonEnum | null = null;
     
         const defenders = MemberManager.getPlayers({ team: TeamEnum.Defender });
@@ -85,7 +83,7 @@ export class C4PlantedPhase implements IPhaseHandler {
     
         if (defendersAlive.length === 0) endReason = EndReasonEnum['Defender-Eliminated'];
         if (defenders.length === 0) endReason = EndReasonEnum['Defender-Disconnect'];
-        if (this.currentTick <= 0) endReason = EndReasonEnum['Time-up'];
+        if (currentTick <= 0) endReason = EndReasonEnum['Time-up'];
 
         if (endReason) {
             const result = endReasonTable[endReason];

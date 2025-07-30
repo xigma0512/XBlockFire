@@ -1,22 +1,20 @@
 import { MemberManager } from "../../../player/MemberManager";
 import { EconomyManager } from "../../../economy/EconomyManager";
 import { GamePhaseManager } from "../GamePhaseManager";
-import { ActionHud } from "../../../../interface/hud/ingame/bomb_plant/Action"; 
-
 import { GameOverPhase } from "./Gameover";
 import { PreRoundStartPhase } from "./PreRoundStart";
 
-import { BombPlantPhaseEnum } from "../../../../declarations/enum/PhaseEnum";
-import { TeamEnum } from "../../../../declarations/enum/TeamEnum";
+import { ActionHud } from "../../../../interface/hud/ingame/bomb_plant/Action"; 
 
-import { FormatCode as FC } from "../../../../declarations/enum/FormatCode";
 import { set_entity_dynamic_property } from "../../../../infrastructure/data/Property";
 import { set_variable, variable } from "../../../../infrastructure/data/Variable";
 import { Broadcast } from "../../../../infrastructure/utils/Broadcast";
 
-import { Config } from "../../../../settings/config";
+import { BombPlantPhaseEnum } from "../../../../declarations/enum/PhaseEnum";
+import { TeamEnum } from "../../../../declarations/enum/TeamEnum";
+import { FormatCode as FC } from "../../../../declarations/enum/FormatCode";
 
-const config = Config.bombplant.roundEnd;
+import { Config } from "../../../../settings/config";
 
 export class RoundEndPhase implements IPhaseHandler {
 
@@ -26,29 +24,32 @@ export class RoundEndPhase implements IPhaseHandler {
     constructor() {
         this.phaseTag = BombPlantPhaseEnum.RoundEnd;
         this.hud = new ActionHud();
+        GamePhaseManager.currentTick = Config.bombplant.roundEnd.COUNTDOWN_TIME;
     }
 
     on_entry() {
-        this._currentTick = config.COUNTDOWN_TIME;
         processWinner();
     }
 
-    on_running() {        
-        if (this._currentTick-- % 20 == 0) {
+    on_running() {
+        const currentTick = GamePhaseManager.currentTick;
+        if (currentTick % 20 == 0) {
             Broadcast.sound("firework.launch", {}, MemberManager.getPlayers());
         }
+        return true;
     }
 
     on_exit() {
     }
 
-    private transitions() {
+    transitions() {
+        const currentTick = GamePhaseManager.currentTick;
         const attackerScore = variable(`attacker_score`);
         const defenderScore = variable(`defender_score`);
 
         let winner = null;
-        if (attackerScore >= config.WINNING_SCORE) winner = TeamEnum.Attacker;
-        if (defenderScore >= config.WINNING_SCORE) winner = TeamEnum.Defender;
+        if (attackerScore >= Config.game.WINNING_SCORE) winner = TeamEnum.Attacker;
+        if (defenderScore >= Config.game.WINNING_SCORE) winner = TeamEnum.Defender;
 
         if (winner) {
             set_variable(`winner`, winner);
@@ -56,9 +57,9 @@ export class RoundEndPhase implements IPhaseHandler {
             return;
         }
 
-        if (this.currentTick <= 0) {
+        if (currentTick <= 0) {
             
-            if (attackerScore + defenderScore == config.WINNING_SCORE - 1) {
+            if (attackerScore + defenderScore == Config.game.WINNING_SCORE - 1) {
                 switchSide();
             }
             
@@ -102,7 +103,7 @@ function processWinner() {
 
     for (const player of MemberManager.getPlayers()) {
         const playerTeam = MemberManager.getPlayerTeam(player);
-        const earn = config.INCOME[(playerTeam === winnerTeam) ? 0 : 1];
+        const earn = Config.game.ROUND_INCOME[(playerTeam === winnerTeam) ? 0 : 1];
         EconomyManager.modifyMoney(player, earn);
         player.sendMessage(`${FC.Gray}>> ${FC.DarkGray}Round Income: +${earn}`);
     }

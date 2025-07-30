@@ -4,7 +4,7 @@ declare abstract class IPhaseHandler {
     readonly hud?: InGameHud;
 
     on_entry(): void;
-    on_running(): void;
+    on_running(): boolean;
     on_exit(): void;
     transitions(): void;
 }

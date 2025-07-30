@@ -30,6 +30,7 @@ export class PreRoundStartPhase implements IPhaseHandler {
     }
 
     on_running() {
+        return true;
     }
 
     on_exit() {

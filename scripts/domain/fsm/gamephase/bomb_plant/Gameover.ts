@@ -17,8 +17,6 @@ import { GameMode, world } from "@minecraft/server";
 
 import { Config } from "../../../../settings/config";
 
-const config = Config.bombplant.gameover;
-
 export class GameOverPhase implements IPhaseHandler {
 
     readonly phaseTag = BombPlantPhaseEnum.Gameover;
@@ -27,10 +25,10 @@ export class GameOverPhase implements IPhaseHandler {
     constructor() {
         this.phaseTag = BombPlantPhaseEnum.Gameover;
         this.hud = new ActionHud();
+        GamePhaseManager.currentTick = Config.bombplant.gameover.COUNTDOWN_TIME;
     }
 
     on_entry() {
-        this._currentTick = config.COUNTDOWN_TIME;
         switch (variable('winner')) {
             case TeamEnum.Attacker:
                 Broadcast.message([
@@ -53,9 +51,11 @@ export class GameOverPhase implements IPhaseHandler {
     }
 
     on_running() {
-        if (this._currentTick-- % 20 == 0) {
+        const currentTick = GamePhaseManager.currentTick;
+        if (currentTick % 20 == 0) {
             Broadcast.sound("firework.launch", {}, world.getAllPlayers());
         }
+        return true;
     }
 
     on_exit() {
@@ -64,8 +64,11 @@ export class GameOverPhase implements IPhaseHandler {
         showScoreboard();
     }
 
-    private transitions() {
-        if (this.currentTick <= 0) GamePhaseManager.updatePhase(new IdlePhase());
+    transitions() {
+        const currentTick = GamePhaseManager.currentTick;
+        if (currentTick <= 0) {
+            GamePhaseManager.updatePhase(new IdlePhase());
+        }
     }
 
 }
