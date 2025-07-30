@@ -1,13 +1,13 @@
-import { ItemActor } from "../../domain/weapon/actors/Actor";
+import { ItemActor } from "../../../domain/weapon/actors/Actor";
 
-import { AK47 } from "../../domain/weapon/actors/item/AK47";
-import { M4A4 } from "../../domain/weapon/actors/item/M4A4";
-import { SG200 } from "../../domain/weapon/actors/item/SG200";
-import { AWP } from "../../domain/weapon/actors/item/AWP";
-import { P90 } from "../../domain/weapon/actors/item/P90";
+import { AK47 } from "../../../domain/weapon/actors/item/AK47";
+import { M4A4 } from "../../../domain/weapon/actors/item/M4A4";
+import { SG200 } from "../../../domain/weapon/actors/item/SG200";
+import { AWP } from "../../../domain/weapon/actors/item/AWP";
+import { P90 } from "../../../domain/weapon/actors/item/P90";
 
-import { Glock17 } from "../../domain/weapon/actors/item/Glock17";
-import { Deagle } from "../../domain/weapon/actors/item/Deagle";
+import { Glock17 } from "../../../domain/weapon/actors/item/Glock17";
+import { Deagle } from "../../../domain/weapon/actors/item/Deagle";
 
 export interface IProduct {
     id: number;

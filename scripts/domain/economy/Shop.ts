@@ -1,67 +1,25 @@
-import { EconomyManager } from "../../domain/economy/EconomyManager";
-import { GamePhaseManager } from "../../domain/fsm/gamephase/GamePhaseManager";
-import { MemberManager } from "../../domain/player/MemberManager";
+import { ShopService } from "../../application/services/ShopService";
+
+import { EconomyManager } from "../economy/EconomyManager";
 import { HotbarManager } from "../player/HotbarManager";
+import { PurchaseHistory } from "./PurchaseHistory";
+import { Glock17 } from "../weapon/actors/item/Glock17";
 
-import { Glock17 } from "../../domain/weapon/actors/item/Glock17";
+import { IProduct, ProductTable } from "../../interface/ui/shop/ProductTable";
 
-import { IProduct, ProductTable } from "./ProductTable";
-
-import { BombPlantPhaseEnum } from "../../declarations/enum/PhaseEnum";
-
-import { FormatCode as FC } from "../../declarations/enum/FormatCode";
 import { ItemStackFactory } from "../../infrastructure/utils/ItemStackFactory";
+import { lang } from "../../infrastructure/Language";
 
 import { ItemLockMode, Player, system, world } from "@minecraft/server";
-import { ActionFormData, ActionFormResponse } from "@minecraft/server-ui";
-
-export class PurchaseHistory {
-    
-    private static history = new Map<Player, number[]>();
-
-    static clearAll() {
-        this.history.clear();
-    }
-    
-    static get(player: Player) {
-        if (!this.history.has(player)) this.history.set(player, new Array(9).fill(-1));
-        return this.history.get(player)!;
-    }
-
-    static set(player: Player, slot: number, productId?: number) {
-        const playerHistory = this.get(player);
-        playerHistory[slot] = productId ?? -1;
-        this.history.set(player, playerHistory);
-    }
-
-    static getProduct(player: Player, slot: number) {
-        const playerHistory = this.get(player);
-        return ProductTable.find(product => product.id === playerHistory[slot]);
-    }
-
-}
+import { ActionFormResponse } from "@minecraft/server-ui";
 
 export class Shop {
 
-    static async openShop(player: Player) {
-        const form = new ActionFormData();
-        form.title('SHOP')
-            .body(`Select an item to purchase:\nYour Money: ${FC.MinecoinGold}${EconomyManager.getMoney(player)}`)
-
-        for (const product of ProductTable) {
-            const canBeRefund = this.checkRefund(player, product);
-            const name = (canBeRefund ? `${FC.DarkGreen}(Refund)` : '') + `${FC.Reset}${product.name} ${FC.Yellow}${product.price}$\n${FC.DarkGray}${product.description ?? ''}`;
-            form.button(name, product.iconPath);
-        }
-
-        this.purchaseResponse(player, await form.show(player));
-    }
-
-    private static purchaseResponse(player: Player, response: ActionFormResponse) {
+    static purchaseResponse(player: Player, response: ActionFormResponse) {
         try 
         {
-            if (response.canceled) return;
-            if (response.selection === undefined) return;
+            if (response.canceled) return false;
+            if (response.selection === undefined) return false;
             const selection = response.selection;
             const product = ProductTable[selection];
 
@@ -72,16 +30,17 @@ export class Shop {
             }
             
             player.playSound('mob.villager.yes');
-            this.openShop(player);
+            return true;
         }
         catch (err: any)
         {
-            player.sendMessage(`${FC.Gray}>> ${FC.Red}${err.message}.`);
+            player.sendMessage(err.message);
             player.playSound('mob.villager.no');
+            return false;
         }
     }
 
-    private static checkRefund(player: Player, product: IProduct) {
+    static checkRefund(player: Player, product: IProduct) {
         const playerHistory = PurchaseHistory.get(player);
 
         const playerHotbar = HotbarManager.getPlayerHotbar(player);
@@ -106,7 +65,7 @@ export class Shop {
         }
         HotbarManager.sendHotbar(player, hotbar);
 
-        player.sendMessage(`${FC.Gray}>> ${FC.Yellow}You refund ${product.name}. ${FC.Green}(+${refundMoney}$)`);
+        player.sendMessage(lang('game.shop.refund.success', product.name, refundMoney));
     }
 
     private static purchase(player: Player, product: IProduct) {
@@ -115,17 +74,17 @@ export class Shop {
         
         const historyProduct = PurchaseHistory.getProduct(player, product.slot);
         if (historyProduct && historyProduct.id !== product.id) {
-            throw Error(`You should refund your ${historyProduct.name} first.`);
+            throw Error(lang('game.shop.purchase.fail.should_refund_first', historyProduct.name));
         }
 
         const productItem = (product.itemActor) ? new product.itemActor().item
                                                 : ItemStackFactory.new({ typeId: product.itemStackTypeId!, lockMode: ItemLockMode.slot });
         if (hotbarItem && hotbarItem.typeId === productItem.typeId && hotbarItem.amount >= product.max_amount) {
-            throw Error('You have reached purchase limit.');
+            throw Error(lang('game.shop.purchase.fail.reached_purchase_limit'));
         }
 
         if (!EconomyManager.canBeAfforded(player, product.price)) {
-            throw Error("You don't have enough money to buy this.")
+            throw Error(lang('game.shop.purchase.fail.cannot_afford'));
         }
 
         EconomyManager.modifyMoney(player, -product.price);
@@ -135,7 +94,7 @@ export class Shop {
 
         this.sendProduct(player, product);
 
-        player.sendMessage(`${FC.Gray}>> ${FC.Yellow}You bought ${product.name}. ${FC.Red}(-${product.price}$)`);
+        player.sendMessage(lang('game.shop.purchase.success', product.name, product.price));
     }
 
     private static sendProduct(player: Player, product: IProduct) {
@@ -159,15 +118,8 @@ export class Shop {
     }
 }
 
-const openShopListener = world.beforeEvents.itemUse.subscribe(ev => {
-    if (ev.itemStack.typeId !== 'minecraft:feather') return;
-
-    const player = ev.source;
-    const phase = GamePhaseManager.getPhase();
-
-    if (phase.phaseTag !== BombPlantPhaseEnum.Buying) return;
-
-    system.run(() => {
-        Shop.openShop(player);
-    });
+world.beforeEvents.itemUse.subscribe(ev => {
+    if (ev.itemStack.typeId === 'minecraft:feather') {
+        system.run(() => ShopService.openShop(ev.source));
+    }
 });
