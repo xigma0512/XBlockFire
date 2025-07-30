@@ -11,10 +11,24 @@ export default {
     'game.shop.purchase.fail.reached_purchase_limit': `${FC.Gray}>> ${FC.Red}已到達購買上限`,
     'game.shop.purchase.fail.cannot_afford': `${FC.Gray}>> ${FC.Red}你無法負擔這筆交易金額`,
 
-    // recommand setting
+    // player
     'player.recommand_setting.1': `${FC.Gray}>> ${FC.Yellow}建議設定`,
     'player.recommand_setting.2': `${FC.Gray}>> ${FC.White}設定->視訊->相機晃動${FC.Green}(開啟)`,
     'player.recommand_setting.3': `${FC.Gray}>> ${FC.White}設定->視訊->視野可透過遊戲控制調整${FC.Red}(關閉)`,
+    
+    // combat
+    'combat.player.kill_reward': `${FC.Gray}>> 擊殺獎勵: +200$`,
+    'combat.player.killer.subtitle': `${FC.Bold}\uE109${FC.DarkRed}%a`,
+    'combat.player.dead_player.subtitle': `${FC.Bold}${FC.Red}你被 %a 殺死了`,
+    'combat.broadcast.eliminated': `${FC.Bold}%a ${FC.DarkRed}擊殺了 %b`,
+
+    // hud
+    'hud.bombplant.waiting.waiting_for_players.subtitle': `${FC.Yellow}正在等待其他玩家加入...`,
+    'hud.bombplant.waiting.count_down.subtitle': `${FC.Green}遊戲將在 %a 秒後開始`,
+    'hud.bombplant.waiting.not_enough_player': `${FC.Gray}- ${FC.Bold}${FC.Red}玩家數量不足，重新等待玩家加入`,
+
+    'hud.bombplant.action.buying_message.subtitle.1': `> %a <`,
+    'hud.bombplant.action.buying_message.subtitle.2': `手持背包中的羽毛點擊右鍵來開啟商店`,
 
     // ui
     'ui.shop.title': '商店',

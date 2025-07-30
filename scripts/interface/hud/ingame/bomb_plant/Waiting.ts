@@ -9,6 +9,7 @@ import { FormatCode as FC } from "../../../../declarations/enum/FormatCode";
 import { Broadcast } from "../../../../infrastructure/utils/Broadcast";
 
 import { Config } from "../../../../settings/config";
+import { lang } from "../../../../infrastructure/Language";
 
 const game_config = Config.game;
 const idle_config = Config.bombplant.idle;
@@ -28,14 +29,14 @@ export class WaitingHud implements InGameHud {
 
         const phase = GamePhaseManager.getPhase();
         
-        let text = `${FC.Yellow}Waiting for more players...`;
+        let text = lang('hud.bombplant.waiting.waiting_for_players.subtitle');
         
         if (game_config.AUTO_START && playerAmount >= game_config.AUTO_START_MIN_PLAYER) {
-            text = `${FC.Green}Game will start in ${(phase.currentTick / 20).toFixed(0)} seconds.`;
+            text = lang('hud.bombplant.waiting.count_down.subtitle', (phase.currentTick / 20).toFixed(0));
         }
         
         if (phase.currentTick !== idle_config.COUNTDOWN_TIME && playerAmount < game_config.AUTO_START_MIN_PLAYER) {
-            Broadcast.message(`${FC.Bold}${FC.Red}Not enough players. Waiting for more players.`, players);
+            Broadcast.message(lang('hud.bombplant.waiting.not_enough_player'));
         }
         
         Broadcast.subtitle(text, players);
@@ -70,6 +71,6 @@ export class WaitingHud implements InGameHud {
             ''
         ];
 
-        Broadcast.sidebar(message, players);
+        Broadcast.sidebar(message);
     }
 }

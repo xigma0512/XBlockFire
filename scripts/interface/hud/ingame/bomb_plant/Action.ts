@@ -9,6 +9,7 @@ import { BombPlantPhaseEnum } from "../../../../declarations/enum/PhaseEnum";
 import { FormatCode as FC } from "../../../../declarations/enum/FormatCode";
 import { variable } from "../../../../infrastructure/data/Variable";
 import { Broadcast } from "../../../../infrastructure/utils/Broadcast";
+import { lang } from "../../../../infrastructure/Language";
 
 export class ActionHud implements InGameHud {
     
@@ -27,15 +28,14 @@ export class ActionHud implements InGameHud {
         switch (phase.phaseTag) {
             case BombPlantPhaseEnum.Buying:
                 text = [
-                    `> ${(phase.currentTick / 20).toFixed(0)} <`, 
-                    `Right-click the feather to open the shop.`
+                    lang('hud.bombplant.action.buying_message.subtitle.1', (phase.currentTick / 20).toFixed(0)),
+                    lang('hud.bombplant.action.buying_message.subtitle.2')
                 ];
                 break;
         }
 
         if (text === '') return;
-        const members = MemberManager.getPlayers();
-        Broadcast.subtitle(text, members);
+        Broadcast.subtitle(text);
     }
 
     private updateSidebar() {

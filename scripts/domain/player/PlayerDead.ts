@@ -1,17 +1,18 @@
-import { MemberManager } from "./MemberManager";
 import { BombStateManager } from "../fsm/bombstate/BombStateManager";
-import { gameEvents } from "../../infrastructure/event/EventEmitter";
-import { HudTextController } from "../../interface/hud/HudTextController";
+import { C4DroppedState } from "../fsm/bombstate/states/Dropped";
+import { MemberManager } from "./MemberManager";
 import { EconomyManager } from "../economy/EconomyManager";
 
-import { C4DroppedState } from "../fsm/bombstate/states/Dropped";
+import { HudTextController } from "../../interface/hud/HudTextController";
 
-import { TeamEnum } from "../../declarations/enum/TeamEnum";
-
+import { gameEvents } from "../../infrastructure/event/EventEmitter";
 import { Broadcast } from "../../infrastructure/utils/Broadcast";
-import { FormatCode as FC } from "../../declarations/enum/FormatCode";
 import { set_entity_dynamic_property } from "../../infrastructure/data/Property";
 import { set_variable, variable } from "../../infrastructure/data/Variable";
+import { lang } from "../../infrastructure/Language";
+
+import { FormatCode as FC } from "../../declarations/enum/FormatCode"
+import { TeamEnum } from "../../declarations/enum/TeamEnum";
 
 import { GameMode } from "@minecraft/server";
 import { ItemStack, Player, system, world } from "@minecraft/server";
@@ -47,7 +48,7 @@ gameEvents.subscribe('playerDied', (ev) => {
         set_variable(`${ev.attacker.name}.kills`, variable(`${ev.attacker.name}.kills`) + 1);
 
         EconomyManager.setMoney(ev.attacker, EconomyManager.getMoney(ev.attacker) + 200);
-        ev.attacker.sendMessage(`${FC.Gray}>> Kill reward: +200$`);
+        ev.attacker.sendMessage(lang('combat.player.kill_reward'));
     }
 });
 
@@ -67,16 +68,17 @@ function showDeathMessage(deadPlayer: Player, attacker: Player) {
 
     const playerTeamStr = (team: TeamEnum, name: string) => (team === TeamEnum.Attacker) ? `${FC.Red}[A]${name}` : `${FC.Aqua}[D]${name}`;
     
-    Broadcast.message(
-        `${FC.Bold}${playerTeamStr(attackerTeam, attacker.name)} ${FC.DarkRed}eliminated ${playerTeamStr(deadPlayerTeam, deadPlayer.name)}`,
-        MemberManager.getPlayers()
-    );
+    Broadcast.message(lang(
+        'combat.broadcast.eliminated', 
+        playerTeamStr(attackerTeam, attacker.name), 
+        playerTeamStr(deadPlayerTeam, deadPlayer.name)
+    ));
     
     const taskId = system.runInterval(() => {
-        HudTextController.add(attacker, 'subtitle', `${FC.Bold}\uE109${FC.DarkRed}${deadPlayer.name}`);
-        HudTextController.add(deadPlayer, 'subtitle', `${FC.Bold}${FC.Red}${attacker.name} KILLED YOU`);
+        HudTextController.add(attacker, 'subtitle', lang('combat.player.killer.subtitle', deadPlayer.name));
+        HudTextController.add(deadPlayer, 'subtitle', lang('combat.player.dead_player.subtitle', attacker.name));
     });
     system.runTimeout(() => {
         system.clearRun(taskId);
-    }, 4 * 20);
+    }, 5 * 20);
 }
