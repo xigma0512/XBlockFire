@@ -5,6 +5,12 @@ export default {
     'game.broadcast.gamestart': `${FC.Gray}- ${FC.Yellow}遊戲開始`,
     'game.broadcast.player_select_team': `${FC.Gold}%a 加入 [%b]`,
 
+    // recommand setting
+    'player.recommand_setting.1': `${FC.Gray}>> ${FC.Yellow}建議設定`,
+    'player.recommand_setting.2': `${FC.Gray}>> ${FC.White}設定->視訊->相機晃動${FC.Green}(開啟)`,
+    'player.recommand_setting.3': `${FC.Gray}>> ${FC.White}設定->視訊->視野可透過遊戲控制調整${FC.Red}(關閉)`,
+
+
     // command
     'command.forcestart.success': `${FC.Gray}>> ${FC.LightPurple}強制開始遊戲`,
 

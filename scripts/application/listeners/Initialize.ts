@@ -1,5 +1,6 @@
-import { FormatCode as FC } from "../../declarations/enum/FormatCode";
 import { Difficulty, HudElement, HudVisibility, system, world } from "@minecraft/server";
+
+import { lang } from "../../infrastructure/Language";
 
 world.afterEvents.worldLoad.subscribe(() => {
     world.gameRules.keepInventory = true;
@@ -23,9 +24,9 @@ world.afterEvents.playerSpawn.subscribe(ev => {
         ]);
         ev.player.camera.setCamera('minecraft:first_person');
         system.runTimeout(() => {
-            ev.player.sendMessage(`${FC.Gray}>> ${FC.Yellow}建議設定`);
-            ev.player.sendMessage(`${FC.Gray}>> ${FC.White}設定->視訊->相機晃動${FC.Green}(開啟)`);
-            ev.player.sendMessage(`${FC.Gray}>> ${FC.White}設定->視訊->視野可透過遊戲控制調整${FC.Red}(關閉)`);
+            ev.player.sendMessage(lang('player.recommand_setting.1'));
+            ev.player.sendMessage(lang('player.recommand_setting.2'));
+            ev.player.sendMessage(lang('player.recommand_setting.3'));
             ev.player.playSound('note.bell');
         }, 100);
     }
