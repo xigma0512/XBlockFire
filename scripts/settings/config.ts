@@ -1,3 +1,5 @@
+export const language = 'ZH-TW';
+
 export namespace Config {
     export const game = {
         AUTO_START: true,

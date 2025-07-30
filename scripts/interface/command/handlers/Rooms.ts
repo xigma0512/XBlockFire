@@ -1,78 +1,43 @@
-import { gameroom, GameRoomFactory } from "../../../domain/gameroom/GameRoom";
-import { GamePhaseManager } from "../../../domain/fsm/gamephase/GamePhaseManager";
-import { MemberManager } from "../../../domain/player/MemberManager";
+import { CommandPermissionLevel, CustomCommandOrigin, CustomCommandParamType, Player } from "@minecraft/server";
 
-import { PreRoundStartPhase } from "../../../domain/fsm/gamephase/bomb_plant/PreRoundStart";
+import { GameService } from "../../../application/services/GameService";
+import { RoomService } from "../../../application/services/RoomService";
+import { PlayerTeamService } from "../../../application/services/PlayerTeamService";
+
+import { CommandRegistry } from "../CommandRegistry";
 
 import { GameModeEnum } from "../../../declarations/enum/GameModeEnum";
-
-import { FormatCode as FC } from "../../../declarations/enum/FormatCode";
-
 import { TeamEnum } from "../../../declarations/enum/TeamEnum";
-import { Broadcast } from "../../../infrastructure/utils/Broadcast";
-import { MapRegister } from "../../../domain/gameroom/MapRegister";
-
-import { CommandPermissionLevel, CustomCommandOrigin, CustomCommandParamType, GameMode, Player } from "@minecraft/server";
-import { CommandRegistry } from "../CommandRegistry";
 
 function setting_gamemode(origin: CustomCommandOrigin, ...args: any[]) {
     const [gamemode] = args;
-
-    if (!Object.values<string>(GameModeEnum).includes(gamemode)) {
-        return { message: `${FC.Gray}>> ${FC.Red}未知的遊戲模式`, status: 1 }
-    }
-
-    GameRoomFactory.createRoom(gamemode as GameModeEnum, gameroom().gameMapId);
-    return { message: `${FC.Gray}>> ${FC.Yellow}設定遊戲模式為 ${FC.Green}${gamemode}`, status: 0 }
+    const {ret, message} = RoomService.setGamemode(gamemode);
+    return { message, status: ret };
 }
 
 function setting_map(origin: CustomCommandOrigin, ...args: any[]) {
-    const mapId = Number(args[0]);
-    if (!MapRegister.availableMaps.has(mapId)) {
-        return { message: `${FC.Gray}>> ${FC.Red}未知的地圖編號`, status: 1 }
-    }
-    
-    const map = MapRegister.getMap(mapId);
-    GameRoomFactory.createRoom(gameroom().gameMode, mapId);
-    return { message: `${FC.Gray}>> ${FC.Yellow}設定遊戲地圖為 ${FC.Green}${map.name}`, status: 0 };
+    const [mapId] = args;
+    const {ret, message} = RoomService.setMap(Number(mapId));
+    return { message, status: ret };
 }
 
 function forcestart(origin: CustomCommandOrigin, ...args: any[]) {
-    const startPhase = {
-        [GameModeEnum.BombPlant]: new PreRoundStartPhase()
-    };
-    GamePhaseManager.updatePhase(startPhase[gameroom().gameMode]);
-    return { message: `${FC.Gray}>> ${FC.LightPurple}Force start.`, status: 0 };
+    const {ret, message} = GameService.startGame();
+    return { message, status: ret };
 }
 
 function select_team(origin: CustomCommandOrigin, ...args: any[]) {
-    const executer = origin.sourceEntity;
-    if (executer === undefined || !(executer instanceof Player)) {
-        return { message: `${FC.Gray}>> ${FC.Red}請用玩家身分執行指令`, status: 1 }
-    }
-
+    const executer = origin.sourceEntity as Player;
     const [team] = args;
-    if (!Object.values<string>(TeamEnum).includes(team)) {
-        return { message: `${FC.Gray}>> ${FC.Red}未知的隊伍名稱`, status: 1 }
-    }
-
-    MemberManager.setPlayerTeam(executer, team as TeamEnum);
-    Broadcast.message(`${FC.Gold}${executer.name} 加入 [${team}]`);
+    const {ret, message} = PlayerTeamService.selectTeam(executer, team);
+    return { message, status: ret };
 }
 
 function admin_select_team(origin: CustomCommandOrigin, ...args: any[]) {
-
     const players: Player[] = args[0];
     const team: TeamEnum = args[1];
-
-    if (!Object.values<string>(TeamEnum).includes(team)) {
-        return { message: `${FC.Gray}>> ${FC.Red}未知的隊伍名稱`, status: 1 }
-    }
-
-    for (const p of players) {
-        MemberManager.setPlayerTeam(p, team as TeamEnum);
-        Broadcast.message(`${FC.Gold}${p.name} 加入 [${team}]`);
-    }
+    const {ret, message} = PlayerTeamService.admin_selectTeam(players, team);
+    return { message, status: ret };
 }
 
 export function register() {
