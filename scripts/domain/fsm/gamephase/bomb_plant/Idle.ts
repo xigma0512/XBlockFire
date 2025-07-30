@@ -1,19 +1,17 @@
+import { HotbarService } from "../../../../application/services/HotbarService";
+
 import { MemberManager } from "../../../player/MemberManager";
 import { EconomyManager } from "../../../economy/EconomyManager";
 import { GamePhaseManager } from "../GamePhaseManager";
-import { HotbarManager, HotbarTemplate } from "../../../player/HotbarManager";
+import { BuyingPhase } from "./Buying";
+
 import { WaitingHud } from "../../../../interface/hud/ingame/bomb_plant/Waiting";
 
-import { BuyingPhase } from "./Buying";
+import { reset_variables, set_variable } from "../../../../infrastructure/data/Variable";
 
 import { BombPlantPhaseEnum } from "../../../../declarations/enum/PhaseEnum";
 import { TeamEnum } from "../../../../declarations/enum/TeamEnum";
-
 import { FormatCode as FC } from "../../../../declarations/enum/FormatCode";
-import { reset_variables, set_variable } from "../../../../infrastructure/data/Variable";
-import { ItemStackFactory } from "../../../../infrastructure/utils/ItemStackFactory";
-
-import { ItemLockMode } from "@minecraft/server";
 
 import { Config } from "../../../../settings/config";
 
@@ -83,13 +81,12 @@ function initializePlayers() {
 
     for (const player of MemberManager.getPlayers()) {
         EconomyManager.initializePlayer(player);
-        HotbarManager.sendHotbar(player, HotbarTemplate.initSpawn());
+        HotbarService.clearHotbar(player);
+        HotbarService.sendDefaultKit(player);
     }
 
     for (const player of MemberManager.getPlayers({team: TeamEnum.Defender})) {
-        const hotbar = HotbarManager.getPlayerHotbar(player)
-        hotbar.items[3] = ItemStackFactory.new({ typeId: 'xblockfire:defuser', lockMode: ItemLockMode.slot });
-        HotbarManager.sendHotbar(player, hotbar);
+        HotbarService.sendDefuserKit(player);
     }
 }
 

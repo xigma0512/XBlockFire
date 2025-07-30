@@ -13,11 +13,12 @@ class Hotbar {
     
     readonly items: Array<ItemStack|undefined>;
     
-    constructor() {
+    constructor(player?: Player) {
+        if (player) this.copyInventory(player);
         this.items = new Array(9).fill(undefined);
     }
 
-    copyInventory(target: Player) {
+    private copyInventory(target: Player) {
         const container = target.getComponent('inventory')!.container;
         for (let index = 0; index < 9; index ++) {
             this.items[index] = container.getItem(index);
@@ -29,19 +30,17 @@ class Hotbar {
 export class HotbarManager {
 
     static getPlayerHotbar(player: Player): IHotbar {
-        const hotbar = new Hotbar();
-        hotbar.copyInventory(player);
-        return hotbar;
+        return new Hotbar(player);
     }
 
-    static sendHotbar(target: Player, hotbar: IHotbar) {
+    static sendHotbar(target: Player, hotbar?: IHotbar) {
         const container = target.getComponent('inventory')!.container;
         for (let index = 0; index < 9; index ++) {
-            container.setItem(index, hotbar.items.at(index));
+            container.setItem(index, hotbar?.items.at(index));
         }
     }
 
-    static resetItems(hotbar: IHotbar) {
+    static reloadItems(hotbar: IHotbar) {
         for (let index = 0; index < 9; index ++) {
             const item = hotbar.items[index];
             if (item === undefined) continue;
@@ -75,12 +74,24 @@ export class HotbarManager {
 }
 
 export class HotbarTemplate {
-    static initSpawn() {
-        const hotbar = new Hotbar();
-        
+    
+    static defaultKit(player?: Player) {
+        const hotbar = new Hotbar(player);
         hotbar.items[1] = new Glock17().item;
         hotbar.items[2] = ItemStackFactory.new({ typeId: 'minecraft:stone_sword', lockMode: ItemLockMode.slot });
-        
         return hotbar;
     }
+
+    static defuserKit(player?: Player) {
+        const hotbar = new Hotbar(player);
+        hotbar.items[3] = ItemStackFactory.new({ typeId: 'xblockfire:defuser', lockMode: ItemLockMode.slot });
+        return hotbar;
+    }
+
+    static c4Kit(player?: Player) {
+        const hotbar = new Hotbar(player);
+        hotbar.items[3] = ItemStackFactory.new({ typeId: 'xblockfire:c4' });
+        return hotbar;
+    }
+
 }

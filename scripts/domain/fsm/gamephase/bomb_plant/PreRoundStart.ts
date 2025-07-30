@@ -1,22 +1,22 @@
+import { EquipmentSlot, GameMode, InputPermissionCategory, ItemLockMode, system } from "@minecraft/server";
+import { ItemStack } from "@minecraft/server";
+
+import { HotbarService } from "../../../../application/services/HotbarService";
+
 import { gameroom } from "../../../gameroom/GameRoom";
 import { GamePhaseManager } from "../GamePhaseManager";
 import { MemberManager } from "../../../player/MemberManager";
 import { BombStateManager } from "../../bombstate/BombStateManager";
-import { HotbarManager, HotbarTemplate } from "../../../player/HotbarManager";
 import { MapRegister } from "../../../gameroom/MapRegister";
-
+import { UnCommonItems } from "../../../player/UnCommonItems";
 import { C4IdleState } from "../../bombstate/states/Idle";
 import { BuyingPhase } from "./Buying";
 
-import { BombPlantPhaseEnum } from "../../../../declarations/enum/PhaseEnum";
-import { TeamEnum } from "../../../../declarations/enum/TeamEnum";
-
 import { entity_dynamic_property, set_entity_dynamic_property, set_entity_native_property } from "../../../../infrastructure/data/Property";
 import { ItemStackFactory } from "../../../../infrastructure/utils/ItemStackFactory";
-import { UnCommonItems } from "../../../player/UnCommonItems";
 
-import { EquipmentSlot, GameMode, InputPermissionCategory, ItemLockMode, system } from "@minecraft/server";
-import { ItemStack } from "@minecraft/server";
+import { BombPlantPhaseEnum } from "../../../../declarations/enum/PhaseEnum";
+import { TeamEnum } from "../../../../declarations/enum/TeamEnum";
 
 export class PreRoundStartPhase implements IPhaseHandler {
     readonly phaseTag = BombPlantPhaseEnum.PreRoundStart;
@@ -100,27 +100,21 @@ function resetPlayerInventory() {
         player.runCommand('clear @s xblockfire:c4');
 
         if (!entity_dynamic_property(player, 'player:is_alive')) {
-            HotbarManager.sendHotbar(player, HotbarTemplate.initSpawn());
+            HotbarService.clearHotbar(player);
+            HotbarService.sendDefaultKit(player);
         } else {
-            const hotbar = HotbarManager.getPlayerHotbar(player);
-            HotbarManager.resetItems(hotbar);
-            HotbarManager.sendHotbar(player, hotbar);
+            HotbarService.reloadHotbar(player);
         }
     }
 
     for (const player of MemberManager.getPlayers({team: TeamEnum.Defender})) {
-        const hotbar = HotbarManager.getPlayerHotbar(player)
-        hotbar.items[3] = ItemStackFactory.new({ typeId: 'xblockfire:defuser', lockMode: ItemLockMode.slot });
-        HotbarManager.sendHotbar(player, hotbar);
+        HotbarService.sendDefuserKit(player);
     }
 
     const attackers = MemberManager.getPlayers({ team: TeamEnum.Attacker });
     if (attackers.length > 0) {
-        const C4Player = attackers[Math.floor(Math.random() * attackers.length)];
-
-        const hotbar = HotbarManager.getPlayerHotbar(C4Player)
-        hotbar.items[3] = new ItemStack('xblockfire:c4');
-        HotbarManager.sendHotbar(C4Player, hotbar);
+        const c4Player = attackers[Math.floor(Math.random() * attackers.length)];
+        HotbarService.sendC4Kit(c4Player);
     }
 
     const defenders = MemberManager.getPlayers({ team: TeamEnum.Defender });
