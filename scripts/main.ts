@@ -1,4 +1,3 @@
-import './domain/__entry__'
-import './domain/modules/__entry__'
-import './interface/command/CommandRegistry'
-import './test'
+import './application/entry'
+import './domain/entry'
+import './interface/entry'
