@@ -9,8 +9,8 @@ import { BombPlantPhaseEnum } from "../../../../declarations/enum/PhaseEnum";
 import { TeamEnum } from "../../../../declarations/enum/TeamEnum";
 
 import { set_variable } from "../../../../infrastructure/data/Variable";
-import { FormatCode as FC } from "../../../../declarations/enum/FormatCode";
 import { Broadcast } from "../../../../infrastructure/utils/Broadcast";
+import { lang } from "../../../../infrastructure/Language";
 
 import { BombPlant as Config } from "../../../../settings/config";
 
@@ -23,32 +23,17 @@ const enum EndReasonEnum {
 const endReasonTable = {
     [EndReasonEnum['Time-up']]: {
         winner: TeamEnum.Attacker,
-        message: [
-            `${FC.Bold}${FC.Gray}---- ${FC.Yellow}[ ROUND END ] ${FC.Gray}----\n`,
-            `${FC.Bold}${FC.Red}C4 Detonated!\n`,
-            `${FC.Bold}${FC.Green}Attackers win this round!\n`,
-            `${FC.Bold}${FC.Gray}--------------------`
-        ],
+        message: lang('game.bombplant.c4planted.time_up'),
         nextPhaseGenerator: () => new RoundEndPhase()
     },
     [EndReasonEnum['Defender-Eliminated']]: {
         winner: TeamEnum.Attacker,
-        message: [
-            `${FC.Bold}${FC.Gray}---- ${FC.Yellow}[ ROUND END ] ${FC.Gray}----\n`,
-            `${FC.Bold}${FC.Red}All Defenders Eliminated!\n`,
-            `${FC.Bold}${FC.Green}Attackers win this round!\n`,
-            `${FC.Bold}${FC.Gray}--------------------`
-        ],
+        message: lang('game.bombplant.c4planted.defender_eliminated'),
         nextPhaseGenerator: () => new RoundEndPhase()
     },
     [EndReasonEnum['Defender-Disconnect']]: {
         winner: TeamEnum.Attacker,
-        message: [
-            `${FC.Bold}${FC.Gray}---- ${FC.DarkPurple}[ GAME OVER ] ${FC.Gray}----\n`,
-            `${FC.Bold}${FC.Red}All Defenders disconnected.\n`,
-            `${FC.Bold}${FC.Yellow}Attacker win.\n`,
-            `${FC.Bold}${FC.Gray}--------------------`
-        ],
+        message: lang('game.bombplant.c4planted.defender_disconnect'),
         nextPhaseGenerator: () => new GameOverPhase()
     }
 }

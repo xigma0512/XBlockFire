@@ -9,10 +9,10 @@ import { ActionHud } from "../../../../interface/hud/ingame/bomb_plant/Action";
 import { set_entity_dynamic_property } from "../../../../infrastructure/data/Property";
 import { set_variable, variable } from "../../../../infrastructure/data/Variable";
 import { Broadcast } from "../../../../infrastructure/utils/Broadcast";
+import { lang } from "../../../../infrastructure/Language";
 
 import { BombPlantPhaseEnum } from "../../../../declarations/enum/PhaseEnum";
 import { TeamEnum } from "../../../../declarations/enum/TeamEnum";
-import { FormatCode as FC } from "../../../../declarations/enum/FormatCode";
 
 import { BombPlant as Config } from "../../../../settings/config";
 
@@ -28,13 +28,14 @@ export class RoundEndPhase implements IPhaseHandler {
     }
 
     on_entry() {
-        processWinner();
+        scoreUpdate();
+        sendRoundIncome();
     }
 
     on_running() {
         const currentTick = GamePhaseManager.currentTick;
         if (currentTick % 20 == 0) {
-            Broadcast.sound("firework.launch", {}, MemberManager.getPlayers());
+            Broadcast.sound("firework.launch", {});
         }
         return true;
     }
@@ -86,25 +87,24 @@ function switchSide() {
     set_variable(`attacker_score`, defender_score);
     set_variable(`defender_score`, attacker_score);
 
-    Broadcast.message([
-        `${FC.Bold}${FC.White}--- --- ---`,
-        `${FC.Bold}${FC.Yellow}- Switch Side -`,
-        `${FC.Bold}${FC.White}--- --- ---`,
-    ], MemberManager.getPlayers());
+    Broadcast.message(lang('game.bombplant.roundend.switch_side'));
 }
 
-function processWinner() {
+function scoreUpdate() {
     const winnerTeam = variable(`round_winner`) as TeamEnum;
     if (winnerTeam === TeamEnum.Attacker) {
         set_variable(`attacker_score`, variable(`attacker_score`) + 1);
     } else if (winnerTeam === TeamEnum.Defender) { 
         set_variable(`defender_score`, variable(`defender_score`) + 1);
     }
+}
 
+function sendRoundIncome() {
+    const winnerTeam = variable(`round_winner`) as TeamEnum;
     for (const player of MemberManager.getPlayers()) {
         const playerTeam = MemberManager.getPlayerTeam(player);
         const earn = Config.economic.round_income[(playerTeam === winnerTeam) ? 0 : 1];
         EconomyManager.modifyMoney(player, earn);
-        player.sendMessage(`${FC.Gray}>> ${FC.DarkGray}Round Income: +${earn}`);
+        player.sendMessage(lang('game.bombplant.roundend.round_income', earn));
     }
 }

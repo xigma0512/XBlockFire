@@ -11,6 +11,80 @@ export default {
     'game.shop.purchase.fail.reached_purchase_limit': `${FC.Gray}>> ${FC.Red}已到達購買上限`,
     'game.shop.purchase.fail.cannot_afford': `${FC.Gray}>> ${FC.Red}你無法負擔這筆交易金額`,
 
+    'game.bombplant.idle.random_assigned_attacker': `${FC.Gray}>> ${FC.Yellow}你被隨機分發到了 Attacker 隊伍`,
+    'game.bombplant.idle.random_assigned_defender': `${FC.Gray}>> ${FC.Yellow}你被隨機分發到了 Defender 隊伍`,
+    
+    'game.bombplant.action.time_up': [
+        `${FC.Bold}${FC.Gray}---- ${FC.Yellow}[ 回合結束 ] ${FC.Gray}----\n`,
+        `${FC.Bold}${FC.Red}回合時間結束，防守方獲勝\n`,
+        `${FC.Bold}${FC.Gray}--------------------\n`
+    ],
+    'game.bombplant.action.attacker_eliminated': [
+        `${FC.Bold}${FC.Gray}---- ${FC.Yellow}[ 回合結束 ] ${FC.Gray}----\n`,
+        `${FC.Bold}${FC.Red}進攻方全部陣亡，防守方獲勝\n`,
+        `${FC.Bold}${FC.Gray}--------------------\n`
+    ],
+    'game.bombplant.action.attacker_disconnect': [
+        `${FC.Bold}${FC.Gray}---- ${FC.DarkPurple}[ GAME OVER ] ${FC.Gray}----\n`,
+        `${FC.Bold}${FC.Red}進攻方隊伍人數歸零，遊戲強制結束。\n`,
+        `${FC.Bold}${FC.Green}防守方獲勝。\n`,
+        `${FC.Bold}${FC.Gray}--------------------\n`
+    ],
+    'game.bombplant.action.defender_eliminated': [
+        `${FC.Bold}${FC.Gray}---- ${FC.Yellow}[ 回合結束 ] ${FC.Gray}----\n`,
+        `${FC.Bold}${FC.Red}防守方全部陣亡，進攻方獲勝\n`,
+        `${FC.Bold}${FC.Gray}--------------------\n`
+    ],
+    'game.bombplant.action.defender_disconnect': [
+        `${FC.Bold}${FC.Gray}---- ${FC.DarkPurple}[ GAME OVER ] ${FC.Gray}----\n`,
+        `${FC.Bold}${FC.Red}防守方隊伍人數歸零，遊戲強制結束。\n`,
+        `${FC.Bold}${FC.Green}進攻方獲勝。\n`,
+        `${FC.Bold}${FC.Gray}--------------------\n`
+    ],
+
+    'game.bombplant.c4planted.time_up': [
+        `${FC.Bold}${FC.Gray}---- ${FC.Yellow}[ 回合結束 ] ${FC.Gray}----\n`,
+        `${FC.Bold}${FC.Red}回合時間結束，防守方獲勝\n`,
+        `${FC.Bold}${FC.Gray}--------------------\n`
+    ],
+    'game.bombplant.c4planted.defender_eliminated': [
+        `${FC.Bold}${FC.Gray}---- ${FC.Yellow}[ 回合結束 ] ${FC.Gray}----\n`,
+        `${FC.Bold}${FC.Red}防守方全部陣亡，進攻方獲勝\n`,
+        `${FC.Bold}${FC.Gray}--------------------\n`
+    ],
+    'game.bombplant.c4planted.defender_disconnect': [
+        `${FC.Bold}${FC.Gray}---- ${FC.DarkPurple}[ GAME OVER ] ${FC.Gray}----\n`,
+        `${FC.Bold}${FC.Red}防守方隊伍人數歸零，遊戲強制結束。\n`,
+        `${FC.Bold}${FC.Green}進攻方獲勝。\n`,
+        `${FC.Bold}${FC.Gray}--------------------\n`
+    ],
+
+    'game.bombplant.roundend.switch_side': [
+        `${FC.Bold}${FC.White}--- --- ---\n`,
+        `${FC.Bold}${FC.Yellow}- Switch Side -\n`,
+        `${FC.Bold}${FC.White}--- --- ---\n`,
+    ],
+    'game.bombplant.roundend.round_income': `${FC.Gray}>> ${FC.DarkGray}Round Income: +%a`,
+
+    'game.bombplant.gameover.attacker_win': [
+        '\n',
+        `${FC.Bold}${FC.Gray}---- ${FC.DarkPurple}[ GAME OVER ] ${FC.Gray}----\n`,
+        `${FC.Bold}${FC.Yellow}攻擊方獲勝\n`,
+        `${FC.Bold}${FC.Gray}--------------------`,
+        '\n'
+    ],
+    'game.bombplant.gameover.defender_win': [
+        '\n',
+        `${FC.Bold}${FC.Gray}---- ${FC.DarkPurple}[ GAME OVER ] ${FC.Gray}----\n`,
+        `${FC.Bold}${FC.Yellow}防守方獲勝\n`,
+        `${FC.Bold}${FC.Gray}--------------------`,
+        '\n'
+    ],
+
+    'game.scoreboard.title': `--- [ Scoreboard ] ---\n`,
+    'game.scoreboard.format': `%a | K:%b D:$c\n`,
+    
+
     // player
     'player.recommand_setting.1': `${FC.Gray}>> ${FC.Yellow}建議設定`,
     'player.recommand_setting.2': `${FC.Gray}>> ${FC.White}設定->視訊->相機晃動${FC.Green}(開啟)`,

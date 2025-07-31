@@ -8,10 +8,10 @@ import { BuyingPhase } from "./Buying";
 import { WaitingHud } from "../../../../interface/hud/ingame/bomb_plant/Waiting";
 
 import { reset_variables, set_variable } from "../../../../infrastructure/data/Variable";
+import { lang } from "../../../../infrastructure/Language";
 
 import { BombPlantPhaseEnum } from "../../../../declarations/enum/PhaseEnum";
 import { TeamEnum } from "../../../../declarations/enum/TeamEnum";
-import { FormatCode as FC } from "../../../../declarations/enum/FormatCode";
 
 import { BombPlant as Config } from "../../../../settings/config";
 
@@ -50,13 +50,9 @@ export class IdlePhase implements IPhaseHandler {
     }
 
     on_exit() {
-        const isRandomAssignedEnable = Config.game.random_assigned;
-        if (isRandomAssignedEnable) {
-            randomTeam();
-        }
-
+        randomTeamAssigned();
         initializePlayers();
-        initializeVariable();
+        initializeVariables();
     }
 
     transitions() {
@@ -67,9 +63,11 @@ export class IdlePhase implements IPhaseHandler {
 
 }
 
-function randomTeam() {
+function randomTeamAssigned() {
+    const isRandomAssignedEnable = Config.game.random_assigned;
+    if (!isRandomAssignedEnable) return;
+
     const players = MemberManager.getPlayers();
-    
     const shuffledPlayers = [...players].sort(() => 0.5 - Math.random());
 
     let attackTeamCount = 0;
@@ -78,11 +76,11 @@ function randomTeam() {
         if (attackTeamCount <= defenderTeamCount) {
             MemberManager.setPlayerTeam(player, TeamEnum.Attacker);
             attackTeamCount++;
-            player.sendMessage(`${FC.Gray}>> ${FC.Yellow}You have been assigned to the Attacker Team.`);
+            player.sendMessage(lang('game.bombplant.idle.random_assigned_attacker'));
         } else {
             MemberManager.setPlayerTeam(player, TeamEnum.Defender);
             defenderTeamCount++;
-            player.sendMessage(`${FC.Gray}>> ${FC.Yellow}You have been assigned to the Defender Team.`);
+            player.sendMessage(lang('game.bombplant.idle.random_assigned_defender'));
         }
     }
 }
@@ -90,12 +88,13 @@ function randomTeam() {
 function initializePlayers() {
     for (const player of MemberManager.getPlayers()) {
         EconomyManager.initializePlayer(player);
+
         HotbarService.clearHotbar(player);
         HotbarService.sendDefaultKit(player);
     }
 }
 
-function initializeVariable() {
+function initializeVariables() {
     reset_variables();
     set_variable(`attacker_score`, 0);
     set_variable(`defender_score`, 0);

@@ -8,9 +8,9 @@ import { ActionHud } from "../../../../interface/hud/ingame/bomb_plant/Action";
 import { BombPlantPhaseEnum } from "../../../../declarations/enum/PhaseEnum"
 import { TeamEnum } from "../../../../declarations/enum/TeamEnum";
 
-import { FormatCode as FC } from "../../../../declarations/enum/FormatCode";
 import { Broadcast } from "../../../../infrastructure/utils/Broadcast";
 import { set_variable } from "../../../../infrastructure/data/Variable";
+import { lang } from "../../../../infrastructure/Language";
 
 import { BombPlant as Config } from "../../../../settings/config";
 
@@ -27,52 +27,27 @@ const enum EndReasonEnum {
 const endReasonTable = {
     [EndReasonEnum['Time-up']]: {
         winner: TeamEnum.Defender,
-        message: [
-            `${FC.Bold}${FC.Gray}---- ${FC.Yellow}[ ROUND END ] ${FC.Gray}----\n`,
-            `${FC.Bold}${FC.Red}Attackers ran out of time.\n`,
-            `${FC.Bold}${FC.Green}Defenders win this round.\n`,
-            `${FC.Bold}${FC.Gray}--------------------`
-        ],
+        message: lang('game.bombplant.action.time_up'),
         nextPhaseGenerator: () => new RoundEndPhase()
     },
     [EndReasonEnum['Attacker-Eliminated']]: {
         winner: TeamEnum.Defender,
-        message: [
-            `${FC.Bold}${FC.Gray}---- ${FC.Yellow}[ ROUND END ] ${FC.Gray}----\n`,
-            `${FC.Bold}${FC.Red}All Attackers Eliminated.\n`,
-            `${FC.Bold}${FC.Green}Defenders win this round.\n`,
-            `${FC.Bold}${FC.Gray}--------------------`
-        ],
+        message: lang('game.bombplant.action.attacker_eliminated'),
         nextPhaseGenerator: () => new RoundEndPhase()
     },
     [EndReasonEnum['Attacker-Disconnect']]: {
         winner: TeamEnum.Defender,
-        message: [
-            `${FC.Bold}${FC.Gray}---- ${FC.DarkPurple}[ GAME OVER ] ${FC.Gray}----\n`,
-            `${FC.Bold}${FC.Red}All Attackers Disconnected.\n`,
-            `${FC.Bold}${FC.Yellow}Defenders win\n`,
-            `${FC.Bold}${FC.Gray}--------------------`
-        ],
+        message: lang('game.bombplant.action.attacker_disconnect'),
         nextPhaseGenerator: () => new GameOverPhase()
     },
     [EndReasonEnum['Defender-Eliminated']]: {
         winner: TeamEnum.Attacker,
-        message: [
-            `${FC.Bold}${FC.Gray}---- ${FC.Yellow}[ ROUND END ] ${FC.Gray}----\n`,
-            `${FC.Bold}${FC.Red}Defenders Eliminated.\n`,
-            `${FC.Bold}${FC.Green}Attackers win this round.\n`,
-            `${FC.Bold}${FC.Gray}--------------------`
-        ],
+        message: lang('game.bombplant.action.defender_eliminated'),
         nextPhaseGenerator: () => new RoundEndPhase()
     },
     [EndReasonEnum['Defender-Disconnect']]: {
         winner: TeamEnum.Attacker,
-        message: [
-            `${FC.Bold}${FC.Gray}---- ${FC.DarkPurple}[ GAME OVER ] ${FC.Gray}----\n`,
-            `${FC.Bold}${FC.Red}All Defenders Disconnected.\n`,
-            `${FC.Bold}${FC.Yellow}Attackers win.\n`,
-            `${FC.Bold}${FC.Gray}--------------------`
-        ],
+        message: lang('game.bombplant.action.defender_disconnect'),
         nextPhaseGenerator: () => new GameOverPhase()
     }
 }

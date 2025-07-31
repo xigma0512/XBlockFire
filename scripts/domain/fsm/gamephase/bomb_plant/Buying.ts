@@ -41,7 +41,7 @@ export class BuyingPhase implements IPhaseHandler {
     }
 
     on_exit() {
-        closeShop();
+        clearShopItem();
     }
 
     transitions() {
@@ -61,13 +61,13 @@ function sendShopItem() {
     }
 }
 
-function closeShop() {
+function clearShopItem() {
     for (const player of MemberManager.getPlayers()) {
         player.inputPermissions.setPermissionCategory(InputPermissionCategory.LateralMovement, true);
         set_entity_native_property(player, 'player:can_use_item', true);
 
         // clear feather(shop)
-        const hotbar = HotbarManager.getPlayerHotbar(player)
+        const hotbar = HotbarManager.getPlayerHotbar(player);
         hotbar.items[8] = undefined;
         HotbarManager.sendHotbar(player, hotbar);
 

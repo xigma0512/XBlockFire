@@ -10,8 +10,8 @@ import { TeamEnum } from "../../../../declarations/enum/TeamEnum";
 import { BombPlantPhaseEnum } from "../../../../declarations/enum/PhaseEnum";
 
 import { Broadcast } from "../../../../infrastructure/utils/Broadcast";
-import { FormatCode as FC } from "../../../../declarations/enum/FormatCode";
 import { variable } from "../../../../infrastructure/data/Variable";
+import { lang } from "../../../../infrastructure/Language";
 
 import { GameMode, world } from "@minecraft/server";
 
@@ -29,25 +29,7 @@ export class GameOverPhase implements IPhaseHandler {
     }
 
     on_entry() {
-        switch (variable('winner')) {
-            case TeamEnum.Attacker:
-                Broadcast.message([
-                    '\n',
-                    `${FC.Bold}${FC.Gray}---- ${FC.DarkPurple}[ GAME OVER ] ${FC.Gray}----\n`,
-                    `${FC.Bold}${FC.Yellow}Attackers win this game.\n`,
-                    `${FC.Bold}${FC.Gray}--------------------`,
-                    '\n'
-                ]);
-                break;
-            case TeamEnum.Defender:
-                Broadcast.message([
-                    '\n',
-                    `${FC.Bold}${FC.Gray}---- ${FC.DarkPurple}[ GAME OVER ] ${FC.Gray}----\n`,
-                    `${FC.Bold}${FC.Yellow}Defenders win this game.\n`,
-                    `${FC.Bold}${FC.Gray}--------------------`,
-                    '\n'
-                ]);
-        }
+        notifyWinner();
     }
 
     on_running() {
@@ -73,6 +55,16 @@ export class GameOverPhase implements IPhaseHandler {
 
 }
 
+function notifyWinner() {
+    switch (variable('winner')) {
+        case TeamEnum.Attacker:
+            Broadcast.message(lang('game.bombplant.gameover.attacker_win'));
+            break;
+        case TeamEnum.Defender:
+            Broadcast.message(lang('game.bombplant.gameover.defender_win'));
+    }
+}
+
 function resetbombstate() {
     BombStateManager.updateState(new C4IdleState());
 }
@@ -85,9 +77,9 @@ function respawnPlayers() {
 }
 
 function showScoreboard() {
-    let stat = `--- [ Scoreboard ] ---\n`;
+    let stat = lang('game.scoreboard.title');
     for (const player of MemberManager.getPlayers()) {
-        stat += `${player.name} | K:${variable(`${player.name}.kills`)} D:${variable(`${player.name}.deaths`)}\n`;
+        stat += lang('game.scoreboard.format', player.name, variable(`${player.name}.kills`), variable(`${player.name}.deaths`));
     }
     Broadcast.message(stat);
 }
