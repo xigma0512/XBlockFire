@@ -15,19 +15,11 @@ import { FormatCode as FC } from "../../declarations/enum/FormatCode"
 import { TeamEnum } from "../../declarations/enum/TeamEnum";
 
 import { GameMode } from "@minecraft/server";
-import { ItemStack, Player, system, world } from "@minecraft/server";
+import { ItemStack, Player, system } from "@minecraft/server";
 
 const deathPlayers = new Set<Player>();
 
-world.afterEvents.entityDie.subscribe(ev => {
-    if (!(ev.deadEntity instanceof Player)) return;
-    const deadPlayer = ev.deadEntity;
-    const source = ev.damageSource;
-    const attacker = source.damagingEntity;
-    system.runTimeout(() => gameEvents.emit('playerDied', { deadPlayer, attacker }), 5);
-})
-
-gameEvents.subscribe('playerDied', (ev) => {
+gameEvents.subscribe('onPlayerKilled', (ev) => {
     if (deathPlayers.has(ev.deadPlayer)) return;
     
     deathPlayers.add(ev.deadPlayer);

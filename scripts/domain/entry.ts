@@ -1,7 +1,7 @@
 import './economy/Shop'
 
 import './player/MemberManager'
-import './player/PlayerDead'
+import './player/PlayerKilled'
 
 import './weapon/systems/gun/GunFireSystem'
 import './weapon/systems/gun/GunReloadSystem'
