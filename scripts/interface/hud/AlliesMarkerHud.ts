@@ -115,5 +115,5 @@ export class AlliesMarker {
 }
 
 world.afterEvents.worldLoad.subscribe(() => {
-    system.runInterval(() => AlliesMarker.updateMark());
+    system.runInterval(() => AlliesMarker.updateMark(), 3);
 });
