@@ -1,4 +1,4 @@
-import { C4IdleState } from "./states/Idle";
+import { BlankState } from "./BlankState";
 
 import { Entity, system } from "@minecraft/server";
 
@@ -16,7 +16,7 @@ class _BombStateManager {
     private _taskId: number;
    
     private constructor() {
-        this._stateHandler = new C4IdleState();
+        this._stateHandler = new BlankState();
 
         this._stateHandler.on_entry();
         this._stateHandler.strategies.forEach(strategy => strategy.initialize());

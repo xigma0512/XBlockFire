@@ -1,4 +1,4 @@
-import { BlankPhase } from "./BlankPhaseHandler";
+import { BlankPhase } from "./BlankPhase";
 
 import { system } from "@minecraft/server";
 
@@ -24,7 +24,7 @@ class _GamePhaseManager {
         this._phaseHandler.on_exit();
         system.clearRun(this._taskId);
         
-        system.waitTicks(5).then(() => { 
+        system.waitTicks(100).then(() => { 
             this._phaseHandler = newPhase;
             this._phaseHandler.on_entry();
             
@@ -33,10 +33,10 @@ class _GamePhaseManager {
     }
 
     private runTick() {
+        this._phaseHandler.hud?.update();
         if (this._phaseHandler.on_running()) {
-            this._phaseHandler.hud?.update();
-            this._phaseHandler.transitions();
             this.currentTick --;
+            this._phaseHandler.transitions();
         }
     }
 
