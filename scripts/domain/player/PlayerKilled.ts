@@ -50,7 +50,7 @@ function dropC4(player: Player) {
     const container = player.getComponent('inventory')!.container!;
     if (container.find(new ItemStack(C4_ITEM_ID)) === undefined) return;
 
-    BombStateManager.updateState(new C4DroppedState(player.location));
+    BombStateManager.updateState(new C4DroppedState(player, player.location));
 }
 
 function showDeathMessage(deadPlayer: Player, attacker: Player) {

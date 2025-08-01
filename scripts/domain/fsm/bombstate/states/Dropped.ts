@@ -1,82 +1,77 @@
-import { MemberManager } from "../../../player/MemberManager";
-import { BombStateManager } from "../BombStateManager";
+import { Player } from "@minecraft/server";
+import { VanillaEntityIdentifier, Vector3 } from "@minecraft/server";
 
+import { BombStateManager } from "../BombStateManager";
+import { MemberManager } from "../../../player/MemberManager";
 import { C4IdleState } from "./Idle";
+import { PickUpStrategy } from "../strategies/PickUp";
+
+import { Broadcast } from "../../../../infrastructure/utils/Broadcast";
+import { lang } from "../../../../infrastructure/Language";
 
 import { BombStateEnum } from "../../../../declarations/enum/BombStateEnum";
 import { TeamEnum } from "../../../../declarations/enum/TeamEnum";
-
-import { FormatCode as FC } from "../../../../declarations/enum/FormatCode";
-import { Broadcast } from "../../../../infrastructure/utils/Broadcast";
-
-import { Entity, ItemStack, Player, world } from "@minecraft/server";
-import { EntityHitEntityAfterEvent } from "@minecraft/server";
-import { VanillaEntityIdentifier, Vector3 } from "@minecraft/server";
+import { GameEvent } from "../../../../infrastructure/event/GameEvent";
+import { gameEvents } from "../../../../infrastructure/event/EventEmitter";
 
 const DROPPED_C4_ENTITY_ID = 'xblockfire:dropped_c4' as VanillaEntityIdentifier;
-const C4_ITEM_ID = 'xblockfire:c4';
 const ROTATION_SPEED = 7.5;
 
 export class C4DroppedState implements IBombStateHandler {
 
     readonly stateTag = BombStateEnum.Dropped;
+    readonly strategies: IBombStateStrategy[];
 
-    private _entity!: Entity;
-    get entity() { return this._entity; }
+    private afterC4PickedUpCallback = (ev: GameEvent['onC4PickedUp']) => { };
 
-    private afterEntityHitEntityListener: (ev: EntityHitEntityAfterEvent) => void;
+    constructor(private source: Player, private location: Vector3) {
+        this.afterC4PickedUpCallback = gameEvents.subscribe('onC4PickedUp', this.onC4PickedUp);
 
-    constructor(private location: Vector3) {
-        this.location = location;
-
-        this.afterEntityHitEntityListener = this.onEntityHit.bind(this);
+        this.strategies = [
+            new PickUpStrategy
+        ];
     }
 
     on_entry() {
-        this._entity = world.getDimension('overworld').spawnEntity(DROPPED_C4_ENTITY_ID, this.location);
-        world.afterEvents.entityHitEntity.subscribe(this.afterEntityHitEntityListener);
-
-        Broadcast.message(`${FC.Bold}${FC.Blue}C4 Has Been Dropped.`, MemberManager.getPlayers({team: TeamEnum.Attacker}));
+        spawnC4Entity(this.source, this.location);
     }
     
     on_running() {
-        if (!this.entity.isValid) {
+        const c4Entity = BombStateManager.c4Entity!;
+        if (!c4Entity.isValid) {
             BombStateManager.updateState(new C4IdleState());
-            return;
+            return false;
         }
 
-        const rotation = this.entity.getRotation();
+        const rotation = c4Entity.getRotation();
         rotation.y = (rotation.y + ROTATION_SPEED) % 360;
-        this.entity.setRotation(rotation);
+        c4Entity.setRotation(rotation);
+
+        return true;
     }
     
     on_exit() {
-        world.afterEvents.entityHitEntity.unsubscribe(this.afterEntityHitEntityListener);
-        this.entity.remove();
+        gameEvents.unsubscribe('onC4PickedUp', this.afterC4PickedUpCallback);
+        BombStateManager.c4Entity!.remove();
     }
 
 
-    private onEntityHit(ev: EntityHitEntityAfterEvent) {
-        if (ev.hitEntity.id !== this.entity.id) return;
-        
-        const player = ev.damagingEntity;
-        if (!(player instanceof Player)) return;
+    private onC4PickedUp(ev: GameEvent['onC4PickedUp']) {
+        const {source} = ev;
+        BombStateManager.updateState(new C4IdleState);
 
-        this.attemptToPickup(player);
-    }
-
-
-    private attemptToPickup(player: Player) {
-        const playerTeam = MemberManager.getPlayerTeam(player);
-        if (playerTeam !== TeamEnum.Attacker) return;
-
-        player.getComponent('inventory')?.container.setItem(3, new ItemStack(C4_ITEM_ID));
-        
+        source.sendMessage(lang('c4.pick_up'));
         const attackers = MemberManager.getPlayers({ team: TeamEnum.Attacker });
-        
-        player.sendMessage(`${FC.Gray}>> ${FC.Green}You pick up the C4.`);
-        Broadcast.message(`${FC.Bold}${FC.Yellow}Player ${player.name} has picked up the C4.`, attackers);
-
-        BombStateManager.updateState(new C4IdleState());
+        Broadcast.message(lang('c4.pick_up.broadcast', source.name), attackers);
     }
+
+}
+
+function spawnC4Entity(source: Player, location: Vector3) {
+    const {dimension} = source;
+    const entity = dimension.spawnEntity(DROPPED_C4_ENTITY_ID, location);
+    BombStateManager.c4Entity = entity;
+
+    const attackers = MemberManager.getPlayers({team: TeamEnum.Attacker});
+    Broadcast.message(lang('c4.drop'), attackers);
 }

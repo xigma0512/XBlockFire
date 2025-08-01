@@ -1,114 +1,66 @@
-import { gameroom } from "../../../gameroom/GameRoom";
-import { MemberManager } from "../../../player/MemberManager";
-import { BombStateManager } from "../BombStateManager";
-import { MapRegister } from "../../../gameroom/MapRegister";
-import { HudTextController } from "../../../../interface/hud/HudTextController";
+import { world } from "@minecraft/server";
 
+import { GamePhaseManager } from "../../gamephase/GamePhaseManager";
+import { BombStateManager } from "../BombStateManager";
 import { C4DroppedState } from "./Dropped";
-import { C4PlantingState } from "./Planting";
+import { C4PlantedState } from "./Planted";
+import { PlantingC4Strategy } from "../strategies/PlantingC4";
+import { DropStrategy } from "../strategies/Drop";
+
+import { GameEvent } from "../../../../infrastructure/event/GameEvent";
+import { gameEvents } from "../../../../infrastructure/event/EventEmitter";
 
 import { BombStateEnum } from "../../../../declarations/enum/BombStateEnum";
-import { TeamEnum } from "../../../../declarations/enum/TeamEnum";
-
-import { set_variable } from "../../../../infrastructure/data/Variable";
-import { FormatCode as FC } from "../../../../declarations/enum/FormatCode";
-
-import { Vector3Utils } from "@minecraft/math";
-import { Player, system, world } from "@minecraft/server";
-import { EntitySpawnAfterEvent, ItemUseBeforeEvent } from "@minecraft/server";
-
-import { BombPlant as Config } from "../../../../settings/config";
-
-const C4_ITEM_ID = 'xblockfire:c4';
-const C4_TARGET_RANGE = Config.c4.target_range;
+import { BombPlantPhaseEnum } from "../../../../declarations/enum/PhaseEnum";
 
 export class C4IdleState implements IBombStateHandler {
 
     readonly stateTag = BombStateEnum.Idle;
+    readonly strategies: IBombStateStrategy[];
 
-    private beforeItemUseListener = (ev: ItemUseBeforeEvent) => { };
-    private afterEntitySpawnListener = (ev: EntitySpawnAfterEvent) => { };
+    private afterC4PlantedCallback = (ev: GameEvent['onC4Planted']) => { };
+    private afterC4DroppedCallback = (ev: GameEvent['onC4Dropped']) => { };
 
-    constructor() { }
+    constructor() {
+        this.afterC4PlantedCallback = gameEvents.subscribe('onC4Planted', this.onC4Planted);
+        this.afterC4DroppedCallback = gameEvents.subscribe('onC4Dropped', this.onC4Dropped);
+
+        this.strategies = [
+            new PlantingC4Strategy,
+            new DropStrategy
+        ];
+    }
 
     on_entry() {
-        
-        world.getDimension('overworld').getEntities({families: ['c4']}).forEach(c4 => c4.remove());
-
-        this.beforeItemUseListener = world.beforeEvents.itemUse.subscribe(this.onBeforeItemUse.bind(this));
-        this.afterEntitySpawnListener = world.afterEvents.entitySpawn.subscribe(this.onEntitySpawn.bind(this));
+        removeC4Entities();
     }
 
-    on_running() { }
+    on_running() {
+        return true;
+    }
 
     on_exit() {
-        world.beforeEvents.itemUse.unsubscribe(this.beforeItemUseListener);
-        world.afterEvents.entitySpawn.unsubscribe(this.afterEntitySpawnListener);
+        gameEvents.unsubscribe('onC4Planted', this.afterC4PlantedCallback);
+        gameEvents.unsubscribe('onC4Dropped', this.afterC4DroppedCallback);
     }
 
 
-    private onBeforeItemUse(ev: ItemUseBeforeEvent) {
-        if (ev.itemStack.typeId !== C4_ITEM_ID) return;
-
-        const { source } = ev;
-
-        ev.cancel = !canPlantC4(source);
-        if (!ev.cancel) {
-            system.run(() => {
-                BombStateManager.updateState(new C4PlantingState(ev.source));
-            });
-        }
-    }
-
-    private onEntitySpawn(ev: EntitySpawnAfterEvent) {
-        const entity = ev.entity;
-        if (!entity.isValid || !entity.hasComponent('item')) return;
-
-        const itemComp = entity.getComponent('item')!;
-        if (itemComp.itemStack.typeId !== C4_ITEM_ID) return;
-
-        const player = entity.dimension.getEntities({ 
-            location: entity.location, 
-            maxDistance: 2, 
-            type: 'minecraft:player' 
-        });
+    private onC4Planted(ev: GameEvent['onC4Planted']) {
+        const phase = GamePhaseManager.phaseHandler;
+        const phaseTag = phase.phaseTag;
+        if (phaseTag !== BombPlantPhaseEnum.Action && phaseTag !== BombPlantPhaseEnum.RoundEnd) return;
         
-        if (!player || !(player instanceof Player)) {
-            entity.remove();
-            throw Error(`C4 item entity spawned at {${entity.location.x}, ${entity.location.y}, ${entity.location.z}} but no owning player found in room `);
-        }
+        const { source, site } = ev;
+        BombStateManager.updateState(new C4PlantedState(source, site));
+    }
 
-        BombStateManager.updateState(new C4DroppedState(entity.location));
-        entity.remove();
+    private onC4Dropped(ev: GameEvent['onC4Dropped']) {
+        const { source, location } = ev;
+        BombStateManager.updateState(new C4DroppedState(source, location));
     }
 
 }
 
-function canPlantC4(source: Player) {
-    try {
-        const sourceTeam = MemberManager.getPlayerTeam(source);
-        if (sourceTeam !== TeamEnum.Attacker) {
-            throw new Error(`You are not at Attacker team.`);
-        }
-
-        const mapInfo = MapRegister.getMap(gameroom().gameMapId);
-        const isAtTarget = mapInfo.positions.C4_targets.some((target, index) => {
-            const distance = Vector3Utils.distance(source.location, target);
-            if (distance <= C4_TARGET_RANGE) {
-                set_variable(`c4.plant_site_index`, index);
-                return true;
-            }
-            return false;
-        });
-
-        if (!isAtTarget) {
-            throw new Error('Cannot plant c4 outside the C4 target position');
-        }
-
-        return true;
-
-    } catch (err: any) {
-        HudTextController.add(source, 'actionbar', `${FC.Red}${err.message}`);
-        return false;
-    }
+function removeC4Entities() {
+    world.getDimension('overworld').getEntities({families: ['c4']}).forEach(c4 => c4.remove());
 }

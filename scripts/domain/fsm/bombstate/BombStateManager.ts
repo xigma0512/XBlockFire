@@ -1,32 +1,44 @@
 import { C4IdleState } from "./states/Idle";
 
-import { system } from "@minecraft/server";
+import { Entity, system } from "@minecraft/server";
 
 class _BombStateManager {
 
     private static _instance: _BombStateManager;
     static get instance() { return (this._instance || (this._instance = new this)); }
+    
+    currentTick: number = -1;
+    c4Entity: Entity | undefined;
+   
+    private _stateHandler: IBombStateHandler;
+    get stateHandler() { return this._stateHandler; }
+   
+    private _taskId: number;
+   
+    private constructor() {
+        this._stateHandler = new C4IdleState();
 
-    private stateHandler: IBombStateHandler;
-    private taskId: number;
-
-    constructor() {
-        this.stateHandler = new C4IdleState(); 
-        system.run(() => this.stateHandler.on_entry());
-        this.taskId = this.taskId = system.runInterval(() => this.stateHandler.on_running());
+        this._stateHandler.on_entry();
+        this._stateHandler.strategies.forEach(strategy => strategy.initialize());
+        this._taskId = system.runInterval(this.runTick.bind(this));
     }
+    
+    updateState(newPhase: IBombStateHandler) {
+        this._stateHandler.on_exit();
+        this._stateHandler.strategies.forEach(strategy => strategy.dispose());
+        system.clearRun(this._taskId);
 
-    updateState(newState: IBombStateHandler) {
-        this.stateHandler.on_exit();
-        system.clearRun(this.taskId);
-
-        this.stateHandler = newState;
-        this.stateHandler.on_entry();
-        this.taskId = system.runInterval(() => this.stateHandler.on_running());
+        this._stateHandler = newPhase;
+        this._stateHandler.on_entry();
+        this._stateHandler.strategies.forEach(strategy => strategy.initialize());
+        
+        this._taskId = system.runInterval(this.runTick.bind(this));
     }
-
-    getHandler() {
-        return this.stateHandler;
+   
+    private runTick() {
+        if (this._stateHandler.on_running()) {
+            this.currentTick --;
+        }
     }
 
 }

@@ -25,7 +25,7 @@ export class DamageSystem {
         if (healthComp.currentValue - damage > 0) {
             healthComp.setCurrentValue(healthComp.currentValue - damage);
         } else {
-            gameEvents.emit('playerDied', {
+            gameEvents.emit('onPlayerKilled', {
                 attacker: attacker,
                 deadPlayer: target
             });

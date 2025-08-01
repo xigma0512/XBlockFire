@@ -81,15 +81,31 @@ export default {
         '\n'
     ],
 
+    'game.bombplant.c4_defused.defender_win': [
+        `${FC.Bold}${FC.Gray}---- ${FC.Yellow}[ 回合結束 ] ${FC.Gray}----\n`,
+        `${FC.Bold}${FC.Gold}炸彈已被 %a 拆除\n`,
+        `${FC.Bold}${FC.Green}防守方獲勝\n`,
+        `${FC.Bold}${FC.Gray}---`
+    ],
+
     'game.scoreboard.title': `--- [ Scoreboard ] ---\n`,
     'game.scoreboard.format': `%a | K:%b D:$c\n`,
-    
+
+    // c4
+    'c4.bomb_has_been_planted.broadcast': `${FC.Bold}${FC.MinecoinGold}炸彈已被安裝在目標 %a 點`,
+    'c4.plant_reward': `${FC.Gray}>> 安裝炸彈獎勵: +300$`,
+    'c4.pick_up': `${FC.Gray}>> ${FC.Green}你撿起了炸彈`,
+    'c4.pick_up.broadcast': `${FC.Bold}${FC.Yellow}玩家 %a 撿起了炸彈`,
+    'c4.drop': `${FC.Bold}${FC.Blue}炸彈已掉落`,
 
     // player
     'player.recommand_setting.1': `${FC.Gray}>> ${FC.Yellow}建議設定`,
     'player.recommand_setting.2': `${FC.Gray}>> ${FC.White}設定->視訊->相機晃動${FC.Green}(開啟)`,
     'player.recommand_setting.3': `${FC.Gray}>> ${FC.White}設定->視訊->視野可透過遊戲控制調整${FC.Red}(關閉)`,
     
+    'player.c4.planting_outside_range': `${FC.Red}你只能在炸彈目標點放置炸彈`,
+    'player.c4.defusing_outside_range': `${FC.Red}附近沒有炸彈可以解除`,
+
     // combat
     'combat.player.kill_reward': `${FC.Gray}>> 擊殺獎勵: +200$`,
     'combat.player.killer.subtitle': `${FC.Bold}\uE109${FC.DarkRed}%a`,

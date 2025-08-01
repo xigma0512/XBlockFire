@@ -1,181 +1,84 @@
-import { GamePhaseManager } from "../../gamephase/GamePhaseManager";
-import { MemberManager } from "../../../player/MemberManager";
-import { BombStateManager } from "../BombStateManager";
-import { HudTextController } from "../../../../interface/hud/HudTextController";
-import { EconomyManager } from "../../../economy/EconomyManager";
+import { Player, VanillaEntityIdentifier } from "@minecraft/server";
+import { Vector3Utils } from "@minecraft/math";
 
-import { C4IdleState } from "./Idle";
-import { C4PlantedPhase } from "../../gamephase/bomb_plant/C4Planted";
-import { RoundEndPhase } from "../../gamephase/bomb_plant/RoundEnd";
+import { BombStateManager } from "../BombStateManager";
+import { C4DefusedState } from "./Defused";
+import { PlantedC4SuccessStrategy } from "../strategies/PlantedC4Success";
+import { DefusingC4Strategy } from "../strategies/DefusingC4";
+import { ExplosionStrategy } from "../strategies/Explosion";
+
+import { progressBar } from "../../../../infrastructure/utils/Format";
+import { GameEvent } from "../../../../infrastructure/event/GameEvent";
+import { gameEvents } from "../../../../infrastructure/event/EventEmitter";
 
 import { BombStateEnum } from "../../../../declarations/enum/BombStateEnum";
-import { TeamEnum } from "../../../../declarations/enum/TeamEnum";
-import { BombPlantPhaseEnum } from "../../../../declarations/enum/PhaseEnum";
-
-import { set_variable, variable } from "../../../../infrastructure/data/Variable";
-import { Broadcast } from "../../../../infrastructure/utils/Broadcast";
-import { FormatCode as FC } from "../../../../declarations/enum/FormatCode";
-import { progressBar } from "../../../../infrastructure/utils/Format";
-
-import { Vector3Utils } from "@minecraft/math";
-import { VanillaEntityIdentifier } from "@minecraft/server";
-import { DimensionLocation, Entity, Player, system, world } from "@minecraft/server";
-import { ItemUseBeforeEvent, ItemCompleteUseAfterEvent } from "@minecraft/server"
 
 import { BombPlant as Config } from "../../../../settings/config";
-
-const DEFUSER_ITEM_ID = 'xblockfire:defuser';
-const PLANTED_C4_ENTITY_ID = 'xblockfire:planted_c4' as VanillaEntityIdentifier;
-const DEFUSE_RANGE = Config.c4.defuse_range;
-const DEFUSING_TIME = 6 * 20;
-
-const EXPLOSION_SOUND_ID = 'xblockfire.c4_explosion';
-const COMPLETE_DEFUSED_SOUND_ID = 'xblockfire.c4_defused';
-const DEFUSING_SOUND_ID = 'xblockfire.defusing';
 
 export class C4PlantedState implements IBombStateHandler {
 
     readonly stateTag = BombStateEnum.Planted;
-    
-    private _entity!: Entity;
-    get entity() { return this._entity; }
-    
-    private currentTick = Config.phaseTime.c4planted;
+    readonly strategies: IBombStateStrategy[];
 
-    private beforeItemUseListener = (ev: ItemUseBeforeEvent) => { };
-    private afterItemCompleteUseListener = (ev: ItemCompleteUseAfterEvent) => { };
+    private afterC4DefusedCallback = (ev: GameEvent['onC4Defused']) => { };
 
-    constructor(
-        private readonly position: DimensionLocation
-    ) { }
+    constructor(private source: Player, private site: number) { 
+        this.afterC4DefusedCallback = gameEvents.subscribe('onC4Defused', this.onC4Defused);
+        this.strategies = [
+            new PlantedC4SuccessStrategy(source, site),
+            new DefusingC4Strategy,
+            new ExplosionStrategy
+        ];
+    }
 
     on_entry() {
-        this.beforeItemUseListener = world.beforeEvents.itemUse.subscribe(this.onBeforeItemUse.bind(this));
-        this.afterItemCompleteUseListener = world.afterEvents.itemCompleteUse.subscribe(this.onItemCompleteUse.bind(this));
-        this._entity = this.position.dimension.spawnEntity(PLANTED_C4_ENTITY_ID, this.position);
-
-        if (GamePhaseManager.phaseHandler.phaseTag === BombPlantPhaseEnum.Action) {
-            GamePhaseManager.updatePhase(new C4PlantedPhase());
-        }
-
-        const siteIndex = String.fromCharCode(65 + (variable(`c4.plant_site_index`) ?? 0));
-        Broadcast.message(`${FC.Bold}${FC.MinecoinGold}C4 HAS BEEN PLANTED AT SITE ${siteIndex}.` , MemberManager.getPlayers());
-        
-        for (const player of MemberManager.getPlayers({team: TeamEnum.Attacker})) {
-            EconomyManager.setMoney(player, EconomyManager.getMoney(player) + 300);
-            player.sendMessage(`${FC.Gray}>> C4 Planted reward: +300$`);
-        }
+        BombStateManager.currentTick = Config.phaseTime.c4planted;
+        spawnC4Entity(this.source);
     }
     
     on_running() {
-        playC4Effect(this.currentTick, this.entity);
-        this.currentTick --;
-        if (this.currentTick <= 0) c4Explosion(this.entity);
+        playC4Effect();
+        return true;
     }
 
     on_exit() {
-        world.beforeEvents.itemUse.unsubscribe(this.beforeItemUseListener);
-        world.afterEvents.itemCompleteUse.unsubscribe(this.afterItemCompleteUseListener);
-        this.entity.remove();
+        gameEvents.unsubscribe('onC4Defused', this.afterC4DefusedCallback);
     }
 
 
-    private onBeforeItemUse(ev: ItemUseBeforeEvent) {
-        if (ev.itemStack.typeId !== DEFUSER_ITEM_ID) return;
-
-        ev.cancel = !canDefuseC4(this.entity, ev.source);
-
-        if (!ev.cancel) {
-            system.run(() => {
-                const location = ev.source.location;
-                const volume = 3;
-                Broadcast.sound(DEFUSING_SOUND_ID, { location, volume });
-            });
-            displayDefusingProgress(ev.source);
-        }
-    }
-
-    private onItemCompleteUse(ev: ItemCompleteUseAfterEvent) {
-        if (ev.itemStack.typeId !== DEFUSER_ITEM_ID) return;
-
-        defuseComplete(ev.source);
+    private onC4Defused(ev: GameEvent['onC4Defused']) {
+        const {source} = ev;
+        BombStateManager.updateState(new C4DefusedState(source));
     }
 
 }
 
-function canDefuseC4(C4Entity: Entity, player: Player) {
-    const distance = Vector3Utils.distance(player.location, C4Entity.location);
-    if (distance > DEFUSE_RANGE) {
-        system.run(() => {
-            HudTextController.add(player, 'actionbar', `${FC.Red}There is no c4 in the range.`);
-        });
-        return false;
-    }
-
-    return true;
-}
-
-function displayDefusingProgress(source: Player) {
-    let currentTime = DEFUSING_TIME;
-    const taskId = system.runInterval(() => {
-        const progress = progressBar(DEFUSING_TIME, currentTime--, 30);
-        HudTextController.add(source, 'actionbar', progress);
-    });
-    system.run(() => {
-        const callback = world.afterEvents.itemStopUse.subscribe(ev => {
-            if (ev.source.id !== source.id) return;
-            system.clearRun(taskId);
-            world.afterEvents.itemStopUse.unsubscribe(callback);
-        })
-    })
-}
-
-function c4Explosion(C4Entity: Entity) {
-    const location = C4Entity.location;
-    const volume = 3;
-    Broadcast.sound(EXPLOSION_SOUND_ID, { location, volume });
-    
-    C4Entity.dimension.createExplosion(C4Entity.location, 20, { causesFire: false, breaksBlocks: false });    
-
-    BombStateManager.updateState(new C4IdleState());
-}
-
-function defuseComplete(defuser: Player) {    
-    if (GamePhaseManager.phaseHandler.phaseTag === BombPlantPhaseEnum.C4Planted) {
-        set_variable(`round_winner`, TeamEnum.Defender);
-        GamePhaseManager.updatePhase(new RoundEndPhase());
-    }
-
-    BombStateManager.updateState(new C4IdleState());
-
-    const players = MemberManager.getPlayers();
-    Broadcast.sound(COMPLETE_DEFUSED_SOUND_ID, {}, players);
-    
-    const message = [
-        `${FC.Bold}${FC.Gray}---- ${FC.Yellow}[ ROUND END ] ${FC.Gray}----\n`,
-        `${FC.Bold}${FC.Gold}C4 has been defused by ${defuser.name}.\n`,
-        `${FC.Bold}${FC.Green}DEFENDERS win this game.\n`,
-        `${FC.Bold}${FC.Gray}---`
-    ]
-    Broadcast.message(message, players);
+function spawnC4Entity(source: Player) {
+    const {dimension, location} = source;
+    const entity = dimension.spawnEntity('xblockfire:planted_c4' as VanillaEntityIdentifier, location);
+    BombStateManager.c4Entity = entity;
 }
 
 let soundPlayInterval = 20;
-function playC4Effect(currentTick: number, entity: Entity) {
+function playC4Effect() {
+    const currentTick = BombStateManager.currentTick;
+    const c4Entity = BombStateManager.c4Entity!;
+
     const totalTime = Config.phaseTime.c4planted;
 
     const bar = progressBar(totalTime, currentTick, 30);
-    entity.nameTag = `| ${bar} |`;
+    c4Entity.nameTag = `| ${bar} |`;
 
     if (currentTick > totalTime * (1/2)) soundPlayInterval = 20;
     else if (currentTick > totalTime * (1/3)) soundPlayInterval = 10;
     else if (currentTick > totalTime * (1/6)) soundPlayInterval = 5;
     else soundPlayInterval = 3;
 
-    const location = Vector3Utils.add(entity.location, { y: 0.3 });
+    const location = Vector3Utils.add(c4Entity.location, { y: 0.3 });
+    const dimension = c4Entity.dimension;
 
     if (currentTick % soundPlayInterval === 0) {
-        entity.dimension.playSound("xblockfire.c4_beep", location, { volume: 5 });
-        try { entity.dimension.spawnParticle("minecraft:explosion_particle", location); } catch { }
+        dimension.playSound("xblockfire.c4_beep", location, { volume: 5 });
+        try { dimension.spawnParticle("minecraft:explosion_particle", location); } catch { }
     }
 }

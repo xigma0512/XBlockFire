@@ -28,9 +28,9 @@ export class AlliesMarker {
             }
 
             if (team === TeamEnum.Attacker) {
-                const bombstate = BombStateManager.getHandler();
+                const bombstate = BombStateManager.stateHandler;
                 if (bombstate.stateTag === BombStateEnum.Dropped) {
-                    const c4 = bombstate.entity as Entity;
+                    const c4 = BombStateManager.c4Entity!;
 
                     const { location, hasObstacle } = this.getSpawnLocation(viewer, c4);
                     const size = this.getSize(viewer, c4, hasObstacle);

@@ -17,7 +17,10 @@ export const BombPlant = {
         // C4可以被安裝在目標點範圍多少格內
         target_range: 4.5,
         // C4可以在多少格內被拆除
-        defuse_range: 1.5
+        defuse_range: 1.5,
+
+        planting_time: 4 * 20,
+        defusing_time: 6 * 20
     },
 
     phaseTime: {
