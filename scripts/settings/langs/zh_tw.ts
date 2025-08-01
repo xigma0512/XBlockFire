@@ -89,7 +89,7 @@ export default {
     ],
 
     'game.scoreboard.title': `--- [ Scoreboard ] ---\n`,
-    'game.scoreboard.format': `%a | K:%b D:$c\n`,
+    'game.scoreboard.format': `%a | K:%b D:%c\n`,
 
     // c4
     'c4.bomb_has_been_planted.broadcast': `${FC.Bold}${FC.MinecoinGold}炸彈已被安裝在目標 %a 點`,
