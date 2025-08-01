@@ -24,7 +24,7 @@ class _GamePhaseManager {
         this._phaseHandler.on_exit();
         system.clearRun(this._taskId);
         
-        system.waitTicks(100).then(() => { 
+        system.waitTicks(5).then(() => { 
             this._phaseHandler = newPhase;
             this._phaseHandler.on_entry();
             
