@@ -6,10 +6,24 @@ const LangTable = {
 }
 
 const langTarget = language as keyof typeof LangTable;
+type Labels = keyof typeof LangTable['ZH-TW'];
 
-export const lang = (id: keyof typeof LangTable['ZH-TW'], ...args: any[]) => {
-    return LangTable[langTarget][id].replace(/%([a-z])/g, (_, keyChar) => {
-        const argIndex = keyChar.charCodeAt(0) - 'a'.charCodeAt(0);
-        return args[argIndex] ?? `%${keyChar}`;
-    });
+export function lang(id: Labels, ...args: any[]): string;
+export function lang(id: Labels, ...args: any[]): string[];
+
+export function lang(id: Labels, ...args: any[]): string | string[] {
+    const content = LangTable[langTarget][id];
+
+    const transform = (str: string) => {
+        return str.replace(/%([a-z])/g, (_, keyChar) => {
+            const argIndex = keyChar.charCodeAt(0) - 'a'.charCodeAt(0);
+            return args[argIndex] ?? `%${keyChar}`;
+        });
+    }
+
+    if (typeof content === 'string') {
+        return transform(content);
+    } else {   
+        return content.map(c => transform(c));
+    }
 }
