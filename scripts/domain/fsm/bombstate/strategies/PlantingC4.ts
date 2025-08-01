@@ -38,8 +38,11 @@ export class PlantingC4Strategy implements IBombStateStrategy {
         if (itemStack.typeId !== C4_ITEM_ID) return;
 
         const isAllow = canPlayerPlantingC4(source);
-        if (isAllow) playerPlantingC4(source);
         ev.cancel = !isAllow;
+
+        if (isAllow) {
+            system.run(() => playerPlantingC4(source));
+        }
     }
 
 }
@@ -78,8 +81,9 @@ function playerPlantingC4(source: Player) {
 
     const totalPlantingTime = Config.c4.planting_time;
     let currentTime = totalPlantingTime;
+
     const taskId = system.runInterval(() => {
-        HudTextController.add(source, 'actionbar', progressBar(totalPlantingTime, currentTime));
+        HudTextController.add(source, 'actionbar', progressBar(totalPlantingTime, currentTime--));
         if (currentTime <= 0) {
             gameEvents.emit('onC4Planted', { source, site: variable('c4.plant_site_index') });
             world.afterEvents.itemStopUse.unsubscribe(itemStopUseCallback);
@@ -90,7 +94,7 @@ function playerPlantingC4(source: Player) {
     const itemStopUseCallback = world.afterEvents.itemStopUse.subscribe(ev => {
         if (ev.source.id !== source.id) return;
         ev.source.stopSound(PLANTING_SOUND_SELF);
-        system.clearRun(currentTime);
+        system.clearRun(taskId);
         world.afterEvents.itemStopUse.unsubscribe(itemStopUseCallback);
     });
 }
