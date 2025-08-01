@@ -14,8 +14,8 @@ class Hotbar {
     readonly items: Array<ItemStack|undefined>;
     
     constructor(player?: Player) {
-        if (player) this.copyInventory(player);
         this.items = new Array(9).fill(undefined);
+        if (player) this.copyInventory(player);
     }
 
     private copyInventory(target: Player) {
