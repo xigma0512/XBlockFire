@@ -25,7 +25,7 @@ export class C4DroppedState implements IBombStateHandler {
     private afterC4PickedUpCallback = (ev: GameEvent['onC4PickedUp']) => { };
 
     constructor(private source: Player, private location: Vector3) {
-        this.afterC4PickedUpCallback = gameEvents.subscribe('onC4PickedUp', this.onC4PickedUp);
+        this.afterC4PickedUpCallback = gameEvents.subscribe('onC4PickedUp', this.onC4PickedUp.bind(this));
 
         this.strategies = [
             new PickUpStrategy

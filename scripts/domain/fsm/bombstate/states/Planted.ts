@@ -23,7 +23,7 @@ export class C4PlantedState implements IBombStateHandler {
     private afterC4DefusedCallback = (ev: GameEvent['onC4Defused']) => { };
 
     constructor(private source: Player, private site: number) { 
-        this.afterC4DefusedCallback = gameEvents.subscribe('onC4Defused', this.onC4Defused);
+        this.afterC4DefusedCallback = gameEvents.subscribe('onC4Defused', this.onC4Defused.bind(this));
         this.strategies = [
             new PlantedC4SuccessStrategy(source, site),
             new DefusingC4Strategy,

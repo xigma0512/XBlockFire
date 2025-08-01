@@ -22,8 +22,8 @@ export class C4IdleState implements IBombStateHandler {
     private afterC4DroppedCallback = (ev: GameEvent['onC4Dropped']) => { };
 
     constructor() {
-        this.afterC4PlantedCallback = gameEvents.subscribe('onC4Planted', this.onC4Planted);
-        this.afterC4DroppedCallback = gameEvents.subscribe('onC4Dropped', this.onC4Dropped);
+        this.afterC4PlantedCallback = gameEvents.subscribe('onC4Planted', this.onC4Planted.bind(this));
+        this.afterC4DroppedCallback = gameEvents.subscribe('onC4Dropped', this.onC4Dropped.bind(this));
 
         this.strategies = [
             new PlantingC4Strategy,
