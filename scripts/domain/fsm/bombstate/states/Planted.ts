@@ -9,7 +9,7 @@ import { C4IdleState } from "./Idle";
 import { PlantedC4SuccessStrategy } from "../strategies/PlantedC4Success";
 import { DefusingC4Strategy } from "../strategies/DefusingC4";
 import { ExplosionStrategy } from "../strategies/Explosion";
-import { C4PlantedPhase } from "../../gamephase/bomb_plant/C4Planted";
+import { BombActivePhase } from "../../gamephase/bomb_plant/BombActive";
 
 import { progressBar } from "../../../../infrastructure/utils/Format";
 import { GameEvent } from "../../../../infrastructure/event/GameEvent";
@@ -42,7 +42,7 @@ export class C4PlantedState implements IBombStateHandler {
 
     on_entry() {
         BombStateManager.currentTick = Config.phaseTime.c4planted;
-        GamePhaseManager.updatePhase(new C4PlantedPhase);
+        GamePhaseManager.updatePhase(new BombActivePhase);
         spawnC4Entity(this.source);
     }
     

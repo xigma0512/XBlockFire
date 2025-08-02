@@ -30,7 +30,7 @@ export class DefusedC4SuccessStrategy implements IBombStateStrategy {
 function updateStates() {
     const phase = GamePhaseManager.phaseHandler;
     const phaseTag = phase.phaseTag;
-    if (phaseTag === BombPlantPhaseEnum.C4Planted) {
+    if (phaseTag === BombPlantPhaseEnum.BombActive) {
         set_variable(`round_winner`, TeamEnum.Defender);
         GamePhaseManager.updatePhase(new RoundEndPhase());
     }

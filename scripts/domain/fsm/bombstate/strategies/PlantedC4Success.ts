@@ -1,7 +1,7 @@
 import { Player } from "@minecraft/server";
 
 import { EconomyManager } from "../../../economy/EconomyManager";
-import { C4PlantedPhase } from "../../gamephase/bomb_plant/C4Planted";
+import { BombActivePhase } from "../../gamephase/bomb_plant/BombActive";
 import { GamePhaseManager } from "../../gamephase/GamePhaseManager";
 import { MemberManager } from "../../../player/MemberManager";
 
@@ -31,7 +31,7 @@ export class PlantedC4SuccessStrategy implements IBombStateStrategy {
 function updateGamePhase() {
     const currentPhase = GamePhaseManager.phaseHandler;
     if (currentPhase.phaseTag !== BombPlantPhaseEnum.Action) {
-        GamePhaseManager.updatePhase(new C4PlantedPhase());
+        GamePhaseManager.updatePhase(new BombActivePhase());
     }
 }
 

@@ -38,13 +38,13 @@ const endReasonTable = {
     }
 }
 
-export class C4PlantedPhase implements IPhaseHandler {
+export class BombActivePhase implements IPhaseHandler {
 
     readonly phaseTag;
     readonly hud;
 
     constructor() {
-        this.phaseTag = BombPlantPhaseEnum.C4Planted;
+        this.phaseTag = BombPlantPhaseEnum.BombActive;
         this.hud = new ActionHud();
         GamePhaseManager.currentTick = Config.phaseTime.c4planted;
     }
