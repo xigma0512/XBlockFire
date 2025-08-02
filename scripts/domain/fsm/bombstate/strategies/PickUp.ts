@@ -3,8 +3,11 @@ import { EntityHitEntityAfterEvent, ItemStack, Player, world } from "@minecraft/
 import { BombStateManager } from "../BombStateManager";
 import { MemberManager } from "../../../player/MemberManager";
 
-import { TeamEnum } from "../../../../declarations/enum/TeamEnum";
 import { gameEvents } from "../../../../infrastructure/event/EventEmitter";
+import { lang } from "../../../../infrastructure/Language";
+import { Broadcast } from "../../../../infrastructure/utils/Broadcast";
+
+import { TeamEnum } from "../../../../declarations/enum/TeamEnum";
 
 const C4_ITEM_ID = 'xblockfire:c4';
 
@@ -35,5 +38,10 @@ function playerPickUpC4(source: Player) {
     if (playerTeam !== TeamEnum.Attacker) return;
     
     source.getComponent('inventory')?.container.setItem(3, new ItemStack(C4_ITEM_ID));
+
+    source.sendMessage(lang('c4.pick_up'));
+    const attackers = MemberManager.getPlayers({ team: TeamEnum.Attacker });
+    Broadcast.message(lang('c4.pick_up.broadcast', source.name), attackers);
+
     gameEvents.emit('onC4PickedUp', { source });
 }

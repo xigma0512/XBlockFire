@@ -25,4 +25,8 @@ export interface GameEvent {
         source: Player;
     };
 
+    'onC4Exploded': {
+
+    };
+
 }

@@ -34,8 +34,10 @@ export class DefusingC4Strategy implements IBombStateStrategy {
         if (itemStack.typeId !== DEFUSER_ITEM_ID) return;
 
         const isAllow = canPlayerDefuseC4(source);
-        if (isAllow) playerDefusingC4(source);
         ev.cancel = !isAllow;
+        if (isAllow) {
+            system.run(() => playerDefusingC4(source));
+        }
     }
 
 }
@@ -64,18 +66,20 @@ function playerDefusingC4(source: Player) {
 
     const totalPlantingTime = Config.c4.defusing_time;
     let currentTime = totalPlantingTime;
+
     const taskId = system.runInterval(() => {
-        HudTextController.add(source, 'actionbar', progressBar(totalPlantingTime, currentTime));
+        HudTextController.add(source, 'actionbar', progressBar(totalPlantingTime, currentTime--));
         if (currentTime <= 0) {
-            gameEvents.emit('onC4Defused', { source });
             world.afterEvents.itemStopUse.unsubscribe(itemStopUseCallback);
             system.clearRun(taskId);
+            
+            gameEvents.emit('onC4Defused', { source });
         }
     });
 
     const itemStopUseCallback = world.afterEvents.itemStopUse.subscribe(ev => {
         if (ev.source.id !== source.id) return;
-        system.clearRun(currentTime);
+        system.clearRun(taskId);
         world.afterEvents.itemStopUse.unsubscribe(itemStopUseCallback);
     });
 }

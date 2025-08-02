@@ -59,10 +59,6 @@ export class C4DroppedState implements IBombStateHandler {
     private onC4PickedUp(ev: GameEvent['onC4PickedUp']) {
         const {source} = ev;
         BombStateManager.updateState(new C4IdleState);
-
-        source.sendMessage(lang('c4.pick_up'));
-        const attackers = MemberManager.getPlayers({ team: TeamEnum.Attacker });
-        Broadcast.message(lang('c4.pick_up.broadcast', source.name), attackers);
     }
 
 }

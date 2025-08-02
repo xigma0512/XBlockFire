@@ -88,6 +88,12 @@ export default {
         `${FC.Bold}${FC.Gray}---`
     ],
 
+    'game.bombplant.c4_exploded.attacker_win': [
+        `${FC.Bold}${FC.Gray}---- ${FC.Yellow}[ 回合結束 ] ${FC.Gray}----\n`,
+        `${FC.Bold}${FC.Gold}炸彈已摧毀目標點，進攻方獲勝\n`,
+        `${FC.Bold}${FC.Gray}---`
+    ],
+
     'game.scoreboard.title': `--- [ Scoreboard ] ---\n`,
     'game.scoreboard.format': `%a | K:%b D:%c\n`,
 
