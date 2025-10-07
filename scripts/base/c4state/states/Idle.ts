@@ -18,7 +18,7 @@ import { Vector3Utils } from "@minecraft/math";
 import { Player, system, world } from "@minecraft/server";
 import { EntitySpawnAfterEvent, ItemUseBeforeEvent } from "@minecraft/server";
 
-const C4_TARGET_RANGE = 3;
+const C4_TARGET_RANGE = 4.5;
 const C4_ITEM_ID = 'xblockfire:c4';
 
 export class C4IdleState implements IC4StateHandler {
@@ -31,6 +31,9 @@ export class C4IdleState implements IC4StateHandler {
     constructor() { }
 
     on_entry() {
+        
+        world.getDimension('overworld').getEntities({families: ['c4']}).forEach(c4 => c4.remove());
+
         this.beforeItemUseListener = world.beforeEvents.itemUse.subscribe(this.onBeforeItemUse.bind(this));
         this.afterEntitySpawnListener = world.afterEvents.entitySpawn.subscribe(this.onEntitySpawn.bind(this));
     }

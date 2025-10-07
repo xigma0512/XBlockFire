@@ -22,7 +22,6 @@ export class BlankPhase implements IPhaseHandler {
     }
 
     on_exit() {
-        console.warn('leave');
     }
 
     private transitions() {

@@ -10,6 +10,7 @@ import { Config } from "./_config";
 import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPlantPhaseEnum";
 import { TeamEnum } from "../../../types/TeamEnum";
 
+import { FormatCode as FC } from "../../../utils/FormatCode";
 import { set_entity_dynamic_property } from "../../../utils/Property";
 import { set_variable } from "../../../utils/Variable";
 import { ItemStackFactory } from "../../../utils/ItemStackFactory";
@@ -68,11 +69,11 @@ function balanceTeam() {
         if (attackTeamCount <= defenderTeamCount) {
             set_entity_dynamic_property(player, 'player:team', TeamEnum.Attacker);
             attackTeamCount++;
-            player.sendMessage('You have been assigned to the Attacker Team.');
+            player.sendMessage(`${FC.Gray}>> ${FC.Yellow}You have been assigned to the Attacker Team.`);
         } else {
             set_entity_dynamic_property(player, 'player:team', TeamEnum.Defender);
             defenderTeamCount++;
-            player.sendMessage('You have been assigned to the Defender Team.');
+            player.sendMessage(`${FC.Gray}>> ${FC.Yellow}You have been assigned to the Defender Team.`);
         }
     }
 }

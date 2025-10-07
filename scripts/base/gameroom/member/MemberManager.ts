@@ -25,12 +25,12 @@ class _MemberManager {
 
     joinRoom(player: Player) {
         this.players.add(player);
-        Broadcast.message(`${FC.Bold}${FC.Green}${player.name} has joined the room.`, this.getPlayers());
+        Broadcast.message(`${FC.Bold}${FC.Green}${player.name} join the room.`, this.getPlayers());
     }
     
     leaveRoom(player: Player) {
         this.players.delete(player);
-        Broadcast.message(`${FC.Bold}${FC.Red}${player.name} has left the room.`, this.getPlayers());
+        Broadcast.message(`${FC.Bold}${FC.Red}${player.name} leave the room.`, this.getPlayers());
     }
 
     getPlayers(filter?: MemberFilter) {        
@@ -39,8 +39,8 @@ class _MemberManager {
         if (!filter) return allPlayers;
 
         return allPlayers.filter(p => {
-            if (filter.team && filter.team !== entity_dynamic_property(p, 'player:team')) return false;
-            if (filter.is_alive && filter.is_alive !== entity_dynamic_property(p, 'player:is_alive')) return false;
+            if (filter.team !== undefined && filter.team !== entity_dynamic_property(p, 'player:team')) return false;
+            if (filter.is_alive !== undefined && filter.is_alive !== entity_dynamic_property(p, 'player:is_alive')) return false;
             return true;
         });
     }
