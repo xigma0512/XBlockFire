@@ -44,7 +44,7 @@ export class Deagle extends ItemActor {
                 }
             )).set('gun_recoil', new GunRecoilComponent(
                 {
-                    shacking_level: 0.02,
+                    shacking_level: 0.09,
                     shacking_duration: 0.12
                 }
             )).set('gun_reload', new GunReloadComponent(

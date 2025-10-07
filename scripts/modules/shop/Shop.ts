@@ -49,7 +49,7 @@ class _Shop {
     async openShop(player: Player) {
         const form = new ActionFormData();
         form.title('SHOP')
-            .body(`${FC.MinecoinGold}Select an item to purchase:`)
+            .body(`Select an item to purchase:\nYour Money: ${FC.MinecoinGold}${EconomyManager.getMoney(player)}`)
 
         for (const product of ProductTable) {
             const canBeRefund = this.checkRefund(player, product);
@@ -70,10 +70,8 @@ class _Shop {
 
             if (this.checkRefund(player, product)) {
                 this.refund(player, product);
-                player.sendMessage(`${FC.Gray}>> ${FC.Yellow}You refund ${product.name}. ${FC.Green}(+${product.price}$)`);
             } else {
                 this.purchase(player, product);
-                player.sendMessage(`${FC.Gray}>> ${FC.Yellow}You bought ${product.name}. ${FC.Red}(-${product.price}$)`);
             }
             
             this.openShop(player);
@@ -95,9 +93,11 @@ class _Shop {
 
     private refund(player: Player, product: IProduct) {
         const hotbar = HotbarManager.getPlayerHotbar(player);
+        const originalHotbarItem = hotbar.items[product.slot]!;
         hotbar.items[product.slot] = undefined;
         
-        EconomyManager.modifyMoney(player, product.price);
+        const refundMoney = product.price * originalHotbarItem.amount;
+        EconomyManager.modifyMoney(player, refundMoney);
         
         PurchaseHistory.set(player, product.slot);
         
@@ -106,6 +106,8 @@ class _Shop {
             hotbar.items[product.slot] = new Glock17().item;
         }
         HotbarManager.sendHotbar(player, hotbar);
+
+        player.sendMessage(`${FC.Gray}>> ${FC.Yellow}You refund ${product.name}. ${FC.Green}(+${refundMoney}$)`);
     }
 
     private purchase(player: Player, product: IProduct) {
@@ -113,13 +115,14 @@ class _Shop {
         const hotbarItem = hotbar.items.at(product.slot);
         
         const historyProduct = PurchaseHistory.getProduct(player, product.slot);
-        if (historyProduct) {
-            if (historyProduct.id !== product.id) {
-                throw Error(`You should refund your ${historyProduct.name} first.`);
-            }
-            if (hotbarItem!.amount >= product.max_amount) {
-                throw Error('You have reached purchase limit.');
-            }
+        if (historyProduct && historyProduct.id !== product.id) {
+            throw Error(`You should refund your ${historyProduct.name} first.`);
+        }
+
+        const productItem = (product.itemActor) ? new product.itemActor().item
+                                                : ItemStackFactory.new({ typeId: product.itemStackTypeId!, lockMode: ItemLockMode.slot });
+        if (hotbarItem && hotbarItem.typeId === productItem.typeId && hotbarItem.amount >= product.max_amount) {
+            throw Error('You have reached purchase limit.');
         }
 
         if (!EconomyManager.canBeAfforded(player, product.price)) {
@@ -130,7 +133,10 @@ class _Shop {
         if (product.id !== 100) {
             PurchaseHistory.set(player, product.slot, product.id);
         }
+
         this.sendProduct(player, product);
+
+        player.sendMessage(`${FC.Gray}>> ${FC.Yellow}You bought ${product.name}. ${FC.Red}(-${product.price}$)`);
     }
 
     private sendProduct(player: Player, product: IProduct) {

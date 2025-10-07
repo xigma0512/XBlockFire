@@ -50,6 +50,9 @@ export class ActionHud implements InGameHud {
         const attackerPlayers = MemberManager.getPlayers({ team: TeamEnum.Attacker, is_alive: true });
         const defenderPlayers = MemberManager.getPlayers({ team: TeamEnum.Defender, is_alive: true });
 
+        const attackerDeadPlayers = MemberManager.getPlayers({ team: TeamEnum.Attacker, is_alive: false });
+        const defenderDeadPlayers = MemberManager.getPlayers({ team: TeamEnum.Defender, is_alive: false });
+
         const seconds = Number((phase.currentTick / 20).toFixed(0));
         
         for (const player of players) {
@@ -58,12 +61,11 @@ export class ActionHud implements InGameHud {
             const playerTeamStr = (playerTeam === TeamEnum.Attacker) ? `${FC.Red}Attacker` : `${FC.Aqua}Defender`;
 
             const message = [
-                `     ${FC.Bold}${FC.Gold}Round ${defenderScore + attackerScore + 1}${FC.Reset}  `,
+                `${FC.Bold}   ${FC.Gold}Round ${defenderScore + attackerScore + 1}${FC.Reset}  `,
+                `Round Time: ${FC.Gray}${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')}`,
                 '',
-                ` Round Time: ${FC.Gray}${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')}`,
-                '',
-                `   ${FC.Aqua}D - ${defenderScore}   ${FC.Red}A - ${attackerScore}   `,
-                `       ${FC.Aqua}${defenderPlayers.length} ${FC.White}VS ${FC.Red}${attackerPlayers.length}`,
+                `${FC.Aqua}D-${defenderScore} ${FC.White}| ${FC.Bold}${FC.Aqua}${'O '.repeat(defenderPlayers.length)}${FC.Gray}${'X '.repeat(defenderDeadPlayers.length)}`,
+                `${FC.Red}A-${attackerScore} ${FC.White}| ${FC.Bold}${FC.Red}${'O '.repeat(attackerPlayers.length)}${FC.Gray}${'X '.repeat(attackerDeadPlayers.length)}`,
                 '',
                 `Money: ${FC.Green}${EconomyManager.getMoney(player)}`,
                 '',

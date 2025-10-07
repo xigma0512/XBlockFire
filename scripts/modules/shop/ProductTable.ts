@@ -1,6 +1,10 @@
 import { ItemActor } from "../../base/weapon/actors/Actor";
+
 import { AK47 } from "../../base/weapon/actors/item/AK47";
 import { M4A4 } from "../../base/weapon/actors/item/M4A4";
+import { SG200 } from "../../base/weapon/actors/item/SG200";
+import { AWP } from "../../base/weapon/actors/item/AWP";
+
 import { Glock17 } from "../../base/weapon/actors/item/Glock17";
 import { Deagle } from "../../base/weapon/actors/item/Deagle";
 
@@ -45,6 +49,32 @@ export const ProductTable: IProduct[] = [
         name: "M4A4",
         description: "高射速但傷害略低的自動步槍",
         iconPath: 'textures/items/gun/m4a4'
+    },
+    {
+        id: 2,
+
+        price: 2400,
+        max_amount: 1,
+        slot: 0,
+        
+        itemActor: SG200,
+        
+        name: "SG200",
+        description: "霰彈槍，能夠在近距離造成極高的傷害。",
+        iconPath: 'textures/items/gun/sg200'
+    },
+    {
+        id: 3,
+
+        price: 5000,
+        max_amount: 1,
+        slot: 0,
+        
+        itemActor: AWP,
+        
+        name: "AWP",
+        description: "能夠在遠距離一槍了結對手的強力武器。",
+        iconPath: 'textures/items/gun/awp'
     },
     {
         id: 100,

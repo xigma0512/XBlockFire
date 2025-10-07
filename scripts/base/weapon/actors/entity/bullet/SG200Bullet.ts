@@ -19,8 +19,8 @@ export class SG200Bullet extends EntityActor {
             }))
             .set('bullet_damage', new BulletDamageComponent({
                 near: { head: 4, body: 3, legs: 2 },
-                medium: { head: 2, body: 1, legs: 1 },
-                far: { head: 1, body: 1, legs: 1 }
+                medium: { head: 3, body: 2, legs: 1 },
+                far: { head: 0, body: 0, legs: 0 }
             }));
         
         this.setEntity();
