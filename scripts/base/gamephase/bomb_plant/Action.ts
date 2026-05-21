@@ -1,10 +1,9 @@
-import { MemberManager } from "../../gameroom/member/MemberManager";
+import { MemberManager } from "../../member/MemberManager";
 import { PhaseManager } from "../PhaseManager";
 
 import { GameOverPhase } from "./Gameover";
 import { RoundEndPhase } from "./RoundEnd";
 import { ActionHud } from "../../../modules/hud/bomb_plant/Action";
-import { Config } from "./_config";
 
 import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPlantPhaseEnum"
 import { TeamEnum } from "../../../types/TeamEnum";
@@ -13,7 +12,11 @@ import { FormatCode as FC } from "../../../utils/FormatCode";
 import { Broadcast } from "../../../utils/Broadcast";
 import { set_variable } from "../../../utils/Variable";
 
-const config = Config.action;
+import { Config } from "../../../settings/config";
+
+const config = Config.bombplant.action;
+
+const VOICE_30_SEC_LEFT_SOUND_ID = 'xblockfire.30_sec_left';
 
 const enum EndReasonEnum {
     'Time-up' = 1,
@@ -94,6 +97,7 @@ export class ActionPhase implements IPhaseHandler {
 
     on_running() {
         this._currentTick --;
+        voiceBroadcast(this.currentTick);
         this.hud.update();
         this.transitions();
     }
@@ -102,6 +106,8 @@ export class ActionPhase implements IPhaseHandler {
     }
 
     private transitions() {
+        if (PhaseManager.isPhaseTransitioning) return;
+        
         let endReason: EndReasonEnum | null = null;
 
         const attackers = MemberManager.getPlayers({ team: TeamEnum.Attacker });
@@ -126,4 +132,10 @@ export class ActionPhase implements IPhaseHandler {
         }
     }
 
+}
+
+function voiceBroadcast(currentTick: number) {
+    if (currentTick === 30 * 20) {
+        Broadcast.sound(VOICE_30_SEC_LEFT_SOUND_ID, {}, MemberManager.getPlayers());
+    }
 }

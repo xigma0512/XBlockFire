@@ -1,5 +1,5 @@
 import { PhaseManager } from "../../gamephase/PhaseManager";
-import { MemberManager } from "../../gameroom/member/MemberManager";
+import { MemberManager } from "../../member/MemberManager";
 import { C4Manager } from "../C4Manager";
 import { HudTextController } from "../../../modules/hud/HudTextController";
 
@@ -15,7 +15,7 @@ import { ItemCompleteUseAfterEvent, ItemStopUseAfterEvent } from "@minecraft/ser
 import { Player, world } from "@minecraft/server";
 
 const C4_ITEM_ID = 'xblockfire:c4';
-const C4_PLANTING_TIME = 3 * 20;
+const C4_PLANTING_TIME = 4 * 20;
 
 const C4_PLANTED_SOUND_ID = 'xblockfire.c4_planted';
 const PLANTING_SELF_SOUND_ID = 'xblockfire.planting.self';
@@ -55,10 +55,9 @@ export class C4PlantingState implements IC4StateHandler {
     private onItemCompleteUse(ev: ItemCompleteUseAfterEvent) {
         if (ev.itemStack.typeId !== C4_ITEM_ID) return;
         if (ev.source.id !== this.source.id) return;
-        
-                
+
         const phase = PhaseManager.getPhase();
-        if (phase.phaseTag !== BombPlantPhaseEnum.Action) return;
+        if (phase.phaseTag !== BombPlantPhaseEnum.Action && phase.phaseTag !== BombPlantPhaseEnum.RoundEnd) return;
         
         // eslint-disable-next-line
         ev.source.runCommand('clear @s xblockfire:c4');
@@ -74,7 +73,6 @@ export class C4PlantingState implements IC4StateHandler {
         if (!ev.itemStack || ev.itemStack.typeId !== C4_ITEM_ID) return;
         if (ev.source.id !== this.source.id) return;
 
-        
         C4Manager.updateState(new C4IdleState());
         
         ev.source.stopSound(PLANTING_SELF_SOUND_ID);

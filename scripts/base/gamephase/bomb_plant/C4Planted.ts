@@ -1,10 +1,9 @@
-import { MemberManager } from "../../gameroom/member/MemberManager";
+import { MemberManager } from "../../member/MemberManager";
 import { PhaseManager } from "../PhaseManager";
 import { ActionHud } from "../../../modules/hud/bomb_plant/Action";
 
 import { RoundEndPhase } from "./RoundEnd";
 import { GameOverPhase } from "./Gameover";
-import { Config } from "./_config";
 
 import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPlantPhaseEnum";
 import { TeamEnum } from "../../../types/TeamEnum";
@@ -13,7 +12,9 @@ import { set_variable } from "../../../utils/Variable";
 import { FormatCode as FC } from "../../../utils/FormatCode";
 import { Broadcast } from "../../../utils/Broadcast";
 
-const config = Config.C4planted;
+import { Config } from "../../../settings/config";
+
+const config = Config.bombplant.C4planted;
 
 const enum EndReasonEnum {
     'Time-up' = 1,
@@ -79,6 +80,7 @@ export class C4PlantedPhase implements IPhaseHandler {
     }
 
     private transitions() {
+        if (PhaseManager.isPhaseTransitioning) return;
 
         let endReason: EndReasonEnum | null = null;
     

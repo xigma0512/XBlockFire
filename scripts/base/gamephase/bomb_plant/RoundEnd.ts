@@ -1,21 +1,22 @@
-import { MemberManager } from "../../gameroom/member/MemberManager";
-import { EconomyManager } from "../../gameroom/economy/EconomyManager";
+import { MemberManager } from "../../member/MemberManager";
+import { EconomyManager } from "../../economy/EconomyManager";
 import { PhaseManager } from "../PhaseManager";
 import { ActionHud } from "../../../modules/hud/bomb_plant/Action"; 
 
 import { GameOverPhase } from "./Gameover";
 import { PreRoundStartPhase } from "./PreRoundStart";
-import { Config } from "./_config";
 
 import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPlantPhaseEnum";
 import { TeamEnum } from "../../../types/TeamEnum";
 
 import { FormatCode as FC } from "../../../utils/FormatCode";
-import { entity_dynamic_property, set_entity_dynamic_property } from "../../../utils/Property";
+import { set_entity_dynamic_property } from "../../../utils/Property";
 import { set_variable, variable } from "../../../utils/Variable";
 import { Broadcast } from "../../../utils/Broadcast";
 
-const config = Config.roundEnd;
+import { Config } from "../../../settings/config";
+
+const config = Config.bombplant.roundEnd;
 
 export class RoundEndPhase implements IPhaseHandler {
 
@@ -72,9 +73,9 @@ export class RoundEndPhase implements IPhaseHandler {
 
 function switchSide() {
     for (const player of MemberManager.getPlayers()) {
-        const playerTeam = entity_dynamic_property(player, 'player:team');
-        set_entity_dynamic_property(player, 'player:team', (playerTeam === TeamEnum.Attacker) ? TeamEnum.Defender : TeamEnum.Attacker);
-    
+        const playerTeam = MemberManager.getPlayerTeam(player);
+        MemberManager.setPlayerTeam(player, (playerTeam === TeamEnum.Attacker) ? TeamEnum.Defender : TeamEnum.Attacker)
+
         // reset player money
         EconomyManager.setMoney(player, 800);
         // clear players inventory
@@ -103,7 +104,7 @@ function processWinner() {
     }
 
     for (const player of MemberManager.getPlayers()) {
-        const playerTeam = entity_dynamic_property(player, 'player:team');
+        const playerTeam = MemberManager.getPlayerTeam(player);
         const earn = config.INCOME[(playerTeam === winnerTeam) ? 0 : 1];
         EconomyManager.modifyMoney(player, earn);
         player.sendMessage(`${FC.Gray}>> ${FC.DarkGray}Round Income: +${earn}`);

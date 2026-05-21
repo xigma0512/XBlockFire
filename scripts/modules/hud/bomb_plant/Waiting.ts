@@ -1,14 +1,17 @@
 import { gameroom } from "../../../base/gameroom/GameRoom";
-import { MemberManager } from "../../../base/gameroom/member/MemberManager";
+import { MemberManager } from "../../../base/member/MemberManager";
 import { PhaseManager } from "../../../base/gamephase/PhaseManager";
 import { MapRegister } from "../../../base/gamemap/MapRegister";
 
-import { Config } from "../../../base/gamephase/bomb_plant/_config";
+import { TeamEnum } from "../../../types/TeamEnum";
 
 import { FormatCode as FC } from "../../../utils/FormatCode";
 import { Broadcast } from "../../../utils/Broadcast";
 
-const config = Config.idle;
+import { Config } from "../../../settings/config";
+
+const game_config = Config.game;
+const idle_config = Config.bombplant.idle;
 
 export class WaitingHud implements InGameHud {
     
@@ -27,11 +30,11 @@ export class WaitingHud implements InGameHud {
         
         let text = `${FC.Yellow}Waiting for more players...`;
         
-        if (config.AUTO_START && playerAmount >= config.AUTO_START_MIN_PLAYER) {
+        if (game_config.AUTO_START && playerAmount >= game_config.AUTO_START_MIN_PLAYER) {
             text = `${FC.Green}Game will start in ${(phase.currentTick / 20).toFixed(0)} seconds.`;
         }
         
-        if (phase.currentTick !== config.COUNTDOWN_TIME && playerAmount < config.AUTO_START_MIN_PLAYER) {
+        if (phase.currentTick !== idle_config.COUNTDOWN_TIME && playerAmount < game_config.AUTO_START_MIN_PLAYER) {
             Broadcast.message(`${FC.Bold}${FC.Red}Not enough players. Waiting for more players.`, players);
         }
         
@@ -48,12 +51,19 @@ export class WaitingHud implements InGameHud {
         const map = MapRegister.getMap(gameroom().gameMapId);
         const playerCount = players.length;
 
+        const defenders = MemberManager.getPlayers({team: TeamEnum.Defender});
+        const attackers = MemberManager.getPlayers({team: TeamEnum.Attacker});
+        const spectators = MemberManager.getPlayers({team: TeamEnum.Spectator});
+
         const message = [
-            `${FC.Bold}${FC.Yellow}  XBlockFire  `,
+            `${FC.Bold}${FC.Yellow}    XBlockFire    `,
             ` ${FC.Gray}${todayStr}`,
             '',
             `Map: ${FC.Green}${map.name}`,
-            `Players: ${FC.Green}${playerCount}`,
+            `Players: ${FC.Green}${playerCount} ${FC.White}(${FC.Aqua}${defenders.length}${FC.White}/${FC.Red}${attackers.length}${FC.White})`,
+            ...defenders.map(p => `${FC.Gray}- ${FC.Aqua}${p.name}`),
+            ...attackers.map(p => `${FC.Gray}- ${FC.Red}${p.name}`),
+            ...spectators.map(p => `${FC.Gray}- ${p.name}`),
             '',
             `Mode:`,
             `${FC.Green}${gameroom().gameMode}`,
