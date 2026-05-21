@@ -106,6 +106,8 @@ export class ActionPhase implements IPhaseHandler {
     }
 
     private transitions() {
+        if (PhaseManager.isPhaseTransitioning) return;
+        
         let endReason: EndReasonEnum | null = null;
 
         const attackers = MemberManager.getPlayers({ team: TeamEnum.Attacker });

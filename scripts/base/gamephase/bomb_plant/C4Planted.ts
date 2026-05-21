@@ -80,6 +80,7 @@ export class C4PlantedPhase implements IPhaseHandler {
     }
 
     private transitions() {
+        if (PhaseManager.isPhaseTransitioning) return;
 
         let endReason: EndReasonEnum | null = null;
     
