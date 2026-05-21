@@ -4,7 +4,7 @@ import { C4StateEnum } from "../../types/bombstate/C4StateEnum";
 import { TeamEnum } from "../../types/TeamEnum";
 
 import { Vector3Builder, Vector3Utils } from "@minecraft/math";
-import { Direction, Entity, MolangVariableMap, Player, RGBA } from "@minecraft/server";
+import { Direction, MolangVariableMap, Player, RGBA } from "@minecraft/server";
 
 export class AlliesMarker {
 
@@ -15,86 +15,101 @@ export class AlliesMarker {
             const team = MemberManager.getPlayerTeam(viewer);
             const is_alive = true;
             const groupPlayers = MemberManager.getPlayers({ team, is_alive });
-            
+
             for (const ally of groupPlayers) {
                 if (ally.id === viewer.id) continue;
 
-                const { location, hasObstacle } = this.getSpawnLocation(viewer, ally);
-                const size = this.getSize(viewer, ally, hasObstacle);
-                const varMap = this.getVarMap(size);
+                const targetLoc = Vector3Utils.add(ally.location, { y: 2.3 });
+                const transform = this.getMarkerTransform(viewer, targetLoc);
+                if (!transform) continue;
 
-                viewer.spawnParticle('xblockfire:allies_mark', location, varMap);
+                const varMap = this.getVarMap(transform.size);
+                viewer.spawnParticle('xblockfire:allies_mark', transform.location, varMap);
             }
 
             if (team === TeamEnum.Attacker) {
                 const c4state = C4Manager.getHandler();
-                if (c4state.stateTag === C4StateEnum.Dropped) {
-                    const c4 = c4state.entity as Entity;
-
-                    const { location, hasObstacle } = this.getSpawnLocation(viewer, c4);
-                    const size = this.getSize(viewer, c4, hasObstacle);
-                    const varMap = this.getVarMap(size, {
-                        red: 0,
-                        green: 0,
-                        blue: 1,
-                        alpha: 1
-                    });
-
-                    viewer.spawnParticle('xblockfire:allies_mark', location, varMap);
+                if (c4state.stateTag === C4StateEnum.Dropped && c4state.entity) {
+                    const targetLoc = Vector3Utils.add(c4state.entity.location, { y: 2.3 });
+                    const transform = this.getMarkerTransform(viewer, targetLoc);
+                    if (transform) {
+                        const varMap = this.getVarMap(transform.size, {
+                            red: 0,
+                            green: 0,
+                            blue: 1,
+                            alpha: 1
+                        });
+                        viewer.spawnParticle('xblockfire:allies_mark', transform.location, varMap);
+                    }
                 }
             }
         }
     }
 
-    private static getSpawnLocation(viewer: Player, ally: Entity) {
-        const startLocation = Vector3Utils.add(viewer.getHeadLocation(), { y: 0.1 });
-        const endLocation = Vector3Utils.add(ally.location, { y: 2.3 }); 
+    private static getMarkerTransform(viewer: Player, targetLocation: { x: number, y: number, z: number }) {
+        const headLoc = viewer.getHeadLocation();
+
+        const eyeToTarget = Vector3Utils.subtract(targetLocation, headLoc);
+        const distanceToTarget = Vector3Utils.magnitude(eyeToTarget);
+
+        if (distanceToTarget <= 2) return null;
 
         const dimension = viewer.dimension;
-        const raycastVector = new Vector3Builder(Vector3Utils.subtract(endLocation, startLocation));
-        const raycastResult = dimension.getBlockFromRay(startLocation, raycastVector, {
+        const raycastVector = new Vector3Builder(eyeToTarget);
+        const raycastResult = dimension.getBlockFromRay(headLoc, raycastVector, {
             includeLiquidBlocks: false,
             includePassableBlocks: false,
-            maxDistance: raycastVector.magnitude() + 1
+            maxDistance: distanceToTarget
         });
 
+        let finalLocation = targetLocation;
+        let size = 0.2;
+
         if (raycastResult) {
-            const blockLocation = raycastResult.block.location;
+            const blockLoc = raycastResult.block.location;
             const face = raycastResult.face;
-            const faceLocation = raycastResult.faceLocation;
+            
+            let hitX = blockLoc.x + raycastResult.faceLocation.x;
+            let hitY = blockLoc.y + raycastResult.faceLocation.y;
+            let hitZ = blockLoc.z + raycastResult.faceLocation.z;
 
-            const offsetValue = 0.2;
-            const particleOffset = {
-                [Direction.Up]: { y: 1 + offsetValue },
-                [Direction.Down]: { y: -offsetValue },
-                [Direction.South]: { z: 1 + offsetValue },
-                [Direction.North]: { z: -offsetValue },
-                [Direction.East]: { x: 1 + offsetValue },
-                [Direction.West]: { x: -offsetValue }
-            }
-            const result = Vector3Utils.add(Vector3Utils.add(blockLocation, faceLocation), particleOffset[face]);
-            return { location: result, hasObstacle: true };
-        } else {
-            return { location: endLocation, hasObstacle: false };
+            if (face === Direction.East) hitX = blockLoc.x + 1;
+            else if (face === Direction.West) hitX = blockLoc.x;
+            else if (face === Direction.Up) hitY = blockLoc.y + 1;
+            else if (face === Direction.Down) hitY = blockLoc.y;
+            else if (face === Direction.South) hitZ = blockLoc.z + 1;
+            else if (face === Direction.North) hitZ = blockLoc.z;
+
+            const hitLocation = { x: hitX, y: hitY, z: hitZ };
+
+            const faceNormals: Record<Direction, {x: number, y: number, z: number}> = {
+                [Direction.Up]: { x: 0, y: 1, z: 0 },
+                [Direction.Down]: { x: 0, y: -1, z: 0 },
+                [Direction.South]: { x: 0, y: 0, z: 1 },
+                [Direction.North]: { x: 0, y: 0, z: -1 },
+                [Direction.East]: { x: 1, y: 0, z: 0 },
+                [Direction.West]: { x: -1, y: 0, z: 0 }
+            };
+            const normal = faceNormals[face];
+            const toViewerDir = Vector3Utils.normalize(Vector3Utils.subtract(headLoc, hitLocation));
+            
+            finalLocation = Vector3Utils.add(
+                hitLocation, 
+                Vector3Utils.add(Vector3Utils.scale(normal, 0.1), Vector3Utils.scale(toViewerDir, 0.1))
+            );
+
+            const distanceToParticle = Vector3Utils.distance(headLoc, finalLocation);
+            size = 0.2 * (distanceToParticle / distanceToTarget);
+            size = Math.max(0.01, size);
         }
+
+        return {
+            location: finalLocation,
+            size: size
+        };
+
     }
 
-    private static getSize(viewer: Player, ally: Entity, hasObstacle: boolean) {
-        const distance = Vector3Utils.distance(viewer.location, ally.location);
-
-        const minSize = 0.02;
-        const maxSize = 0.2;
-        const maxDistance = 50;
-
-        if (!hasObstacle) return maxSize;
-
-        let scaledDistance = Math.min(distance, maxDistance);
-        let scaleFactor = 1 - (scaledDistance / maxDistance); 
-
-        let size = minSize + (maxSize - minSize) * scaleFactor;
-        size = Math.max(minSize, Math.min(maxSize, size));
-        return size;
-    }
 
     private static getVarMap(size: number, color?: RGBA) {
         const varMap = new MolangVariableMap();
