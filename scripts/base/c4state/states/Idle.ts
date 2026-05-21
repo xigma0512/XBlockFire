@@ -90,15 +90,19 @@ function canPlantC4(source: Player) {
             throw new Error(`You are not at Attacker team.`);
         }
 
-        const mapInfo = MapRegister.getMap(gameroom().gameMapId);
-        const isAtTarget = mapInfo.positions.C4_targets.some((target, index) => {
-            const distance = Vector3Utils.distance(source.location, target);
-            if (distance <= C4_TARGET_RANGE) {
-                set_variable(`c4.plant_site_index`, index);
-                return true;
+        const { dimension, location } = source;
+        let isAtTarget = false;
+
+        const x = Math.floor(location.x);
+        const z = Math.floor(location.z)
+
+        for (let y = location.y; y >= 0; y--) {
+            const block = dimension.getBlock({ x, y, z });
+            if (block?.typeId === 'minecraft:redstone_block') {
+                isAtTarget = true;
+                break;
             }
-            return false;
-        });
+        }
 
         if (!isAtTarget) {
             throw new Error('Cannot plant c4 outside the C4 target position');
