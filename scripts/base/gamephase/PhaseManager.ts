@@ -15,7 +15,10 @@ class _PhaseManager {
     private constructor() {
         this.phaseHandler = new BlankPhase();
         this.phaseHandler.on_entry();
-        this.taskId = system.runInterval(() => this.phaseHandler.on_running());
+        this.taskId = system.runInterval(() => {
+            if (this.isTransitioning) return;
+            this.phaseHandler.on_running();
+        });
     }
 
     updatePhase(newPhase: IPhaseHandler) {
@@ -29,7 +32,10 @@ class _PhaseManager {
             system.waitTicks(5).then(() => { 
                 this.phaseHandler = newPhase;
                 this.phaseHandler.on_entry();
-                this.taskId = system.runInterval(() => this.phaseHandler.on_running());
+                this.taskId = system.runInterval(() => {
+                    if (this.isTransitioning) return;
+                    this.phaseHandler.on_running();
+                });
                 this.isTransitioning = false;
             });
         });
