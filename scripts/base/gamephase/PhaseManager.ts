@@ -9,6 +9,8 @@ class _PhaseManager {
     
     private phaseHandler: IPhaseHandler;
     private taskId: number;
+    private isTransitioning: boolean = false;
+    get isPhaseTransitioning() { return this.isTransitioning; }
 
     private constructor() {
         this.phaseHandler = new BlankPhase();
@@ -17,13 +19,19 @@ class _PhaseManager {
     }
 
     updatePhase(newPhase: IPhaseHandler) {
-        this.phaseHandler.on_exit();
-        system.clearRun(this.taskId);
+        if (this.isTransitioning) return;
+        this.isTransitioning = true;
 
-        system.waitTicks(5).then(() => { 
-            this.phaseHandler = newPhase;
-            this.phaseHandler.on_entry();
-            this.taskId = system.runInterval(() => this.phaseHandler.on_running());
+        system.run(() => {
+            this.phaseHandler.on_exit();
+            system.clearRun(this.taskId);
+
+            system.waitTicks(5).then(() => { 
+                this.phaseHandler = newPhase;
+                this.phaseHandler.on_entry();
+                this.taskId = system.runInterval(() => this.phaseHandler.on_running());
+                this.isTransitioning = false;
+            });
         });
     }
 

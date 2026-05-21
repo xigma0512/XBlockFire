@@ -1,14 +1,18 @@
 import { ItemActor } from "../Actor";
-import { GunComponent } from "../../components/gun/GunComponent";
-import { ItemComponent } from "../../components/ItemComponent";
-import { GunMagazineComponent } from "../../components/gun/GunMagazineComponent";
-import { FireModeEnum, GunTypeEnum } from "../../../../types/weapon/WeaponEnum";
 
-import { ItemLockMode, ItemStack } from "@minecraft/server";
+import { ItemComponent } from "../../components/ItemComponent";
+import { ItemWeightComponent } from "../../components/ItemWeightComponent";
+
+import { GunComponent } from "../../components/gun/GunComponent";
+import { GunMagazineComponent } from "../../components/gun/GunMagazineComponent";
 import { GunFireComponent } from "../../components/gun/GunFireComponent";
 import { GunRecoilComponent } from "../../components/gun/GunRecoilComponent";
 import { GunReloadComponent } from "../../components/gun/GunReloadComponent";
 import { GunOffsetComponent } from "../../components/gun/GunOffsetComponent";
+import { GunDamageComponent } from "../../components/gun/GunDamageComponent";
+
+import { FireModeEnum, GunTypeEnum } from "../../../../types/weapon/WeaponEnum";
+import { ItemLockMode, ItemStack } from "@minecraft/server";
 
 export class Deagle extends ItemActor {
 
@@ -24,6 +28,10 @@ export class Deagle extends ItemActor {
                     lore: [ "I'M A GUN!!!" ],
                     keepOnDeath: true,
                     lockMode: ItemLockMode.slot
+                }
+            )).set('item_weight', new ItemWeightComponent(
+                {
+                    weight: 0.105
                 }
             )).set('gun', new GunComponent(
                 {
@@ -44,8 +52,14 @@ export class Deagle extends ItemActor {
                 }
             )).set('gun_recoil', new GunRecoilComponent(
                 {
-                    shacking_level: 0.09,
-                    shacking_duration: 0.12
+                    scope_recoil: { level: 0.02, duration: 0.2 },
+                    hipfire_recoil: { level: 0.06, duration: 0.2 }
+                }
+            )).set('gun_damage', new GunDamageComponent(
+                {
+                    near: { head: 16, body: 8, legs: 6 },
+                    medium: { head: 13, body: 6, legs: 4 },
+                    far: { head: 8, body: 4, legs: 3 }
                 }
             )).set('gun_reload', new GunReloadComponent(
                 {
@@ -53,9 +67,9 @@ export class Deagle extends ItemActor {
                     reload_sound: "xblockfire.deagle_reload"
                 }
             )).set('gun_offset', new GunOffsetComponent({
-                scope: 0.2,
-                hipfire: 1.5,
-                movement: 4
+                scope: 0.001,
+                hipfire: 0.007,
+                movement: 0.003
             }));
 
         this.setItem();

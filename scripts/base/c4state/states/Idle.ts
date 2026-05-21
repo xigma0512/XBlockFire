@@ -1,5 +1,5 @@
 import { gameroom } from "../../gameroom/GameRoom";
-import { MemberManager } from "../../gameroom/member/MemberManager";
+import { MemberManager } from "../../member/MemberManager";
 import { C4Manager } from "../C4Manager";
 import { MapRegister } from "../../gamemap/MapRegister";
 import { HudTextController } from "../../../modules/hud/HudTextController";
@@ -11,15 +11,16 @@ import { C4StateEnum } from "../../../types/bombstate/C4StateEnum";
 import { TeamEnum } from "../../../types/TeamEnum";
 
 import { set_variable } from "../../../utils/Variable";
-import { entity_dynamic_property } from "../../../utils/Property";
 import { FormatCode as FC } from "../../../utils/FormatCode";
 
 import { Vector3Utils } from "@minecraft/math";
 import { Player, system, world } from "@minecraft/server";
 import { EntitySpawnAfterEvent, ItemUseBeforeEvent } from "@minecraft/server";
 
-const C4_TARGET_RANGE = 4.5;
+import { Config } from "../../../settings/config";
+
 const C4_ITEM_ID = 'xblockfire:c4';
+const C4_TARGET_RANGE = Config.c4.C4_TARGET_RANGE;
 
 export class C4IdleState implements IC4StateHandler {
 
@@ -84,7 +85,7 @@ export class C4IdleState implements IC4StateHandler {
 
 function canPlantC4(source: Player) {
     try {
-        const sourceTeam = entity_dynamic_property(source, 'player:team');
+        const sourceTeam = MemberManager.getPlayerTeam(source);
         if (sourceTeam !== TeamEnum.Attacker) {
             throw new Error(`You are not at Attacker team.`);
         }

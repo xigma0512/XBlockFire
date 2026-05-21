@@ -1,11 +1,10 @@
-import { MemberManager } from "../../gameroom/member/MemberManager";
+import { MemberManager } from "../../member/MemberManager";
 import { PhaseManager } from "../PhaseManager";
 import { ActionHud } from "../../../modules/hud/bomb_plant/Action";
 import { HotbarManager } from "../../../modules/hotbar/Hotbar";
 import { PurchaseHistory } from "../../../modules/shop/Shop";
 
 import { ActionPhase } from "./Action";
-import { Config } from "./_config";
 
 import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPlantPhaseEnum";
 
@@ -16,7 +15,9 @@ import { ItemStackFactory } from "../../../utils/ItemStackFactory";
 import { InputPermissionCategory, ItemLockMode } from "@minecraft/server";
 import { uiManager } from "@minecraft/server-ui";
 
-const config = Config.buying;
+import { Config } from "../../../settings/config";
+
+const config = Config.bombplant.buying;
 
 export class BuyingPhase implements IPhaseHandler {
 

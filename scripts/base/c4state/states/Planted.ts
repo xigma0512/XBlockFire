@@ -1,12 +1,12 @@
 import { PhaseManager } from "../../gamephase/PhaseManager";
-import { MemberManager } from "../../gameroom/member/MemberManager";
+import { MemberManager } from "../../member/MemberManager";
 import { C4Manager } from "../C4Manager";
 import { HudTextController } from "../../../modules/hud/HudTextController";
+import { EconomyManager } from "../../economy/EconomyManager";
 
 import { C4IdleState } from "./Idle";
 import { C4PlantedPhase } from "../../gamephase/bomb_plant/C4Planted";
 import { RoundEndPhase } from "../../gamephase/bomb_plant/RoundEnd";
-import { Config as BP_Config } from "../../gamephase/bomb_plant/_config";
 
 import { C4StateEnum } from "../../../types/bombstate/C4StateEnum";
 import { TeamEnum } from "../../../types/TeamEnum";
@@ -22,10 +22,12 @@ import { VanillaEntityIdentifier } from "@minecraft/server";
 import { DimensionLocation, Entity, Player, system, world } from "@minecraft/server";
 import { ItemUseBeforeEvent, ItemCompleteUseAfterEvent } from "@minecraft/server"
 
+import { Config } from "../../../settings/config";
+
 const DEFUSER_ITEM_ID = 'xblockfire:defuser';
 const PLANTED_C4_ENTITY_ID = 'xblockfire:planted_c4' as VanillaEntityIdentifier;
-const DEFUSE_RANGE = 1.5;
-const DEFUSING_TIME = 5 * 20;
+const DEFUSE_RANGE = Config.c4.DEFUSE_RANGE;
+const DEFUSING_TIME = 6 * 20;
 
 const EXPLOSION_SOUND_ID = 'xblockfire.c4_explosion';
 const COMPLETE_DEFUSED_SOUND_ID = 'xblockfire.c4_defused';
@@ -38,7 +40,7 @@ export class C4PlantedState implements IC4StateHandler {
     private _entity!: Entity;
     get entity() { return this._entity; }
     
-    private currentTick = BP_Config.C4planted.COUNTDOWN_TIME;
+    private currentTick = Config.bombplant.C4planted.COUNTDOWN_TIME;
 
     private beforeItemUseListener = (ev: ItemUseBeforeEvent) => { };
     private afterItemCompleteUseListener = (ev: ItemCompleteUseAfterEvent) => { };
@@ -58,6 +60,11 @@ export class C4PlantedState implements IC4StateHandler {
 
         const siteIndex = String.fromCharCode(65 + (variable(`c4.plant_site_index`) ?? 0));
         Broadcast.message(`${FC.Bold}${FC.MinecoinGold}C4 HAS BEEN PLANTED AT SITE ${siteIndex}.` , MemberManager.getPlayers());
+        
+        for (const player of MemberManager.getPlayers({team: TeamEnum.Attacker})) {
+            EconomyManager.setMoney(player, EconomyManager.getMoney(player) + 300);
+            player.sendMessage(`${FC.Gray}>> C4 Planted reward: +300$`);
+        }
     }
     
     on_running() {
@@ -159,7 +166,7 @@ function defuseComplete(defuser: Player) {
 
 let soundPlayInterval = 20;
 function playC4Effect(currentTick: number, entity: Entity) {
-    const totalTime = BP_Config.C4planted.COUNTDOWN_TIME;
+    const totalTime = Config.bombplant.C4planted.COUNTDOWN_TIME;
 
     const bar = progressBar(totalTime, currentTick, 30);
     entity.nameTag = `| ${bar} |`;

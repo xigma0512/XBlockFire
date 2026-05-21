@@ -1,13 +1,12 @@
 import { PhaseManager } from "../../../base/gamephase/PhaseManager";
-import { MemberManager } from "../../../base/gameroom/member/MemberManager";
-import { EconomyManager } from "../../../base/gameroom/economy/EconomyManager";
+import { MemberManager } from "../../../base/member/MemberManager";
+import { EconomyManager } from "../../../base/economy/EconomyManager";
 import { HudTextController } from "../HudTextController";
 
 import { TeamEnum } from "../../../types/TeamEnum";
 import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPlantPhaseEnum";
 
 import { FormatCode as FC } from "../../../utils/FormatCode";
-import { entity_dynamic_property } from "../../../utils/Property";
 import { variable } from "../../../utils/Variable";
 import { Broadcast } from "../../../utils/Broadcast";
 
@@ -57,7 +56,7 @@ export class ActionHud implements InGameHud {
         
         for (const player of players) {
 
-            const playerTeam = entity_dynamic_property(player, 'player:team');
+            const playerTeam = MemberManager.getPlayerTeam(player);
             const playerTeamStr = (playerTeam === TeamEnum.Attacker) ? `${FC.Red}Attacker` : `${FC.Aqua}Defender`;
 
             const message = [
@@ -67,6 +66,7 @@ export class ActionHud implements InGameHud {
                 `${FC.Aqua}D-${defenderScore} ${FC.White}| ${FC.Bold}${FC.Aqua}${'O '.repeat(defenderPlayers.length)}${FC.Gray}${'X '.repeat(defenderDeadPlayers.length)}`,
                 `${FC.Red}A-${attackerScore} ${FC.White}| ${FC.Bold}${FC.Red}${'O '.repeat(attackerPlayers.length)}${FC.Gray}${'X '.repeat(attackerDeadPlayers.length)}`,
                 '',
+                `K/D: ${FC.Green}${variable(`${player.name}.kills`)}/${variable(`${player.name}.deaths`)}`,
                 `Money: ${FC.Green}${EconomyManager.getMoney(player)}`,
                 '',
                 `${FC.Bold}Your Team:`,

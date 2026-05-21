@@ -1,6 +1,6 @@
 import { gameroom } from "../../gameroom/GameRoom";
 import { PhaseManager } from "../PhaseManager";
-import { MemberManager } from "../../gameroom/member/MemberManager";
+import { MemberManager } from "../../member/MemberManager";
 import { C4Manager } from "../../c4state/C4Manager";
 import { HotbarManager, HotbarTemplate } from "../../../modules/hotbar/Hotbar";
 import { MapRegister } from "../../gamemap/MapRegister";
@@ -15,7 +15,7 @@ import { entity_dynamic_property, set_entity_dynamic_property, set_entity_native
 import { ItemStackFactory } from "../../../utils/ItemStackFactory";
 import { UnCommonItems } from "../../../modules/uncommon_items/UnCommonItems";
 
-import { EquipmentSlot, GameMode, InputPermissionCategory, ItemLockMode } from "@minecraft/server";
+import { EquipmentSlot, GameMode, InputPermissionCategory, ItemLockMode, system } from "@minecraft/server";
 import { ItemStack } from "@minecraft/server";
 
 export class PreRoundStartPhase implements IPhaseHandler {
@@ -50,38 +50,45 @@ function resetC4State() {
 
 function initializePlayers() {
     for (const player of MemberManager.getPlayers()) {
-        if (entity_dynamic_property(player, 'player:is_spectator')) continue;
+
+        if (MemberManager.getPlayerTeam(player) === TeamEnum.Spectator) {
+            player.setGameMode(GameMode.Spectator);
+            continue;
+        }
 
         player.inputPermissions.setPermissionCategory(InputPermissionCategory.LateralMovement, false); 
+        
         set_entity_dynamic_property(player, 'player:is_alive', true);
         set_entity_native_property(player, 'player:can_use_item', false);
+
         player.setGameMode(GameMode.Adventure);
-        player.addEffect('regeneration', 100, { amplifier: 255 });
+
+        player.addEffect('regeneration', 400, { amplifier: 255 });
+        player.addEffect('health_boost', 20000000, { amplifier: 4, showParticles: false });
+        player.addEffect('hunger', 100, { amplifier: 255, showParticles: false });
+
+        system.runTimeout(() => {
+            player.addEffect('saturation', 1, { amplifier: 5, showParticles: false });
+        }, 120);
         
         player.removeTag('attacker');
         player.removeTag('defender');
-        player.addTag(entity_dynamic_property(player, 'player:team') === TeamEnum.Attacker ? 'attacker' : 'defender');
+        player.addTag(MemberManager.getPlayerTeam(player) === TeamEnum.Attacker ? 'attacker' : 'defender');
     }
 }
 
 function teleportPlayers() {
     const gameMap = MapRegister.getMap(gameroom().gameMapId);
 
-    const spawns = {
-        [TeamEnum.Attacker]: gameMap.positions.attacker_spawns,
-        [TeamEnum.Defender]: gameMap.positions.defender_spawns,
-    }
-
     let nextSpawnIndex = {
         [TeamEnum.Attacker]: 0,
-        [TeamEnum.Defender]: 0
+        [TeamEnum.Defender]: 0,
+        [TeamEnum.Spectator]: 0
     }
 
     for (const player of MemberManager.getPlayers()) {
-        if (entity_dynamic_property(player, 'player:is_spectator')) continue;
-
-        const playerTeam = entity_dynamic_property(player, 'player:team');
-        const playerTeamSpawns = spawns[playerTeam];
+        const playerTeam = MemberManager.getPlayerTeam(player);
+        const playerTeamSpawns = gameMap.positions.spawns[playerTeam];
         const spawnIndex = nextSpawnIndex[playerTeam]++ % playerTeamSpawns.length;
         player.teleport(playerTeamSpawns[spawnIndex]);
     }

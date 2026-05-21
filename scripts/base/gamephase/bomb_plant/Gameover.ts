@@ -1,8 +1,10 @@
 import { PhaseManager } from "../PhaseManager";
+import { MemberManager } from "../../member/MemberManager";
+import { C4Manager } from "../../c4state/C4Manager";
 
 import { ActionHud } from "../../../modules/hud/bomb_plant/Action";
+import { C4IdleState } from "../../c4state/states/Idle";
 import { IdlePhase } from "./Idle";
-import { Config } from "./_config";
 
 import { TeamEnum } from "../../../types/TeamEnum";
 import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPlantPhaseEnum";
@@ -13,7 +15,9 @@ import { variable } from "../../../utils/Variable";
 
 import { GameMode, world } from "@minecraft/server";
 
-const config = Config.gameover;
+import { Config } from "../../../settings/config";
+
+const config = Config.bombplant.gameover;
 
 export class GameOverPhase implements IPhaseHandler {
 
@@ -58,7 +62,9 @@ export class GameOverPhase implements IPhaseHandler {
     }
 
     on_exit() {
+        resetC4State();
         respawnPlayers();
+        showScoreboard();
     }
 
     private transitions() {
@@ -67,9 +73,21 @@ export class GameOverPhase implements IPhaseHandler {
 
 }
 
+function resetC4State() {
+    C4Manager.updateState(new C4IdleState());
+}
+
 function respawnPlayers() {
     for (const player of world.getAllPlayers()) {
         player.setGameMode(GameMode.Adventure);
         player.teleport(world.getDefaultSpawnLocation());
     }
+}
+
+function showScoreboard() {
+    let stat = `--- [ Scoreboard ] ---\n`;
+    for (const player of MemberManager.getPlayers()) {
+        stat += `${player.name} | K:${variable(`${player.name}.kills`)} D:${variable(`${player.name}.deaths`)}\n`;
+    }
+    Broadcast.message(stat);
 }

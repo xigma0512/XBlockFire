@@ -13,7 +13,7 @@
                 "value": "Defuser"
             },
             "minecraft:use_modifiers": {
-                "use_duration": 5,
+                "use_duration": 6,
                 "movement_modifier": 0
             },
             "minecraft:max_stack_size": {
