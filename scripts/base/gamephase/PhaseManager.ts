@@ -10,6 +10,7 @@ class _PhaseManager {
     private phaseHandler: IPhaseHandler;
     private taskId: number;
     private isTransitioning: boolean = false;
+    get isPhaseTransitioning() { return this.isTransitioning; }
 
     private constructor() {
         this.phaseHandler = new BlankPhase();
