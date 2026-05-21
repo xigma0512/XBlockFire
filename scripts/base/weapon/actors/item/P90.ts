@@ -38,6 +38,10 @@ export class P90 extends ItemActor {
                     ammo: 50,
                     count: 3
                 }
+            )).set('gun', new GunComponent(
+                {
+                    gunTypeId: GunTypeEnum.P90
+                }
             )).set('gun_fire', new GunFireComponent(
                 {
                     fire_mode: FireModeEnum["Fully-Auto"],
