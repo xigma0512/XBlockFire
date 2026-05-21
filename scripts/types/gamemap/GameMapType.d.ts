@@ -13,7 +13,6 @@ declare interface GameMapType {
             'Attacker': Position[],
             'Defender': Position[],
             'Spectator': Position[],
-        },
-        C4_targets: Position[]
+        }
     }
 }

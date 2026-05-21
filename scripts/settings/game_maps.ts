@@ -22,11 +22,7 @@ export default {
                 'Spectator': [
                     { x: 178.5, y: 86, z: -15.5 }
                 ],
-            },
-            C4_targets: [
-                { x: 150.5, y: 86, z: -11.5 },
-                { x: 175.5, y: 86, z: 11.5 }
-            ]
+            }
         }
     },
     1: {
@@ -52,11 +48,7 @@ export default {
                 'Spectator': [
                     { x: 1.5, y: 81, z: -5.5 }
                 ],
-            },
-            C4_targets: [
-                { x: -54.5, y: 81, z: 85.5 },
-                { x: 22.5, y: 78, z: 89.5 }
-            ]
+            }
         }
     }
 } as Record<number, GameMapType>;
