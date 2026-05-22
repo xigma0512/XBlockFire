@@ -1,6 +1,8 @@
 import { MemberManager } from "../../member/MemberManager";
 import { PhaseManager } from "../PhaseManager";
 import { ActionHud } from "../../../modules/hud/bomb_plant/Action";
+import { HotbarManager } from "../../../modules/hud/Hotbar";
+import { PurchaseHistory } from "../../../modules/shop/Shop";
 
 import { ActionPhase } from "./Action";
 
@@ -8,6 +10,11 @@ import { PhaseEnum as BombPlantPhaseEnum } from "../BombPlantPhaseEnum";
 import { TeamEnum } from "../../member/TeamEnum";
 
 import { MessageManager as Msg } from "../../../modules/hud/MessageManager";
+import { set_entity_native_property } from "../../../utils/Property";
+import { ItemStackFactory } from "../../../utils/ItemStackFactory";
+
+import { InputPermissionCategory, ItemLockMode } from "@minecraft/server";
+import { uiManager } from "@minecraft/server-ui";
 
 import { Config } from "../../../settings/config";
 
@@ -30,6 +37,7 @@ export class BuyingPhase implements IPhaseHandler {
     on_entry() {
         this._currentTick = config.COUNTDOWN_TIME;
         Msg.sound(VOICE_START_ROUND_SOUND_ID, {}, MemberManager.getPlayers());
+        sendShopItem();
     }
 
     on_running() {
@@ -39,10 +47,34 @@ export class BuyingPhase implements IPhaseHandler {
     }
 
     on_exit() {
+        restorePlayerDefaults();
     }
 
     private transitions() {
         if (this.currentTick <= 0) return PhaseManager.updatePhase(new ActionPhase());
     }
 
+}
+
+function sendShopItem() {
+    PurchaseHistory.clearAll();
+    for (const player of MemberManager.getPlayers()) {
+        const hotbar = HotbarManager.getPlayerHotbar(player)
+        hotbar.items[8] = ItemStackFactory.new({ typeId: 'minecraft:feather', lockMode: ItemLockMode.slot });
+        HotbarManager.sendHotbar(player, hotbar);
+    }
+}
+
+function restorePlayerDefaults() {
+    for (const player of MemberManager.getPlayers()) {
+        player.inputPermissions.setPermissionCategory(InputPermissionCategory.LateralMovement, true);
+        set_entity_native_property(player, 'player:can_use_item', true);
+
+        // clear feather(shop)
+        const hotbar = HotbarManager.getPlayerHotbar(player)
+        hotbar.items[8] = undefined;
+        HotbarManager.sendHotbar(player, hotbar);
+
+        uiManager.closeAllForms(player);
+    }
 }
