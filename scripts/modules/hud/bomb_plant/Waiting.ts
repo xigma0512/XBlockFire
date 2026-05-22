@@ -6,7 +6,7 @@ import { MapRegister } from "../../../base/gamemap/MapRegister";
 import { TeamEnum } from "../../../types/TeamEnum";
 
 import { FormatCode as FC } from "../../../utils/FormatCode";
-import { Broadcast } from "../../../utils/Broadcast";
+import { MessageManager as Msg } from "../MessageManager";
 
 import { Config } from "../../../settings/config";
 
@@ -28,17 +28,17 @@ export class WaitingHud implements InGameHud {
 
         const phase = PhaseManager.getPhase();
         
-        let text = `${FC.Yellow}Waiting for more players...`;
+        let text = Msg.translate("hud.waiting");
         
         if (game_config.AUTO_START && playerAmount >= game_config.AUTO_START_MIN_PLAYER) {
-            text = `${FC.Green}Game will start in ${(phase.currentTick / 20).toFixed(0)} seconds.`;
+            text = Msg.translate("hud.start_in", (phase.currentTick / 20).toFixed(0));
         }
         
         if (phase.currentTick !== idle_config.COUNTDOWN_TIME && playerAmount < game_config.AUTO_START_MIN_PLAYER) {
-            Broadcast.message(`${FC.Bold}${FC.Red}Not enough players. Waiting for more players.`, players);
+            Msg.message("game.wait_players", players);
         }
         
-        Broadcast.subtitle(text, players);
+        Msg.rawSubtitle(text, players);
     }
 
     private updateSidebar() {
@@ -59,17 +59,17 @@ export class WaitingHud implements InGameHud {
             `${FC.Bold}${FC.Yellow}    XBlockFire    `,
             ` ${FC.Gray}${todayStr}`,
             '',
-            `Map: ${FC.Green}${map.name}`,
-            `Players: ${FC.Green}${playerCount} ${FC.White}(${FC.Aqua}${defenders.length}${FC.White}/${FC.Red}${attackers.length}${FC.White})`,
+            Msg.translate("hud.sidebar.map", map.name),
+            Msg.translate("hud.sidebar.players", playerCount, defenders.length, attackers.length),
             ...defenders.map(p => `${FC.Gray}- ${FC.Aqua}${p.name}`),
             ...attackers.map(p => `${FC.Gray}- ${FC.Red}${p.name}`),
             ...spectators.map(p => `${FC.Gray}- ${p.name}`),
             '',
-            `Mode:`,
+            Msg.translate("hud.sidebar.mode"),
             `${FC.Green}${gameroom().gameMode}`,
             ''
         ];
 
-        Broadcast.sidebar(message, players);
+        Msg.sidebar(message, players);
     }
 }

@@ -1,7 +1,7 @@
 import { MemberManager } from "../../member/MemberManager";
 import { EconomyManager } from "../../economy/EconomyManager";
 import { PhaseManager } from "../PhaseManager";
-import { HotbarManager, HotbarTemplate } from "../../../modules/hotbar/Hotbar";
+import { HotbarManager, HotbarTemplate } from "../../../modules/hud/Hotbar";
 import { WaitingHud } from "../../../modules/hud/bomb_plant/Waiting";
 
 import { BuyingPhase } from "./Buying";
@@ -9,7 +9,7 @@ import { BuyingPhase } from "./Buying";
 import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPlantPhaseEnum";
 import { TeamEnum } from "../../../types/TeamEnum";
 
-import { FormatCode as FC } from "../../../utils/FormatCode";
+import { MessageManager as Msg } from "../../../modules/hud/MessageManager";
 import { reset_variables, set_variable } from "../../../utils/Variable";
 import { ItemStackFactory } from "../../../utils/ItemStackFactory";
 
@@ -70,11 +70,11 @@ function randomTeam() {
         if (attackTeamCount <= defenderTeamCount) {
             MemberManager.setPlayerTeam(player, TeamEnum.Attacker);
             attackTeamCount++;
-            player.sendMessage(`${FC.Gray}>> ${FC.Yellow}You have been assigned to the Attacker Team.`);
+            player.sendMessage(Msg.translateWithPrefix("game.assigned.attacker"));
         } else {
             MemberManager.setPlayerTeam(player, TeamEnum.Defender);
             defenderTeamCount++;
-            player.sendMessage(`${FC.Gray}>> ${FC.Yellow}You have been assigned to the Defender Team.`);
+            player.sendMessage(Msg.translateWithPrefix("game.assigned.defender"));
         }
     }
 }

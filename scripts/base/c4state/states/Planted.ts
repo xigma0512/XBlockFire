@@ -1,7 +1,6 @@
 import { PhaseManager } from "../../gamephase/PhaseManager";
 import { MemberManager } from "../../member/MemberManager";
 import { C4Manager } from "../C4Manager";
-import { HudTextController } from "../../../modules/hud/HudTextController";
 import { EconomyManager } from "../../economy/EconomyManager";
 
 import { C4IdleState } from "./Idle";
@@ -13,8 +12,7 @@ import { TeamEnum } from "../../../types/TeamEnum";
 import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPlantPhaseEnum";
 
 import { set_variable, variable } from "../../../utils/Variable";
-import { Broadcast } from "../../../utils/Broadcast";
-import { FormatCode as FC } from "../../../utils/FormatCode";
+import { MessageManager as Msg } from "../../../modules/hud/MessageManager";
 import { progressBar } from "../../../utils/others/Format";
 
 import { Vector3Utils } from "@minecraft/math";
@@ -59,11 +57,11 @@ export class C4PlantedState implements IC4StateHandler {
         }
 
         const siteIndex = String.fromCharCode(65 + (variable(`c4.plant_site_index`) ?? 0));
-        Broadcast.message(`${FC.Bold}${FC.MinecoinGold}C4 HAS BEEN PLANTED AT SITE ${siteIndex}.` , MemberManager.getPlayers());
+        Msg.message("c4.planted.broadcast", MemberManager.getPlayers(), siteIndex);
         
         for (const player of MemberManager.getPlayers({team: TeamEnum.Attacker})) {
             EconomyManager.setMoney(player, EconomyManager.getMoney(player) + 300);
-            player.sendMessage(`${FC.Gray}>> C4 Planted reward: +300$`);
+            player.sendMessage(Msg.translateWithPrefix("c4.planted.reward", 300));
         }
     }
     
@@ -92,7 +90,7 @@ export class C4PlantedState implements IC4StateHandler {
             system.run(() => {
                 const location = ev.source.location;
                 const volume = 3;
-                Broadcast.sound(DEFUSING_SOUND_ID, { location, volume });
+                Msg.sound(DEFUSING_SOUND_ID, { location, volume }, ev.source);
             });
             displayDefusingProgress(ev.source);
         }
@@ -111,7 +109,7 @@ function canDefuseC4(C4Entity: Entity, player: Player) {
     const distance = Vector3Utils.distance(player.location, C4Entity.location);
     if (distance > DEFUSE_RANGE) {
         system.run(() => {
-            HudTextController.add(player, 'actionbar', `${FC.Red}There is no c4 in the range.`);
+            Msg.actionbar("c4.defuse.no_range", player);
         });
         return false;
     }
@@ -123,7 +121,7 @@ function displayDefusingProgress(source: Player) {
     let currentTime = DEFUSING_TIME;
     const taskId = system.runInterval(() => {
         const progress = progressBar(DEFUSING_TIME, currentTime--, 30);
-        HudTextController.add(source, 'actionbar', progress);
+        Msg.rawActionbar(progress, source);
     });
     system.run(() => {
         const callback = world.afterEvents.itemStopUse.subscribe(ev => {
@@ -137,7 +135,7 @@ function displayDefusingProgress(source: Player) {
 function c4Explosion(C4Entity: Entity) {
     const location = C4Entity.location;
     const volume = 3;
-    Broadcast.sound(EXPLOSION_SOUND_ID, { location, volume });
+    Msg.sound(EXPLOSION_SOUND_ID, { location, volume });
     
     C4Entity.dimension.createExplosion(C4Entity.location, 20, { causesFire: false, breaksBlocks: false });    
 
@@ -153,15 +151,9 @@ function defuseComplete(defuser: Player) {
     C4Manager.updateState(new C4IdleState());
 
     const players = MemberManager.getPlayers();
-    Broadcast.sound(COMPLETE_DEFUSED_SOUND_ID, {}, players);
+    Msg.sound(COMPLETE_DEFUSED_SOUND_ID, {}, players);
     
-    const message = [
-        `${FC.Bold}${FC.Gray}---- ${FC.Yellow}[ ROUND END ] ${FC.Gray}----\n`,
-        `${FC.Bold}${FC.Gold}C4 has been defused by ${defuser.name}.\n`,
-        `${FC.Bold}${FC.Green}DEFENDERS win this game.\n`,
-        `${FC.Bold}${FC.Gray}---`
-    ]
-    Broadcast.message(message, players);
+    Msg.message("c4.defused.broadcast", players, defuser.name);
 }
 
 let soundPlayInterval = 20;

@@ -8,9 +8,9 @@ import { ActionHud } from "../../../modules/hud/bomb_plant/Action";
 import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPlantPhaseEnum"
 import { TeamEnum } from "../../../types/TeamEnum";
 
-import { FormatCode as FC } from "../../../utils/FormatCode";
-import { Broadcast } from "../../../utils/Broadcast";
+import { MessageManager as Msg } from "../../../modules/hud/MessageManager";
 import { set_variable } from "../../../utils/Variable";
+import { LanguageKey } from "../../../settings/lang/LanguageKey";
 
 import { Config } from "../../../settings/config";
 
@@ -26,55 +26,42 @@ const enum EndReasonEnum {
     'Defender-Disconnect'
 };
 
-const endReasonTable = {
+interface EndReasonData {
+    winner: TeamEnum;
+    langKey: LanguageKey;
+    isGameOver: boolean;
+    nextPhaseGenerator: () => IPhaseHandler;
+}
+
+const endReasonTable: Record<number, EndReasonData> = {
     [EndReasonEnum['Time-up']]: {
         winner: TeamEnum.Defender,
-        message: [
-            `${FC.Bold}${FC.Gray}---- ${FC.Yellow}[ ROUND END ] ${FC.Gray}----\n`,
-            `${FC.Bold}${FC.Red}Attackers ran out of time.\n`,
-            `${FC.Bold}${FC.Green}Defenders win this round.\n`,
-            `${FC.Bold}${FC.Gray}--------------------`
-        ],
+        langKey: "round.end.time_up",
+        isGameOver: false,
         nextPhaseGenerator: () => new RoundEndPhase()
     },
     [EndReasonEnum['Attacker-Eliminated']]: {
         winner: TeamEnum.Defender,
-        message: [
-            `${FC.Bold}${FC.Gray}---- ${FC.Yellow}[ ROUND END ] ${FC.Gray}----\n`,
-            `${FC.Bold}${FC.Red}All Attackers Eliminated.\n`,
-            `${FC.Bold}${FC.Green}Defenders win this round.\n`,
-            `${FC.Bold}${FC.Gray}--------------------`
-        ],
+        langKey: "round.end.attacker_eliminated",
+        isGameOver: false,
         nextPhaseGenerator: () => new RoundEndPhase()
     },
     [EndReasonEnum['Attacker-Disconnect']]: {
         winner: TeamEnum.Defender,
-        message: [
-            `${FC.Bold}${FC.Gray}---- ${FC.DarkPurple}[ GAME OVER ] ${FC.Gray}----\n`,
-            `${FC.Bold}${FC.Red}All Attackers Disconnected.\n`,
-            `${FC.Bold}${FC.Yellow}Defenders win\n`,
-            `${FC.Bold}${FC.Gray}--------------------`
-        ],
+        langKey: "game.over.attacker_disconnect",
+        isGameOver: true,
         nextPhaseGenerator: () => new GameOverPhase()
     },
     [EndReasonEnum['Defender-Eliminated']]: {
         winner: TeamEnum.Attacker,
-        message: [
-            `${FC.Bold}${FC.Gray}---- ${FC.Yellow}[ ROUND END ] ${FC.Gray}----\n`,
-            `${FC.Bold}${FC.Red}Defenders Eliminated.\n`,
-            `${FC.Bold}${FC.Green}Attackers win this round.\n`,
-            `${FC.Bold}${FC.Gray}--------------------`
-        ],
+        langKey: "round.end.defender_eliminated",
+        isGameOver: false,
         nextPhaseGenerator: () => new RoundEndPhase()
     },
     [EndReasonEnum['Defender-Disconnect']]: {
         winner: TeamEnum.Attacker,
-        message: [
-            `${FC.Bold}${FC.Gray}---- ${FC.DarkPurple}[ GAME OVER ] ${FC.Gray}----\n`,
-            `${FC.Bold}${FC.Red}All Defenders Disconnected.\n`,
-            `${FC.Bold}${FC.Yellow}Attackers win.\n`,
-            `${FC.Bold}${FC.Gray}--------------------`
-        ],
+        langKey: "game.over.defender_disconnect",
+        isGameOver: true,
         nextPhaseGenerator: () => new GameOverPhase()
     }
 }
@@ -125,7 +112,7 @@ export class ActionPhase implements IPhaseHandler {
         if (endReason) {
             const result = endReasonTable[endReason];
 
-            Broadcast.message(result.message);
+            Msg.message(result.langKey);
 
             set_variable(`round_winner`, result.winner);
             PhaseManager.updatePhase(result.nextPhaseGenerator());
@@ -136,6 +123,6 @@ export class ActionPhase implements IPhaseHandler {
 
 function voiceBroadcast(currentTick: number) {
     if (currentTick === 30 * 20) {
-        Broadcast.sound(VOICE_30_SEC_LEFT_SOUND_ID, {}, MemberManager.getPlayers());
+        Msg.sound(VOICE_30_SEC_LEFT_SOUND_ID, {}, MemberManager.getPlayers());
     }
 }

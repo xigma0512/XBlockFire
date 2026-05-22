@@ -19,7 +19,7 @@ class _HudTextController {
         system.runInterval(this.update.bind(this));
     }
 
-    add(player: Player, type: keyof PlayerHudText, text: string | string[]) {
+    appendRaw(player: Player, type: keyof PlayerHudText, text: string | string[]) {
         if (!this.hud.has(player)) this.initializePlayer(player);
         if (Array.isArray(text)) text = text.join(`\n${FormatCode.Reset}`);
         

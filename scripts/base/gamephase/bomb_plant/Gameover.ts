@@ -9,8 +9,7 @@ import { IdlePhase } from "./Idle";
 import { TeamEnum } from "../../../types/TeamEnum";
 import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPlantPhaseEnum";
 
-import { Broadcast } from "../../../utils/Broadcast";
-import { FormatCode as FC } from "../../../utils/FormatCode";
+import { MessageManager as Msg } from "../../../modules/hud/MessageManager";
 import { variable } from "../../../utils/Variable";
 
 import { GameMode, world } from "@minecraft/server";
@@ -32,30 +31,16 @@ export class GameOverPhase implements IPhaseHandler {
 
     on_entry() {
         this._currentTick = config.COUNTDOWN_TIME;
-        switch (variable('winner')) {
-            case TeamEnum.Attacker:
-                Broadcast.message([
-                    '\n',
-                    `${FC.Bold}${FC.Gray}---- ${FC.DarkPurple}[ GAME OVER ] ${FC.Gray}----\n`,
-                    `${FC.Bold}${FC.Yellow}Attackers win this game.\n`,
-                    `${FC.Bold}${FC.Gray}--------------------`,
-                    '\n'
-                ]);
-                break;
-            case TeamEnum.Defender:
-                Broadcast.message([
-                    '\n',
-                    `${FC.Bold}${FC.Gray}---- ${FC.DarkPurple}[ GAME OVER ] ${FC.Gray}----\n`,
-                    `${FC.Bold}${FC.Yellow}Defenders win this game.\n`,
-                    `${FC.Bold}${FC.Gray}--------------------`,
-                    '\n'
-                ]);
+        const winner = variable('winner');
+        if (winner === TeamEnum.Attacker || winner === TeamEnum.Defender) {
+            const langKey = winner === TeamEnum.Attacker ? "game.over.attacker_win" : "game.over.defender_win";
+            Msg.message(langKey);
         }
     }
 
     on_running() {
         if (this._currentTick-- % 20 == 0) {
-            Broadcast.sound("firework.launch", {}, world.getAllPlayers());
+            Msg.sound("firework.launch", {}, world.getAllPlayers());
         }
         this.hud.update();
         this.transitions();
@@ -85,9 +70,9 @@ function respawnPlayers() {
 }
 
 function showScoreboard() {
-    let stat = `--- [ Scoreboard ] ---\n`;
+    let stat = Msg.translate("game.scoreboard.header") + `\n`;
     for (const player of MemberManager.getPlayers()) {
         stat += `${player.name} | K:${variable(`${player.name}.kills`)} D:${variable(`${player.name}.deaths`)}\n`;
     }
-    Broadcast.message(stat);
+    Msg.rawMessage(stat);
 }

@@ -1,14 +1,13 @@
 import { MemberManager } from "../../base/member/MemberManager";
 import { C4Manager } from "../../base/c4state/C4Manager";
 import { gameEvents } from "../../event/EventEmitter";
-import { HudTextController } from "../hud/HudTextController";
 import { EconomyManager } from "../../base/economy/EconomyManager";
 
 import { C4DroppedState } from "../../base/c4state/states/Dropped";
 
 import { TeamEnum } from "../../types/TeamEnum";
 
-import { Broadcast } from "../../utils/Broadcast";
+import { MessageManager as Msg } from "../hud/MessageManager";
 import { FormatCode as FC } from "../../utils/FormatCode";
 import { set_entity_dynamic_property } from "../../utils/Property";
 import { set_variable, variable } from "../../utils/Variable";
@@ -49,7 +48,7 @@ gameEvents.subscribe('playerDied', (ev) => {
         set_variable(`${ev.attacker.name}.kills`, variable(`${ev.attacker.name}.kills`) + 1);
 
         EconomyManager.setMoney(ev.attacker, EconomyManager.getMoney(ev.attacker) + 200);
-        ev.attacker.sendMessage(`${FC.Gray}>> Kill reward: +200$`);
+        ev.attacker.sendMessage(Msg.translateWithPrefix("kill.reward", 200));
     }
 });
 
@@ -67,16 +66,17 @@ function showDeathMessage(deadPlayer: Player, attacker: Player) {
     const deadPlayerTeam = MemberManager.getPlayerTeam(deadPlayer);
     const attackerTeam = MemberManager.getPlayerTeam(attacker);
 
-    const playerTeamStr = (team: TeamEnum, name: string) => (team === TeamEnum.Attacker) ? `${FC.Red}[A]${name}` : `${FC.Aqua}[D]${name}`;
+    const teamPrefix = (team: TeamEnum) => (team === TeamEnum.Attacker) ? `${FC.Red}[A]` : `${FC.Aqua}[D]`;
     
-    Broadcast.message(
-        `${FC.Bold}${playerTeamStr(attackerTeam, attacker.name)} ${FC.DarkRed}eliminated ${playerTeamStr(deadPlayerTeam, deadPlayer.name)}`,
-        MemberManager.getPlayers()
+    Msg.message(
+        "game.player_eliminated",
+        undefined,
+        teamPrefix(attackerTeam), attacker.name, teamPrefix(deadPlayerTeam), deadPlayer.name
     );
     
     const taskId = system.runInterval(() => {
-        HudTextController.add(attacker, 'subtitle', `${FC.Bold}\uE109${FC.DarkRed}${deadPlayer.name}`);
-        HudTextController.add(deadPlayer, 'subtitle', `${FC.Bold}${FC.Red}${attacker.name} KILLED YOU`);
+        Msg.rawSubtitle(`${FC.Bold}\uE109${FC.DarkRed}${deadPlayer.name}`, attacker);
+        Msg.subtitle("game.killed_you", deadPlayer, attacker.name);
     });
     system.runTimeout(() => {
         system.clearRun(taskId);

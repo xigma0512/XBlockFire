@@ -2,7 +2,7 @@ import { gameroom } from "../../gameroom/GameRoom";
 import { MemberManager } from "../../member/MemberManager";
 import { C4Manager } from "../C4Manager";
 import { MapRegister } from "../../gamemap/MapRegister";
-import { HudTextController } from "../../../modules/hud/HudTextController";
+import { MessageManager as Msg } from "../../../modules/hud/MessageManager";
 
 import { C4DroppedState } from "./Dropped";
 import { C4PlantingState } from "./Planting";
@@ -111,7 +111,7 @@ function canPlantC4(source: Player) {
         return true;
 
     } catch (err: any) {
-        HudTextController.add(source, 'actionbar', `${FC.Red}${err.message}`);
+        Msg.rawActionbar(`${FC.Red}${err.message}`, source);
         return false;
     }
 }

@@ -2,7 +2,8 @@ export namespace Config {
     export const game = {
         AUTO_START: true,
         AUTO_START_MIN_PLAYER: 10,
-        RANDOM_ASSIGNED: false
+        RANDOM_ASSIGNED: false,
+        LANGUAGE: 'zh_TW'
     }
 
     export const bombplant = {
