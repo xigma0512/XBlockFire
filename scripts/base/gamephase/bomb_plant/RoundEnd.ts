@@ -6,8 +6,8 @@ import { ActionHud } from "../../../modules/hud/bomb_plant/Action";
 import { GameOverPhase } from "./Gameover";
 import { PreRoundStartPhase } from "./PreRoundStart";
 
-import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPlantPhaseEnum";
-import { TeamEnum } from "../../../types/TeamEnum";
+import { PhaseEnum as BombPlantPhaseEnum } from "../BombPlantPhaseEnum";
+import { TeamEnum } from "../../member/TeamEnum";
 
 import { set_entity_dynamic_property } from "../../../utils/Property";
 import { set_variable, variable } from "../../../utils/Variable";

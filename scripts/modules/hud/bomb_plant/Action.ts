@@ -2,8 +2,8 @@ import { PhaseManager } from "../../../base/gamephase/PhaseManager";
 import { MemberManager } from "../../../base/member/MemberManager";
 import { EconomyManager } from "../../../base/economy/EconomyManager";
 
-import { TeamEnum } from "../../../types/TeamEnum";
-import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPlantPhaseEnum";
+import { TeamEnum } from "../../../base/member/TeamEnum";
+import { PhaseEnum as BombPlantPhaseEnum } from "../../../base/gamephase/BombPlantPhaseEnum";
 
 import { FormatCode as FC } from "../../../utils/FormatCode";
 import { variable } from "../../../utils/Variable";

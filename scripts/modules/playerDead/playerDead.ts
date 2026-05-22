@@ -5,7 +5,7 @@ import { EconomyManager } from "../../base/economy/EconomyManager";
 
 import { C4DroppedState } from "../../base/c4state/states/Dropped";
 
-import { TeamEnum } from "../../types/TeamEnum";
+import { TeamEnum } from "../../base/member/TeamEnum";
 
 import { MessageManager as Msg } from "../hud/MessageManager";
 import { FormatCode as FC } from "../../utils/FormatCode";

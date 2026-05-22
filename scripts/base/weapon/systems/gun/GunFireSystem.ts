@@ -3,7 +3,7 @@ import { BulletSystem } from "../bullet/BulletSystem";
 import { ActorManager } from "../ActorManager";
 import { GunAnimations } from "./GunAnimations";
 
-import { FireModeEnum } from "../../../../types/weapon/WeaponEnum";
+import { FireModeEnum } from "../../WeaponEnum";
 
 import { getPlayerHandItem } from "../../../../utils/others/Entity";
 import { entity_native_property } from "../../../../utils/Property";

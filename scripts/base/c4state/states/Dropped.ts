@@ -3,8 +3,8 @@ import { C4Manager } from "../C4Manager";
 
 import { C4IdleState } from "./Idle";
 
-import { C4StateEnum } from "../../../types/bombstate/C4StateEnum";
-import { TeamEnum } from "../../../types/TeamEnum";
+import { C4StateEnum } from "../C4StateEnum";
+import { TeamEnum } from "../../member/TeamEnum";
 
 import { MessageManager as Msg } from "../../../modules/hud/MessageManager";
 
