@@ -6,8 +6,7 @@ import { C4IdleState } from "./Idle";
 import { C4StateEnum } from "../../../types/bombstate/C4StateEnum";
 import { TeamEnum } from "../../../types/TeamEnum";
 
-import { FormatCode as FC } from "../../../utils/FormatCode";
-import { Broadcast } from "../../../utils/Broadcast";
+import { MessageManager as Msg } from "../../../modules/hud/MessageManager";
 
 import { Entity, ItemStack, Player, world } from "@minecraft/server";
 import { EntityHitEntityAfterEvent } from "@minecraft/server";
@@ -36,7 +35,7 @@ export class C4DroppedState implements IC4StateHandler {
         this._entity = world.getDimension('overworld').spawnEntity(DROPPED_C4_ENTITY_ID, this.location);
         world.afterEvents.entityHitEntity.subscribe(this.afterEntityHitEntityListener);
 
-        Broadcast.message(`${FC.Bold}${FC.Blue}C4 Has Been Dropped.`, MemberManager.getPlayers({team: TeamEnum.Attacker}));
+        Msg.message("c4.dropped", MemberManager.getPlayers({team: TeamEnum.Attacker}));
     }
     
     on_running() {
@@ -74,8 +73,8 @@ export class C4DroppedState implements IC4StateHandler {
         
         const attackers = MemberManager.getPlayers({ team: TeamEnum.Attacker });
         
-        player.sendMessage(`${FC.Gray}>> ${FC.Green}You pick up the C4.`);
-        Broadcast.message(`${FC.Bold}${FC.Yellow}Player ${player.name} has picked up the C4.`, attackers);
+        player.sendMessage(Msg.translateWithPrefix("c4.pickup"));
+        Msg.message("c4.pickup.broadcast", attackers, player.name);
 
         C4Manager.updateState(new C4IdleState());
     }

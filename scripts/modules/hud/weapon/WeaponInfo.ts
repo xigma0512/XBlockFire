@@ -1,7 +1,7 @@
 import { system, world } from "@minecraft/server";
 import { getPlayerHandItem } from "../../../utils/others/Entity";
 import { ActorManager } from "../../../base/weapon/systems/ActorManager";
-import { HudTextController } from "../HudTextController";
+import { MessageManager as Msg } from "../MessageManager";
 
 export class WeaponInfo implements InGameHud {
     
@@ -32,7 +32,7 @@ export class WeaponInfo implements InGameHud {
             if (!itemActor.hasComponent('gun_magazine')) continue;
 
             const magazineComp = itemActor.getComponent('gun_magazine')!;
-            HudTextController.add(player, 'actionbar', `${magazineComp.ammo}/${magazineComp.storageAmmo}`);
+            Msg.rawActionbar(`${magazineComp.ammo}/${magazineComp.storageAmmo}`, player);
         }
     }
 }

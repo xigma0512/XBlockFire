@@ -1,14 +1,13 @@
 import { PhaseManager } from "../../gamephase/PhaseManager";
 import { MemberManager } from "../../member/MemberManager";
 import { C4Manager } from "../C4Manager";
-import { HudTextController } from "../../../modules/hud/HudTextController";
 
 import { C4PlantedState } from "./Planted";
 import { C4IdleState } from "./Idle";
 
 import { C4StateEnum } from "../../../types/bombstate/C4StateEnum";
 import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPlantPhaseEnum";
-import { Broadcast } from "../../../utils/Broadcast";
+import { MessageManager as Msg } from "../../../modules/hud/MessageManager";
 import { progressBar } from "../../../utils/others/Format";
 
 import { ItemCompleteUseAfterEvent, ItemStopUseAfterEvent } from "@minecraft/server";
@@ -43,7 +42,7 @@ export class C4PlantingState implements IC4StateHandler {
 
     on_running() {
         const progress = progressBar(C4_PLANTING_TIME, this.currentTime--, 30);
-        HudTextController.add(this.source, 'actionbar', progress);
+        Msg.rawActionbar(progress, this.source);
     }
 
     on_exit() {
@@ -62,7 +61,7 @@ export class C4PlantingState implements IC4StateHandler {
         // eslint-disable-next-line
         ev.source.runCommand('clear @s xblockfire:c4');
         const players = MemberManager.getPlayers();
-        Broadcast.sound(C4_PLANTED_SOUND_ID, {}, players);
+        Msg.sound(C4_PLANTED_SOUND_ID, {}, players);
 
         const dimension = ev.source.dimension;
         const location = ev.source.location;
@@ -82,6 +81,6 @@ export class C4PlantingState implements IC4StateHandler {
 
 function playPlantingSound(source: Player) {
     const players = world.getPlayers({excludeNames: [ source.name ]});
-    Broadcast.sound(PLANTING_BROADCAST_SOUND_ID, { location: source.location, volume: 3 }, players);
+    Msg.sound(PLANTING_BROADCAST_SOUND_ID, { location: source.location, volume: 3 }, players);
     source.playSound(PLANTING_SELF_SOUND_ID);
 }

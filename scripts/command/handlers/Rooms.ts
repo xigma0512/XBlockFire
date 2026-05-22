@@ -9,7 +9,7 @@ import { GameModeEnum } from "../../types/gameroom/GameModeEnum";
 import { FormatCode as FC } from "../../utils/FormatCode";
 
 import { TeamEnum } from "../../types/TeamEnum";
-import { Broadcast } from "../../utils/Broadcast";
+import { MessageManager as Msg } from "../../modules/hud/MessageManager";
 import { MapRegister } from "../../base/gamemap/MapRegister";
 
 import { CommandPermissionLevel, CustomCommandOrigin, CustomCommandParamType, Player } from "@minecraft/server";
@@ -57,7 +57,7 @@ function select_team(origin: CustomCommandOrigin, ...args: any[]) {
     }
 
     MemberManager.setPlayerTeam(executer, team as TeamEnum);
-    Broadcast.message(`${FC.Gold}${executer.name} 加入 [${team}]`);
+    Msg.message("command.join_team", undefined, executer.name, team);
 }
 
 function admin_select_team(origin: CustomCommandOrigin, ...args: any[]) {
@@ -71,7 +71,7 @@ function admin_select_team(origin: CustomCommandOrigin, ...args: any[]) {
 
     for (const p of players) {
         MemberManager.setPlayerTeam(p, team as TeamEnum);
-        Broadcast.message(`${FC.Gold}${p.name} 加入 [${team}]`);
+        Msg.message("command.join_team", undefined, p.name, team);
     }
 }
 

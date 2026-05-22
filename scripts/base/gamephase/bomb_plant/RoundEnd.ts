@@ -9,10 +9,9 @@ import { PreRoundStartPhase } from "./PreRoundStart";
 import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPlantPhaseEnum";
 import { TeamEnum } from "../../../types/TeamEnum";
 
-import { FormatCode as FC } from "../../../utils/FormatCode";
 import { set_entity_dynamic_property } from "../../../utils/Property";
 import { set_variable, variable } from "../../../utils/Variable";
-import { Broadcast } from "../../../utils/Broadcast";
+import { MessageManager as Msg } from "../../../modules/hud/MessageManager";
 
 import { Config } from "../../../settings/config";
 
@@ -36,7 +35,7 @@ export class RoundEndPhase implements IPhaseHandler {
 
     on_running() {        
         if (this._currentTick-- % 20 == 0) {
-            Broadcast.sound("firework.launch", {}, MemberManager.getPlayers());
+            Msg.sound("firework.launch", {}, MemberManager.getPlayers());
         }
         this.hud.update();
         this.transitions();
@@ -88,11 +87,7 @@ function switchSide() {
     set_variable(`attacker_score`, defender_score);
     set_variable(`defender_score`, attacker_score);
 
-    Broadcast.message([
-        `${FC.Bold}${FC.White}--- --- ---`,
-        `${FC.Bold}${FC.Yellow}- Switch Side -`,
-        `${FC.Bold}${FC.White}--- --- ---`,
-    ], MemberManager.getPlayers());
+    Msg.message("game.switch_side", MemberManager.getPlayers());
 }
 
 function processWinner() {
@@ -107,6 +102,6 @@ function processWinner() {
         const playerTeam = MemberManager.getPlayerTeam(player);
         const earn = config.INCOME[(playerTeam === winnerTeam) ? 0 : 1];
         EconomyManager.modifyMoney(player, earn);
-        player.sendMessage(`${FC.Gray}>> ${FC.DarkGray}Round Income: +${earn}`);
+        player.sendMessage(Msg.translateWithPrefix("economy.round_income", earn));
     }
 }

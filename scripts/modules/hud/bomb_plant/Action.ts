@@ -1,14 +1,13 @@
 import { PhaseManager } from "../../../base/gamephase/PhaseManager";
 import { MemberManager } from "../../../base/member/MemberManager";
 import { EconomyManager } from "../../../base/economy/EconomyManager";
-import { HudTextController } from "../HudTextController";
 
 import { TeamEnum } from "../../../types/TeamEnum";
 import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPlantPhaseEnum";
 
 import { FormatCode as FC } from "../../../utils/FormatCode";
 import { variable } from "../../../utils/Variable";
-import { Broadcast } from "../../../utils/Broadcast";
+import { MessageManager as Msg } from "../MessageManager";
 
 export class ActionHud implements InGameHud {
     
@@ -26,16 +25,13 @@ export class ActionHud implements InGameHud {
         let text: string | string[] = '';
         switch (phase.phaseTag) {
             case BombPlantPhaseEnum.Buying:
-                text = [
-                    `> ${(phase.currentTick / 20).toFixed(0)} <`, 
-                    `Right-click the feather to open the shop.`
-                ];
+                text = Msg.translate("hud.buying.subtitle", (phase.currentTick / 20).toFixed(0));
                 break;
         }
 
         if (text === '') return;
         const members = MemberManager.getPlayers();
-        Broadcast.subtitle(text, members);
+        Msg.rawSubtitle(text, members);
     }
 
     private updateSidebar() {
@@ -57,24 +53,24 @@ export class ActionHud implements InGameHud {
         for (const player of players) {
 
             const playerTeam = MemberManager.getPlayerTeam(player);
-            const playerTeamStr = (playerTeam === TeamEnum.Attacker) ? `${FC.Red}Attacker` : `${FC.Aqua}Defender`;
+            const playerTeamStr = (playerTeam === TeamEnum.Attacker) ? Msg.translate("hud.sidebar.attacker") : Msg.translate("hud.sidebar.defender");
 
             const message = [
-                `${FC.Bold}   ${FC.Gold}Round ${defenderScore + attackerScore + 1}${FC.Reset}  `,
-                `Round Time: ${FC.Gray}${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')}`,
+                `   ${Msg.translate("hud.sidebar.round", defenderScore + attackerScore + 1)}  `,
+                Msg.translate("hud.sidebar.time", Math.floor(seconds / 60), String(seconds % 60).padStart(2, '0')),
                 '',
                 `${FC.Aqua}D-${defenderScore} ${FC.White}| ${FC.Bold}${FC.Aqua}${'O '.repeat(defenderPlayers.length)}${FC.Gray}${'X '.repeat(defenderDeadPlayers.length)}`,
                 `${FC.Red}A-${attackerScore} ${FC.White}| ${FC.Bold}${FC.Red}${'O '.repeat(attackerPlayers.length)}${FC.Gray}${'X '.repeat(attackerDeadPlayers.length)}`,
                 '',
-                `K/D: ${FC.Green}${variable(`${player.name}.kills`)}/${variable(`${player.name}.deaths`)}`,
-                `Money: ${FC.Green}${EconomyManager.getMoney(player)}`,
+                Msg.translate("hud.sidebar.kd", variable(`${player.name}.kills`), variable(`${player.name}.deaths`)),
+                Msg.translate("hud.sidebar.money", EconomyManager.getMoney(player)),
                 '',
-                `${FC.Bold}Your Team:`,
+                `${FC.Bold}${Msg.translate("hud.sidebar.your_team")}`,
                 `${FC.Bold}${playerTeamStr}`,
                 ''
             ];
         
-            HudTextController.add(player, 'sidebar', message);
+            Msg.sidebar(message, player);
         }
     }
 }

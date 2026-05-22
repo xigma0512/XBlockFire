@@ -9,8 +9,8 @@ import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPl
 import { TeamEnum } from "../../../types/TeamEnum";
 
 import { set_variable } from "../../../utils/Variable";
-import { FormatCode as FC } from "../../../utils/FormatCode";
-import { Broadcast } from "../../../utils/Broadcast";
+import { MessageManager as Msg } from "../../../modules/hud/MessageManager";
+import { LanguageKey } from "../../../settings/lang/LanguageKey";
 
 import { Config } from "../../../settings/config";
 
@@ -22,35 +22,30 @@ const enum EndReasonEnum {
     'Defender-Disconnect'
 };
 
-const endReasonTable = {
+interface EndReasonData {
+    winner: TeamEnum;
+    langKey: LanguageKey;
+    isGameOver: boolean;
+    nextPhaseGenerator: () => IPhaseHandler;
+}
+
+const endReasonTable: Record<number, EndReasonData> = {
     [EndReasonEnum['Time-up']]: {
         winner: TeamEnum.Attacker,
-        message: [
-            `${FC.Bold}${FC.Gray}---- ${FC.Yellow}[ ROUND END ] ${FC.Gray}----\n`,
-            `${FC.Bold}${FC.Red}C4 Detonated!\n`,
-            `${FC.Bold}${FC.Green}Attackers win this round!\n`,
-            `${FC.Bold}${FC.Gray}--------------------`
-        ],
+        langKey: "round.end.c4_detonated",
+        isGameOver: false,
         nextPhaseGenerator: () => new RoundEndPhase()
     },
     [EndReasonEnum['Defender-Eliminated']]: {
         winner: TeamEnum.Attacker,
-        message: [
-            `${FC.Bold}${FC.Gray}---- ${FC.Yellow}[ ROUND END ] ${FC.Gray}----\n`,
-            `${FC.Bold}${FC.Red}All Defenders Eliminated!\n`,
-            `${FC.Bold}${FC.Green}Attackers win this round!\n`,
-            `${FC.Bold}${FC.Gray}--------------------`
-        ],
+        langKey: "round.end.defender_eliminated",
+        isGameOver: false,
         nextPhaseGenerator: () => new RoundEndPhase()
     },
     [EndReasonEnum['Defender-Disconnect']]: {
         winner: TeamEnum.Attacker,
-        message: [
-            `${FC.Bold}${FC.Gray}---- ${FC.DarkPurple}[ GAME OVER ] ${FC.Gray}----\n`,
-            `${FC.Bold}${FC.Red}All Defenders disconnected.\n`,
-            `${FC.Bold}${FC.Yellow}Attacker win.\n`,
-            `${FC.Bold}${FC.Gray}--------------------`
-        ],
+        langKey: "game.over.defender_disconnect",
+        isGameOver: true,
         nextPhaseGenerator: () => new GameOverPhase()
     }
 }
@@ -94,7 +89,7 @@ export class C4PlantedPhase implements IPhaseHandler {
         if (endReason) {
             const result = endReasonTable[endReason];
 
-            Broadcast.message(result.message);
+            Msg.message(result.langKey);
 
             set_variable(`round_winner`, result.winner);
             PhaseManager.updatePhase(result.nextPhaseGenerator());

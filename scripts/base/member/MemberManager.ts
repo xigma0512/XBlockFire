@@ -1,7 +1,6 @@
 import { TeamEnum } from "../../types/TeamEnum";
 
-import { FormatCode as FC } from "../../utils/FormatCode";
-import { Broadcast } from "../../utils/Broadcast"; 
+import { MessageManager as Msg } from "../../modules/hud/MessageManager"; 
 import { entity_dynamic_property } from "../../utils/Property";
 
 import { Player, world } from "@minecraft/server";
@@ -20,13 +19,13 @@ export class MemberManager {
     static joinRoom(player: Player) {
         this.players.add(player);
         this.playerTeam.set(player, TeamEnum.Spectator);
-        Broadcast.message(`${FC.Bold}${FC.Green}${player.name} join the room.`, this.getPlayers());
+        Msg.message("member.join", this.getPlayers(), player.name);
     }
     
     static leaveRoom(player: Player) {
         this.players.delete(player);
         this.playerTeam.delete(player);
-        Broadcast.message(`${FC.Bold}${FC.Red}${player.name} leave the room.`, this.getPlayers());
+        Msg.message("member.leave", this.getPlayers(), player.name);
     }
 
     static getPlayers(filter?: MemberFilter) {        
