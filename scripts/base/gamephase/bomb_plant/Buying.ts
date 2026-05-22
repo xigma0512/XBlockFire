@@ -4,8 +4,8 @@ import { ActionHud } from "../../../modules/hud/bomb_plant/Action";
 
 import { ActionPhase } from "./Action";
 
-import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPlantPhaseEnum";
-import { TeamEnum } from "../../../types/TeamEnum";
+import { PhaseEnum as BombPlantPhaseEnum } from "../BombPlantPhaseEnum";
+import { TeamEnum } from "../../member/TeamEnum";
 
 import { MessageManager as Msg } from "../../../modules/hud/MessageManager";
 

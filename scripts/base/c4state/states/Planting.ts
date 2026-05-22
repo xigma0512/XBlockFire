@@ -5,8 +5,8 @@ import { C4Manager } from "../C4Manager";
 import { C4PlantedState } from "./Planted";
 import { C4IdleState } from "./Idle";
 
-import { C4StateEnum } from "../../../types/bombstate/C4StateEnum";
-import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPlantPhaseEnum";
+import { C4StateEnum } from "../C4StateEnum";
+import { PhaseEnum as BombPlantPhaseEnum } from "../../gamephase/BombPlantPhaseEnum";
 import { MessageManager as Msg } from "../../../modules/hud/MessageManager";
 import { progressBar } from "../../../utils/others/Format";
 

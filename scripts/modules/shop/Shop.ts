@@ -7,7 +7,7 @@ import { Glock17 } from "../../base/weapon/actors/item/Glock17";
 
 import { IProduct, ProductTable } from "./ProductTable";
 
-import { PhaseEnum as BombPlantPhaseEnum } from "../../types/gamephase/BombPlantPhaseEnum";
+import { PhaseEnum as BombPlantPhaseEnum } from "../../base/gamephase/BombPlantPhaseEnum";
 
 import { FormatCode as FC } from "../../utils/FormatCode";
 import { ItemStackFactory } from "../../utils/ItemStackFactory";

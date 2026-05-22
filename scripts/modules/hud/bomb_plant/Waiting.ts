@@ -3,7 +3,7 @@ import { MemberManager } from "../../../base/member/MemberManager";
 import { PhaseManager } from "../../../base/gamephase/PhaseManager";
 import { MapRegister } from "../../../base/gamemap/MapRegister";
 
-import { TeamEnum } from "../../../types/TeamEnum";
+import { TeamEnum } from "../../../base/member/TeamEnum";
 
 import { FormatCode as FC } from "../../../utils/FormatCode";
 import { MessageManager as Msg } from "../MessageManager";

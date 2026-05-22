@@ -3,7 +3,7 @@ import { ProjectileReboundComponent } from "../../../components/ProjectileReboun
 import { entity_native_property } from "../../../../../utils/Property";
 
 import { GrenadeComponent } from "../../../components/GrenadeComponent";
-import { GrenadeTypeEnum } from "../../../../../types/weapon/WeaponEnum";
+import { GrenadeTypeEnum } from "../../../WeaponEnum";
 
 import { Entity } from "@minecraft/server";
 

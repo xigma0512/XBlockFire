@@ -7,8 +7,8 @@ import { MessageManager as Msg } from "../../../modules/hud/MessageManager";
 import { C4DroppedState } from "./Dropped";
 import { C4PlantingState } from "./Planting";
 
-import { C4StateEnum } from "../../../types/bombstate/C4StateEnum";
-import { TeamEnum } from "../../../types/TeamEnum";
+import { C4StateEnum } from "../C4StateEnum";
+import { TeamEnum } from "../../member/TeamEnum";
 
 import { set_variable } from "../../../utils/Variable";
 import { FormatCode as FC } from "../../../utils/FormatCode";

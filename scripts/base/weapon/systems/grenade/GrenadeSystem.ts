@@ -1,6 +1,6 @@
 import { GrenadeHandler } from "./handlers/GrenadeHandler";
 
-import { GrenadeTypeEnum } from "../../../../types/weapon/WeaponEnum";
+import { GrenadeTypeEnum } from "../../WeaponEnum";
 import { GrenadeActorTable } from "../../actors/ActorTypeTables";
 import { SmokeGrenadeHandler } from "./handlers/SmokeGrenade";
 import { FlashbangHandler } from "./handlers/Flashbang";

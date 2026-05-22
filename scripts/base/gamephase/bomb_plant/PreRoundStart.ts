@@ -8,8 +8,8 @@ import { MapRegister } from "../../gamemap/MapRegister";
 import { C4IdleState } from "../../c4state/states/Idle";
 import { BuyingPhase } from "./Buying";
 
-import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPlantPhaseEnum";
-import { TeamEnum } from "../../../types/TeamEnum";
+import { PhaseEnum as BombPlantPhaseEnum } from "../BombPlantPhaseEnum";
+import { TeamEnum } from "../../member/TeamEnum";
 
 import { entity_dynamic_property, set_entity_dynamic_property, set_entity_native_property } from "../../../utils/Property";
 import { ItemStackFactory } from "../../../utils/ItemStackFactory";

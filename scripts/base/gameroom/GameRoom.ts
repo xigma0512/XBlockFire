@@ -1,6 +1,6 @@
 import { AlliesMarker } from "../../modules/allies_mark/AlliesMarker";
 
-import { GameModeEnum } from "../../types/gameroom/GameModeEnum";
+import { GameModeEnum } from "./GameModeEnum";
 
 import { system } from "@minecraft/server";
 

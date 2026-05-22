@@ -1,4 +1,4 @@
-import { TeamEnum } from "../../types/TeamEnum";
+import { TeamEnum } from "./TeamEnum";
 
 import { MessageManager as Msg } from "../../modules/hud/MessageManager"; 
 import { entity_dynamic_property } from "../../utils/Property";

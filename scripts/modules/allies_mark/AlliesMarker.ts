@@ -1,7 +1,7 @@
 import { C4Manager } from "../../base/c4state/C4Manager";
 import { MemberManager } from "../../base/member/MemberManager";
-import { C4StateEnum } from "../../types/bombstate/C4StateEnum";
-import { TeamEnum } from "../../types/TeamEnum";
+import { C4StateEnum } from "../../base/c4state/C4StateEnum";
+import { TeamEnum } from "../../base/member/TeamEnum";
 
 import { Vector3Builder, Vector3Utils } from "@minecraft/math";
 import { Direction, MolangVariableMap, Player, RGBA } from "@minecraft/server";

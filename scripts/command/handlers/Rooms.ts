@@ -4,11 +4,11 @@ import { MemberManager } from "../../base/member/MemberManager";
 
 import { PreRoundStartPhase } from "../../base/gamephase/bomb_plant/PreRoundStart";
 
-import { GameModeEnum } from "../../types/gameroom/GameModeEnum";
+import { GameModeEnum } from "../../base/gameroom/GameModeEnum";
 
 import { FormatCode as FC } from "../../utils/FormatCode";
 
-import { TeamEnum } from "../../types/TeamEnum";
+import { TeamEnum } from "../../base/member/TeamEnum";
 import { MessageManager as Msg } from "../../modules/hud/MessageManager";
 import { MapRegister } from "../../base/gamemap/MapRegister";
 

@@ -5,8 +5,8 @@ import { ActionHud } from "../../../modules/hud/bomb_plant/Action";
 import { RoundEndPhase } from "./RoundEnd";
 import { GameOverPhase } from "./Gameover";
 
-import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPlantPhaseEnum";
-import { TeamEnum } from "../../../types/TeamEnum";
+import { PhaseEnum as BombPlantPhaseEnum } from "../BombPlantPhaseEnum";
+import { TeamEnum } from "../../member/TeamEnum";
 
 import { set_variable } from "../../../utils/Variable";
 import { MessageManager as Msg } from "../../../modules/hud/MessageManager";

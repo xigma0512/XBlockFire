@@ -7,9 +7,9 @@ import { C4IdleState } from "./Idle";
 import { C4PlantedPhase } from "../../gamephase/bomb_plant/C4Planted";
 import { RoundEndPhase } from "../../gamephase/bomb_plant/RoundEnd";
 
-import { C4StateEnum } from "../../../types/bombstate/C4StateEnum";
-import { TeamEnum } from "../../../types/TeamEnum";
-import { PhaseEnum as BombPlantPhaseEnum } from "../../../types/gamephase/BombPlantPhaseEnum";
+import { C4StateEnum } from "../C4StateEnum";
+import { TeamEnum } from "../../member/TeamEnum";
+import { PhaseEnum as BombPlantPhaseEnum } from "../../gamephase/BombPlantPhaseEnum";
 
 import { set_variable, variable } from "../../../utils/Variable";
 import { MessageManager as Msg } from "../../../modules/hud/MessageManager";
