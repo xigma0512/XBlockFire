@@ -4,6 +4,7 @@ import { Player, system, world, DisplaySlotId, ScoreboardObjective } from "@mine
 export interface HudMessage {
     text: string;
     expireTick: number;
+    category: string;
 }
 
 class _HudTextController {
@@ -28,26 +29,38 @@ class _HudTextController {
         }
     }
 
-    pushSubtitle(player: Player, text: string, duration: number) {
-        if (!this.subtitleQueue.has(player)) this.subtitleQueue.set(player, []);
-        const queue = this.subtitleQueue.get(player)!;
-        const existing = queue.find(m => m.text === text);
-        if (existing) {
-            existing.expireTick = Math.max(existing.expireTick, system.currentTick + duration);
-        } else {
-            queue.push({ text, expireTick: system.currentTick + duration });
-        }
+    pushSubtitle(player: Player, text: string, duration: number, category: string = "default") {
+        this.pushMessage(player, this.subtitleQueue, text, duration, category);
     }
 
-    pushActionbar(player: Player, text: string, duration: number) {
-        if (!this.actionbarQueue.has(player)) this.actionbarQueue.set(player, []);
-        const queue = this.actionbarQueue.get(player)!;
-        const existing = queue.find(m => m.text === text);
-        if (existing) {
-            existing.expireTick = Math.max(existing.expireTick, system.currentTick + duration);
+    pushActionbar(player: Player, text: string, duration: number, category: string = "default") {
+        this.pushMessage(player, this.actionbarQueue, text, duration, category);
+    }
+
+    private pushMessage(player: Player, queueMap: Map<Player, HudMessage[]>, text: string, duration: number, category: string) {
+        if (!queueMap.has(player)) queueMap.set(player, []);
+        const queue = queueMap.get(player)!;
+        const now = system.currentTick;
+        const expireTick = now + duration;
+
+        // Category logic: 
+        // 1. If category is "default", we allow stacking but deduplicate same text.
+        // 2. If category is custom, we remove ANY existing message with that category.
+        
+        if (category === "default") {
+            const existing = queue.find(m => m.text === text && m.category === "default");
+            if (existing) {
+                existing.expireTick = Math.max(existing.expireTick, expireTick);
+                return;
+            }
         } else {
-            queue.push({ text, expireTick: system.currentTick + duration });
+            const index = queue.findIndex(m => m.category === category);
+            if (index !== -1) {
+                queue.splice(index, 1);
+            }
         }
+
+        queue.push({ text, expireTick, category });
     }
 
     private getSidebarObjective(): ScoreboardObjective {
@@ -100,14 +113,14 @@ class _HudTextController {
         }
     }
 
-    private updatePlayerHud(player: Player, queue: Map<Player, HudMessage[]>, displayFn: (text: string) => void) {
-        if (!queue.has(player)) return;
-        const messages = queue.get(player)!;
+    private updatePlayerHud(player: Player, queueMap: Map<Player, HudMessage[]>, displayFn: (text: string) => void) {
+        if (!queueMap.has(player)) return;
+        const messages = queueMap.get(player)!;
         const now = system.currentTick;
         const activeMessages = messages.filter(m => m.expireTick > now);
         
         if (activeMessages.length !== messages.length) {
-            queue.set(player, activeMessages);
+            queueMap.set(player, activeMessages);
         }
         
         if (activeMessages.length > 0) {

@@ -111,7 +111,7 @@ function canPlantC4(source: Player) {
         return true;
 
     } catch (err: any) {
-        Msg.rawActionbar(`${FC.Red}${err.message}`, source);
+        Msg.rawActionbar(`${FC.Red}${err.message}`, source, 40, "c4_status");
         return false;
     }
 }

@@ -74,11 +74,7 @@ function showDeathMessage(deadPlayer: Player, attacker: Player) {
         teamPrefix(attackerTeam), attacker.name, teamPrefix(deadPlayerTeam), deadPlayer.name
     );
     
-    const taskId = system.runInterval(() => {
-        Msg.rawSubtitle(`${FC.Bold}\uE109${FC.DarkRed}${deadPlayer.name}`, attacker);
-        Msg.subtitle("game.killed_you", deadPlayer, attacker.name);
-    });
-    system.runTimeout(() => {
-        system.clearRun(taskId);
-    }, 4 * 20);
+    // Using fire-and-forget with 4 seconds duration
+    Msg.rawSubtitle(`${FC.Bold}\uE109${FC.DarkRed}${deadPlayer.name}`, attacker, 4 * 20);
+    Msg.subtitle("game.killed_you", deadPlayer, 4 * 20, attacker.name);
 }

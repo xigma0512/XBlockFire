@@ -42,7 +42,7 @@ export class C4PlantingState implements IC4StateHandler {
 
     on_running() {
         const progress = progressBar(C4_PLANTING_TIME, this.currentTime--, 30);
-        Msg.rawActionbar(progress, this.source);
+        Msg.rawActionbar(progress, this.source, 2, "c4_status");
     }
 
     on_exit() {

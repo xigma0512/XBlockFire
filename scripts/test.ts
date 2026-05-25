@@ -1,4 +1,4 @@
-import { world } from "@minecraft/server";
+import { DisplaySlotId, system, world } from "@minecraft/server";
 import { set_entity_native_property } from "./utils/Property";
 import { Deagle } from "./base/weapon/actors/item/Deagle";
 import { SG200 } from "./base/weapon/actors/item/SG200";
@@ -18,3 +18,19 @@ world.afterEvents.chatSend.subscribe(ev => {
         set_entity_native_property(ev.sender, 'player:can_use_item', true);
     }
 })
+
+system.run(() => {
+    if (world.scoreboard.getObjective('test') === undefined) {
+        world.scoreboard.addObjective('test');
+    }
+    const scoreboard = world.scoreboard.getObjective('test')!;
+    world.scoreboard.setObjectiveAtDisplaySlot(DisplaySlotId.Sidebar, {
+        'objective': scoreboard
+    })
+})
+
+system.runInterval(() => {
+    const sb = world.scoreboard.getObjective('test')!;
+    sb.setScore('§6test1', 0);
+    sb.setScore('§ctest2', 1);
+}, 40);
