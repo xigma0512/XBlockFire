@@ -60,18 +60,10 @@ export class MessageManager {
     /**
      * 發送原始字串 ActionBar 訊息
      */
-    static rawActionbar(message: string | string[], target?: MessageTarget) {
+    static rawActionbar(message: string | string[], target?: MessageTarget, duration: number = 60) {
+        const text = Array.isArray(message) ? message.join('\n') : message;
         for (const p of this.getPlayers(target)) {
-            HudTextController.appendRaw(p, 'actionbar', message);
-        }
-    }
-
-    /**
-     * 發送原始字串 Sidebar 訊息
-     */
-    static sidebar(message: string | string[], target?: MessageTarget) {
-        for (const p of this.getPlayers(target)) {
-            HudTextController.appendRaw(p, 'sidebar', message);
+            HudTextController.pushActionbar(p, text, duration);
         }
     }
 
@@ -85,9 +77,10 @@ export class MessageManager {
     /**
      * 發送原始字串 Subtitle 訊息
      */
-    static rawSubtitle(message: string | string[], target?: MessageTarget) {
+    static rawSubtitle(message: string | string[], target?: MessageTarget, duration: number = 60) {
+        const text = Array.isArray(message) ? message.join('\n') : message;
         for (const p of this.getPlayers(target)) {
-            HudTextController.appendRaw(p, 'subtitle', message);
+            HudTextController.pushSubtitle(p, text, duration);
         }
     }
 
