@@ -8,6 +8,7 @@ import { PhaseEnum as BombPlantPhaseEnum } from "../../../base/gamephase/BombPla
 import { FormatCode as FC } from "../../../utils/FormatCode";
 import { variable } from "../../../utils/Variable";
 import { MessageManager as Msg } from "../MessageManager";
+import { HudTextController } from "../HudTextController";
 
 export class ActionHud implements InGameHud {
     
@@ -31,12 +32,11 @@ export class ActionHud implements InGameHud {
 
         if (text === '') return;
         const members = MemberManager.getPlayers();
-        Msg.rawSubtitle(text, members);
+        Msg.rawSubtitle(text, members, 2);
     }
 
     private updateSidebar() {
         
-        const players = MemberManager.getPlayers();
         const phase = PhaseManager.getPhase();
 
         const attackerScore = variable(`attacker_score`);
@@ -50,27 +50,14 @@ export class ActionHud implements InGameHud {
 
         const seconds = Number((phase.currentTick / 20).toFixed(0));
         
-        for (const player of players) {
-
-            const playerTeam = MemberManager.getPlayerTeam(player);
-            const playerTeamStr = (playerTeam === TeamEnum.Attacker) ? Msg.translate("hud.sidebar.attacker") : Msg.translate("hud.sidebar.defender");
-
-            const message = [
-                `   ${Msg.translate("hud.sidebar.round", defenderScore + attackerScore + 1)}  `,
-                Msg.translate("hud.sidebar.time", Math.floor(seconds / 60), String(seconds % 60).padStart(2, '0')),
-                '',
-                `${FC.Aqua}D-${defenderScore} ${FC.White}| ${FC.Bold}${FC.Aqua}${'O '.repeat(defenderPlayers.length)}${FC.Gray}${'X '.repeat(defenderDeadPlayers.length)}`,
-                `${FC.Red}A-${attackerScore} ${FC.White}| ${FC.Bold}${FC.Red}${'O '.repeat(attackerPlayers.length)}${FC.Gray}${'X '.repeat(attackerDeadPlayers.length)}`,
-                '',
-                Msg.translate("hud.sidebar.kd", variable(`${player.name}.kills`), variable(`${player.name}.deaths`)),
-                Msg.translate("hud.sidebar.money", EconomyManager.getMoney(player)),
-                '',
-                `${FC.Bold}${Msg.translate("hud.sidebar.your_team")}`,
-                `${FC.Bold}${playerTeamStr}`,
-                ''
-            ];
-        
-            Msg.sidebar(message, player);
-        }
+        const message = [
+            `   ${Msg.translate("hud.sidebar.round", defenderScore + attackerScore + 1)}  `,
+            Msg.translate("hud.sidebar.time", Math.floor(seconds / 60), String(seconds % 60).padStart(2, '0')),
+            '',
+            `${FC.Aqua}D-${defenderScore} ${FC.White}| ${FC.Bold}${FC.Aqua}${'O '.repeat(defenderPlayers.length)}${FC.Gray}${'X '.repeat(defenderDeadPlayers.length)}`,
+            `${FC.Red}A-${attackerScore} ${FC.White}| ${FC.Bold}${FC.Red}${'O '.repeat(attackerPlayers.length)}${FC.Gray}${'X '.repeat(attackerDeadPlayers.length)}`
+        ];
+    
+        HudTextController.setSidebar(message);
     }
 }

@@ -7,6 +7,7 @@ import { TeamEnum } from "../../../base/member/TeamEnum";
 
 import { FormatCode as FC } from "../../../utils/FormatCode";
 import { MessageManager as Msg } from "../MessageManager";
+import { HudTextController } from "../HudTextController";
 
 import { Config } from "../../../settings/config";
 
@@ -35,10 +36,11 @@ export class WaitingHud implements InGameHud {
         }
         
         if (phase.currentTick !== idle_config.COUNTDOWN_TIME && playerAmount < game_config.AUTO_START_MIN_PLAYER) {
+            // this one uses Msg.message which goes to chat, so no duration needed
             Msg.message("game.wait_players", players);
         }
         
-        Msg.rawSubtitle(text, players);
+        Msg.rawSubtitle(text, players, 2);
     }
 
     private updateSidebar() {
@@ -70,6 +72,6 @@ export class WaitingHud implements InGameHud {
             ''
         ];
 
-        Msg.sidebar(message, players);
+        HudTextController.setSidebar(message);
     }
 }
