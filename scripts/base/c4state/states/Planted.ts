@@ -109,7 +109,7 @@ function canDefuseC4(C4Entity: Entity, player: Player) {
     const distance = Vector3Utils.distance(player.location, C4Entity.location);
     if (distance > DEFUSE_RANGE) {
         system.run(() => {
-            Msg.actionbar("c4.defuse.no_range", player);
+            Msg.actionbar("c4.defuse.no_range", player, 40, "c4_status");
         });
         return false;
     }
@@ -121,7 +121,7 @@ function displayDefusingProgress(source: Player) {
     let currentTime = DEFUSING_TIME;
     const taskId = system.runInterval(() => {
         const progress = progressBar(DEFUSING_TIME, currentTime--, 30);
-        Msg.rawActionbar(progress, source);
+        Msg.rawActionbar(progress, source, 2, "c4_status");
     });
     system.run(() => {
         const callback = world.afterEvents.itemStopUse.subscribe(ev => {
