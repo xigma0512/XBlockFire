@@ -2,7 +2,7 @@ import { MemberManager } from "../../../player/MemberManager";
 import { EconomyManager } from "../../EconomyManager";
 import { PhaseManager } from "../PhaseManager";
 import { HotbarManager, HotbarTemplate } from "../../../../ui/Hotbar";
-import { WaitingHud } from "../../../../ui/hud/huds/Waiting";
+import { WaitingHud } from "../../../../ui/huds/Waiting";
 
 import { BuyingPhase } from "./Buying";
 

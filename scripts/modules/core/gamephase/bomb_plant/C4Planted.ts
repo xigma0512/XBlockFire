@@ -1,6 +1,6 @@
 import { PhaseManager } from "../PhaseManager";
 import { MemberManager } from "../../../player/MemberManager";
-import { ActionHud } from "../../../../ui/hud/huds/Action";
+import { ActionHud } from "../../../../ui/huds/Action";
 
 import { TeamEnum } from "../../../player/TeamEnum";
 import { PhaseEnum } from "../BombPlantPhaseEnum";

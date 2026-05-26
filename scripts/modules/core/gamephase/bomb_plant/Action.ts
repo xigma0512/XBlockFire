@@ -3,7 +3,7 @@ import { PhaseManager } from "../PhaseManager";
 
 import { GameOverPhase } from "./Gameover";
 import { RoundEndPhase } from "./RoundEnd";
-import { ActionHud } from "../../../../ui/hud/huds/Action";
+import { ActionHud } from "../../../../ui/huds/Action";
 
 import { PhaseEnum as BombPlantPhaseEnum } from "../BombPlantPhaseEnum"
 import { TeamEnum } from "../../../player/TeamEnum";

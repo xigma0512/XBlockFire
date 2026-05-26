@@ -1,16 +1,16 @@
-import { gameroom } from "../../../modules/core/GameRoom";
-import { MemberManager } from "../../../modules/player/MemberManager";
-import { PhaseManager } from "../../../modules/core/gamephase/PhaseManager";
-import { MapRegister } from "../../../modules/world/MapRegister";
+import { gameroom } from "../../modules/core/GameRoom";
+import { MemberManager } from "../../modules/player/MemberManager";
+import { PhaseManager } from "../../modules/core/gamephase/PhaseManager";
+import { MapRegister } from "../../modules/world/MapRegister";
 
-import { TeamEnum } from "../../../modules/player/TeamEnum";
+import { TeamEnum } from "../../modules/player/TeamEnum";
 
-import { FormatCode as FC } from "../../../utils/FormatCode";
-import { MessageManager as Msg } from "../../Message";
+import { FormatCode as FC } from "../../utils/FormatCode";
+import { MessageManager as Msg } from "../Message";
+import { Language as L } from "../../utils/Language";
 import { HudTextController } from "../HudText";
-import { Language as L } from "../../../utils/Language";
 
-import { Config } from "../../../settings/config";
+import { Config } from "../../settings/config";
 
 const game_config = Config.game;
 const idle_config = Config.bombplant.idle;

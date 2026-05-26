@@ -1,7 +1,8 @@
 import { system, world } from "@minecraft/server";
-import { getPlayerHandItem } from "../../../utils/others/Entity";
-import { ActorManager } from "../../../modules/combat/weapon/systems/ActorManager";
-import { MessageManager as Msg } from "../../Message";
+
+import { getPlayerHandItem } from "../../utils/others/Entity";
+import { ActorManager } from "../../modules/combat/weapon/systems/ActorManager";
+import { MessageManager as Msg } from "../Message";
 
 export class WeaponInfo implements InGameHud {
     

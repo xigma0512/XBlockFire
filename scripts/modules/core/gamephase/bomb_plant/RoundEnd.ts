@@ -1,7 +1,7 @@
 import { MemberManager } from "../../../player/MemberManager";
 import { EconomyManager } from "../../EconomyManager";
 import { PhaseManager } from "../PhaseManager";
-import { ActionHud } from "../../../../ui/hud/huds/Action"; 
+import { ActionHud } from "../../../../ui/huds/Action"; 
 
 import { GameOverPhase } from "./Gameover";
 import { PreRoundStartPhase } from "./PreRoundStart";

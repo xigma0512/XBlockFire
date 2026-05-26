@@ -1,15 +1,13 @@
 import { MemberManager } from "../../../player/MemberManager";
 import { PhaseManager } from "../PhaseManager";
-import { ActionHud } from "../../../../ui/hud/huds/Action";
+import { ActionHud } from "../../../../ui/huds/Action";
 import { HotbarManager } from "../../../../ui/Hotbar";
-import { EconomyManager } from "../../EconomyManager";
 
 import { ActionPhase } from "./Action";
 
-import { PurchaseHistory, Shop } from "../../../../ui/shop/Shop";
+import { PurchaseHistory } from "../../../../ui/shop/Shop";
 
 import { PhaseEnum as BombPlantPhaseEnum } from "../BombPlantPhaseEnum";
-import { TeamEnum } from "../../../player/TeamEnum";
 
 import { MessageManager as Msg } from "../../../../ui/Message";
 import { set_entity_native_property } from "../../../../utils/Property";
