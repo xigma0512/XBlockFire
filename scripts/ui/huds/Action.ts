@@ -1,14 +1,14 @@
-import { PhaseManager } from "../../../modules/core/gamephase/PhaseManager";
-import { MemberManager } from "../../../modules/player/MemberManager";
-import { EconomyManager } from "../../../modules/core/EconomyManager";
+import { PhaseManager } from "../../modules/core/gamephase/PhaseManager";
+import { MemberManager } from "../../modules/player/MemberManager";
+import { EconomyManager } from "../../modules/core/EconomyManager";
 
-import { TeamEnum } from "../../../modules/player/TeamEnum";
-import { PhaseEnum as BombPlantPhaseEnum } from "../../../modules/core/gamephase/BombPlantPhaseEnum";
+import { TeamEnum } from "../../modules/player/TeamEnum";
+import { PhaseEnum as BombPlantPhaseEnum } from "../../modules/core/gamephase/BombPlantPhaseEnum";
 
-import { FormatCode as FC } from "../../../utils/FormatCode";
-import { variable } from "../../../utils/Variable";
-import { MessageManager as Msg } from "../../Message";
-import { Language as L } from "../../../utils/Language";
+import { FormatCode as FC } from "../../utils/FormatCode";
+import { variable } from "../../utils/Variable";
+import { MessageManager as Msg } from "../Message";
+import { Language as L } from "../../utils/Language";
 import { HudTextController } from "../HudText";
 
 export class ActionHud implements InGameHud {

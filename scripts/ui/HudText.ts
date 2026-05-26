@@ -17,6 +17,11 @@ class _HudTextController {
     private actionbarQueue = new Map<Player, HudMessage[]>();
     private previousSidebarLines: string[] = [];
 
+    // Tracks what's currently being shown to avoid redundant updates
+    private lastTitleText = new Map<Player, string>();
+    private lastSubtitleText = new Map<Player, string>();
+    private lastActionbarText = new Map<Player, string>();
+
     private constructor() {
         system.runInterval(this.update.bind(this));
         world.afterEvents.playerLeave.subscribe((ev) => this.cleanupPlayer(ev.playerName));
@@ -24,9 +29,16 @@ class _HudTextController {
 
     private cleanupPlayer(playerName: string) {
         const queues = [this.titleQueue, this.subtitleQueue, this.actionbarQueue];
+        const lastTexts = [this.lastTitleText, this.lastSubtitleText, this.lastActionbarText];
+        
         for (const queue of queues) {
             for (const [player] of queue) {
                 if (player.name === playerName) queue.delete(player);
+            }
+        }
+        for (const lastText of lastTexts) {
+            for (const [player] of lastText) {
+                if (player.name === playerName) lastText.delete(player);
             }
         }
     }
@@ -122,32 +134,56 @@ class _HudTextController {
 
     private update() {
         for (const player of world.getAllPlayers()) {
-            const title = this.getActiveMessage(player, this.titleQueue);
-            const subtitle = this.getActiveMessage(player, this.subtitleQueue);
-
-            if (title || subtitle) {
-                try {
-                    player.onScreenDisplay.setTitle(title || " ", {
-                        subtitle: subtitle || " ",
-                        fadeInDuration: 0,
-                        fadeOutDuration: 0,
-                        stayDuration: 20
-                    });
-                } catch {}
-            }
-
-            this.updatePlayerHud(player, this.actionbarQueue, (text) => {
-                try { player.onScreenDisplay.setActionBar(text); } catch {}
-            });
+            this.updateTitleSubtitle(player);
+            this.updateActionbar(player);
         }
     }
 
-    private getActiveMessage(player: Player, queueMap: Map<Player, HudMessage[]>): string | undefined {
+    private updateTitleSubtitle(player: Player) {
+        const titleText = this.getActiveMessageText(player, this.titleQueue) || "";
+        const subtitleText = this.getActiveMessageText(player, this.subtitleQueue) || "";
+
+        const lastTitle = this.lastTitleText.get(player) || "";
+        const lastSubtitle = this.lastSubtitleText.get(player) || "";
+
+        if (titleText !== lastTitle || subtitleText !== lastSubtitle) {
+            try {
+                player.onScreenDisplay.setTitle(titleText || " ", {
+                    subtitle: subtitleText || " ",
+                    fadeInDuration: 0,
+                    fadeOutDuration: 0,
+                    stayDuration: 20000000 // A very long time
+                });
+                this.lastTitleText.set(player, titleText);
+                this.lastSubtitleText.set(player, subtitleText);
+            } catch {}
+        }
+    }
+
+    private updateActionbar(player: Player) {
+        const actionbarText = this.getActiveMessageText(player, this.actionbarQueue) || "";
+        const lastActionbar = this.lastActionbarText.get(player) || "";
+
+        if (actionbarText !== lastActionbar) {
+            try {
+                // To "clear" actionbar, we send an empty string or just stop sending.
+                // Bedrock actionbar clears after ~3 seconds if not updated, 
+                // but we can force update with empty space to clear.
+                player.onScreenDisplay.setActionBar(actionbarText);
+                this.lastActionbarText.set(player, actionbarText);
+            } catch {}
+        }
+    }
+
+    private getActiveMessageText(player: Player, queueMap: Map<Player, HudMessage[]>): string | undefined {
         if (!queueMap.has(player)) return undefined;
         const messages = queueMap.get(player)!;
         const now = system.currentTick;
+        
+        // Filter out expired messages
         const activeMessages = messages.filter(m => m.expireTick > now);
         
+        // Update the queue if any messages expired
         if (activeMessages.length !== messages.length) {
             queueMap.set(player, activeMessages);
         }
@@ -156,13 +192,6 @@ class _HudTextController {
             return activeMessages.map(m => m.text).join(`\n${FormatCode.Reset}`);
         }
         return undefined;
-    }
-
-    private updatePlayerHud(player: Player, queueMap: Map<Player, HudMessage[]>, displayFn: (text: string) => void) {
-        const text = this.getActiveMessage(player, queueMap);
-        if (text) {
-            displayFn(text);
-        }
     }
 }
 

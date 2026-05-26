@@ -5,7 +5,7 @@ import './modules/combat';
 
 import './command/CommandRegistry';
 import './ui/shop/Shop';
-import './ui/hud/huds/WeaponInfo';
+import './ui/huds/WeaponInfo';
 import './test';
 
 
