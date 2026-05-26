@@ -58,9 +58,6 @@ export class WaitingHud implements InGameHud {
         const spectators = MemberManager.getPlayers({team: TeamEnum.Spectator});
 
         const message = [
-            `${FC.Bold}${FC.Yellow}    XBlockFire    `,
-            ` ${FC.Gray}${todayStr}`,
-            '',
             Msg.translate("hud.sidebar.map", map.name),
             Msg.translate("hud.sidebar.players", playerCount, defenders.length, attackers.length),
             ...defenders.map(p => `${FC.Gray}- ${FC.Aqua}${p.name}`),

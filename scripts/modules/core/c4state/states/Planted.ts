@@ -56,8 +56,7 @@ export class C4PlantedState implements IC4StateHandler {
             PhaseManager.updatePhase(new C4PlantedPhase());
         }
 
-        const siteIndex = String.fromCharCode(65 + (variable(`c4.plant_site_index`) ?? 0));
-        Msg.message("c4.planted.broadcast", MemberManager.getPlayers(), siteIndex);
+        Msg.message("c4.planted.broadcast", MemberManager.getPlayers());
         
         for (const player of MemberManager.getPlayers({team: TeamEnum.Attacker})) {
             EconomyManager.setMoney(player, EconomyManager.getMoney(player) + 300);
