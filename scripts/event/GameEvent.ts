@@ -6,3 +6,4 @@ export interface GameEvent {
         attacker?: Entity;
     }
 }
+

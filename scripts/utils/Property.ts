@@ -1,5 +1,5 @@
 import { Entity, ItemStack, world } from "@minecraft/server"
-import { GrenadeTypeEnum, GunReloadStateEnum } from "../base/weapon/WeaponEnum"
+import { GrenadeTypeEnum, GunReloadStateEnum } from "../modules/combat/weapon/WeaponEnum"
 
 type WorldPropertyList = {
 }
@@ -70,3 +70,4 @@ export {
     scoreboard_property, set_scoreboard_property,
     entity_native_property, set_entity_native_property
 };
+
