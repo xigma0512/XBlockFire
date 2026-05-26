@@ -7,7 +7,8 @@ world.afterEvents.playerSpawn.subscribe((ev) => {
             HudElement.Armor,
             HudElement.AirBubbles,
             HudElement.StatusEffects,
-            HudElement.Hunger
+            HudElement.Hunger,
+            HudElement.ItemText
         ]);
         ev.player.camera.setCamera('minecraft:first_person');
         system.runTimeout(() => {
