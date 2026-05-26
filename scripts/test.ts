@@ -1,9 +1,9 @@
 import { DisplaySlotId, system, world } from "@minecraft/server";
 import { set_entity_native_property } from "./utils/Property";
-import { Deagle } from "./base/weapon/actors/item/Deagle";
-import { SG200 } from "./base/weapon/actors/item/SG200";
-import { AWP } from "./base/weapon/actors/item/AWP";
-import { P90 } from "./base/weapon/actors/item/P90";
+import { Deagle } from "./modules/combat/weapon/actors/item/Deagle";
+import { SG200 } from "./modules/combat/weapon/actors/item/SG200";
+import { AWP } from "./modules/combat/weapon/actors/item/AWP";
+import { P90 } from "./modules/combat/weapon/actors/item/P90";
 
 world.afterEvents.chatSend.subscribe(ev => {
     if (ev.message === 'test') {
@@ -34,3 +34,4 @@ system.runInterval(() => {
     sb.setScore('§6test1', 0);
     sb.setScore('§ctest2', 1);
 }, 40);
+

@@ -13,3 +13,4 @@ function progressBar(duration: number, currentTime: number, barLength: number = 
 }
 
 export { progressBar };
+

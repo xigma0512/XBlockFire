@@ -1,16 +1,16 @@
-import { gameroom, GameRoomFactory } from "../../base/gameroom/GameRoom";
-import { PhaseManager } from "../../base/gamephase/PhaseManager";
-import { MemberManager } from "../../base/member/MemberManager";
+import { gameroom, GameRoomFactory } from "../../modules/core/GameRoom";
+import { PhaseManager } from "../../modules/core/gamephase/PhaseManager";
+import { MemberManager } from "../../modules/player/MemberManager";
 
-import { PreRoundStartPhase } from "../../base/gamephase/bomb_plant/PreRoundStart";
+import { PreRoundStartPhase } from "../../modules/core/gamephase/bomb_plant/PreRoundStart";
 
-import { GameModeEnum } from "../../base/gameroom/GameModeEnum";
+import { GameModeEnum } from "../../modules/core/GameModeEnum";
 
 import { FormatCode as FC } from "../../utils/FormatCode";
 
-import { TeamEnum } from "../../base/member/TeamEnum";
-import { MessageManager as Msg } from "../../modules/hud/MessageManager";
-import { MapRegister } from "../../base/gamemap/MapRegister";
+import { TeamEnum } from "../../modules/player/TeamEnum";
+import { MessageManager as Msg } from "../../ui/Message";
+import { MapRegister } from "../../modules/world/MapRegister";
 
 import { CommandPermissionLevel, CustomCommandOrigin, CustomCommandParamType, Player } from "@minecraft/server";
 import { CommandRegistry } from "../CommandRegistry";

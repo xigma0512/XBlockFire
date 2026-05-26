@@ -36,3 +36,4 @@ system.beforeEvents.startup.subscribe(ev => {
     const commandRegistry = ev.customCommandRegistry;
     CommandRegistry.registerAll(commandRegistry);
 });
+

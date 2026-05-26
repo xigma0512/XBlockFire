@@ -1,3 +1,5 @@
+import { GameMapType } from "../modules/world/GameMapType";
+
 export default {
     0: {
         id: 0,
@@ -52,3 +54,4 @@ export default {
         }
     }
 } as Record<number, GameMapType>;
+

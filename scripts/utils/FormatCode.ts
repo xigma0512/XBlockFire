@@ -33,3 +33,4 @@ export const enum FormatCode {
     Italic = '§o',
     Reset = '§r'
 }
+
