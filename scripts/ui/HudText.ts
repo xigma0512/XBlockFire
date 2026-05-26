@@ -1,5 +1,6 @@
 import { FormatCode } from "../utils/FormatCode";
 import { Player, system, world, DisplaySlotId, ScoreboardObjective } from "@minecraft/server";
+import { MessageManager } from "./Message";
 
 export interface HudMessage {
     text: string;
@@ -66,7 +67,7 @@ class _HudTextController {
     private getSidebarObjective(): ScoreboardObjective {
         let obj = world.scoreboard.getObjective('xblockfire_sidebar');
         if (!obj) {
-            obj = world.scoreboard.addObjective('xblockfire_sidebar', 'XBlockFire');
+            obj = world.scoreboard.addObjective('xblockfire_sidebar', MessageManager.translate('system.name'));
         }
         return obj;
     }
