@@ -13,6 +13,7 @@ import { PhaseEnum as BombPlantPhaseEnum } from "../../gamephase/BombPlantPhaseE
 
 import { set_variable, variable } from "../../../../utils/Variable";
 import { MessageManager as Msg } from "../../../../ui/Message";
+import { Language as L } from "../../../../utils/Language";
 import { progressBar } from "../../../../utils/others/Format";
 
 import { Vector3Utils } from "@minecraft/math";
@@ -56,11 +57,11 @@ export class C4PlantedState implements IC4StateHandler {
             PhaseManager.updatePhase(new C4PlantedPhase());
         }
 
-        Msg.message("c4.planted.broadcast", MemberManager.getPlayers());
+        Msg.message(L.translate("c4.planted.broadcast"), MemberManager.getPlayers());
         
         for (const player of MemberManager.getPlayers({team: TeamEnum.Attacker})) {
             EconomyManager.setMoney(player, EconomyManager.getMoney(player) + 300);
-            player.sendMessage(Msg.translateWithPrefix("c4.planted.reward", 300));
+            player.sendMessage(L.translateWithPrefix("c4.planted.reward", 300));
         }
     }
     
@@ -108,7 +109,7 @@ function canDefuseC4(C4Entity: Entity, player: Player) {
     const distance = Vector3Utils.distance(player.location, C4Entity.location);
     if (distance > DEFUSE_RANGE) {
         system.run(() => {
-            Msg.actionbar("c4.defuse.no_range", player, 40, "c4_status");
+            Msg.actionbar(L.translate("c4.defuse.no_range"), player, 40, "c4_status");
         });
         return false;
     }
@@ -120,7 +121,7 @@ function displayDefusingProgress(source: Player) {
     let currentTime = DEFUSING_TIME;
     const taskId = system.runInterval(() => {
         const progress = progressBar(DEFUSING_TIME, currentTime--, 30);
-        Msg.rawActionbar(progress, source, 2, "c4_status");
+        Msg.actionbar(progress, source, 2, "c4_status");
     });
     system.run(() => {
         const callback = world.afterEvents.itemStopUse.subscribe(ev => {
@@ -152,7 +153,7 @@ function defuseComplete(defuser: Player) {
     const players = MemberManager.getPlayers();
     Msg.sound(COMPLETE_DEFUSED_SOUND_ID, {}, players);
     
-    Msg.message("c4.defused.broadcast", players, defuser.name);
+    Msg.message(L.translate("c4.defused.broadcast", defuser.name), players);
 }
 
 let soundPlayInterval = 20;
@@ -174,5 +175,3 @@ function playC4Effect(currentTick: number, entity: Entity) {
         try { entity.dimension.spawnParticle("minecraft:explosion_particle", location); } catch { }
     }
 }
-
-

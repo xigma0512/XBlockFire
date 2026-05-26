@@ -7,6 +7,7 @@ import { C4StateEnum } from "../C4StateEnum";
 import { TeamEnum } from "../../../player/TeamEnum";
 
 import { MessageManager as Msg } from "../../../../ui/Message";
+import { Language as L } from "../../../../utils/Language";
 
 import { Entity, ItemStack, Player, world } from "@minecraft/server";
 import { EntityHitEntityAfterEvent } from "@minecraft/server";
@@ -35,7 +36,7 @@ export class C4DroppedState implements IC4StateHandler {
         this._entity = world.getDimension('overworld').spawnEntity(DROPPED_C4_ENTITY_ID, this.location);
         world.afterEvents.entityHitEntity.subscribe(this.afterEntityHitEntityListener);
 
-        Msg.message("c4.dropped", MemberManager.getPlayers({team: TeamEnum.Attacker}));
+        Msg.message(L.translate("c4.dropped"), MemberManager.getPlayers({team: TeamEnum.Attacker}));
     }
     
     on_running() {
@@ -73,8 +74,8 @@ export class C4DroppedState implements IC4StateHandler {
         
         const attackers = MemberManager.getPlayers({ team: TeamEnum.Attacker });
         
-        player.sendMessage(Msg.translateWithPrefix("c4.pickup"));
-        Msg.message("c4.pickup.broadcast", attackers, player.name);
+        player.sendMessage(L.translateWithPrefix("c4.pickup"));
+        Msg.message(L.translate("c4.pickup.broadcast", player.name), attackers);
 
         C4Manager.updateState(new C4IdleState());
     }

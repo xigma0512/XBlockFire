@@ -1,76 +1,76 @@
-import { TeamEnum } from "./TeamEnum";
-
-import { MessageManager as Msg } from "../../ui/Message"; 
-import { entity_dynamic_property } from "../../utils/Property";
-
 import { Player, world } from "@minecraft/server";
+import { TeamEnum } from "./TeamEnum";
+import { MessageManager as Msg } from "../../ui/Message";
+import { Language as L } from "../../utils/Language";
 
-interface MemberFilter {
-    group?: number;
+interface PlayerOptions {
     team?: TeamEnum;
     is_alive?: boolean;
 }
 
-export class MemberManager {
+class _MemberManager {
+    private static _instance: _MemberManager;
+    static get instance() { return (this._instance || (this._instance = new this)); }
 
-    private static players = new Set<Player>();
-    private static playerTeam = new Map<Player, TeamEnum>();
+    private playerTeam = new Map<Player, TeamEnum>();
 
-    static joinRoom(player: Player) {
-        this.players.add(player);
+    joinRoom(player: Player) {
         this.playerTeam.set(player, TeamEnum.Spectator);
-        Msg.message("member.join", this.getPlayers(), player.name);
+        Msg.message(L.translate("member.join", player.name), this.getPlayers());
     }
-    
-    static leaveRoom(player: Player) {
-        this.players.delete(player);
+
+    leaveRoom(player: Player) {
         this.playerTeam.delete(player);
-        Msg.message("member.leave", this.getPlayers(), player.name);
+        Msg.message(L.translate("member.leave", player.name), this.getPlayers());
     }
 
-    static getPlayers(filter?: MemberFilter) {        
-        const allPlayers = Array.from(this.players.keys());
-        
-        if (!filter) return allPlayers;
-
-        return allPlayers.filter(p => {
-            if (filter.team !== undefined && this.getPlayerTeam(p) !== filter.team) return false;
-            if (filter.is_alive !== undefined && filter.is_alive !== entity_dynamic_property(p, 'player:is_alive')) return false;
-            return true;
-        });
+    includePlayer(player: Player) {
+        return this.playerTeam.has(player);
     }
 
-    static includePlayer(player: Player) {
-        return this.players.has(player);
+    getPlayers(options: PlayerOptions = {}): Player[] {
+        let players = world.getAllPlayers();
+
+        if (options.team !== undefined) {
+            players = players.filter(p => this.getPlayerTeam(p) === options.team);
+        }
+
+        if (options.is_alive !== undefined) {
+            players = players.filter(p => {
+                const isAlive = p.getDynamicProperty('player:is_alive') as boolean;
+                return isAlive === options.is_alive;
+            });
+        }
+
+        return players;
     }
 
-    static setPlayerTeam(player: Player, team: TeamEnum) {
+    setPlayerTeam(player: Player, team: TeamEnum) {
         this.playerTeam.set(player, team);
     }
 
-    static getPlayerTeam(player: Player) {
+    getPlayerTeam(player: Player) {
         if (!this.playerTeam.has(player)) {
             this.playerTeam.set(player, TeamEnum.Spectator);
         }
         return this.playerTeam.get(player)!;
     }
-    
 }
 
-const worldLoadListener = world.afterEvents.worldLoad.subscribe(() => {
+export const MemberManager = _MemberManager.instance;
+
+world.afterEvents.worldLoad.subscribe(() => {
     for (const player of world.getAllPlayers()) {
         MemberManager.joinRoom(player);
     }
 });
 
-const playerJoinGameListener = world.afterEvents.playerSpawn.subscribe(ev => {
+world.afterEvents.playerSpawn.subscribe(ev => {
     if (ev.initialSpawn) {
         MemberManager.joinRoom(ev.player);
     }
 });
 
-const playerLeaveGameListener = world.beforeEvents.playerLeave.subscribe(ev => {
+world.beforeEvents.playerLeave.subscribe(ev => {
     MemberManager.leaveRoom(ev.player);
 });
-
-

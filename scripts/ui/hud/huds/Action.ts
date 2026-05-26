@@ -8,6 +8,7 @@ import { PhaseEnum as BombPlantPhaseEnum } from "../../../modules/core/gamephase
 import { FormatCode as FC } from "../../../utils/FormatCode";
 import { variable } from "../../../utils/Variable";
 import { MessageManager as Msg } from "../../Message";
+import { Language as L } from "../../../utils/Language";
 import { HudTextController } from "../HudText";
 
 export class ActionHud implements InGameHud {
@@ -26,13 +27,13 @@ export class ActionHud implements InGameHud {
         let text: string | string[] = '';
         switch (phase.phaseTag) {
             case BombPlantPhaseEnum.Buying:
-                text = Msg.translate("hud.buying.subtitle", (phase.currentTick / 20).toFixed(0));
+                text = L.translate("hud.buying.subtitle", (phase.currentTick / 20).toFixed(0));
                 break;
         }
 
         if (text === '') return;
         const members = MemberManager.getPlayers();
-        Msg.rawSubtitle(text, members, 2);
+        Msg.subtitle(text, members, 2);
     }
 
     private updateSidebar() {
@@ -51,8 +52,8 @@ export class ActionHud implements InGameHud {
         const seconds = Number((phase.currentTick / 20).toFixed(0));
         
         const message = [
-            `   ${Msg.translate("hud.sidebar.round", defenderScore + attackerScore + 1)}  `,
-            Msg.translate("hud.sidebar.time", Math.floor(seconds / 60), String(seconds % 60).padStart(2, '0')),
+            `   ${L.translate("hud.sidebar.round", defenderScore + attackerScore + 1)}  `,
+            L.translate("hud.sidebar.time", Math.floor(seconds / 60), String(seconds % 60).padStart(2, '0')),
             '',
             `${FC.Aqua}D-${defenderScore} ${FC.White}| ${FC.Bold}${FC.Aqua}${'O '.repeat(defenderPlayers.length)}${FC.Gray}${'X '.repeat(defenderDeadPlayers.length)}`,
             `${FC.Red}A-${attackerScore} ${FC.White}| ${FC.Bold}${FC.Red}${'O '.repeat(attackerPlayers.length)}${FC.Gray}${'X '.repeat(attackerDeadPlayers.length)}`
@@ -61,5 +62,3 @@ export class ActionHud implements InGameHud {
         HudTextController.setSidebar(message);
     }
 }
-
-

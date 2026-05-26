@@ -9,6 +9,7 @@ import { PhaseEnum as BombPlantPhaseEnum } from "../BombPlantPhaseEnum"
 import { TeamEnum } from "../../../player/TeamEnum";
 
 import { MessageManager as Msg } from "../../../../ui/Message";
+import { Language as L } from "../../../../utils/Language";
 import { set_variable } from "../../../../utils/Variable";
 import { LanguageKey } from "../../../../settings/lang/LanguageKey";
 
@@ -112,7 +113,7 @@ export class ActionPhase implements IPhaseHandler {
         if (endReason) {
             const result = endReasonTable[endReason];
 
-            Msg.message(result.langKey);
+            Msg.message(L.translate(result.langKey));
 
             set_variable(`round_winner`, result.winner);
             PhaseManager.updatePhase(result.nextPhaseGenerator());
@@ -126,5 +127,3 @@ function voiceBroadcast(currentTick: number) {
         Msg.sound(VOICE_30_SEC_LEFT_SOUND_ID, {}, MemberManager.getPlayers());
     }
 }
-
-

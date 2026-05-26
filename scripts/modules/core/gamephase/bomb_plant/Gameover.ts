@@ -10,6 +10,7 @@ import { TeamEnum } from "../../../player/TeamEnum";
 import { PhaseEnum as BombPlantPhaseEnum } from "../BombPlantPhaseEnum";
 
 import { MessageManager as Msg } from "../../../../ui/Message";
+import { Language as L } from "../../../../utils/Language";
 import { variable } from "../../../../utils/Variable";
 
 import { GameMode, world } from "@minecraft/server";
@@ -34,7 +35,7 @@ export class GameOverPhase implements IPhaseHandler {
         const winner = variable('winner');
         if (winner === TeamEnum.Attacker || winner === TeamEnum.Defender) {
             const langKey = winner === TeamEnum.Attacker ? "game.over.attacker_win" : "game.over.defender_win";
-            Msg.message(langKey);
+            Msg.message(L.translate(langKey));
         }
     }
 
@@ -70,11 +71,9 @@ function respawnPlayers() {
 }
 
 function showScoreboard() {
-    let stat = Msg.translate("game.scoreboard.header") + `\n`;
+    let stat = L.translate("game.scoreboard.header") + `\n`;
     for (const player of MemberManager.getPlayers()) {
         stat += `${player.name} | K:${variable(`${player.name}.kills`)} D:${variable(`${player.name}.deaths`)}\n`;
     }
-    Msg.rawMessage(stat);
+    Msg.message(stat);
 }
-
-

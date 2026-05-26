@@ -3,6 +3,7 @@ import { MemberManager } from "../../../player/MemberManager";
 import { C4Manager } from "../C4Manager";
 import { MapRegister } from "../../../world/MapRegister";
 import { MessageManager as Msg } from "../../../../ui/Message";
+import { Language as L } from "../../../../utils/Language";
 
 import { C4DroppedState } from "./Dropped";
 import { C4PlantingState } from "./Planting";
@@ -111,7 +112,7 @@ function canPlantC4(source: Player) {
         return true;
 
     } catch (err: any) {
-        Msg.rawActionbar(`${FC.Red}${err.message}`, source, 40, "c4_status");
+        Msg.actionbar(`${FC.Red}${err.message}`, source, 40, "c4_status");
         return false;
     }
 }

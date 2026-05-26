@@ -12,6 +12,7 @@ import { TeamEnum } from "../../../player/TeamEnum";
 import { set_entity_dynamic_property } from "../../../../utils/Property";
 import { set_variable, variable } from "../../../../utils/Variable";
 import { MessageManager as Msg } from "../../../../ui/Message";
+import { Language as L } from "../../../../utils/Language";
 
 import { Config } from "../../../../settings/config";
 
@@ -87,7 +88,7 @@ function switchSide() {
     set_variable(`attacker_score`, defender_score);
     set_variable(`defender_score`, attacker_score);
 
-    Msg.message("game.switch_side", MemberManager.getPlayers());
+    Msg.message(L.translate("game.switch_side"), MemberManager.getPlayers());
 }
 
 function processWinner() {
@@ -102,8 +103,6 @@ function processWinner() {
         const playerTeam = MemberManager.getPlayerTeam(player);
         const earn = config.INCOME[(playerTeam === winnerTeam) ? 0 : 1];
         EconomyManager.modifyMoney(player, earn);
-        player.sendMessage(Msg.translateWithPrefix("economy.round_income", earn));
+        player.sendMessage(L.translateWithPrefix("economy.round_income", earn));
     }
 }
-
-

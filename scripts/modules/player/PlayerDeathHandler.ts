@@ -8,6 +8,7 @@ import { C4DroppedState } from "../core/c4state/states/Dropped";
 import { TeamEnum } from "./TeamEnum";
 
 import { MessageManager as Msg } from "../../ui/Message";
+import { Language as L } from "../../utils/Language";
 import { FormatCode as FC } from "../../utils/FormatCode";
 import { set_entity_dynamic_property } from "../../utils/Property";
 import { set_variable, variable } from "../../utils/Variable";
@@ -48,7 +49,7 @@ gameEvents.subscribe('playerDied', (ev: any) => {
         set_variable(`${ev.attacker.name}.kills`, variable(`${ev.attacker.name}.kills`) + 1);
 
         EconomyManager.setMoney(ev.attacker, EconomyManager.getMoney(ev.attacker) + 200);
-        ev.attacker.sendMessage(Msg.translateWithPrefix("kill.reward", 200));
+        ev.attacker.sendMessage(L.translateWithPrefix("kill.reward", 200));
     }
 });
 
@@ -69,14 +70,10 @@ function showDeathMessage(deadPlayer: Player, attacker: Player) {
     const teamPrefix = (team: TeamEnum) => (team === TeamEnum.Attacker) ? `${FC.Red}[A]` : `${FC.Aqua}[D]`;
     
     Msg.message(
-        "game.player_eliminated",
-        undefined,
-        teamPrefix(attackerTeam), attacker.name, teamPrefix(deadPlayerTeam), deadPlayer.name
+        L.translate("game.player_eliminated", teamPrefix(attackerTeam), attacker.name, teamPrefix(deadPlayerTeam), deadPlayer.name)
     );
     
     // Using fire-and-forget with 4 seconds duration
-    Msg.rawSubtitle(`${FC.Bold}\uE109${FC.DarkRed}${deadPlayer.name}`, attacker, 4 * 20);
-    Msg.subtitle("game.killed_you", deadPlayer, 4 * 20, attacker.name);
+    Msg.subtitle(`${FC.Bold}\uE109${FC.DarkRed}${deadPlayer.name}`, attacker, 4 * 20);
+    Msg.subtitle(L.translate("game.killed_you", attacker.name), deadPlayer, 4 * 20);
 }
-
-

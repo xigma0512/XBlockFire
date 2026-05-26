@@ -10,6 +10,7 @@ import { FormatCode as FC } from "../../utils/FormatCode";
 
 import { TeamEnum } from "../../modules/player/TeamEnum";
 import { MessageManager as Msg } from "../../ui/Message";
+import { Language as L } from "../../utils/Language";
 import { MapRegister } from "../../modules/world/MapRegister";
 
 import { CommandPermissionLevel, CustomCommandOrigin, CustomCommandParamType, Player } from "@minecraft/server";
@@ -57,11 +58,10 @@ function select_team(origin: CustomCommandOrigin, ...args: any[]) {
     }
 
     MemberManager.setPlayerTeam(executer, team as TeamEnum);
-    Msg.message("command.join_team", undefined, executer.name, team);
+    Msg.message(L.translate("command.join_team", executer.name, team));
 }
 
 function admin_select_team(origin: CustomCommandOrigin, ...args: any[]) {
-
     const players: Player[] = args[0];
     const team: TeamEnum = args[1];
 
@@ -71,7 +71,7 @@ function admin_select_team(origin: CustomCommandOrigin, ...args: any[]) {
 
     for (const p of players) {
         MemberManager.setPlayerTeam(p, team as TeamEnum);
-        Msg.message("command.join_team", undefined, p.name, team);
+        Msg.message(L.translate("command.join_team", p.name, team));
     }
 }
 
