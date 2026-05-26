@@ -105,20 +105,21 @@ class _HudTextController {
         }
 
         // Diff Algorithm:
-        // 1. Remove lines that are in previous but not in new
-        for (const oldLine of this.previousSidebarLines) {
-            if (!uniqueLines.includes(oldLine)) {
-                try { obj.removeParticipant(oldLine); } catch {}
+        // 1. Get current participants from the actual scoreboard to ensure we don't leak entries
+        const currentParticipants = obj.getParticipants().map(p => p.displayName);
+        
+        // 2. Remove lines that are on the scoreboard but not in the new list
+        for (const participantName of currentParticipants) {
+            if (!uniqueLines.includes(participantName)) {
+                try { obj.removeParticipant(participantName); } catch {}
             }
         }
 
-        // 2. Set scores for all lines. 
-        // Minecraft scoreboard only updates if the score OR the objective display changes.
-        // By setting the score (which is the position), we ensure order.
+        // 3. Set scores for all lines. 
         let score = uniqueLines.length;
         for (const line of uniqueLines) {
             try {
-                // Only set if score actually changed or it's a new line to minimize packets
+                // Only set if score actually changed to minimize packets
                 const currentScore = obj.getScore(line);
                 if (currentScore !== score) {
                     obj.setScore(line, score);
@@ -130,6 +131,16 @@ class _HudTextController {
         }
 
         this.previousSidebarLines = uniqueLines;
+    }
+
+    clearSidebar() {
+        const obj = world.scoreboard.getObjective('xblockfire_sidebar');
+        if (!obj) return;
+
+        for (const participant of obj.getParticipants()) {
+            try { obj.removeParticipant(participant); } catch {}
+        }
+        this.previousSidebarLines = [];
     }
 
     private update() {
