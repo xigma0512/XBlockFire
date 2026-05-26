@@ -32,7 +32,7 @@ export class WeaponInfo implements InGameHud {
             if (!itemActor.hasComponent('gun_magazine')) continue;
 
             const magazineComp = itemActor.getComponent('gun_magazine')!;
-            Msg.rawActionbar(`${magazineComp.ammo}/${magazineComp.storageAmmo}`, player, 2);
+            Msg.actionbar(`${magazineComp.ammo}/${magazineComp.storageAmmo}`, player, 2);
         }
     }
 }

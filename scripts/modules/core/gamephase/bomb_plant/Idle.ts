@@ -10,6 +10,7 @@ import { PhaseEnum as BombPlantPhaseEnum } from "../BombPlantPhaseEnum";
 import { TeamEnum } from "../../../player/TeamEnum";
 
 import { MessageManager as Msg } from "../../../../ui/Message";
+import { Language as L } from "../../../../utils/Language";
 import { reset_variables, set_variable } from "../../../../utils/Variable";
 import { ItemStackFactory } from "../../../../utils/ItemStackFactory";
 
@@ -70,11 +71,11 @@ function randomTeam() {
         if (attackTeamCount <= defenderTeamCount) {
             MemberManager.setPlayerTeam(player, TeamEnum.Attacker);
             attackTeamCount++;
-            player.sendMessage(Msg.translateWithPrefix("game.assigned.attacker"));
+            player.sendMessage(L.translateWithPrefix("game.assigned.attacker"));
         } else {
             MemberManager.setPlayerTeam(player, TeamEnum.Defender);
             defenderTeamCount++;
-            player.sendMessage(Msg.translateWithPrefix("game.assigned.defender"));
+            player.sendMessage(L.translateWithPrefix("game.assigned.defender"));
         }
     }
 }
@@ -102,5 +103,3 @@ function initializeVariable() {
         set_variable(`${player.name}.deaths`, 0);
     }
 }
-
-

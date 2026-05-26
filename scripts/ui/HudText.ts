@@ -1,6 +1,6 @@
 import { FormatCode } from "../utils/FormatCode";
 import { Player, system, world, DisplaySlotId, ScoreboardObjective } from "@minecraft/server";
-import { MessageManager } from "./Message";
+import { Language as L } from "../utils/Language";
 
 export interface HudMessage {
     text: string;
@@ -12,6 +12,7 @@ class _HudTextController {
     private static _instance: _HudTextController;
     static get instance() { return (this._instance || (this._instance = new this())); }
 
+    private titleQueue = new Map<Player, HudMessage[]>();
     private subtitleQueue = new Map<Player, HudMessage[]>();
     private actionbarQueue = new Map<Player, HudMessage[]>();
     private previousSidebarLines: string[] = [];
@@ -22,12 +23,16 @@ class _HudTextController {
     }
 
     private cleanupPlayer(playerName: string) {
-        for (const [player] of this.subtitleQueue) {
-            if (player.name === playerName) this.subtitleQueue.delete(player);
+        const queues = [this.titleQueue, this.subtitleQueue, this.actionbarQueue];
+        for (const queue of queues) {
+            for (const [player] of queue) {
+                if (player.name === playerName) queue.delete(player);
+            }
         }
-        for (const [player] of this.actionbarQueue) {
-            if (player.name === playerName) this.actionbarQueue.delete(player);
-        }
+    }
+
+    pushTitle(player: Player, text: string, duration: number, category: string = "default") {
+        this.pushMessage(player, this.titleQueue, text, duration, category);
     }
 
     pushSubtitle(player: Player, text: string, duration: number, category: string = "default") {
@@ -67,7 +72,7 @@ class _HudTextController {
     private getSidebarObjective(): ScoreboardObjective {
         let obj = world.scoreboard.getObjective('xblockfire_sidebar');
         if (!obj) {
-            obj = world.scoreboard.addObjective('xblockfire_sidebar', MessageManager.translate('system.name'));
+            obj = world.scoreboard.addObjective('xblockfire_sidebar', L.translate('system.name'));
         }
         return obj;
     }
@@ -87,16 +92,28 @@ class _HudTextController {
             uniqueLines.push(line);
         }
 
-        const previous = this.previousSidebarLines;
-        for (const oldLine of previous) {
+        // Diff Algorithm:
+        // 1. Remove lines that are in previous but not in new
+        for (const oldLine of this.previousSidebarLines) {
             if (!uniqueLines.includes(oldLine)) {
                 try { obj.removeParticipant(oldLine); } catch {}
             }
         }
 
-        let score = 15;
+        // 2. Set scores for all lines. 
+        // Minecraft scoreboard only updates if the score OR the objective display changes.
+        // By setting the score (which is the position), we ensure order.
+        let score = uniqueLines.length;
         for (const line of uniqueLines) {
-            try { obj.setScore(line, score); } catch {}
+            try {
+                // Only set if score actually changed or it's a new line to minimize packets
+                const currentScore = obj.getScore(line);
+                if (currentScore !== score) {
+                    obj.setScore(line, score);
+                }
+            } catch {
+                obj.setScore(line, score);
+            }
             score--;
         }
 
@@ -105,17 +122,28 @@ class _HudTextController {
 
     private update() {
         for (const player of world.getAllPlayers()) {
-            this.updatePlayerHud(player, this.subtitleQueue, (text) => {
-                try { player.onScreenDisplay.setTitle(" ", { subtitle: text, fadeInDuration: 0, fadeOutDuration: 0, stayDuration: 20 }); } catch {}
-            });
+            const title = this.getActiveMessage(player, this.titleQueue);
+            const subtitle = this.getActiveMessage(player, this.subtitleQueue);
+
+            if (title || subtitle) {
+                try {
+                    player.onScreenDisplay.setTitle(title || " ", {
+                        subtitle: subtitle || " ",
+                        fadeInDuration: 0,
+                        fadeOutDuration: 0,
+                        stayDuration: 20
+                    });
+                } catch {}
+            }
+
             this.updatePlayerHud(player, this.actionbarQueue, (text) => {
                 try { player.onScreenDisplay.setActionBar(text); } catch {}
             });
         }
     }
 
-    private updatePlayerHud(player: Player, queueMap: Map<Player, HudMessage[]>, displayFn: (text: string) => void) {
-        if (!queueMap.has(player)) return;
+    private getActiveMessage(player: Player, queueMap: Map<Player, HudMessage[]>): string | undefined {
+        if (!queueMap.has(player)) return undefined;
         const messages = queueMap.get(player)!;
         const now = system.currentTick;
         const activeMessages = messages.filter(m => m.expireTick > now);
@@ -125,7 +153,15 @@ class _HudTextController {
         }
         
         if (activeMessages.length > 0) {
-            displayFn(activeMessages.map(m => m.text).join(`\n${FormatCode.Reset}`));
+            return activeMessages.map(m => m.text).join(`\n${FormatCode.Reset}`);
+        }
+        return undefined;
+    }
+
+    private updatePlayerHud(player: Player, queueMap: Map<Player, HudMessage[]>, displayFn: (text: string) => void) {
+        const text = this.getActiveMessage(player, queueMap);
+        if (text) {
+            displayFn(text);
         }
     }
 }

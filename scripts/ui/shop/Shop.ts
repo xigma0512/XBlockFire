@@ -12,6 +12,7 @@ import { PhaseEnum as BombPlantPhaseEnum } from "../../modules/core/gamephase/Bo
 import { FormatCode as FC } from "../../utils/FormatCode";
 import { ItemStackFactory } from "../../utils/ItemStackFactory";
 import { MessageManager as Msg } from "../Message";
+import { Language as L } from "../../utils/Language";
 
 import { ItemLockMode, Player, system, world } from "@minecraft/server";
 import { ActionFormData, ActionFormResponse } from "@minecraft/server-ui";
@@ -46,12 +47,12 @@ export class Shop {
 
     static async openShop(player: Player) {
         const form = new ActionFormData();
-        form.title(Msg.translate("shop.title"))
-            .body(Msg.translate("shop.body", EconomyManager.getMoney(player)))
+        form.title(L.translate("shop.title"))
+            .body(L.translate("shop.body", EconomyManager.getMoney(player)))
 
         for (const product of ProductTable) {
             const canBeRefund = this.checkRefund(player, product);
-            const name = (canBeRefund ? Msg.translate("shop.refund_tag") : '') + `${FC.Reset}${product.name} ${FC.Yellow}${product.price}$\n${FC.DarkGray}${product.description ?? ''}`;
+            const name = (canBeRefund ? L.translate("shop.refund_tag") : '') + `${FC.Reset}${product.name} ${FC.Yellow}${product.price}$\n${FC.DarkGray}${product.description ?? ''}`;
             form.button(name, product.iconPath);
         }
 
@@ -77,7 +78,7 @@ export class Shop {
         }
         catch (err: any)
         {
-            player.sendMessage(Msg.translateWithPrefix("shop.error.prefix", err.message));
+            player.sendMessage(L.translateWithPrefix("shop.error.prefix", err.message));
             player.playSound('mob.villager.no');
         }
     }
@@ -107,7 +108,7 @@ export class Shop {
         }
         HotbarManager.sendHotbar(player, hotbar);
 
-        player.sendMessage(Msg.translateWithPrefix("shop.refund.success", product.name, refundMoney));
+        player.sendMessage(L.translateWithPrefix("shop.refund.success", product.name, refundMoney));
     }
 
     private static purchase(player: Player, product: IProduct) {
@@ -116,17 +117,17 @@ export class Shop {
         
         const historyProduct = PurchaseHistory.getProduct(player, product.slot);
         if (historyProduct && historyProduct.id !== product.id) {
-            throw Error(Msg.translate("shop.error.need_refund", historyProduct.name));
+            throw Error(L.translate("shop.error.need_refund", historyProduct.name));
         }
 
         const productItem = (product.itemActor) ? new product.itemActor().item
                                                 : ItemStackFactory.new({ typeId: product.itemStackTypeId!, lockMode: ItemLockMode.slot });
         if (hotbarItem && hotbarItem.typeId === productItem.typeId && hotbarItem.amount >= product.max_amount) {
-            throw Error(Msg.translate("shop.error.limit_reached"));
+            throw Error(L.translate("shop.error.limit_reached"));
         }
 
         if (!EconomyManager.canBeAfforded(player, product.price)) {
-            throw Error(Msg.translate("shop.error.no_money"))
+            throw Error(L.translate("shop.error.no_money"))
         }
 
         EconomyManager.modifyMoney(player, -product.price);
@@ -136,7 +137,7 @@ export class Shop {
 
         this.sendProduct(player, product);
 
-        player.sendMessage(Msg.translateWithPrefix("shop.buy.success", product.name, product.price));
+        player.sendMessage(L.translateWithPrefix("shop.buy.success", product.name, product.price));
     }
 
     private static sendProduct(player: Player, product: IProduct) {

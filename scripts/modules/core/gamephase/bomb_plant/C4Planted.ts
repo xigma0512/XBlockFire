@@ -1,20 +1,18 @@
-import { MemberManager } from "../../../player/MemberManager";
 import { PhaseManager } from "../PhaseManager";
+import { MemberManager } from "../../../player/MemberManager";
 import { ActionHud } from "../../../../ui/hud/huds/Action";
 
-import { RoundEndPhase } from "./RoundEnd";
-import { GameOverPhase } from "./Gameover";
-
-import { PhaseEnum as BombPlantPhaseEnum } from "../BombPlantPhaseEnum";
 import { TeamEnum } from "../../../player/TeamEnum";
+import { PhaseEnum } from "../BombPlantPhaseEnum";
 
 import { set_variable } from "../../../../utils/Variable";
 import { MessageManager as Msg } from "../../../../ui/Message";
+import { Language as L } from "../../../../utils/Language";
 import { LanguageKey } from "../../../../settings/lang/LanguageKey";
 
 import { Config } from "../../../../settings/config";
 
-const config = Config.bombplant.C4planted;
+const c4_config = Config.bombplant.C4planted;
 
 const enum EndReasonEnum {
     'Time-up' = 1,
@@ -25,56 +23,56 @@ const enum EndReasonEnum {
 interface EndReasonData {
     winner: TeamEnum;
     langKey: LanguageKey;
-    isGameOver: boolean;
     nextPhaseGenerator: () => IPhaseHandler;
 }
+
+// These would normally lead to RoundEndPhase
+import { RoundEndPhase } from "./RoundEnd";
+import { GameOverPhase } from "./Gameover";
 
 const endReasonTable: Record<number, EndReasonData> = {
     [EndReasonEnum['Time-up']]: {
         winner: TeamEnum.Attacker,
-        langKey: "round.end.c4_detonated",
-        isGameOver: false,
+        langKey: "round.end.c4_detonated", 
         nextPhaseGenerator: () => new RoundEndPhase()
     },
     [EndReasonEnum['Defender-Eliminated']]: {
         winner: TeamEnum.Attacker,
         langKey: "round.end.defender_eliminated",
-        isGameOver: false,
         nextPhaseGenerator: () => new RoundEndPhase()
     },
     [EndReasonEnum['Defender-Disconnect']]: {
         winner: TeamEnum.Attacker,
         langKey: "game.over.defender_disconnect",
-        isGameOver: true,
         nextPhaseGenerator: () => new GameOverPhase()
     }
 }
 
 export class C4PlantedPhase implements IPhaseHandler {
-
-    readonly phaseTag = BombPlantPhaseEnum.C4Planted;
+    
+    readonly phaseTag = PhaseEnum.C4Planted;
     readonly hud: ActionHud;
-    private _currentTick: number = config.COUNTDOWN_TIME;
+
+    private _currentTick: number;
     get currentTick() { return this._currentTick; }
 
     constructor() {
         this.hud = new ActionHud();
+        this._currentTick = c4_config.COUNTDOWN_TIME;
     }
 
-    on_entry() {
-        this._currentTick = config.COUNTDOWN_TIME;
-    }
+    on_entry() { }
+
+    on_exit() { }
 
     on_running() {
-        this._currentTick --;
+        this._currentTick--;
         this.hud.update();
-        this.transitions();
+
+        this.checkGameover();
     }
 
-    on_exit() {
-    }
-
-    private transitions() {
+    private checkGameover() {
         if (PhaseManager.isPhaseTransitioning) return;
 
         let endReason: EndReasonEnum | null = null;
@@ -89,13 +87,10 @@ export class C4PlantedPhase implements IPhaseHandler {
         if (endReason) {
             const result = endReasonTable[endReason];
 
-            Msg.message(result.langKey);
+            Msg.message(L.translate(result.langKey));
 
             set_variable(`round_winner`, result.winner);
             PhaseManager.updatePhase(result.nextPhaseGenerator());
         }
     }
-
 }
-
-

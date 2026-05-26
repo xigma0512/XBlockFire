@@ -8,6 +8,7 @@ import { C4IdleState } from "./Idle";
 import { C4StateEnum } from "../C4StateEnum";
 import { PhaseEnum as BombPlantPhaseEnum } from "../../gamephase/BombPlantPhaseEnum";
 import { MessageManager as Msg } from "../../../../ui/Message";
+import { Language as L } from "../../../../utils/Language";
 import { progressBar } from "../../../../utils/others/Format";
 
 import { ItemCompleteUseAfterEvent, ItemStopUseAfterEvent } from "@minecraft/server";
@@ -42,7 +43,7 @@ export class C4PlantingState implements IC4StateHandler {
 
     on_running() {
         const progress = progressBar(C4_PLANTING_TIME, this.currentTime--, 30);
-        Msg.rawActionbar(progress, this.source, 2, "c4_status");
+        Msg.actionbar(progress, this.source, 2, "c4_status");
     }
 
     on_exit() {
