@@ -32,10 +32,11 @@ export class GameOverPhase implements IPhaseHandler {
 
     on_entry() {
         this._currentTick = config.COUNTDOWN_TIME;
-        const winner = variable('winner');
+        const winner = variable('winner') as TeamEnum;
         if (winner === TeamEnum.Attacker || winner === TeamEnum.Defender) {
             const langKey = winner === TeamEnum.Attacker ? "game.over.attacker_win" : "game.over.defender_win";
             Msg.message(L.translate(langKey));
+            Msg.broadcastRoundEnd(winner, true);
         }
     }
 
@@ -71,7 +72,7 @@ function respawnPlayers() {
 }
 
 function showScoreboard() {
-    let stat = L.translate("game.scoreboard.header") + `\n`;
+    let stat = '';
     for (const player of MemberManager.getPlayers()) {
         stat += `${player.name} | K:${variable(`${player.name}.kills`)} D:${variable(`${player.name}.deaths`)}\n`;
     }

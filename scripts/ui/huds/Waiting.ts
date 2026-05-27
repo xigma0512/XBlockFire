@@ -15,6 +15,8 @@ import { Config } from "../../settings/config";
 const game_config = Config.game;
 const idle_config = Config.bombplant.idle;
 
+import { GameStatusProvider } from "../GameStatusProvider";
+
 export class WaitingHud implements InGameHud {
     
     constructor() { }
@@ -44,27 +46,6 @@ export class WaitingHud implements InGameHud {
     }
 
     private updateSidebar() {
-        const players = MemberManager.getPlayers();
-        
-        const map = MapRegister.getMap(gameroom().gameMapId);
-        const playerCount = players.length;
-
-        const defenders = MemberManager.getPlayers({team: TeamEnum.Defender});
-        const attackers = MemberManager.getPlayers({team: TeamEnum.Attacker});
-        const spectators = MemberManager.getPlayers({team: TeamEnum.Spectator});
-
-        const message = [
-            L.translate("hud.sidebar.map", map.name),
-            L.translate("hud.sidebar.players", playerCount, defenders.length, attackers.length),
-            ...defenders.map(p => `${FC.Gray}- ${FC.Aqua}${p.name}`),
-            ...attackers.map(p => `${FC.Gray}- ${FC.Red}${p.name}`),
-            ...spectators.map(p => `${FC.Gray}- ${p.name}`),
-            '',
-            L.translate("hud.sidebar.mode"),
-            `${FC.Green}${gameroom().gameMode}`,
-            ''
-        ];
-
-        HudTextController.setSidebar(message);
+        HudTextController.setSidebar(GameStatusProvider.getSidebar(true));
     }
 }

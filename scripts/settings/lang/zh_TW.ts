@@ -26,39 +26,15 @@ export const zh_TW = {
     "game.player_eliminated": `${FC.Bold}%1 %2 ${FC.DarkRed}淘汰了 %3 %4`,
     "game.killed_you": `${FC.Bold}${FC.Red}%1 擊殺了你`,
     
+    "round.end.attacker_win": "攻方獲勝",
+    "round.end.defender_win": "守方獲勝",
+    "round.end.prefix": `${FC.Gray}>>> ${FC.Reset}`,
+
     // Round End Messages
-    "round.end.time_up": [
-        "",
-        `${FC.Bold}${FC.Gray}---- ${FC.Yellow}[ 回合結束 ] ${FC.Gray}----`,
-        `${FC.Bold}${FC.Red}進攻方時間耗盡。`,
-        `${FC.Bold}${FC.Green}防守方贏得了這一回合。`,
-        `${FC.Bold}${FC.Gray}--------------------`,
-        ""
-    ],
-    "round.end.attacker_eliminated": [
-        "",
-        `${FC.Bold}${FC.Gray}---- ${FC.Yellow}[ 回合結束 ] ${FC.Gray}----`,
-        `${FC.Bold}${FC.Red}進攻方已全數被殲滅。`,
-        `${FC.Bold}${FC.Green}防守方贏得了這一回合。`,
-        `${FC.Bold}${FC.Gray}--------------------`,
-        ""
-    ],
-    "round.end.defender_eliminated": [
-        "",
-        `${FC.Bold}${FC.Gray}---- ${FC.Yellow}[ 回合結束 ] ${FC.Gray}----`,
-        `${FC.Bold}${FC.Red}防守方已全數被殲滅。`,
-        `${FC.Bold}${FC.Green}進攻方贏得了這一回合。`,
-        `${FC.Bold}${FC.Gray}--------------------`,
-        ""
-    ],
-    "round.end.c4_detonated": [
-        "",
-        `${FC.Bold}${FC.Gray}---- ${FC.Yellow}[ 回合結束 ] ${FC.Gray}----`,
-        `${FC.Bold}${FC.Red}C4 已引爆！`,
-        `${FC.Bold}${FC.Green}進攻方贏得了這一回合。`,
-        `${FC.Bold}${FC.Gray}--------------------`,
-        ""
-    ],
+    "round.end.time_up": `${FC.Bold}${FC.Gray}>>> ${FC.Red}進攻方時間耗盡。`,
+    "round.end.attacker_eliminated": `${FC.Bold}${FC.Gray}>>> ${FC.Red}進攻方已全數被殲滅。`,
+    "round.end.defender_eliminated": `${FC.Bold}${FC.Gray}>>> ${FC.Red}防守方已全數被殲滅。`,
+    "round.end.c4_detonated": `${FC.Bold}${FC.Gray}>>> ${FC.Red}C4 已引爆！`,
 
     // Game Over Messages
     "game.over.attacker_disconnect": [
@@ -92,21 +68,12 @@ export const zh_TW = {
         ""
     ],
 
-    "game.scoreboard.header": "--- [ 計分板 ] ---",
     "hud.waiting": `${FC.Yellow}正在等待更多玩家...`,
     "hud.start_in": `${FC.Green}遊戲將在 %1 秒後開始。`,
-    "hud.buying.subtitle": [
-        `${FC.Yellow}> %1 <`,
-        `${FC.White}右鍵點擊羽毛以打開商店。`
-    ],
+    "hud.buying.subtitle": `${FC.White}右鍵點擊羽毛以打開商店。`,
     "hud.sidebar.map": `地圖: ${FC.Green}%1`,
     "hud.sidebar.players": `人數: ${FC.Green}%1 ${FC.White}(${FC.Aqua}%2${FC.White}/${FC.Red}%3${FC.White})`,
     "hud.sidebar.mode": "模式:",
-    "hud.sidebar.round": `${FC.Gold}第 %1 回合`,
-    "hud.sidebar.time": `剩餘時間: ${FC.Gray}%1:%2`,
-    "hud.sidebar.kd": `擊殺/死亡: ${FC.Green}%1/%2`,
-    "hud.sidebar.money": `金錢: ${FC.Green}%1`,
-    "hud.sidebar.your_team": "你的隊伍:",
     "hud.sidebar.attacker": `${FC.Red}進攻方 (Attacker)`,
     "hud.sidebar.defender": `${FC.Aqua}防守方 (Defender)`,
     "member.join": `${FC.Bold}${FC.Green}%1 加入了房間。`,
@@ -123,6 +90,7 @@ export const zh_TW = {
     "shop.error.no_money": "你沒有足夠的金錢購買這個。",
     "shop.refund.success": "你退回了 %1。 (+%2$)",
     "shop.buy.success": "你購買了 %1。 (-%2$)",
+    
     "prestart.suggest_settings": "建議設定",
     "prestart.camera_shake": `設定->視訊->相機晃動${FC.Green}(開啟)`,
     "prestart.fov_adjust": `設定->視訊->視野可透過遊戲控制調整${FC.Red}(關閉)`
