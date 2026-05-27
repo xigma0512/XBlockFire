@@ -2277,9 +2277,9 @@
           "controls": [
             {
               "title_background": {
-                "ignored": true,
+                "ignored": false,
                 "type": "image",
-                "size": [ "100%sm + 10px", "100%sm + 2px" ],
+                "size": [ "100%sm + 4px", "100%sm + 2px" ],
                 "texture": "textures/ui/hud_tip_text_background",
                 "alpha": "@hud.anim_title_background_alpha_in"
               }
@@ -2307,7 +2307,7 @@
                 ],
                 "shadow": "$show_shadow",
                 "text_alignment": "center",
-                "offset": [ 0, 0 ],
+                "offset": [ 0, 1 ],
                 "bindings": [
                   {
                     "binding_name": "#hud_title_text_string",
@@ -2330,10 +2330,10 @@
           "controls": [
             {
               "subtitle_background": {
-                "ignored": true,
+                "ignored": false,
                 "type": "image",
-                "size": [ "100%sm + 20px", "100%sm + 5px" ],
-                "offset": [ 0, 16 ],
+                "size": [ "100%sm + 4px", "100%sm + 2px" ],
+                "offset": [ 0, 0 ],
                 "texture": "textures/ui/hud_tip_text_background",
                 "variables": [
                   {
@@ -2380,7 +2380,7 @@
                 "shadow": "$show_shadow",
                 "alpha": "$anim_type",
                 "text_alignment": "center",
-                "offset": [ 0, 0 ],
+                "offset": [ 0, 1 ],
                 "bindings": [
                   {
                     "binding_name": "#hud_subtitle_text_string",
