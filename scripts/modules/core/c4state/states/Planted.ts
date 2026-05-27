@@ -139,12 +139,14 @@ function c4Explosion(C4Entity: Entity) {
     
     C4Entity.dimension.createExplosion(C4Entity.location, 20, { causesFire: false, breaksBlocks: false });    
 
+    Msg.broadcastRoundEnd(TeamEnum.Attacker);
     C4Manager.updateState(new C4IdleState());
 }
 
 function defuseComplete(defuser: Player) {    
     if (PhaseManager.getPhase().phaseTag === BombPlantPhaseEnum.C4Planted) {
         set_variable(`round_winner`, TeamEnum.Defender);
+        Msg.broadcastRoundEnd(TeamEnum.Defender);
         PhaseManager.updatePhase(new RoundEndPhase());
     }
 

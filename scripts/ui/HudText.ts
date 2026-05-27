@@ -52,6 +52,8 @@ class _HudTextController {
     }
 
     pushActionbar(player: Player, text: string, duration: number, category: string = "default") {
+        // Clear all existing actionbar messages for this player to prevent overlap
+        this.actionbarQueue.set(player, []);
         this.pushMessage(player, this.actionbarQueue, text, duration, category);
     }
 

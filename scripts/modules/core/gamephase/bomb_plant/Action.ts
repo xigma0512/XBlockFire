@@ -114,6 +114,7 @@ export class ActionPhase implements IPhaseHandler {
             const result = endReasonTable[endReason];
 
             Msg.message(L.translate(result.langKey));
+            Msg.broadcastRoundEnd(result.winner);
 
             set_variable(`round_winner`, result.winner);
             PhaseManager.updatePhase(result.nextPhaseGenerator());
