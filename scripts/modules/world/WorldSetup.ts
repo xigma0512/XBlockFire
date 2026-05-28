@@ -12,9 +12,9 @@ world.afterEvents.playerSpawn.subscribe((ev) => {
         ]);
         ev.player.camera.setCamera('minecraft:first_person');
         system.runTimeout(() => {
-            ev.player.sendMessage(L.translateWithPrefix("prestart.suggest_settings"));
-            ev.player.sendMessage(L.translateWithPrefix("prestart.camera_shake"));
-            ev.player.sendMessage(L.translateWithPrefix("prestart.fov_adjust"));
+            ev.player.sendMessage(L.translate("prestart.suggest_settings"));
+            ev.player.sendMessage(L.translate("prestart.camera_shake"));
+            ev.player.sendMessage(L.translate("prestart.fov_adjust"));
             ev.player.playSound('note.bell');
         }, 100);
     }

@@ -55,11 +55,10 @@ export class C4PlantedState implements IC4StateHandler {
             PhaseManager.updatePhase(new C4PlantedPhase());
         }
 
-        HudDriver.chat(L.translate("c4.planted.broadcast"), MemberManager.getPlayers());
+        HudDriver.pushTitle(MemberManager.getPlayers(), L.translate('c4.planted.title'), 100)
         
         for (const player of MemberManager.getPlayers({team: TeamEnum.Attacker})) {
             EconomyManager.setMoney(player, EconomyManager.getMoney(player) + 300);
-            player.sendMessage(L.translateWithPrefix("c4.planted.reward", 300));
         }
     }
     
@@ -153,7 +152,7 @@ function defuseComplete(defuser: Player) {
     const players = MemberManager.getPlayers();
     Sound.play('C4_DEFUSED', players);
     
-    HudDriver.chat(L.translate("c4.defused.broadcast", defuser.name), players);
+    HudDriver.chat(L.translate("round.end.c4_defused", defuser.name), players);
 }
 
 let soundPlayInterval = 20;

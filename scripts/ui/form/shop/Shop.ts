@@ -77,7 +77,7 @@ export class Shop {
         }
         catch (err: any)
         {
-            player.sendMessage(L.translateWithPrefix("shop.error.prefix", err.message));
+            player.sendMessage(L.translate("shop.error.prefix", err.message));
             player.playSound('mob.villager.no');
         }
     }
@@ -107,7 +107,7 @@ export class Shop {
         }
         HotbarManager.sendHotbar(player, hotbar);
 
-        player.sendMessage(L.translateWithPrefix("shop.refund.success", product.name, refundMoney));
+        player.sendMessage(L.translate("shop.refund.success", product.name, refundMoney));
     }
 
     private static purchase(player: Player, product: IProduct) {
@@ -136,7 +136,7 @@ export class Shop {
 
         this.sendProduct(player, product);
 
-        player.sendMessage(L.translateWithPrefix("shop.buy.success", product.name, product.price));
+        player.sendMessage(L.translate("shop.buy.success", product.name, product.price));
     }
 
     private static sendProduct(player: Player, product: IProduct) {
