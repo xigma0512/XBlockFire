@@ -9,7 +9,7 @@ import { GameModeEnum } from "../../modules/core/GameModeEnum";
 import { FormatCode as FC } from "../../utils/FormatCode";
 
 import { TeamEnum } from "../../modules/player/TeamEnum";
-import { MessageManager as Msg } from "../../ui/media/Message";
+import { HudDriver } from "../../ui/hud/drivers/HudDriver";
 import { Language as L } from "../../utils/Language";
 import { MapRegister } from "../../modules/world/MapRegister";
 
@@ -58,7 +58,7 @@ function select_team(origin: CustomCommandOrigin, ...args: any[]) {
     }
 
     MemberManager.setPlayerTeam(executer, team as TeamEnum);
-    Msg.message(L.translate("command.join_team", executer.name, team));
+    HudDriver.chat(L.translate("command.join_team", executer.name, team));
 }
 
 function admin_select_team(origin: CustomCommandOrigin, ...args: any[]) {
@@ -71,7 +71,7 @@ function admin_select_team(origin: CustomCommandOrigin, ...args: any[]) {
 
     for (const p of players) {
         MemberManager.setPlayerTeam(p, team as TeamEnum);
-        Msg.message(L.translate("command.join_team", p.name, team));
+        HudDriver.chat(L.translate("command.join_team", p.name, team));
     }
 }
 

@@ -9,7 +9,7 @@ import { PurchaseHistory } from "../../../../ui/form/shop/Shop";
 
 import { PhaseEnum as BombPlantPhaseEnum } from "../BombPlantPhaseEnum";
 
-import { MessageManager as Msg } from "../../../../ui/media/Message";
+import { Sound } from "../../../../ui/media/Sound";
 import { set_entity_native_property } from "../../../../utils/Property";
 import { ItemStackFactory } from "../../../../utils/ItemStackFactory";
 
@@ -19,8 +19,6 @@ import { uiManager } from "@minecraft/server-ui";
 import { Config } from "../../../../settings/config";
 
 const config = Config.bombplant.buying;
-
-const VOICE_START_ROUND_SOUND_ID = 'xblockfire.start_round';
 
 export class BuyingPhase implements IPhaseHandler {
 
@@ -36,7 +34,7 @@ export class BuyingPhase implements IPhaseHandler {
 
     on_entry() {
         this._currentTick = config.COUNTDOWN_TIME;
-        Msg.sound(VOICE_START_ROUND_SOUND_ID, {}, MemberManager.getPlayers());
+        Sound.play('START_ROUND', MemberManager.getPlayers(), {});
         sendShopItem();
     }
 
@@ -78,5 +76,4 @@ function restorePlayerDefaults() {
         uiManager.closeAllForms(player);
     }
 }
-
 

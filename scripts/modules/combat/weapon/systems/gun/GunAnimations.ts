@@ -1,4 +1,3 @@
-import { MessageManager as Msg } from "../../../../../ui/media/Message";
 import { ItemActor } from "../../actors/Actor";
 
 import { Player, world } from "@minecraft/server";
@@ -14,21 +13,17 @@ export class GunAnimations {
         
         const gunComp = gunActor.getComponent('gun_fire')!;
         owner.playSound(gunComp.fire_sound ?? '');
-        Msg.sound(
-            `${gunComp.fire_sound}.3d`,
-            {location: owner.location, volume: 4},
-            world.getPlayers({excludeNames: [owner.name]})
-        );
+        for (const p of world.getPlayers({excludeNames: [owner.name]})) {
+            p.playSound(`${gunComp.fire_sound}.3d`, {location: owner.location, volume: 4});
+        }
     }
 
     static playGunReloadAnimation(owner: Player, gunActor: ItemActor) {
         const reloadComp = gunActor.getComponent('gun_reload')!;
         owner.playSound(reloadComp.reload_sound ?? '');
-        Msg.sound(
-            `${reloadComp.reload_sound}.3d`,
-            { location: owner.location, volume: 2 },
-            world.getPlayers({excludeNames: [owner.name]})
-        );
+        for (const p of world.getPlayers({excludeNames: [owner.name]})) {
+            p.playSound(`${reloadComp.reload_sound}.3d`, { location: owner.location, volume: 2 });
+        }
     }
 }
 

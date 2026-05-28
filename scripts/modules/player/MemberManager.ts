@@ -1,6 +1,6 @@
 import { Player, world } from "@minecraft/server";
 import { TeamEnum } from "./TeamEnum";
-import { MessageManager as Msg } from "../../ui/media/Message";
+import { HudDriver } from "../../ui/hud/drivers/HudDriver";
 import { Language as L } from "../../utils/Language";
 
 interface PlayerOptions {
@@ -16,12 +16,12 @@ class _MemberManager {
 
     joinRoom(player: Player) {
         this.playerTeam.set(player, TeamEnum.Spectator);
-        Msg.message(L.translate("member.join", player.name), this.getPlayers());
+        HudDriver.chat(L.translate("member.join", player.name), this.getPlayers());
     }
 
     leaveRoom(player: Player) {
         this.playerTeam.delete(player);
-        Msg.message(L.translate("member.leave", player.name), this.getPlayers());
+        HudDriver.chat(L.translate("member.leave", player.name), this.getPlayers());
     }
 
     includePlayer(player: Player) {

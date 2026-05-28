@@ -9,7 +9,6 @@ import { BuyingPhase } from "./Buying";
 import { PhaseEnum as BombPlantPhaseEnum } from "../BombPlantPhaseEnum";
 import { TeamEnum } from "../../../player/TeamEnum";
 
-import { MessageManager as Msg } from "../../../../ui/media/Message";
 import { Language as L } from "../../../../utils/Language";
 import { reset_variables, set_variable } from "../../../../utils/Variable";
 import { ItemStackFactory } from "../../../../utils/ItemStackFactory";

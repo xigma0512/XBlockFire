@@ -8,7 +8,9 @@ import { ActionView as ActionHud } from "../../../../ui/hud/views/ActionView";
 import { PhaseEnum as BombPlantPhaseEnum } from "../BombPlantPhaseEnum"
 import { TeamEnum } from "../../../player/TeamEnum";
 
-import { MessageManager as Msg } from "../../../../ui/media/Message";
+import { HudDriver } from "../../../../ui/hud/drivers/HudDriver";
+import { Sound } from "../../../../ui/media/Sound";
+import { UiStateManager } from "../../../../ui/hud/state/UiState";
 import { Language as L } from "../../../../utils/Language";
 import { set_variable } from "../../../../utils/Variable";
 import { LanguageKey } from "../../../../settings/lang/LanguageKey";
@@ -16,8 +18,6 @@ import { LanguageKey } from "../../../../settings/lang/LanguageKey";
 import { Config } from "../../../../settings/config";
 
 const config = Config.bombplant.action;
-
-const VOICE_30_SEC_LEFT_SOUND_ID = 'xblockfire.30_sec_left';
 
 const enum EndReasonEnum {
     'Time-up' = 1,
@@ -113,8 +113,8 @@ export class ActionPhase implements IPhaseHandler {
         if (endReason) {
             const result = endReasonTable[endReason];
 
-            Msg.message(L.translate(result.langKey));
-            Msg.broadcastRoundEnd(result.winner);
+            HudDriver.chat(L.translate(result.langKey));
+            UiStateManager.setRoundEndMessage(result.winner);
 
             set_variable(`round_winner`, result.winner);
             PhaseManager.updatePhase(result.nextPhaseGenerator());
@@ -125,6 +125,6 @@ export class ActionPhase implements IPhaseHandler {
 
 function voiceBroadcast(currentTick: number) {
     if (currentTick === 30 * 20) {
-        Msg.sound(VOICE_30_SEC_LEFT_SOUND_ID, {}, MemberManager.getPlayers());
+        Sound.play('THIRTY_SEC_LEFT', MemberManager.getPlayers(), {});
     }
 }
