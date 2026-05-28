@@ -9,7 +9,9 @@ import { IdlePhase } from "./Idle";
 import { TeamEnum } from "../../../player/TeamEnum";
 import { PhaseEnum as BombPlantPhaseEnum } from "../BombPlantPhaseEnum";
 
-import { MessageManager as Msg } from "../../../../ui/media/Message";
+import { HudDriver } from "../../../../ui/hud/drivers/HudDriver";
+import { Sound } from "../../../../ui/media/Sound";
+import { UiStateManager } from "../../../../ui/hud/state/UiState";
 import { Language as L } from "../../../../utils/Language";
 import { variable } from "../../../../utils/Variable";
 
@@ -35,14 +37,14 @@ export class GameOverPhase implements IPhaseHandler {
         const winner = variable('winner') as TeamEnum;
         if (winner === TeamEnum.Attacker || winner === TeamEnum.Defender) {
             const langKey = winner === TeamEnum.Attacker ? "game.over.attacker_win" : "game.over.defender_win";
-            Msg.message(L.translate(langKey));
-            Msg.broadcastRoundEnd(winner, true);
+            HudDriver.chat(L.translate(langKey));
+            UiStateManager.setRoundEndMessage(winner, true);
         }
     }
 
     on_running() {
         if (this._currentTick-- % 20 == 0) {
-            Msg.sound("firework.launch", {}, world.getAllPlayers());
+            Sound.play('FIREWORK', world.getAllPlayers(), {});
         }
         this.hud.update();
         this.transitions();
@@ -76,5 +78,5 @@ function showScoreboard() {
     for (const player of MemberManager.getPlayers()) {
         stat += `${player.name} | K:${variable(`${player.name}.kills`)} D:${variable(`${player.name}.deaths`)}\n`;
     }
-    Msg.message(stat);
+    HudDriver.chat(stat);
 }

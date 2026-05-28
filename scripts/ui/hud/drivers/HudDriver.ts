@@ -8,6 +8,8 @@ export interface HudMessage {
     category: string;
 }
 
+export type MessageTarget = Player | Player[] | undefined;
+
 class _HudDriver {
     private static _instance: _HudDriver;
     static get instance() { return (this._instance || (this._instance = new this())); }
@@ -34,17 +36,35 @@ class _HudDriver {
         }
     }
 
-    pushTitle(player: Player, text: string, duration: number, category: string = "default") {
-        this.pushMessage(player, this.titleQueue, text, duration, category);
+    private getPlayers(target: MessageTarget): Player[] {
+        if (target === undefined) return world.getAllPlayers();
+        return Array.isArray(target) ? target : [target];
     }
 
-    pushSubtitle(player: Player, text: string, duration: number, category: string = "default") {
-        this.pushMessage(player, this.subtitleQueue, text, duration, category);
+    chat(message: string | string[], target?: MessageTarget) {
+        const text = Array.isArray(message) ? message.join('\n') : message;
+        for (const p of this.getPlayers(target)) {
+            p.sendMessage(text);
+        }
     }
 
-    pushActionbar(player: Player, text: string, duration: number, category: string = "default") {
-        this.actionbarQueue.set(player, []); // Last one wins logic
-        this.pushMessage(player, this.actionbarQueue, text, duration, category);
+    pushTitle(target: MessageTarget, text: string, duration: number, category: string = "default") {
+        for (const player of this.getPlayers(target)) {
+            this.pushMessage(player, this.titleQueue, text, duration, category);
+        }
+    }
+
+    pushSubtitle(target: MessageTarget, text: string, duration: number, category: string = "default") {
+        for (const player of this.getPlayers(target)) {
+            this.pushMessage(player, this.subtitleQueue, text, duration, category);
+        }
+    }
+
+    pushActionbar(target: MessageTarget, text: string, duration: number, category: string = "default") {
+        for (const player of this.getPlayers(target)) {
+            this.actionbarQueue.set(player, []); // Last one wins logic
+            this.pushMessage(player, this.actionbarQueue, text, duration, category);
+        }
     }
 
     private pushMessage(player: Player, queueMap: Map<Player, HudMessage[]>, text: string, duration: number, category: string) {

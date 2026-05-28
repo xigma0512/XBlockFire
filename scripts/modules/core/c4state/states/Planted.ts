@@ -12,7 +12,9 @@ import { TeamEnum } from "../../../player/TeamEnum";
 import { PhaseEnum as BombPlantPhaseEnum } from "../../gamephase/BombPlantPhaseEnum";
 
 import { set_variable, variable } from "../../../../utils/Variable";
-import { MessageManager as Msg } from "../../../../ui/media/Message";
+import { HudDriver } from "../../../../ui/hud/drivers/HudDriver";
+import { Sound } from "../../../../ui/media/Sound";
+import { UiStateManager } from "../../../../ui/hud/state/UiState";
 import { Language as L } from "../../../../utils/Language";
 import { progressBar } from "../../../../utils/others/Format";
 
@@ -27,10 +29,6 @@ const DEFUSER_ITEM_ID = 'xblockfire:defuser';
 const PLANTED_C4_ENTITY_ID = 'xblockfire:planted_c4' as VanillaEntityIdentifier;
 const DEFUSE_RANGE = Config.c4.DEFUSE_RANGE;
 const DEFUSING_TIME = 6 * 20;
-
-const EXPLOSION_SOUND_ID = 'xblockfire.c4_explosion';
-const COMPLETE_DEFUSED_SOUND_ID = 'xblockfire.c4_defused';
-const DEFUSING_SOUND_ID = 'xblockfire.defusing';
 
 export class C4PlantedState implements IC4StateHandler {
 
@@ -57,7 +55,7 @@ export class C4PlantedState implements IC4StateHandler {
             PhaseManager.updatePhase(new C4PlantedPhase());
         }
 
-        Msg.message(L.translate("c4.planted.broadcast"), MemberManager.getPlayers());
+        HudDriver.chat(L.translate("c4.planted.broadcast"), MemberManager.getPlayers());
         
         for (const player of MemberManager.getPlayers({team: TeamEnum.Attacker})) {
             EconomyManager.setMoney(player, EconomyManager.getMoney(player) + 300);
@@ -90,7 +88,7 @@ export class C4PlantedState implements IC4StateHandler {
             system.run(() => {
                 const location = ev.source.location;
                 const volume = 3;
-                Msg.sound(DEFUSING_SOUND_ID, { location, volume }, ev.source);
+                Sound.play('C4_DEFUSING', ev.source, { location, volume });
             });
             displayDefusingProgress(ev.source);
         }
@@ -109,7 +107,7 @@ function canDefuseC4(C4Entity: Entity, player: Player) {
     const distance = Vector3Utils.distance(player.location, C4Entity.location);
     if (distance > DEFUSE_RANGE) {
         system.run(() => {
-            Msg.actionbar(L.translate("c4.defuse.no_range"), player, 40, "c4_status");
+            HudDriver.pushActionbar(player, L.translate("c4.defuse.no_range"), 40, "c4_status");
         });
         return false;
     }
@@ -121,7 +119,7 @@ function displayDefusingProgress(source: Player) {
     let currentTime = DEFUSING_TIME;
     const taskId = system.runInterval(() => {
         const progress = progressBar(DEFUSING_TIME, currentTime--, 30);
-        Msg.actionbar(progress, source, 2, "c4_status");
+        HudDriver.pushActionbar(source, progress, 2, "c4_status");
     });
     system.run(() => {
         const callback = world.afterEvents.itemStopUse.subscribe(ev => {
@@ -135,27 +133,27 @@ function displayDefusingProgress(source: Player) {
 function c4Explosion(C4Entity: Entity) {
     const location = C4Entity.location;
     const volume = 3;
-    Msg.sound(EXPLOSION_SOUND_ID, { location, volume });
+    Sound.play('C4_EXPLOSION', undefined, { location, volume });
     
     C4Entity.dimension.createExplosion(C4Entity.location, 20, { causesFire: false, breaksBlocks: false });    
 
-    Msg.broadcastRoundEnd(TeamEnum.Attacker);
+    UiStateManager.setRoundEndMessage(TeamEnum.Attacker);
     C4Manager.updateState(new C4IdleState());
 }
 
 function defuseComplete(defuser: Player) {    
     if (PhaseManager.getPhase().phaseTag === BombPlantPhaseEnum.C4Planted) {
         set_variable(`round_winner`, TeamEnum.Defender);
-        Msg.broadcastRoundEnd(TeamEnum.Defender);
+        UiStateManager.setRoundEndMessage(TeamEnum.Defender);
         PhaseManager.updatePhase(new RoundEndPhase());
     }
 
     C4Manager.updateState(new C4IdleState());
 
     const players = MemberManager.getPlayers();
-    Msg.sound(COMPLETE_DEFUSED_SOUND_ID, {}, players);
+    Sound.play('C4_DEFUSED', players);
     
-    Msg.message(L.translate("c4.defused.broadcast", defuser.name), players);
+    HudDriver.chat(L.translate("c4.defused.broadcast", defuser.name), players);
 }
 
 let soundPlayInterval = 20;
@@ -177,3 +175,5 @@ function playC4Effect(currentTick: number, entity: Entity) {
         try { entity.dimension.spawnParticle("minecraft:explosion_particle", location); } catch { }
     }
 }
+
+

@@ -6,7 +6,8 @@ import { TeamEnum } from "../../../player/TeamEnum";
 import { PhaseEnum } from "../BombPlantPhaseEnum";
 
 import { set_variable } from "../../../../utils/Variable";
-import { MessageManager as Msg } from "../../../../ui/media/Message";
+import { HudDriver } from "../../../../ui/hud/drivers/HudDriver";
+import { UiStateManager } from "../../../../ui/hud/state/UiState";
 import { Language as L } from "../../../../utils/Language";
 import { LanguageKey } from "../../../../settings/lang/LanguageKey";
 
@@ -87,8 +88,8 @@ export class C4PlantedPhase implements IPhaseHandler {
         if (endReason) {
             const result = endReasonTable[endReason];
 
-            Msg.message(L.translate(result.langKey));
-            Msg.broadcastRoundEnd(result.winner);
+            HudDriver.chat(L.translate(result.langKey));
+            UiStateManager.setRoundEndMessage(result.winner);
 
             set_variable(`round_winner`, result.winner);
             PhaseManager.updatePhase(result.nextPhaseGenerator());

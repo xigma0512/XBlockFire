@@ -1,9 +1,6 @@
-import { gameroom } from "../../GameRoom";
 import { MemberManager } from "../../../player/MemberManager";
 import { C4Manager } from "../C4Manager";
-import { MapRegister } from "../../../world/MapRegister";
-import { MessageManager as Msg } from "../../../../ui/media/Message";
-import { Language as L } from "../../../../utils/Language";
+import { HudDriver } from "../../../../ui/hud/drivers/HudDriver";
 
 import { C4DroppedState } from "./Dropped";
 import { C4PlantingState } from "./Planting";
@@ -11,17 +8,12 @@ import { C4PlantingState } from "./Planting";
 import { C4StateEnum } from "../C4StateEnum";
 import { TeamEnum } from "../../../player/TeamEnum";
 
-import { set_variable } from "../../../../utils/Variable";
 import { FormatCode as FC } from "../../../../utils/FormatCode";
 
-import { Vector3Utils } from "@minecraft/math";
 import { Player, system, world } from "@minecraft/server";
 import { EntitySpawnAfterEvent, ItemUseBeforeEvent } from "@minecraft/server";
 
-import { Config } from "../../../../settings/config";
-
 const C4_ITEM_ID = 'xblockfire:c4';
-const C4_TARGET_RANGE = Config.c4.C4_TARGET_RANGE;
 
 export class C4IdleState implements IC4StateHandler {
 
@@ -112,7 +104,7 @@ function canPlantC4(source: Player) {
         return true;
 
     } catch (err: any) {
-        Msg.actionbar(`${FC.Red}${err.message}`, source, 40);
+        HudDriver.pushActionbar(source, `${FC.Red}${err.message}`, 40);
         return false;
     }
 }

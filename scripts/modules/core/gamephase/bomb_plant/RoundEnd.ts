@@ -11,7 +11,8 @@ import { TeamEnum } from "../../../player/TeamEnum";
 
 import { set_entity_dynamic_property } from "../../../../utils/Property";
 import { set_variable, variable } from "../../../../utils/Variable";
-import { MessageManager as Msg } from "../../../../ui/media/Message";
+import { HudDriver } from "../../../../ui/hud/drivers/HudDriver";
+import { Sound } from "../../../../ui/media/Sound";
 import { Language as L } from "../../../../utils/Language";
 
 import { Config } from "../../../../settings/config";
@@ -36,7 +37,7 @@ export class RoundEndPhase implements IPhaseHandler {
 
     on_running() {        
         if (this._currentTick-- % 20 == 0) {
-            Msg.sound("firework.launch", {}, MemberManager.getPlayers());
+            Sound.play('FIREWORK', MemberManager.getPlayers(), {});
         }
         this.hud.update();
         this.transitions();
@@ -88,7 +89,7 @@ function switchSide() {
     set_variable(`attacker_score`, defender_score);
     set_variable(`defender_score`, attacker_score);
 
-    Msg.message(L.translate("game.switch_side"), MemberManager.getPlayers());
+    HudDriver.chat(L.translate("game.switch_side"), MemberManager.getPlayers());
 }
 
 function processWinner() {

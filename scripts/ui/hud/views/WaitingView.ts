@@ -3,7 +3,6 @@ import { MemberManager } from "../../../modules/player/MemberManager";
 import { PhaseManager } from "../../../modules/core/gamephase/PhaseManager";
 import { MapRegister } from "../../../modules/world/MapRegister";
 
-import { MessageManager as Msg } from "../../media/Message";
 import { Language as L } from "../../../utils/Language";
 import { HudDriver } from "../drivers/HudDriver";
 import { RoomInfo } from "../components/RoomInfo";
@@ -35,10 +34,10 @@ export class WaitingView implements InGameHud {
         }
         
         if (phase.currentTick !== idle_config.COUNTDOWN_TIME && playerAmount < game_config.AUTO_START_MIN_PLAYER) {
-            Msg.message(L.translate("game.wait_players"), players);
+            HudDriver.chat(L.translate("game.wait_players"), players);
         }
         
-        Msg.subtitle(text, players, 2);
+        HudDriver.pushSubtitle(players, text, 2);
     }
 
     private updateSidebar() {
