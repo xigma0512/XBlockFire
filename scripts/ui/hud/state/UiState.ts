@@ -16,6 +16,7 @@ class _UiStateManager {
     static get instance() { return (this._instance || (this._instance = new this())); }
 
     private roundEndMessages = new Map<Player, UiMessage>();
+    private notifyMessages = new Map<Player, UiMessage>();
 
     setRoundEndMessage(winner: TeamEnum, isGameOver: boolean = false) {
         const now = system.currentTick;
@@ -55,8 +56,34 @@ class _UiStateManager {
         return undefined;
     }
 
+    /**
+     * 設定通知訊息 (廣播給所有玩家)
+     */
+    setNotifyMessage(text: string, duration: number = 5 * 20) {
+        const expireTick = system.currentTick + duration;
+        for (const player of MemberManager.getPlayers()) {
+            this.notifyMessages.set(player, { text, expireTick });
+        }
+    }
+
+    /**
+     * 獲取當前有效的通知訊息
+     */
+    getNotifyMessage(player: Player): string | undefined {
+        const data = this.notifyMessages.get(player);
+        if (!data) return undefined;
+
+        if (system.currentTick <= data.expireTick) {
+            return data.text;
+        }
+
+        this.notifyMessages.delete(player);
+        return undefined;
+    }
+
     clearState() {
         this.roundEndMessages.clear();
+        this.notifyMessages.clear();
     }
 }
 

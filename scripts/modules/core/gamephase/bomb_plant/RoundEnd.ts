@@ -16,6 +16,7 @@ import { Sound } from "../../../../ui/media/Sound";
 import { Language as L } from "../../../../utils/Language";
 
 import { Config } from "../../../../settings/config";
+import { UiStateManager } from "../../../../ui/hud/state/UiState";
 
 const config = Config.bombplant.roundEnd;
 
@@ -89,7 +90,7 @@ function switchSide() {
     set_variable(`attacker_score`, defender_score);
     set_variable(`defender_score`, attacker_score);
 
-    HudDriver.pushTitle(MemberManager.getPlayers(), L.translate("game.switch_side.title"), 360);
+    UiStateManager.setNotifyMessage(L.translate("game.switch_side.title"), 20 * 17);
 }
 
 function processWinner() {

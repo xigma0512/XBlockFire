@@ -4,7 +4,7 @@ export class MatchScore {
     /**
      * Generates a string like "<Score> || <Time> || <Score>"
      */
-    static format(leftScore: number, leftColor: string, timeStr: string, rightScore: number, rightColor: string): string {
-        return `${leftColor}${leftScore} ${FC.Gray}|| ${FC.White}${timeStr} ${FC.Gray}|| ${rightColor}${rightScore}`;
+    static format(leftScore: number, timeStr: string, rightScore: number): string {
+        return `${FC.MaterialEmerald}${leftScore} ${FC.Gray}|| ${FC.White}${timeStr} ${FC.Gray}|| ${FC.MaterialRedstone}${rightScore}`;
     }
 }
