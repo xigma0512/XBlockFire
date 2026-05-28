@@ -948,7 +948,7 @@
     "easing": "in_quart",
     "destroy_at_end": "chat_grid_item",
     "duration": 1,
-    "from": "$chat_background_opacity",
+    "from": 0.3, //"$chat_background_opacity",
     "to": 0
   },
 
@@ -1001,7 +1001,7 @@
         "chat_background": {
           "type": "image",
           "texture": "textures/ui/Black",
-          "alpha": "$chat_background_opacity",
+          "alpha": 0.3, // "$chat_background_opacity",
           "size": [ "100%", "100%c" ],
           "anims": [
             "@hud.anim_chat_bg_wait"
@@ -1022,13 +1022,11 @@
 
   "chat_panel": {
     "type": "panel",
-    //Uncomment when text formatting is being accounted for in word length
-    //"clips_children": true,
-    "anchor_from": "top_left",
-    "anchor_to": "top_left",
-    "size": [ "100%", "100%c" ],
-    "max_size": [ "100%", "50%" ],
-
+    "anchor_from": "bottom_left",
+    "anchor_to": "bottom_left",
+    "size": [ "30%", "100%c" ],
+    "max_size": [ "30%", "30%" ],
+    "offset": [ 2, -40 ],
     "controls": [
       {
         "stack_panel": {
@@ -1037,7 +1035,7 @@
           "anchor_to": "bottom_left",
           "factory": {
             "name": "chat_item_factory",
-            "max_children_size": 50,
+            "max_children_size": 10,
             "control_ids": {
               "chat_item": "chat_item@hud.chat_grid_item"
             }
@@ -2273,7 +2271,7 @@
           "size": [ "100%", "100%cm" ],
           "anchor_from": "top_middle",
           "anchor_to": "top_middle",
-          "offset": [ 0, 20 ],
+          "offset": [ 0, 24 ],
           "controls": [
             {
               "title_background": {
@@ -2326,11 +2324,11 @@
           "size": [ "100%", "100%cm" ],
           "anchor_from": "bottom_middle",
           "anchor_to": "bottom_middle",
-          "offset": [ 0, -90 ],
+          "offset": [ 0, "-65px" ],
           "controls": [
             {
               "subtitle_background": {
-                "ignored": false,
+                "ignored": true,
                 "type": "image",
                 "size": [ "100%sm + 4px", "100%sm + 2px" ],
                 "offset": [ 0, 0 ],
@@ -3507,11 +3505,11 @@
               "game_tip@game_tip.game_tip_chat_stack_factory": {
                 "size": [ "100%", "100%c" ]
               }
-            },
-            { "chat_panel@hud.chat_panel": {} }
+            }
           ]
         }
       },
+      { "chat_panel@hud.chat_panel": {} },
       {
         "boss_health_panel": {
           "type": "stack_panel",
