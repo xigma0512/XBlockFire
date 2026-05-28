@@ -89,7 +89,7 @@ function switchSide() {
     set_variable(`attacker_score`, defender_score);
     set_variable(`defender_score`, attacker_score);
 
-    HudDriver.chat(L.translate("game.switch_side"), MemberManager.getPlayers());
+    HudDriver.pushTitle(MemberManager.getPlayers(), L.translate("game.switch_side.title"), 360);
 }
 
 function processWinner() {
@@ -104,6 +104,5 @@ function processWinner() {
         const playerTeam = MemberManager.getPlayerTeam(player);
         const earn = config.INCOME[(playerTeam === winnerTeam) ? 0 : 1];
         EconomyManager.modifyMoney(player, earn);
-        player.sendMessage(L.translateWithPrefix("economy.round_income", earn));
     }
 }

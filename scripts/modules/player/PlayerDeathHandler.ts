@@ -49,7 +49,6 @@ gameEvents.subscribe('playerDied', (ev: any) => {
         set_variable(`${ev.attacker.name}.kills`, variable(`${ev.attacker.name}.kills`) + 1);
 
         EconomyManager.setMoney(ev.attacker, EconomyManager.getMoney(ev.attacker) + 200);
-        ev.attacker.sendMessage(L.translateWithPrefix("kill.reward", 200));
     }
 });
 

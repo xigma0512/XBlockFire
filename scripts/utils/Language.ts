@@ -20,10 +20,4 @@ export class Language {
         return text;
     }
 
-    /**
-     * 取得帶有系統前綴的翻譯字串
-     */
-    static translateWithPrefix(key: LanguageKey, ...args: (string | number)[]): string {
-        return this.translate("system.prefix") + this.translate(key, ...args);
-    }
 }

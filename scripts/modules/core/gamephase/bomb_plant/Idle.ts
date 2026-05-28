@@ -70,11 +70,11 @@ function randomTeam() {
         if (attackTeamCount <= defenderTeamCount) {
             MemberManager.setPlayerTeam(player, TeamEnum.Attacker);
             attackTeamCount++;
-            player.sendMessage(L.translateWithPrefix("game.assigned.attacker"));
+            player.sendMessage(L.translate("game.assigned.attacker"));
         } else {
             MemberManager.setPlayerTeam(player, TeamEnum.Defender);
             defenderTeamCount++;
-            player.sendMessage(L.translateWithPrefix("game.assigned.defender"));
+            player.sendMessage(L.translate("game.assigned.defender"));
         }
     }
 }

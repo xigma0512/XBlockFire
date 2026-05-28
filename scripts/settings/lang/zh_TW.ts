@@ -2,39 +2,29 @@ import { FormatCode as FC } from "../../utils/FormatCode";
 
 export const zh_TW = {
     "system.name": `${FC.Bold}${FC.Gold}XBlockFire`,
-    "system.prefix": `${FC.Gray}>> ${FC.Reset}`,
-    "c4.pickup": "你撿起了 C4。",
-    "c4.dropped": `${FC.Bold}${FC.Blue}C4 已掉落。`,
-    "c4.pickup.broadcast": `${FC.Bold}${FC.Yellow}玩家 %1 撿起了 C4。`,
-    "c4.planted.broadcast": `${FC.Bold}${FC.MinecoinGold}C4 已被安裝`,
-    "c4.planted.reward": "C4 安裝獎勵: +%1$",
+
+    "c4.dropped": `${FC.Bold}${FC.Gray}> ${FC.Blue}C4 已掉落。`,
+    "c4.pickup.broadcast": `${FC.Bold}${FC.Gray}> ${FC.Yellow}玩家 %1 撿起了 C4。`,
+    "c4.planted.title": `${FC.Bold}${FC.Red}<< C4 已被安裝 >>`,
     "c4.defuse.no_range": `${FC.Red}範圍內沒有 C4。`,
-    "c4.defused.broadcast": [
-        `${FC.Bold}${FC.Gray}---- ${FC.Yellow}[ 回合結束 ] ${FC.Gray}----`,
-        `${FC.Bold}${FC.Gold}C4 已由 %1 拆除。`,
-        `${FC.Bold}${FC.Green}防守方 (DEFENDERS) 贏得了這場比賽。`,
-        `${FC.Bold}${FC.Gray}---`
-    ],
+    
     "game.assigned.attacker": "你已被分配到 進攻方 (Attacker)。",
     "game.assigned.defender": "你已被分配到 防守方 (Defender)。",
     "game.wait_players": `${FC.Bold}${FC.Red}玩家人數不足，正在等待更多玩家...`,
-    "game.switch_side": [
-        `${FC.Bold}${FC.White}--- --- ---`,
-        `${FC.Bold}${FC.Yellow}- 交換隊伍 -`,
-        `${FC.Bold}${FC.White}--- --- ---`
-    ],
+    "game.switch_side.title": `${FC.Bold}${FC.Gold}<< 攻守互換 >>`,
+
     "game.player_eliminated": `${FC.Bold}%1 %2 ${FC.DarkRed}淘汰了 %3 %4`,
     "game.killed_you": `${FC.Bold}${FC.Red}%1 擊殺了你`,
     
     "round.end.win": "[ 回合勝利 ]",
     "round.end.loss": "[ 回合失敗 ]",
-    "round.end.prefix": `${FC.Gray}>>> ${FC.Reset}`,
-
+    
     // Round End Messages
-    "round.end.time_up": `${FC.Bold}${FC.Gray}>>> ${FC.Red}進攻方時間耗盡。`,
-    "round.end.attacker_eliminated": `${FC.Bold}${FC.Gray}>>> ${FC.Red}進攻方已全數被殲滅。`,
-    "round.end.defender_eliminated": `${FC.Bold}${FC.Gray}>>> ${FC.Red}防守方已全數被殲滅。`,
-    "round.end.c4_detonated": `${FC.Bold}${FC.Gray}>>> ${FC.Red}C4 已引爆！`,
+    "round.end.c4_defused": `${FC.Bold}${FC.Gray}>> ${FC.Red}C4已被拆除`,
+    "round.end.time_up": `${FC.Bold}${FC.Gray}>> ${FC.Red}進攻方時間耗盡。`,
+    "round.end.attacker_eliminated": `${FC.Bold}${FC.Gray}>> ${FC.Red}進攻方已全數被殲滅。`,
+    "round.end.defender_eliminated": `${FC.Bold}${FC.Gray}>> ${FC.Red}防守方已全數被殲滅。`,
+    "round.end.c4_detonated": `${FC.Bold}${FC.Gray}>> ${FC.Red}C4 已引爆！`,
 
     // Game Over Messages
     "game.over.attacker_disconnect": [
@@ -68,19 +58,16 @@ export const zh_TW = {
         ""
     ],
 
-    "hud.waiting": `${FC.Yellow}正在等待更多玩家...`,
+    "hud.waiting": `${FC.Yellow}等待更多玩家加入遊戲`,
     "hud.start_in": `${FC.Green}遊戲將在 %1 秒後開始。`,
-    "hud.buying.subtitle": `${FC.White}右鍵點擊羽毛以打開商店。`,
+    "hud.buying.subtitle": `${FC.White}<手持羽毛右鍵來打開商店>`,
     "hud.sidebar.map": `地圖: ${FC.Green}%1`,
     "hud.sidebar.players": `人數: ${FC.Green}%1 ${FC.White}(${FC.Aqua}%2${FC.White}/${FC.Red}%3${FC.White})`,
     "hud.sidebar.mode": "模式:",
-    "hud.sidebar.attacker": `${FC.Red}進攻方 (Attacker)`,
-    "hud.sidebar.defender": `${FC.Aqua}防守方 (Defender)`,
     "member.join": `${FC.Bold}${FC.Green}%1 加入了房間。`,
     "member.leave": `${FC.Bold}${FC.Red}%1 離開了房間。`,
     "command.join_team": `${FC.MinecoinGold}%1 加入了 [%2]`,
-    "economy.round_income": "回合收益: +%1$",
-    "kill.reward": "擊殺獎勵: +%1$",
+
     "shop.title": "商店",
     "shop.body": `選擇要購買的項目:\n你的金錢: ${FC.MinecoinGold}%1$`,
     "shop.refund_tag": `${FC.DarkGreen}(退回)`,

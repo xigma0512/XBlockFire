@@ -74,7 +74,6 @@ export class C4DroppedState implements IC4StateHandler {
         
         const attackers = MemberManager.getPlayers({ team: TeamEnum.Attacker });
         
-        player.sendMessage(L.translateWithPrefix("c4.pickup"));
         HudDriver.chat(L.translate("c4.pickup.broadcast", player.name), attackers);
 
         C4Manager.updateState(new C4IdleState());
