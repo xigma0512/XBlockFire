@@ -1,7 +1,7 @@
 import { BlankPhase } from "./BlankPhaseHandler";
 
 import { system } from "@minecraft/server";
-import { HudTextController } from "../../../ui/HudText";
+import { HudDriver } from "../../../ui/hud/drivers/HudDriver";
 
 class _PhaseManager {
 
@@ -31,7 +31,7 @@ class _PhaseManager {
             system.clearRun(this.taskId);
             
             // Clear the sidebar when transitioning to avoid leaking game-in-progress lines
-            HudTextController.clearSidebar();
+            HudDriver.clearSidebar();
 
             system.waitTicks(5).then(() => { 
                 this.phaseHandler = newPhase;

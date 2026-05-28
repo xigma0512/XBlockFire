@@ -1,15 +1,15 @@
 import { MemberManager } from "../../../player/MemberManager";
 import { EconomyManager } from "../../EconomyManager";
 import { PhaseManager } from "../PhaseManager";
-import { HotbarManager, HotbarTemplate } from "../../../../ui/Hotbar";
-import { WaitingHud } from "../../../../ui/huds/Waiting";
+import { HotbarManager, HotbarTemplate } from "../../../../ui/hotbar/Hotbar";
+import { WaitingView as WaitingHud } from "../../../../ui/hud/views/WaitingView";
 
 import { BuyingPhase } from "./Buying";
 
 import { PhaseEnum as BombPlantPhaseEnum } from "../BombPlantPhaseEnum";
 import { TeamEnum } from "../../../player/TeamEnum";
 
-import { MessageManager as Msg } from "../../../../ui/Message";
+import { MessageManager as Msg } from "../../../../ui/media/Message";
 import { Language as L } from "../../../../utils/Language";
 import { reset_variables, set_variable } from "../../../../utils/Variable";
 import { ItemStackFactory } from "../../../../utils/ItemStackFactory";

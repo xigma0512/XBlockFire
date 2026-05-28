@@ -6,7 +6,7 @@ import { C4IdleState } from "./Idle";
 import { C4StateEnum } from "../C4StateEnum";
 import { TeamEnum } from "../../../player/TeamEnum";
 
-import { MessageManager as Msg } from "../../../../ui/Message";
+import { MessageManager as Msg } from "../../../../ui/media/Message";
 import { Language as L } from "../../../../utils/Language";
 
 import { Entity, ItemStack, Player, world } from "@minecraft/server";

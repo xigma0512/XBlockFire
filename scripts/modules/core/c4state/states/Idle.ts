@@ -2,7 +2,7 @@ import { gameroom } from "../../GameRoom";
 import { MemberManager } from "../../../player/MemberManager";
 import { C4Manager } from "../C4Manager";
 import { MapRegister } from "../../../world/MapRegister";
-import { MessageManager as Msg } from "../../../../ui/Message";
+import { MessageManager as Msg } from "../../../../ui/media/Message";
 import { Language as L } from "../../../../utils/Language";
 
 import { C4DroppedState } from "./Dropped";

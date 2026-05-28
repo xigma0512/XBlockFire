@@ -12,7 +12,7 @@ import { TeamEnum } from "../../../player/TeamEnum";
 import { PhaseEnum as BombPlantPhaseEnum } from "../../gamephase/BombPlantPhaseEnum";
 
 import { set_variable, variable } from "../../../../utils/Variable";
-import { MessageManager as Msg } from "../../../../ui/Message";
+import { MessageManager as Msg } from "../../../../ui/media/Message";
 import { Language as L } from "../../../../utils/Language";
 import { progressBar } from "../../../../utils/others/Format";
 

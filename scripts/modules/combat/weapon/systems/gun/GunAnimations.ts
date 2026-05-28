@@ -1,4 +1,4 @@
-import { MessageManager as Msg } from "../../../../../ui/Message";
+import { MessageManager as Msg } from "../../../../../ui/media/Message";
 import { ItemActor } from "../../actors/Actor";
 
 import { Player, world } from "@minecraft/server";

@@ -1,12 +1,12 @@
 import { PhaseManager } from "../PhaseManager";
 import { MemberManager } from "../../../player/MemberManager";
-import { ActionHud } from "../../../../ui/huds/Action";
+import { ActionView as ActionHud } from "../../../../ui/hud/views/ActionView";
 
 import { TeamEnum } from "../../../player/TeamEnum";
 import { PhaseEnum } from "../BombPlantPhaseEnum";
 
 import { set_variable } from "../../../../utils/Variable";
-import { MessageManager as Msg } from "../../../../ui/Message";
+import { MessageManager as Msg } from "../../../../ui/media/Message";
 import { Language as L } from "../../../../utils/Language";
 import { LanguageKey } from "../../../../settings/lang/LanguageKey";
 

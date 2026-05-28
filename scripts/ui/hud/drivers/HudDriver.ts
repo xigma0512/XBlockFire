@@ -1,6 +1,6 @@
-import { FormatCode } from "../utils/FormatCode";
 import { Player, system, world, DisplaySlotId, ScoreboardObjective } from "@minecraft/server";
-import { Language as L } from "../utils/Language";
+import { Language as L } from "../../../utils/Language";
+import { FormatCode } from "../../../utils/FormatCode";
 
 export interface HudMessage {
     text: string;
@@ -8,16 +8,14 @@ export interface HudMessage {
     category: string;
 }
 
-class _HudTextController {
-    private static _instance: _HudTextController;
+class _HudDriver {
+    private static _instance: _HudDriver;
     static get instance() { return (this._instance || (this._instance = new this())); }
 
     private titleQueue = new Map<Player, HudMessage[]>();
     private subtitleQueue = new Map<Player, HudMessage[]>();
     private actionbarQueue = new Map<Player, HudMessage[]>();
-    private previousSidebarLines: string[] = [];
-
-    // Tracks what's currently being shown to avoid redundant updates
+    
     private lastTitleText = new Map<Player, string>();
     private lastSubtitleText = new Map<Player, string>();
     private lastActionbarText = new Map<Player, string>();
@@ -28,17 +26,10 @@ class _HudTextController {
     }
 
     private cleanupPlayer(playerName: string) {
-        const queues = [this.titleQueue, this.subtitleQueue, this.actionbarQueue];
-        const lastTexts = [this.lastTitleText, this.lastSubtitleText, this.lastActionbarText];
-        
-        for (const queue of queues) {
-            for (const [player] of queue) {
-                if (player.name === playerName) queue.delete(player);
-            }
-        }
-        for (const lastText of lastTexts) {
-            for (const [player] of lastText) {
-                if (player.name === playerName) lastText.delete(player);
+        const maps = [this.titleQueue, this.subtitleQueue, this.actionbarQueue, this.lastTitleText, this.lastSubtitleText, this.lastActionbarText];
+        for (const map of maps) {
+            for (const [player] of map) {
+                if (player.name === playerName) map.delete(player);
             }
         }
     }
@@ -52,8 +43,7 @@ class _HudTextController {
     }
 
     pushActionbar(player: Player, text: string, duration: number, category: string = "default") {
-        // Clear all existing actionbar messages for this player to prevent overlap
-        this.actionbarQueue.set(player, []);
+        this.actionbarQueue.set(player, []); // Last one wins logic
         this.pushMessage(player, this.actionbarQueue, text, duration, category);
     }
 
@@ -63,10 +53,6 @@ class _HudTextController {
         const now = system.currentTick;
         const expireTick = now + duration;
 
-        // Category logic: 
-        // 1. If category is "default", we allow stacking but deduplicate same text.
-        // 2. If category is custom, we remove ANY existing message with that category.
-        
         if (category === "default") {
             const existing = queue.find(m => m.text === text && m.category === "default");
             if (existing) {
@@ -75,20 +61,10 @@ class _HudTextController {
             }
         } else {
             const index = queue.findIndex(m => m.category === category);
-            if (index !== -1) {
-                queue.splice(index, 1);
-            }
+            if (index !== -1) queue.splice(index, 1);
         }
 
         queue.push({ text, expireTick, category });
-    }
-
-    private getSidebarObjective(): ScoreboardObjective {
-        let obj = world.scoreboard.getObjective('xblockfire_sidebar');
-        if (!obj) {
-            obj = world.scoreboard.addObjective('xblockfire_sidebar', L.translate('system.name'));
-        }
-        return obj;
     }
 
     setSidebar(lines: string[]) {
@@ -106,43 +82,30 @@ class _HudTextController {
             uniqueLines.push(line);
         }
 
-        // Diff Algorithm:
-        // 1. Get current participants from the actual scoreboard to ensure we don't leak entries
         const currentParticipants = obj.getParticipants().map(p => p.displayName);
-        
-        // 2. Remove lines that are on the scoreboard but not in the new list
-        for (const participantName of currentParticipants) {
-            if (!uniqueLines.includes(participantName)) {
-                try { obj.removeParticipant(participantName); } catch {}
-            }
+        for (const pName of currentParticipants) {
+            if (!uniqueLines.includes(pName)) try { obj.removeParticipant(pName); } catch {}
         }
 
-        // 3. Set scores for all lines. 
         let score = uniqueLines.length;
         for (const line of uniqueLines) {
             try {
-                // Only set if score actually changed to minimize packets
-                const currentScore = obj.getScore(line);
-                if (currentScore !== score) {
-                    obj.setScore(line, score);
-                }
+                if (obj.getScore(line) !== score) obj.setScore(line, score);
             } catch {
                 obj.setScore(line, score);
             }
             score--;
         }
-
-        this.previousSidebarLines = uniqueLines;
     }
 
     clearSidebar() {
-        const obj = world.scoreboard.getObjective('xblockfire_sidebar');
-        if (!obj) return;
+        this.setSidebar([]);
+    }
 
-        for (const participant of obj.getParticipants()) {
-            try { obj.removeParticipant(participant); } catch {}
-        }
-        this.previousSidebarLines = [];
+    private getSidebarObjective(): ScoreboardObjective {
+        let obj = world.scoreboard.getObjective('xblockfire_sidebar');
+        if (!obj) obj = world.scoreboard.addObjective('xblockfire_sidebar', L.translate('system.name'));
+        return obj;
     }
 
     private update() {
@@ -156,16 +119,11 @@ class _HudTextController {
         const titleText = this.getActiveMessageText(player, this.titleQueue) || "";
         const subtitleText = this.getActiveMessageText(player, this.subtitleQueue) || "";
 
-        const lastTitle = this.lastTitleText.get(player) || "";
-        const lastSubtitle = this.lastSubtitleText.get(player) || "";
-
-        if (titleText !== lastTitle || subtitleText !== lastSubtitle) {
+        if (titleText !== (this.lastTitleText.get(player) || "") || subtitleText !== (this.lastSubtitleText.get(player) || "")) {
             try {
                 player.onScreenDisplay.setTitle(titleText || " ", {
                     subtitle: subtitleText || " ",
-                    fadeInDuration: 0,
-                    fadeOutDuration: 0,
-                    stayDuration: 20000000 // A very long time
+                    fadeInDuration: 0, fadeOutDuration: 0, stayDuration: 20000000
                 });
                 this.lastTitleText.set(player, titleText);
                 this.lastSubtitleText.set(player, subtitleText);
@@ -174,16 +132,11 @@ class _HudTextController {
     }
 
     private updateActionbar(player: Player) {
-        const actionbarText = this.getActiveMessageText(player, this.actionbarQueue) || "";
-        const lastActionbar = this.lastActionbarText.get(player) || "";
-
-        if (actionbarText !== lastActionbar) {
+        const text = this.getActiveMessageText(player, this.actionbarQueue) || "";
+        if (text !== (this.lastActionbarText.get(player) || "")) {
             try {
-                // To "clear" actionbar, we send an empty string or just stop sending.
-                // Bedrock actionbar clears after ~3 seconds if not updated, 
-                // but we can force update with empty space to clear.
-                player.onScreenDisplay.setActionBar(actionbarText);
-                this.lastActionbarText.set(player, actionbarText);
+                player.onScreenDisplay.setActionBar(text);
+                this.lastActionbarText.set(player, text);
             } catch {}
         }
     }
@@ -192,20 +145,11 @@ class _HudTextController {
         if (!queueMap.has(player)) return undefined;
         const messages = queueMap.get(player)!;
         const now = system.currentTick;
-        
-        // Filter out expired messages
-        const activeMessages = messages.filter(m => m.expireTick > now);
-        
-        // Update the queue if any messages expired
-        if (activeMessages.length !== messages.length) {
-            queueMap.set(player, activeMessages);
-        }
-        
-        if (activeMessages.length > 0) {
-            return activeMessages.map(m => m.text).join(`\n${FormatCode.Reset}`);
-        }
+        const active = messages.filter(m => m.expireTick > now);
+        if (active.length !== messages.length) queueMap.set(player, active);
+        if (active.length > 0) return active.map(m => m.text).join(`\n${FormatCode.Reset}`);
         return undefined;
     }
 }
 
-export const HudTextController = _HudTextController.instance;
+export const HudDriver = _HudDriver.instance;

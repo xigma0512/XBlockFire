@@ -26,8 +26,8 @@ export const zh_TW = {
     "game.player_eliminated": `${FC.Bold}%1 %2 ${FC.DarkRed}淘汰了 %3 %4`,
     "game.killed_you": `${FC.Bold}${FC.Red}%1 擊殺了你`,
     
-    "round.end.attacker_win": "攻方獲勝",
-    "round.end.defender_win": "守方獲勝",
+    "round.end.win": "[ 回合勝利 ]",
+    "round.end.loss": "[ 回合失敗 ]",
     "round.end.prefix": `${FC.Gray}>>> ${FC.Reset}`,
 
     // Round End Messages

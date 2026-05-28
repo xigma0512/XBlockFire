@@ -2,11 +2,13 @@ import { gameroom } from "../../GameRoom";
 import { PhaseManager } from "../PhaseManager";
 import { MemberManager } from "../../../player/MemberManager";
 import { C4Manager } from "../../c4state/C4Manager";
-import { HotbarManager, HotbarTemplate } from "../../../../ui/Hotbar";
+import { HotbarManager, HotbarTemplate } from "../../../../ui/hotbar/Hotbar";
 import { MapRegister } from "../../../world/MapRegister";
 
 import { C4IdleState } from "../../c4state/states/Idle";
 import { BuyingPhase } from "./Buying";
+
+import { InGameHud } from "../../../../ui/InGameHud";
 
 import { PhaseEnum as BombPlantPhaseEnum } from "../BombPlantPhaseEnum";
 import { TeamEnum } from "../../../player/TeamEnum";
