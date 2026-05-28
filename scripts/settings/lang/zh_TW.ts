@@ -11,8 +11,11 @@ export const zh_TW = {
     "game.assigned.attacker": "你已被分配到 進攻方 (Attacker)。",
     "game.assigned.defender": "你已被分配到 防守方 (Defender)。",
     "game.wait_players": `${FC.Bold}${FC.Red}玩家人數不足，正在等待更多玩家...`,
-    "game.switch_side.title": `${FC.Bold}${FC.Gold}<< 攻守互換 >>`,
-
+    "game.switch_side.title": [
+        `${FC.Bold}${FC.Gray}-----------`,
+        `${FC.Bold}${FC.Gold}<< 攻守互換 >>`,
+        `${FC.Bold}${FC.Gray}-----------`,
+    ],
     "game.player_eliminated": `${FC.Bold}%1 %2 ${FC.DarkRed}淘汰了 %3 %4`,
     "game.killed_you": `${FC.Bold}${FC.Red}%1 擊殺了你`,
     
@@ -28,34 +31,26 @@ export const zh_TW = {
 
     // Game Over Messages
     "game.over.attacker_disconnect": [
-        "",
         `${FC.Bold}${FC.Gray}---- ${FC.DarkPurple}[ 遊戲結束 ] ${FC.Gray}----`,
-        `${FC.Bold}${FC.Red}所有進攻方玩家已斷線。`,
-        `${FC.Bold}${FC.Yellow}防守方贏得了這場比賽。`,
+        `${FC.Bold}${FC.Yellow}防守方獲勝`,
         `${FC.Bold}${FC.Gray}--------------------`,
-        ""
     ],
     "game.over.defender_disconnect": [
-        "",
         `${FC.Bold}${FC.Gray}---- ${FC.DarkPurple}[ 遊戲結束 ] ${FC.Gray}----`,
-        `${FC.Bold}${FC.Red}所有防守方玩家已斷線。`,
-        `${FC.Bold}${FC.Yellow}進攻方贏得了這場比賽。`,
+        `${FC.Bold}${FC.Yellow}進攻方獲勝`,
         `${FC.Bold}${FC.Gray}--------------------`,
-        ""
     ],
     "game.over.attacker_win": [
         "",
         `${FC.Bold}${FC.Gray}---- ${FC.DarkPurple}[ 遊戲結束 ] ${FC.Gray}----`,
-        `${FC.Bold}${FC.Yellow}進攻方贏得了這場比賽。`,
+        `${FC.Bold}${FC.Yellow}進攻方獲勝`,
         `${FC.Bold}${FC.Gray}--------------------`,
         ""
     ],
     "game.over.defender_win": [
-        "",
         `${FC.Bold}${FC.Gray}---- ${FC.DarkPurple}[ 遊戲結束 ] ${FC.Gray}----`,
-        `${FC.Bold}${FC.Yellow}防守方贏得了這場比賽。`,
-        `${FC.Bold}${FC.Gray}--------------------`,
-        ""
+        `${FC.Bold}${FC.Yellow}防守方獲勝。`,
+        `${FC.Bold}${FC.Gray}--------------------`
     ],
 
     "hud.waiting": `${FC.Yellow}等待更多玩家加入遊戲`,

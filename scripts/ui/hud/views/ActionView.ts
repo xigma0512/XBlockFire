@@ -3,7 +3,6 @@ import { MemberManager } from "../../../modules/player/MemberManager";
 import { TeamEnum } from "../../../modules/player/TeamEnum";
 import { gameroom } from "../../../modules/core/GameRoom";
 import { MapRegister } from "../../../modules/world/MapRegister";
-import { FormatCode as FC } from "../../../utils/FormatCode";
 
 import { HudDriver } from "../drivers/HudDriver";
 import { UiStateManager } from "../state/UiState";
@@ -17,6 +16,7 @@ import { variable } from "../../../utils/Variable";
 import { InGameHud } from "../../InGameHud";
 import { PhaseEnum } from "../../../modules/core/gamephase/BombPlantPhaseEnum";
 import { Language } from "../../../utils/Language";
+import { FormatCode as FC } from "../../../utils/FormatCode";
 
 export class ActionView implements InGameHud {
     
@@ -42,30 +42,29 @@ export class ActionView implements InGameHud {
         for (const player of MemberManager.getPlayers()) {
             const team = MemberManager.getPlayerTeam(player);
             
-            let leftIcons, rightIcons, leftScore, rightScore, leftColor, rightColor;
+            let leftIcons, rightIcons, leftScore, rightScore;
             const aScore = variable(`attacker_score`) || 0;
             const dScore = variable(`defender_score`) || 0;
 
             if (team === TeamEnum.Attacker) {
-                leftColor = FC.Red;
                 leftScore = aScore;
-                leftIcons = '\uE015 ' + SurvivalIcons.format(attackerTotal, attackerAlive, FC.Red, true, maxPlayers);
-                
-                rightColor = FC.Green;
                 rightScore = dScore;
-                rightIcons = SurvivalIcons.format(defenderTotal, defenderAlive, FC.Green, false, maxPlayers) + ' \uE089';
+                
+                leftIcons = '\uE015 ' + SurvivalIcons.format(attackerTotal, attackerAlive, true, maxPlayers);
+                rightIcons = SurvivalIcons.format(defenderTotal, defenderAlive, false, maxPlayers) + ' \uE089';
             } else {
-                leftColor = FC.Green;
                 leftScore = dScore;
-                leftIcons = '\uE089 ' + SurvivalIcons.format(defenderTotal, defenderAlive, FC.Green, true, maxPlayers);
-
-                rightColor = FC.Red;
                 rightScore = aScore;
-                rightIcons = SurvivalIcons.format(attackerTotal, attackerAlive, FC.Red, false, maxPlayers) + ' \uE015';
+                
+                leftIcons = '\uE089 ' + SurvivalIcons.format(defenderTotal, defenderAlive, true, maxPlayers);
+                rightIcons = SurvivalIcons.format(attackerTotal, attackerAlive, false, maxPlayers) + ' \uE015';
             }
 
-            const matchLine = MatchScore.format(leftScore, leftColor, timeStr, rightScore, rightColor);
-            let finalTitle = `${leftIcons}${matchLine}${rightIcons}`;
+            const matchLine = MatchScore.format(leftScore, timeStr, rightScore);
+            let finalTitle = `${FC.MaterialEmerald}${leftIcons}${matchLine}${FC.MaterialRedstone}${rightIcons}`;
+
+            const notify = UiStateManager.getNotifyMessage(player);
+            if (notify) finalTitle += `\n${notify}`;
 
             const extra = UiStateManager.getRoundEndMessage(player);
             if (extra) finalTitle += `\n${extra}`;

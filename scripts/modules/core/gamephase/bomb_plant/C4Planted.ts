@@ -62,7 +62,9 @@ export class C4PlantedPhase implements IPhaseHandler {
         this._currentTick = c4_config.COUNTDOWN_TIME;
     }
 
-    on_entry() { }
+    on_entry() {
+        UiStateManager.setNotifyMessage(L.translate('c4.planted.title'), 6 * 20);
+    }
 
     on_exit() { }
 

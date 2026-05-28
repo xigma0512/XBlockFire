@@ -54,8 +54,6 @@ export class C4PlantedState implements IC4StateHandler {
         if (PhaseManager.getPhase().phaseTag === BombPlantPhaseEnum.Action) {
             PhaseManager.updatePhase(new C4PlantedPhase());
         }
-
-        HudDriver.pushTitle(MemberManager.getPlayers(), L.translate('c4.planted.title'), 100)
         
         for (const player of MemberManager.getPlayers({team: TeamEnum.Attacker})) {
             EconomyManager.setMoney(player, EconomyManager.getMoney(player) + 300);
