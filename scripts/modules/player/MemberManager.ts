@@ -1,6 +1,6 @@
 import { Player, world } from "@minecraft/server";
 import { TeamEnum } from "./TeamEnum";
-import { MessageManager as Msg } from "../../ui/Message";
+import { MessageManager as Msg } from "../../ui/media/Message";
 import { Language as L } from "../../utils/Language";
 
 interface PlayerOptions {

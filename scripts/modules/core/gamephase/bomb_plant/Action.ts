@@ -3,12 +3,12 @@ import { PhaseManager } from "../PhaseManager";
 
 import { GameOverPhase } from "./Gameover";
 import { RoundEndPhase } from "./RoundEnd";
-import { ActionHud } from "../../../../ui/huds/Action";
+import { ActionView as ActionHud } from "../../../../ui/hud/views/ActionView";
 
 import { PhaseEnum as BombPlantPhaseEnum } from "../BombPlantPhaseEnum"
 import { TeamEnum } from "../../../player/TeamEnum";
 
-import { MessageManager as Msg } from "../../../../ui/Message";
+import { MessageManager as Msg } from "../../../../ui/media/Message";
 import { Language as L } from "../../../../utils/Language";
 import { set_variable } from "../../../../utils/Variable";
 import { LanguageKey } from "../../../../settings/lang/LanguageKey";

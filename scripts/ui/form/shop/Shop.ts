@@ -1,18 +1,17 @@
-import { EconomyManager } from "../../modules/core/EconomyManager";
-import { PhaseManager } from "../../modules/core/gamephase/PhaseManager";
-import { MemberManager } from "../../modules/player/MemberManager";
-import { HotbarManager } from "../Hotbar";
+import { EconomyManager } from "../../../modules/core/EconomyManager";
+import { PhaseManager } from "../../../modules/core/gamephase/PhaseManager";
+import { MemberManager } from "../../../modules/player/MemberManager";
+import { HotbarManager } from "../../hotbar/Hotbar";
 
-import { Glock17 } from "../../modules/combat/weapon/actors/item/Glock17";
+import { Glock17 } from "../../../modules/combat/weapon/actors/item/Glock17";
 
 import { IProduct, ProductTable } from "./ProductTable";
 
-import { PhaseEnum as BombPlantPhaseEnum } from "../../modules/core/gamephase/BombPlantPhaseEnum";
+import { PhaseEnum as BombPlantPhaseEnum } from "../../../modules/core/gamephase/BombPlantPhaseEnum";
 
-import { FormatCode as FC } from "../../utils/FormatCode";
-import { ItemStackFactory } from "../../utils/ItemStackFactory";
-import { MessageManager as Msg } from "../Message";
-import { Language as L } from "../../utils/Language";
+import { FormatCode as FC } from "../../../utils/FormatCode";
+import { ItemStackFactory } from "../../../utils/ItemStackFactory";
+import { Language as L } from "../../../utils/Language";
 
 import { ItemLockMode, Player, system, world } from "@minecraft/server";
 import { ActionFormData, ActionFormResponse } from "@minecraft/server-ui";

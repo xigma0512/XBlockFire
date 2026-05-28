@@ -1,13 +1,13 @@
-import { ItemActor } from "../../modules/combat/weapon/actors/Actor";
+import { ItemActor } from "../../../modules/combat/weapon/actors/Actor";
 
-import { AK47 } from "../../modules/combat/weapon/actors/item/AK47";
-import { M4A4 } from "../../modules/combat/weapon/actors/item/M4A4";
-import { SG200 } from "../../modules/combat/weapon/actors/item/SG200";
-import { AWP } from "../../modules/combat/weapon/actors/item/AWP";
-import { P90 } from "../../modules/combat/weapon/actors/item/P90";
+import { AK47 } from "../../../modules/combat/weapon/actors/item/AK47";
+import { M4A4 } from "../../../modules/combat/weapon/actors/item/M4A4";
+import { SG200 } from "../../../modules/combat/weapon/actors/item/SG200";
+import { AWP } from "../../../modules/combat/weapon/actors/item/AWP";
+import { P90 } from "../../../modules/combat/weapon/actors/item/P90";
 
-import { Glock17 } from "../../modules/combat/weapon/actors/item/Glock17";
-import { Deagle } from "../../modules/combat/weapon/actors/item/Deagle";
+import { Glock17 } from "../../../modules/combat/weapon/actors/item/Glock17";
+import { Deagle } from "../../../modules/combat/weapon/actors/item/Deagle";
 
 export interface IProduct {
     id: number;

@@ -2,14 +2,14 @@ import { PhaseManager } from "../PhaseManager";
 import { MemberManager } from "../../../player/MemberManager";
 import { C4Manager } from "../../c4state/C4Manager";
 
-import { ActionHud } from "../../../../ui/huds/Action";
+import { ActionView as ActionHud } from "../../../../ui/hud/views/ActionView";
 import { C4IdleState } from "../../c4state/states/Idle";
 import { IdlePhase } from "./Idle";
 
 import { TeamEnum } from "../../../player/TeamEnum";
 import { PhaseEnum as BombPlantPhaseEnum } from "../BombPlantPhaseEnum";
 
-import { MessageManager as Msg } from "../../../../ui/Message";
+import { MessageManager as Msg } from "../../../../ui/media/Message";
 import { Language as L } from "../../../../utils/Language";
 import { variable } from "../../../../utils/Variable";
 

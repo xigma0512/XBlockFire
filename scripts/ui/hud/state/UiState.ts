@@ -1,0 +1,63 @@
+import { Player, system } from "@minecraft/server";
+import { PhaseManager } from "../../../modules/core/gamephase/PhaseManager";
+import { PhaseEnum as BombPlantPhaseEnum } from "../../../modules/core/gamephase/BombPlantPhaseEnum";
+import { TeamEnum } from "../../../modules/player/TeamEnum";
+import { MemberManager } from "../../../modules/player/MemberManager";
+import { Language as L } from "../../../utils/Language";
+import { FormatCode as FC } from "../../../utils/FormatCode";
+
+export interface UiMessage {
+    text: string;
+    expireTick: number;
+}
+
+class _UiStateManager {
+    private static _instance: _UiStateManager;
+    static get instance() { return (this._instance || (this._instance = new this())); }
+
+    private roundEndMessages = new Map<Player, UiMessage>();
+
+    setRoundEndMessage(winner: TeamEnum, isGameOver: boolean = false) {
+        const now = system.currentTick;
+        const duration = 10 * 20; 
+        const expireTick = now + duration;
+
+        for (const player of MemberManager.getPlayers()) {
+            const playerTeam = MemberManager.getPlayerTeam(player);
+            const isWinner = playerTeam === winner;
+            const color = isWinner ? FC.Green : FC.Red;
+            
+            let winText: string;
+            if (isGameOver) {
+                winText = winner === TeamEnum.Attacker ? L.translate("game.over.attacker_win") : L.translate("game.over.defender_win");
+                if (Array.isArray(winText)) winText = winText.find(l => l.includes("贏得了")) || winText[0];
+            } else {
+                winText = isWinner ? L.translate("round.end.win") : L.translate("round.end.loss");
+            }
+            
+            const cleanText = Array.isArray(winText) ? winText.join(" ") : winText;
+            this.roundEndMessages.set(player, { text: `${color}${FC.Bold}${cleanText}`, expireTick });
+        }
+    }
+
+    getRoundEndMessage(player: Player): string | undefined {
+        const data = this.roundEndMessages.get(player);
+        if (!data) return undefined;
+
+        const phase = PhaseManager.getPhase().phaseTag;
+        const isPersistentPhase = phase === BombPlantPhaseEnum.RoundEnd || phase === BombPlantPhaseEnum.Gameover;
+
+        if (isPersistentPhase || system.currentTick <= data.expireTick) {
+            return data.text;
+        }
+
+        this.roundEndMessages.delete(player);
+        return undefined;
+    }
+
+    clearState() {
+        this.roundEndMessages.clear();
+    }
+}
+
+export const UiStateManager = _UiStateManager.instance;

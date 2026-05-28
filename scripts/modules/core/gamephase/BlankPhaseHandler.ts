@@ -5,6 +5,8 @@ import { IdlePhase } from "./bomb_plant/Idle";
 
 import { GameModeEnum } from "../GameModeEnum";
 
+import { InGameHud } from "../../../ui/InGameHud";
+
 export class BlankPhase implements IPhaseHandler {
 
     readonly phaseTag = -1;

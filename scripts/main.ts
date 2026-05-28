@@ -4,8 +4,9 @@ import './modules/world';
 import './modules/combat';
 
 import './command/CommandRegistry';
-import './ui/shop/Shop';
-import './ui/huds/WeaponInfo';
+
+import './ui/index'
+
 import './test';
 
 

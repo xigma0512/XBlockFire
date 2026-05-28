@@ -9,7 +9,7 @@ import { GameModeEnum } from "../../modules/core/GameModeEnum";
 import { FormatCode as FC } from "../../utils/FormatCode";
 
 import { TeamEnum } from "../../modules/player/TeamEnum";
-import { MessageManager as Msg } from "../../ui/Message";
+import { MessageManager as Msg } from "../../ui/media/Message";
 import { Language as L } from "../../utils/Language";
 import { MapRegister } from "../../modules/world/MapRegister";
 

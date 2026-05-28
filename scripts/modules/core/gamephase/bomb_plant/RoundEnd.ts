@@ -1,7 +1,7 @@
 import { MemberManager } from "../../../player/MemberManager";
 import { EconomyManager } from "../../EconomyManager";
 import { PhaseManager } from "../PhaseManager";
-import { ActionHud } from "../../../../ui/huds/Action"; 
+import { ActionView as ActionHud } from "../../../../ui/hud/views/ActionView"; 
 
 import { GameOverPhase } from "./Gameover";
 import { PreRoundStartPhase } from "./PreRoundStart";
@@ -11,7 +11,7 @@ import { TeamEnum } from "../../../player/TeamEnum";
 
 import { set_entity_dynamic_property } from "../../../../utils/Property";
 import { set_variable, variable } from "../../../../utils/Variable";
-import { MessageManager as Msg } from "../../../../ui/Message";
+import { MessageManager as Msg } from "../../../../ui/media/Message";
 import { Language as L } from "../../../../utils/Language";
 
 import { Config } from "../../../../settings/config";

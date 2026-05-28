@@ -7,7 +7,7 @@ import { C4IdleState } from "./Idle";
 
 import { C4StateEnum } from "../C4StateEnum";
 import { PhaseEnum as BombPlantPhaseEnum } from "../../gamephase/BombPlantPhaseEnum";
-import { MessageManager as Msg } from "../../../../ui/Message";
+import { MessageManager as Msg } from "../../../../ui/media/Message";
 import { Language as L } from "../../../../utils/Language";
 import { progressBar } from "../../../../utils/others/Format";
 

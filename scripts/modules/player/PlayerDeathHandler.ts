@@ -7,7 +7,7 @@ import { C4DroppedState } from "../core/c4state/states/Dropped";
 
 import { TeamEnum } from "./TeamEnum";
 
-import { MessageManager as Msg } from "../../ui/Message";
+import { MessageManager as Msg } from "../../ui/media/Message";
 import { Language as L } from "../../utils/Language";
 import { FormatCode as FC } from "../../utils/FormatCode";
 import { set_entity_dynamic_property } from "../../utils/Property";

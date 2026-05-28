@@ -1,10 +1,12 @@
 import { system, world } from "@minecraft/server";
 
-import { getPlayerHandItem } from "../../utils/others/Entity";
-import { ActorManager } from "../../modules/combat/weapon/systems/ActorManager";
-import { MessageManager as Msg } from "../Message";
+import { getPlayerHandItem } from "../../../utils/others/Entity";
+import { ActorManager } from "../../../modules/combat/weapon/systems/ActorManager";
+import { HudDriver } from "../drivers/HudDriver";
 
-export class WeaponInfo implements InGameHud {
+import { InGameHud } from "../../InGameHud";
+
+export class WeaponView implements InGameHud {
     
     update() {
         this.updateActionbar();
@@ -33,13 +35,12 @@ export class WeaponInfo implements InGameHud {
             if (!itemActor.hasComponent('gun_magazine')) continue;
 
             const magazineComp = itemActor.getComponent('gun_magazine')!;
-            Msg.actionbar(`${magazineComp.ammo}/${magazineComp.storageAmmo}`, player, 2);
+            // Direct call to HudDriver to ensure precedence logic is handled
+            HudDriver.pushActionbar(player, `${magazineComp.ammo}/${magazineComp.storageAmmo}`, 2, "weapon_info");
         }
     }
 }
 
 world.afterEvents.worldLoad.subscribe(() => {
-    system.runInterval(() => new WeaponInfo().update());
+    system.runInterval(() => new WeaponView().update());
 })
-
-
