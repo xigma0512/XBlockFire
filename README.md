@@ -31,8 +31,6 @@
     * **BombPlant 模式實作：** 完整實現了攻擊方與防守方的對抗機制，包含回合制、C4 安裝與拆除、經濟系統等核心要素。
 * **武器與道具系統：** 實作了多款經典槍械與投擲物，具有獨特的射速、傷害與後座力表現。
 * **經濟與商店系統：** 玩家可透過對局獲得經濟，並在購買階段透過自訂 UI 商店購買裝備。
-* **高度可設定性：** 專案提供了詳細的設定檔，允許使用者調整遊戲各階段的時間（如準備、購買、行動階段），以及回合獎勵、獲勝分數等遊戲參數。
-* **彈性的地圖配置：** 透過 `game_maps.ts` 檔案，使用者可以輕鬆定義和新增自訂地圖，包括設定各隊伍的重生點。
 
 ## 開始使用
 
@@ -46,35 +44,36 @@
 
 你可以透過修改設定來客製化你的世界。
 
-* **設定 BombPlant 模式中的時間等設定**
-
+* **調整遊戲中的各種設定**
     ```typescript
     // scripts/settings/config.ts
-    export const bombplant = {
-        idle: {
-            COUNTDOWN_TIME: 30 * 20     // 準備階段倒數
-        },
-        buying: {
-            COUNTDOWN_TIME: 20 * 20     // 購買階段倒數
-        },
-        action: {
-            ACTION_TIME: 120 * 20       // 行動階段時間
-        },
-        C4planted: {
-            COUNTDOWN_TIME: 50 * 20     // 炸彈引爆倒數
-        },
-        roundEnd: {
-            INCOME: [3500, 2200],       // 回合獎勵 [勝利, 失敗]
-            WINNING_SCORE: 13,          // 獲勝所需回合
-            COUNTDOWN_TIME: 10 * 20     // 回合結束等待
-        },
-        gameover: {
-            COUNTDOWN_TIME: 10 * 20     // 遊戲結束等待
+    export namespace Config {
+        export const game = {
+            AUTO_START_MIN_PLAYER: 10,      // 達到該人數後自動開始遊戲
+            LANGUAGE: 'zh_TW',              // 語言選擇
+            DEBUG: true                     // 除錯模式
+        }
+
+        export const economy = {
+            LIMIT: 9000                     // 經濟限制
+        }
+
+        export const uncommon_items = {
+            CONTAINER_LOCATION: { x: 155, y: 123, z: -2 },  // 特殊物品存放箱 (必須確保該區域被加載)
+            ITEM_LIST: {
+                'defender_helmet': 0,
+                'defender_chestplate': 1,
+                'defender_leggings': 2,
+                'defender_boots': 3,
+
+                'attacker_helmet': 4,
+                'attacker_chestplate': 5,
+                'attacker_leggings': 6,
+                'attacker_boots': 7,
+            }
         }
     }
     ```
-
-    **時間單位說明：** 在所有時間設定中，單位為 **遊戲刻 (tick)**。1 秒等於 20 遊戲刻，因此若要設定 30 秒，則數值為 `30 * 20`。目前 `C4planted` 階段的倒數時間暫不支持修改，這是為了確保遊戲平衡性或技術上的限制。未來版本可能會考慮開放此項設定。
 
 * **設定 GameMap 來自訂你的地圖**
 
@@ -110,12 +109,18 @@
     } as Record<number, GameMapType>;
     ```
 
-    **獲取遊戲內座標：** 你可以在遊戲中使用 `/tp ~ ~ ~` 或開啟座標顯示（設定 -> 遊戲 -> 顯示座標）來獲取當前位置的精確 X、Y、Z 座標，以便於設定重生點。
-
     **C4 安裝區域設定：** 目前 C4 的可安裝區域並非透過設定檔定義，而是透過在地圖中放置 **紅石塊 (`minecraft:redstone_block`)** 來標記。玩家只需站在紅石塊上方（或紅石塊位於地面下方的對應位置）即可開始安裝 C4。
 
     **新增自訂地圖：** 若要新增更多自訂地圖，只需在 `game_maps.ts` 檔案中，依照現有地圖 `0` 的格式，新增一個新的地圖 ID 和其對應的設定即可。確保每個地圖 ID 都是獨一無二的。
 
+### 指令
+* 一般玩家
+    * `/forcestart` - 強制開始遊戲。
+    * `/select_team <TEAM>` - 選擇隊伍(Attacker/Defender/Spectator) 
+* 管理員
+    * `/admin.select_team <PLAYER> <TEAM>` - 為玩家選擇隊伍
+    * `/setting.gamemap <MAP_ID>` - 設定遊戲地圖
+    * `/setting.gamemode <MODE_NAME>` - 設定遊戲模式
 
 
 ## 未來規劃
