@@ -68,10 +68,16 @@ export const zh_TW = {
     'prestart.fov_adjust': `設定->視訊->視野可透過遊戲控制調整${FC.Red}(關閉)`,
 
     'shop.title': '商店',
-    'shop.body': `裝備點數：${FC.MinecoinGold}%1/%2\n剩餘點數：${FC.MinecoinGold}%3\n主武器：${FC.Green}%4\n副武器：${FC.Green}%5\n護甲：${FC.Green}%6\n投擲物：${FC.Green}%7`,
+    'shop.body': [
+        `${FC.Reset}${FC.Bold}裝備點數 ${FC.Gray}- ${FC.MinecoinGold}%1/%2`, 
+        `${FC.Reset}${FC.Bold}主武器 ${FC.Gray}- ${FC.Green}%3`,
+        `${FC.Reset}${FC.Bold}副武器 ${FC.Gray}- ${FC.Green}%4`,
+        `${FC.Reset}${FC.Bold}護甲 ${FC.Gray}- ${FC.Green}%5`,
+        `${FC.Reset}${FC.Bold}投擲物 ${FC.Gray}- ${FC.Green}%6`
+    ],
     'shop.remaining_points': '剩餘 %1P',
-    'shop.primary.clear': '移除主武器',
-    'shop.throwable.clear': '全部清空 (%1/%2)',
+    'shop.primary.clear': `清空`,
+    'shop.throwable.clear': `清空 (%1/%2)`,
     'shop.error.prefix': `${FC.Red}%1。`,
     'shop.error.no_points': '裝備點數不足',
     'shop.error.item_limit_reached': '已達到該裝備上限',
