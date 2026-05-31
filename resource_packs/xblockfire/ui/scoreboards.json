@@ -52,7 +52,7 @@
         "main": {
           "type": "image",
           "texture": "textures/ui/Black",
-          "alpha": 0.3,
+          "alpha": 0.4,
           "size": [ "100%cm + 6px", "100%c + 4px" ],
           "controls": [
             {
