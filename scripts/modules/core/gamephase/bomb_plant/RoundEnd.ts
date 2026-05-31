@@ -11,20 +11,20 @@ import { TeamEnum } from "../../../player/TeamEnum";
 
 import { set_entity_dynamic_property } from "../../../../utils/Property";
 import { set_variable, variable } from "../../../../utils/Variable";
-import { HudDriver } from "../../../../ui/hud/drivers/HudDriver";
 import { Sound } from "../../../../ui/media/Sound";
 import { Language as L } from "../../../../utils/Language";
 
-import { Config } from "../../../../settings/config";
 import { UiStateManager } from "../../../../ui/hud/state/UiState";
 
-const config = Config.bombplant.roundEnd;
+const COUNTDOWN_TIME = 6 * 20;
+const WINNING_SCORE = 8;
+const INCOME = [3500, 2200];
 
 export class RoundEndPhase implements IPhaseHandler {
 
     readonly phaseTag = BombPlantPhaseEnum.RoundEnd;
     readonly hud: ActionHud;
-    private _currentTick = config.COUNTDOWN_TIME;
+    private _currentTick = COUNTDOWN_TIME;
     get currentTick() { return this._currentTick; }
 
     constructor() {
@@ -32,7 +32,7 @@ export class RoundEndPhase implements IPhaseHandler {
     }
 
     on_entry() {
-        this._currentTick = config.COUNTDOWN_TIME;
+        this._currentTick = COUNTDOWN_TIME;
         processWinner();
     }
 
@@ -52,8 +52,8 @@ export class RoundEndPhase implements IPhaseHandler {
         const defenderScore = variable(`defender_score`);
 
         let winner = null;
-        if (attackerScore >= config.WINNING_SCORE) winner = TeamEnum.Attacker;
-        if (defenderScore >= config.WINNING_SCORE) winner = TeamEnum.Defender;
+        if (attackerScore >= WINNING_SCORE) winner = TeamEnum.Attacker;
+        if (defenderScore >= WINNING_SCORE) winner = TeamEnum.Defender;
 
         if (winner) {
             set_variable(`winner`, winner);
@@ -63,7 +63,7 @@ export class RoundEndPhase implements IPhaseHandler {
 
         if (this.currentTick <= 0) {
             
-            if (attackerScore + defenderScore == config.WINNING_SCORE - 1) {
+            if (attackerScore + defenderScore == WINNING_SCORE - 1) {
                 switchSide();
             }
             
@@ -103,7 +103,7 @@ function processWinner() {
 
     for (const player of MemberManager.getPlayers()) {
         const playerTeam = MemberManager.getPlayerTeam(player);
-        const earn = config.INCOME[(playerTeam === winnerTeam) ? 0 : 1];
+        const earn = INCOME[(playerTeam === winnerTeam) ? 0 : 1];
         EconomyManager.modifyMoney(player, earn);
     }
 }

@@ -17,15 +17,13 @@ import { variable } from "../../../../utils/Variable";
 
 import { GameMode, world } from "@minecraft/server";
 
-import { Config } from "../../../../settings/config";
-
-const config = Config.bombplant.gameover;
+const COUNTDOWN_TIME = 10 * 20;
 
 export class GameOverPhase implements IPhaseHandler {
 
     readonly phaseTag = BombPlantPhaseEnum.Gameover;
     readonly hud: ActionHud;
-    private _currentTick: number = config.COUNTDOWN_TIME;
+    private _currentTick: number = COUNTDOWN_TIME;
     get currentTick() { return this._currentTick; }
 
     constructor() {
@@ -33,7 +31,7 @@ export class GameOverPhase implements IPhaseHandler {
     }
 
     on_entry() {
-        this._currentTick = config.COUNTDOWN_TIME;
+        this._currentTick = COUNTDOWN_TIME;
         const winner = variable('winner') as TeamEnum;
         if (winner === TeamEnum.Attacker || winner === TeamEnum.Defender) {
             const langKey = winner === TeamEnum.Attacker ? "game.over.attacker_win" : "game.over.defender_win";
