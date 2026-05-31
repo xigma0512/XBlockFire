@@ -31,6 +31,7 @@
     "anchor_to": "top_right",
     "inherit_max_sibling_width": true,
     "locked_alpha": 1.0,
+    "font_type": "smooth",
     "color": "$player_name_color",
     "bindings": [
       {
@@ -72,6 +73,7 @@
                       "inherit_max_sibling_width": true,
                       "locked_alpha": 2.0,
                       "layer": 1,
+                      "font_type": "smooth",
                       "color": "$objective_title_color",
                       "bindings": [
                         {
