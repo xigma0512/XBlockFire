@@ -1,5 +1,7 @@
 import { gameroom } from "../../GameRoom";
 import { PhaseManager } from "../PhaseManager";
+import { EquipmentPointManager } from "../../EquipmentPointManager";
+import { LoadoutManager } from "../../LoadoutManager";
 import { MemberManager } from "../../../player/MemberManager";
 import { C4Manager } from "../../c4state/C4Manager";
 import { HotbarManager, HotbarTemplate } from "../../../../ui/hotbar/Hotbar";
@@ -15,7 +17,9 @@ import { TeamEnum } from "../../../player/TeamEnum";
 
 import { entity_dynamic_property, set_entity_dynamic_property, set_entity_native_property } from "../../../../utils/Property";
 import { ItemStackFactory } from "../../../../utils/ItemStackFactory";
+import { Language as L } from "../../../../utils/Language";
 import { UnCommonItems } from "../../../combat/ItemManager";
+import { variable } from "../../../../utils/Variable";
 
 import { EquipmentSlot, GameMode, InputPermissionCategory, ItemLockMode, system } from "@minecraft/server";
 import { ItemStack } from "@minecraft/server";
@@ -76,6 +80,10 @@ function initializePlayers() {
         player.removeTag('attacker');
         player.removeTag('defender');
         player.addTag(MemberManager.getPlayerTeam(player) === TeamEnum.Attacker ? 'attacker' : 'defender');
+
+        const pointLimit = EquipmentPointManager.getPointLimit(variable("attacker_score"), variable("defender_score"));
+        const reset = LoadoutManager.sanitizeForCurrentRound(player, pointLimit);
+        if (reset) player.sendMessage(L.translate("shop.loadout.reset"));
     }
 }
 

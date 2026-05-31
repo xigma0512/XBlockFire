@@ -5,8 +5,6 @@ import { HotbarManager } from "../../../../ui/hotbar/Hotbar";
 
 import { ActionPhase } from "./Action";
 
-import { PurchaseHistory } from "../../../../ui/form/shop/Shop";
-
 import { PhaseEnum as BombPlantPhaseEnum } from "../BombPlantPhaseEnum";
 
 import { Sound } from "../../../../ui/media/Sound";
@@ -53,7 +51,6 @@ export class BuyingPhase implements IPhaseHandler {
 }
 
 function sendShopItem() {
-    PurchaseHistory.clearAll();
     for (const player of MemberManager.getPlayers()) {
         const hotbar = HotbarManager.getPlayerHotbar(player)
         hotbar.items[8] = ItemStackFactory.new({ typeId: 'minecraft:feather', lockMode: ItemLockMode.slot });

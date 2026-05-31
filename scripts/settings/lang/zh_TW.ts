@@ -1,6 +1,6 @@
 import { FormatCode as FC } from "../../utils/FormatCode";
 
-export const zh_TW = {
+const base_zh_TW = {
     "system.name": `${FC.Bold}${FC.Gold}XBlockFire`,
 
     "c4.dropped": `${FC.Bold}${FC.Gray}> ${FC.Blue}C4 已掉落。`,
@@ -65,15 +65,24 @@ export const zh_TW = {
 
     "shop.title": "商店",
     "shop.body": `選擇要購買的項目:\n你的金錢: ${FC.MinecoinGold}%1$`,
-    "shop.refund_tag": `${FC.DarkGreen}(退回)`,
-    "shop.error.prefix": `${FC.Red}%1。`,
-    "shop.error.need_refund": "你必須先退回你的 %1。",
-    "shop.error.limit_reached": "你已達到購買上限。",
-    "shop.error.no_money": "你沒有足夠的金錢購買這個。",
-    "shop.refund.success": "你退回了 %1。 (+%2$)",
-    "shop.buy.success": "你購買了 %1。 (-%2$)",
-    
     "prestart.suggest_settings": "建議設定",
     "prestart.camera_shake": `設定->視訊->相機晃動${FC.Green}(開啟)`,
     "prestart.fov_adjust": `設定->視訊->視野可透過遊戲控制調整${FC.Red}(關閉)`
 };
+
+export const zh_TW = {
+    ...base_zh_TW,
+
+    "shop.title": "商店",
+    "shop.body": `裝備點數：${FC.MinecoinGold}%1/%2\n主武器：${FC.Green}%3\n副武器：${FC.Green}%4\n護甲：${FC.Green}%5\n投擲物：${FC.Green}%6`,
+    "shop.remaining_points": "剩餘 %1P",
+    "shop.throwable.remove": "移除 %1 x1",
+    "shop.throwable.clear": "清空投擲物 (%1/%2)",
+    "shop.error.prefix": `${FC.Red}%1。`,
+    "shop.error.no_points": "裝備點數不足",
+    "shop.error.item_limit_reached": "已達到該裝備上限",
+    "shop.error.throwable_total_limit_reached": "已達到投擲物總上限",
+    "shop.error.product_not_found": "找不到該商品",
+    "shop.error.not_buying": "只能在購買階段開啟商店",
+    "shop.loadout.reset": "上一回合配置超出本回合點數上限，已重置部分裝備。"
+} as const;

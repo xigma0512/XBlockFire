@@ -1,5 +1,4 @@
 import { MemberManager } from "../../../player/MemberManager";
-import { EconomyManager } from "../../EconomyManager";
 import { PhaseManager } from "../PhaseManager";
 import { ActionView as ActionHud } from "../../../../ui/hud/views/ActionView"; 
 
@@ -18,7 +17,6 @@ import { UiStateManager } from "../../../../ui/hud/state/UiState";
 
 const COUNTDOWN_TIME = 6 * 20;
 const WINNING_SCORE = 8;
-const INCOME = [3500, 2200];
 
 export class RoundEndPhase implements IPhaseHandler {
 
@@ -77,9 +75,6 @@ function switchSide() {
     for (const player of MemberManager.getPlayers()) {
         const playerTeam = MemberManager.getPlayerTeam(player);
         MemberManager.setPlayerTeam(player, (playerTeam === TeamEnum.Attacker) ? TeamEnum.Defender : TeamEnum.Attacker)
-
-        // reset player money
-        EconomyManager.setMoney(player, 800);
         // clear players inventory
         set_entity_dynamic_property(player, 'player:is_alive', false);
     }
@@ -99,11 +94,5 @@ function processWinner() {
         set_variable(`attacker_score`, variable(`attacker_score`) + 1);
     } else if (winnerTeam === TeamEnum.Defender) { 
         set_variable(`defender_score`, variable(`defender_score`) + 1);
-    }
-
-    for (const player of MemberManager.getPlayers()) {
-        const playerTeam = MemberManager.getPlayerTeam(player);
-        const earn = INCOME[(playerTeam === winnerTeam) ? 0 : 1];
-        EconomyManager.modifyMoney(player, earn);
     }
 }

@@ -1,5 +1,5 @@
 import { MemberManager } from "../../../player/MemberManager";
-import { EconomyManager } from "../../EconomyManager";
+import { LoadoutManager } from "../../LoadoutManager";
 import { PhaseManager } from "../PhaseManager";
 import { HotbarManager, HotbarTemplate } from "../../../../ui/hotbar/Hotbar";
 import { WaitingView as WaitingHud } from "../../../../ui/hud/views/WaitingView";
@@ -81,7 +81,7 @@ function randomTeam() {
 function initializePlayers() {
 
     for (const player of MemberManager.getPlayers()) {
-        EconomyManager.initializePlayer(player);
+        LoadoutManager.initializePlayer(player);
         HotbarManager.sendHotbar(player, HotbarTemplate.initSpawn());
     }
 
