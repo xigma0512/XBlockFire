@@ -420,7 +420,7 @@
         {
             "main_ui": {
                 "type": "panel",
-                "$default_button_texture": "textures/ui/button_borderless_light",
+                "$default_button_texture": "textures/ui/button_borderless_dark",
                 "size": [64, 64],
                 "controls": [
                     {
@@ -504,6 +504,7 @@
                                         "color": [1, 1, 1],
                                         "offset": [0, -11],
                                         "anchor_from": "bottom_middle",
+                                        "text_alignment": "center",
                                         "bindings": [
                                             {
                                                 "binding_name": "#form_button_text",
