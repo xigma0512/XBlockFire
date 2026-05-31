@@ -64,10 +64,6 @@ export class LoadoutManager {
         return usedPoints;
     }
 
-    static getAvailablePoints(player: Player, pointLimit: number) {
-        return pointLimit - this.getUsedPoints(player);
-    }
-
     static setPrimary(player: Player, productId: string, pointLimit: number) {
         const product = this.requireItemProduct(productId, 'primary');
         const loadout = this.getLoadout(player);
@@ -153,8 +149,8 @@ export class LoadoutManager {
 
     static getArmorReduction(player: Player) {
         const armorTier = this.getLoadout(player).armorTier;
-        if (armorTier === 'light') return 0.15;
-        if (armorTier === 'heavy') return 0.3;
+        if (armorTier === 'light') return 0.25;
+        if (armorTier === 'heavy') return 0.5;
         return 0;
     }
 

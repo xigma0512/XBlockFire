@@ -14,7 +14,6 @@ import { Player, system, world } from '@minecraft/server';
 import { TabbedActionForm } from '../common/TabbedActionForm';
 import {
     ArmorShopProduct,
-    ItemShopProduct,
     ShopCatalogLookup,
     ShopCategories,
     ShopCategoryId,
@@ -27,23 +26,23 @@ type ShopAction = 'select_product' | 'clear_primary' | 'clear_throwables';
 const CLEAR_BUTTON_ICON = 'textures/blocks/barrier';
 
 export class Shop {
-    static async openShop(player: Player, tabId: ShopCategoryId = 'primary') {
+    static async openShop(player: Player, tabId: ShopCategoryId = 'secondary') {
         const pointLimit = getCurrentPointLimit();
         const form = new TabbedActionForm<ShopAction>()
             .title(L.translate('shop.title'))
             .body(buildBody(player, pointLimit));
 
         for (const [category, label] of Object.entries(ShopCategories) as [ShopCategoryId, string][]) {
-            form.tab(category, label);
+            form.tab(category, FC.Bold + label);
         }
 
         addPrimaryControls(form);
+        addThrowableControls(form, player);
         for (const category of Object.keys(ShopCategories) as ShopCategoryId[]) {
             for (const product of ShopCatalogLookup.getProductsByCategory(category)) {
-                addProductButton(form, player, product);
+                addProductButton(form, product);
             }
         }
-        addThrowableControls(form, player);
 
         const response = await form.show(player, tabId);
         if (response.canceled || !response.action) return;
@@ -69,24 +68,16 @@ function buildBody(player: Player, pointLimit: number) {
     const loadout = LoadoutManager.describeLoadout(player);
     return L.translate(
         'shop.body',
-        LoadoutManager.getUsedPoints(player),
-        pointLimit,
-        LoadoutManager.getAvailablePoints(player, pointLimit),
-        loadout.primary ?? 'None',
+        LoadoutManager.getUsedPoints(player), pointLimit,
+        loadout.primary ?? '無',
         loadout.secondary,
         loadout.armor,
         loadout.throwables
     );
 }
 
-function addProductButton(form: TabbedActionForm<ShopAction>, player: Player, product: ShopProduct) {
-    const suffix =
-        product.category === 'throwable'
-            ? ` x${LoadoutManager.getThrowableAmount(player, product.productId)}/${
-                  (product as ItemShopProduct).maxAmount
-              }`
-            : '';
-    const label = `${product.name}${suffix} ${FC.Yellow}${product.pointCost}P`;
+function addProductButton(form: TabbedActionForm<ShopAction>, product: ShopProduct) {
+    const label = FC.Bold + `${product.name}\n${FC.Yellow}${product.pointCost}P`;
 
     form.button(product.category, {
         text: label,
@@ -98,7 +89,7 @@ function addProductButton(form: TabbedActionForm<ShopAction>, player: Player, pr
 
 function addPrimaryControls(form: TabbedActionForm<ShopAction>) {
     form.button('primary', {
-        text: L.translate('shop.primary.clear'),
+        text: FC.Bold + FC.Red + L.translate('shop.primary.clear'),
         iconPath: CLEAR_BUTTON_ICON,
         action: 'clear_primary',
     });
@@ -106,7 +97,7 @@ function addPrimaryControls(form: TabbedActionForm<ShopAction>) {
 
 function addThrowableControls(form: TabbedActionForm<ShopAction>, player: Player) {
     form.button('throwable', {
-        text: L.translate('shop.throwable.clear', LoadoutManager.getThrowableTotal(player), THROWABLE_TOTAL_LIMIT),
+        text: FC.Bold + FC.Red + L.translate('shop.throwable.clear', LoadoutManager.getThrowableTotal(player), THROWABLE_TOTAL_LIMIT),
         iconPath: CLEAR_BUTTON_ICON,
         action: 'clear_throwables',
     });
