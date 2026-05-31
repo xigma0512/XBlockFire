@@ -40,7 +40,7 @@ export class Shop {
         addThrowableControls(form, player);
         for (const category of Object.keys(ShopCategories) as ShopCategoryId[]) {
             for (const product of ShopCatalogLookup.getProductsByCategory(category)) {
-                addProductButton(form, product);
+                addProductButton(form, player, product, pointLimit);
             }
         }
 
@@ -68,7 +68,8 @@ function buildBody(player: Player, pointLimit: number) {
     const loadout = LoadoutManager.describeLoadout(player);
     return L.translate(
         'shop.body',
-        LoadoutManager.getUsedPoints(player), pointLimit,
+        LoadoutManager.getUsedPoints(player),
+        pointLimit,
         loadout.primary ?? '無',
         loadout.secondary,
         loadout.armor,
@@ -76,8 +77,17 @@ function buildBody(player: Player, pointLimit: number) {
     );
 }
 
-function addProductButton(form: TabbedActionForm<ShopAction>, product: ShopProduct) {
-    const label = FC.Bold + `${product.name}\n${FC.Yellow}${product.pointCost}P`;
+function addProductButton(
+    form: TabbedActionForm<ShopAction>,
+    player: Player,
+    product: ShopProduct,
+    pointLimit: number
+) {
+    const selectedText = LoadoutManager.isProductSelected(player, product) ? ` ${FC.Green}(已選)` : '';
+    const canAfford = LoadoutManager.canAffordProduct(player, product, pointLimit);
+    const pointColor = canAfford ? FC.Yellow : FC.Red;
+    const insufficientText = canAfford ? '' : ' (不足)';
+    const label = FC.Bold + `${product.name}${selectedText}\n${pointColor}${product.pointCost}P${insufficientText}`;
 
     form.button(product.category, {
         text: label,
@@ -97,7 +107,10 @@ function addPrimaryControls(form: TabbedActionForm<ShopAction>) {
 
 function addThrowableControls(form: TabbedActionForm<ShopAction>, player: Player) {
     form.button('throwable', {
-        text: FC.Bold + FC.Red + L.translate('shop.throwable.clear', LoadoutManager.getThrowableTotal(player), THROWABLE_TOTAL_LIMIT),
+        text:
+            FC.Bold +
+            FC.Red +
+            L.translate('shop.throwable.clear', LoadoutManager.getThrowableTotal(player), THROWABLE_TOTAL_LIMIT),
         iconPath: CLEAR_BUTTON_ICON,
         action: 'clear_throwables',
     });

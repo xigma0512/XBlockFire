@@ -1,7 +1,14 @@
 import { ItemLockMode, Player } from '@minecraft/server';
 
 import { HotbarManager } from '../../ui/hotbar/Hotbar';
-import { ArmorTier, ItemShopProduct, ShopCatalogLookup, THROWABLE_TOTAL_LIMIT } from '../../ui/form/shop/ShopCatalog';
+import {
+    ArmorShopProduct,
+    ArmorTier,
+    ItemShopProduct,
+    ShopCatalogLookup,
+    ShopProduct,
+    THROWABLE_TOTAL_LIMIT,
+} from '../../ui/form/shop/ShopCatalog';
 import { ItemStackFactory } from '../../utils/ItemStackFactory';
 
 interface PlayerLoadout {
@@ -62,6 +69,19 @@ export class LoadoutManager {
         }
 
         return usedPoints;
+    }
+
+    static isProductSelected(player: Player, product: ShopProduct) {
+        const loadout = this.getLoadout(player);
+
+        if (product.category === 'primary') return loadout.primary === product.productId;
+        if (product.category === 'secondary') return loadout.secondary === product.productId;
+        if (product.category === 'throwable') return this.getThrowableAmount(player, product.productId) > 0;
+        return loadout.armorTier === (product as ArmorShopProduct).armorTier;
+    }
+
+    static canAffordProduct(player: Player, product: ShopProduct, pointLimit: number) {
+        return this.getUsedPoints(player) + this.getAdditionalPointCost(player, product) <= pointLimit;
     }
 
     static setPrimary(player: Player, productId: string, pointLimit: number) {
@@ -166,6 +186,31 @@ export class LoadoutManager {
         let total = 0;
         for (const amount of this.getLoadout(player).throwables.values()) total += amount;
         return total;
+    }
+
+    private static getAdditionalPointCost(player: Player, product: ShopProduct) {
+        if (product.category === 'throwable') return product.pointCost;
+
+        const selectedProduct = this.getSelectedProductInCategory(player, product);
+        return product.pointCost - (selectedProduct?.pointCost ?? 0);
+    }
+
+    private static getSelectedProductInCategory(player: Player, product: ShopProduct) {
+        const loadout = this.getLoadout(player);
+
+        if (product.category === 'primary') {
+            return loadout.primary ? ShopCatalogLookup.getProduct(loadout.primary) : undefined;
+        }
+
+        if (product.category === 'secondary') {
+            return ShopCatalogLookup.getProduct(loadout.secondary);
+        }
+
+        if (product.category === 'armor') {
+            return ShopCatalogLookup.getArmorProduct(loadout.armorTier);
+        }
+
+        return undefined;
     }
 
     static describeLoadout(player: Player) {
