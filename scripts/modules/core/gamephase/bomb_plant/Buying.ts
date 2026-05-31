@@ -14,7 +14,7 @@ import { ItemStackFactory } from '../../../../utils/ItemStackFactory';
 import { InputPermissionCategory, ItemLockMode } from '@minecraft/server';
 import { uiManager } from '@minecraft/server-ui';
 
-const COUNTDOWN_TIME = 30 * 20;
+const COUNTDOWN_TIME = 20 * 20;
 
 export class BuyingPhase implements IPhaseHandler {
     readonly phaseTag = BombPlantPhaseEnum.Buying;
