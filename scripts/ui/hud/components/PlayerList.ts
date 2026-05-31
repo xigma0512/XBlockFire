@@ -29,7 +29,7 @@ export class PlayerList {
             if (showKD) {
                 const k = variable(`${p.name}.kills`) || 0;
                 const d = variable(`${p.name}.deaths`) || 0;
-                text += ` ${FC.Gray}[ ${k} / ${d} ]`;
+                text += ` ${FC.Gray}[${k}/${d}]`;
             }
             return text;
         }
@@ -38,7 +38,6 @@ export class PlayerList {
         const sortedAttackers = sortPlayers(attackers);
 
         for (const p of sortedDefenders) lines.push(formatLine(p, FC.Aqua));
-        if (sortedDefenders.length > 0 && sortedAttackers.length > 0) lines.push("---");
         for (const p of sortedAttackers) lines.push(formatLine(p, FC.Gold));
         
         if (spectators.length > 0) {
