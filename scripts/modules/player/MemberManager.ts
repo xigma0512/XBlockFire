@@ -2,6 +2,7 @@ import { Player, world } from '@minecraft/server';
 import { TeamEnum } from './TeamEnum';
 import { HudDriver } from '../../ui/hud/drivers/HudDriver';
 import { Language as L } from '../../utils/Language';
+import { FormatCode as FC } from '../../utils/FormatCode';
 
 interface PlayerOptions {
     team?: TeamEnum;
@@ -18,12 +19,12 @@ class _MemberManager {
 
     joinRoom(player: Player) {
         this.playerTeam.set(player, TeamEnum.Spectator);
-        HudDriver.chat(L.translate('member.join', player.name), this.getPlayers());
+        HudDriver.chat(`${FC.Bold}${FC.Green}${L.translate('member.join', player.name)}`), this.getPlayers();
     }
 
     leaveRoom(player: Player) {
         this.playerTeam.delete(player);
-        HudDriver.chat(L.translate('member.leave', player.name), this.getPlayers());
+        HudDriver.chat(`${FC.Bold}${FC.Red}${L.translate('member.leave', player.name)}`), this.getPlayers();
     }
 
     includePlayer(player: Player) {

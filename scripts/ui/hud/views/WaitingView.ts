@@ -8,6 +8,7 @@ import { HudDriver } from '../drivers/HudDriver';
 import { RoomInfo } from '../components/RoomInfo';
 import { PlayerList } from '../components/PlayerList';
 import { DebugInfo } from '../components/DebugInfo';
+import { FormatCode as FC } from '../../../utils/FormatCode';
 
 import { Config } from '../../../settings/config';
 
@@ -26,17 +27,17 @@ export class WaitingView implements InGameHud {
         const playerAmount = players.length;
         const phase = PhaseManager.getPhase();
 
-        let text = L.translate('hud.waiting');
+        let text = FC.Yellow + L.translate('hud.waiting');
 
         if (playerAmount >= Config.game.AUTO_START_MIN_PLAYER) {
-            text = L.translate('hud.start_in', (phase.currentTick / 20).toFixed(0));
+            text = FC.Green + L.translate('hud.start_in', (phase.currentTick / 20).toFixed(0));
         }
 
         if (phase.currentTick !== COUNTDOWN_TIME && playerAmount < Config.game.AUTO_START_MIN_PLAYER) {
-            HudDriver.chat(L.translate('game.wait_players'), players);
+            HudDriver.chat(FC.Red + L.translate('game.wait_players'), players);
         }
 
-        HudDriver.pushSubtitle(players, text, 2);
+        HudDriver.pushSubtitle(players, FC.Bold + text, 2);
     }
 
     private updateSidebar() {

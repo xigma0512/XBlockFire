@@ -22,7 +22,7 @@ class _UiStateManager {
 
     setRoundEndMessage(winner: TeamEnum, isGameOver: boolean = false) {
         const now = system.currentTick;
-        const duration = 10 * 20;
+        const duration = 6 * 20;
         const expireTick = now + duration;
 
         for (const player of MemberManager.getPlayers()) {
@@ -30,18 +30,30 @@ class _UiStateManager {
             const isWinner = playerTeam === winner;
             const color = isWinner ? FC.Green : FC.Red;
 
+            function box(title: string, content: string | string[], footer: string = '--------------------'): string[] {
+                const lines = [
+                    `${FC.Bold}${FC.Gray}---- ${FC.DarkPurple}[ ${title} ] ${FC.Gray}----`,
+                    ...(Array.isArray(content) ? content : [content]),
+                    `${FC.Bold}${FC.Gray}${footer}`
+                ];
+                return lines;
+            }
+
             let winText: string;
             if (isGameOver) {
-                winText =
-                    winner === TeamEnum.Attacker
-                        ? L.translate('game.over.attacker_win')
-                        : L.translate('game.over.defender_win');
-                if (Array.isArray(winText)) winText = winText.find((l) => l.includes('贏得了')) || winText[0];
+                const title = L.translate(
+                    winner === TeamEnum.Attacker ? 'game.over.attacker_win' : 'game.over.defender_win'
+                );
+                const winnerLabel = L.translate(
+                    winner === TeamEnum.Attacker ? 'game.assigned.attacker' : 'game.assigned.defender'
+                );
+                const lines = box(title, `${FC.Yellow}${winnerLabel}${L.translate('round.end.win').replace('[ ', '').replace(' ]', '')}`);
+                winText = lines.join('\n');
             } else {
                 winText = isWinner ? L.translate('round.end.win') : L.translate('round.end.loss');
             }
 
-            const cleanText = Array.isArray(winText) ? winText.join(' ') : winText;
+            const cleanText = Array.isArray(winText) ? winText.join('\n') : winText;
             this.roundEndMessages.set(player, { text: `${color}${FC.Bold}${cleanText}`, expireTick });
         }
     }

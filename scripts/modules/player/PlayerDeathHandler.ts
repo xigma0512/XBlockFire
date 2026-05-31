@@ -64,7 +64,7 @@ function showDeathMessage(deadPlayer: Player, attacker: Player) {
     const teamPrefix = (team: TeamEnum) => (team === TeamEnum.Attacker ? `${FC.Red}[A]` : `${FC.Aqua}[D]`);
 
     HudDriver.chat(
-        L.translate(
+        FC.Bold + L.translate(
             'game.player_eliminated',
             teamPrefix(attackerTeam),
             attacker.name,
@@ -74,6 +74,6 @@ function showDeathMessage(deadPlayer: Player, attacker: Player) {
     );
 
     // Using fire-and-forget with 4 seconds duration
-    HudDriver.pushSubtitle(attacker, `${FC.Bold}\uE109${FC.DarkRed}${deadPlayer.name}`, 4 * 20);
-    HudDriver.pushSubtitle(deadPlayer, L.translate('game.killed_you', attacker.name), 4 * 20);
+    HudDriver.pushSubtitle(attacker, FC.Bold + `\uE109${FC.DarkRed}${deadPlayer.name}`, 4 * 20);
+    HudDriver.pushSubtitle(deadPlayer, FC.Bold + `${FC.Red}${L.translate('game.killed_you', attacker.name)}`, 4 * 20);
 }
