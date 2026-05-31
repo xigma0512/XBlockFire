@@ -14,6 +14,7 @@ import { Player, system, world } from '@minecraft/server';
 import { TabbedActionForm } from '../common/TabbedActionForm';
 import {
     ArmorShopProduct,
+    ItemShopProduct,
     ShopCatalogLookup,
     ShopCategories,
     ShopCategoryId,
@@ -83,11 +84,10 @@ function addProductButton(
     product: ShopProduct,
     pointLimit: number
 ) {
-    const selectedText = LoadoutManager.isProductSelected(player, product) ? ` ${FC.Green}(已選)` : '';
+    const selectedColor = LoadoutManager.isProductSelected(player, product) ? `${FC.Green}` : '';
     const canAfford = LoadoutManager.canAffordProduct(player, product, pointLimit);
     const pointColor = canAfford ? FC.Yellow : FC.Red;
-    const insufficientText = canAfford ? '' : ' (不足)';
-    const label = FC.Bold + `${product.name}${selectedText}\n${pointColor}${product.pointCost}P${insufficientText}`;
+    const label = `${selectedColor}${getProductName(player, product)}\n${pointColor}${product.pointCost}P`;
 
     form.button(product.category, {
         text: label,
@@ -95,6 +95,15 @@ function addProductButton(
         action: 'select_product',
         value: product.productId,
     });
+}
+
+function getProductName(player: Player, product: ShopProduct) {
+    if (product.category !== 'throwable') return product.name;
+
+    const throwableProduct = product as ItemShopProduct;
+    return `${product.name}(${LoadoutManager.getThrowableAmount(player, product.productId)}/${
+        throwableProduct.maxAmount
+    })`;
 }
 
 function addPrimaryControls(form: TabbedActionForm<ShopAction>) {
