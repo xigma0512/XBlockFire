@@ -145,7 +145,7 @@ export const ShopCatalog: readonly ShopProduct[] = [
     {
         productId: 'armor_light',
         category: 'armor',
-        name: `輕型護甲(25%)`,
+        name: `輕型護甲(25)`,
         pointCost: 2,
         armorTier: 'light',
         iconPath: 'textures/items/iron_chestplate',
@@ -153,7 +153,7 @@ export const ShopCatalog: readonly ShopProduct[] = [
     {
         productId: 'armor_heavy',
         category: 'armor',
-        name: `重型護甲(50%)`,
+        name: `重型護甲(50)`,
         pointCost: 4,
         armorTier: 'heavy',
         iconPath: 'textures/items/diamond_chestplate',
