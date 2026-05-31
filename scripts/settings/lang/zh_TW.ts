@@ -1,6 +1,6 @@
 import { FormatCode as FC } from '../../utils/FormatCode';
 
-const base_zh_TW = {
+export const zh_TW = {
     'system.name': `${FC.Bold}${FC.Gold}XBlockFire`,
 
     'c4.dropped': `${FC.Bold}${FC.Gray}> ${FC.Blue}C4 已掉落。`,
@@ -63,15 +63,9 @@ const base_zh_TW = {
     'member.leave': `${FC.Bold}${FC.Red}%1 離開了房間。`,
     'command.join_team': `${FC.MinecoinGold}%1 加入了 [%2]`,
 
-    'shop.title': '商店',
-    'shop.body': `選擇要購買的項目:\n你的金錢: ${FC.MinecoinGold}%1$`,
     'prestart.suggest_settings': '建議設定',
     'prestart.camera_shake': `設定->視訊->相機晃動${FC.Green}(開啟)`,
     'prestart.fov_adjust': `設定->視訊->視野可透過遊戲控制調整${FC.Red}(關閉)`,
-};
-
-export const zh_TW = {
-    ...base_zh_TW,
 
     'shop.title': '商店',
     'shop.body': `裝備點數：${FC.MinecoinGold}%1/%2\n主武器：${FC.Green}%3\n副武器：${FC.Green}%4\n護甲：${FC.Green}%5\n投擲物：${FC.Green}%6`,
@@ -85,4 +79,4 @@ export const zh_TW = {
     'shop.error.product_not_found': '找不到該商品',
     'shop.error.not_buying': '只能在購買階段開啟商店',
     'shop.loadout.reset': '上一回合配置超出本回合點數上限，已重置部分裝備。',
-} as const;
+};

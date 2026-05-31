@@ -21,8 +21,8 @@ export interface TabbedActionFormResult<TAction extends string> {
     readonly value?: string;
 }
 
-const TITLE_MARKER = '禮c禮u禮s禮t禮o禮m禮r';
-const CATEGORY_MARKER = '禮c禮a禮t禮e禮g禮o禮r禮y禮8';
+const TITLE_MARKER = '§c§u§s§t§o§m§r';
+const CATEGORY_MARKER = '§c§a§t§e§g§o§r§y§8';
 
 export class TabbedActionForm<TAction extends string> {
     private readonly tabs: Tab<TAction>[] = [];
