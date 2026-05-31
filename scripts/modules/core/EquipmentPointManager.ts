@@ -7,6 +7,6 @@ export class EquipmentPointManager {
     }
 
     static getPointLimit(attackerScore: number, defenderScore: number) {
-        return this.getPointLimitForRound(attackerScore + defenderScore + 1);
+        return this.getPointLimitForRound((attackerScore + defenderScore) % POINT_LIMITS.length);
     }
 }
