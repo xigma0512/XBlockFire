@@ -7,30 +7,10 @@ import { P90 } from './modules/combat/weapon/actors/item/P90';
 
 world.afterEvents.chatSend.subscribe((ev) => {
     if (ev.message === 'test') {
-        const deagle = new Deagle();
-        const sg200 = new SG200();
         const awp = new AWP();
         const p90 = new P90();
-        ev.sender.getComponent('inventory')?.container.addItem(deagle.item);
-        ev.sender.getComponent('inventory')?.container.addItem(sg200.item);
         ev.sender.getComponent('inventory')?.container.addItem(awp.item);
         ev.sender.getComponent('inventory')?.container.addItem(p90.item);
         set_entity_native_property(ev.sender, 'player:can_use_item', true);
     }
 });
-
-system.run(() => {
-    if (world.scoreboard.getObjective('test') === undefined) {
-        world.scoreboard.addObjective('test');
-    }
-    const scoreboard = world.scoreboard.getObjective('test')!;
-    world.scoreboard.setObjectiveAtDisplaySlot(DisplaySlotId.Sidebar, {
-        objective: scoreboard,
-    });
-});
-
-system.runInterval(() => {
-    const sb = world.scoreboard.getObjective('test')!;
-    sb.setScore('§6test1', 0);
-    sb.setScore('§ctest2', 1);
-}, 40);
