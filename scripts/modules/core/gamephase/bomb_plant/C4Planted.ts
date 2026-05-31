@@ -10,6 +10,10 @@ import { HudDriver } from '../../../../ui/hud/drivers/HudDriver';
 import { UiStateManager } from '../../../../ui/hud/state/UiState';
 import { Language as L } from '../../../../utils/Language';
 import { LanguageKey } from '../../../../settings/lang/LanguageKey';
+import { FormatCode as FC } from '../../../../utils/FormatCode';
+
+import { RoundEndPhase } from './RoundEnd';
+import { GameOverPhase } from './Gameover';
 
 const COUNTDOWN_TIME = 50 * 20;
 
@@ -24,10 +28,6 @@ interface EndReasonData {
     langKey: LanguageKey;
     nextPhaseGenerator: () => IPhaseHandler;
 }
-
-// These would normally lead to RoundEndPhase
-import { RoundEndPhase } from './RoundEnd';
-import { GameOverPhase } from './Gameover';
 
 const endReasonTable: Record<number, EndReasonData> = {
     [EndReasonEnum['Time-up']]: {
@@ -62,7 +62,7 @@ export class C4PlantedPhase implements IPhaseHandler {
     }
 
     on_entry() {
-        UiStateManager.setNotifyMessage(L.translate('c4.planted.title'), 6 * 20);
+        UiStateManager.setNotifyMessage(`${FC.Bold}${FC.Red}<<${L.translate('c4.planted.title')}>>`, 6 * 20);
     }
 
     on_exit() {}
@@ -89,7 +89,7 @@ export class C4PlantedPhase implements IPhaseHandler {
         if (endReason) {
             const result = endReasonTable[endReason];
 
-            HudDriver.chat(L.translate(result.langKey));
+            HudDriver.chat(`${FC.Bold}${FC.Gray}>> ${FC.Red}${L.translate(result.langKey)}`);
             UiStateManager.setRoundEndMessage(result.winner);
 
             set_variable(`round_winner`, result.winner);

@@ -8,6 +8,7 @@ import { C4PlantingState } from './Planting';
 import { C4StateEnum } from '../C4StateEnum';
 import { TeamEnum } from '../../../player/TeamEnum';
 
+import { Language as L } from '../../../../utils/Language';
 import { FormatCode as FC } from '../../../../utils/FormatCode';
 
 import { Player, system, world } from '@minecraft/server';
@@ -81,7 +82,7 @@ function canPlantC4(source: Player) {
     try {
         const sourceTeam = MemberManager.getPlayerTeam(source);
         if (sourceTeam !== TeamEnum.Attacker) {
-            throw new Error(`You are not at Attacker team.`);
+            throw new Error(L.translate('c4.planting.not_attacker'));
         }
 
         const { dimension, location } = source;
@@ -99,7 +100,7 @@ function canPlantC4(source: Player) {
         }
 
         if (!isAtTarget) {
-            throw new Error('Cannot plant c4 outside the C4 target position');
+            throw new Error(L.translate('c4.planting.outside_range'));
         }
 
         return true;

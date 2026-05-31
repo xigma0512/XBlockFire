@@ -53,7 +53,7 @@ export class Shop {
             player.playSound('mob.villager.yes');
         } catch (err: any) {
             const key = err instanceof LoadoutError ? err.message : 'shop.error.product_not_found';
-            player.sendMessage(L.translate('shop.error.prefix', L.translate(key as any)));
+            player.sendMessage(FC.Red + L.translate(key as any));
             player.playSound('mob.villager.no');
         }
 
@@ -69,12 +69,11 @@ function buildBody(player: Player, pointLimit: number) {
     const loadout = LoadoutManager.describeLoadout(player);
     return L.translate(
         'shop.body',
-        LoadoutManager.getUsedPoints(player),
-        pointLimit,
-        loadout.primary ?? '無',
-        loadout.secondary,
-        loadout.armor,
-        loadout.throwables
+        `${FC.MinecoinGold}${LoadoutManager.getUsedPoints(player)}`, pointLimit,
+        `${FC.Green}${loadout.primary ?? '無'}`,
+        `${FC.Green}${loadout.secondary}`,
+        `${FC.Green}${loadout.armor}`,
+        `${FC.Green}${loadout.throwables}`
     );
 }
 
@@ -154,7 +153,7 @@ world.beforeEvents.itemUse.subscribe((ev) => {
 
     const phase = PhaseManager.getPhase();
     if (phase.phaseTag !== BombPlantPhaseEnum.Buying) {
-        system.run(() => player.sendMessage(L.translate('shop.error.prefix', L.translate('shop.error.not_buying'))));
+        system.run(() => player.sendMessage(FC.Red + L.translate('shop.error.not_buying')));
         return;
     }
 

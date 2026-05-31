@@ -12,6 +12,7 @@ import { set_entity_dynamic_property } from '../../../../utils/Property';
 import { set_variable, variable } from '../../../../utils/Variable';
 import { Sound } from '../../../../ui/media/Sound';
 import { Language as L } from '../../../../utils/Language';
+import { FormatCode as FC } from '../../../../utils/FormatCode';
 
 import { UiStateManager } from '../../../../ui/hud/state/UiState';
 
@@ -83,14 +84,14 @@ function switchSide() {
     set_variable(`attacker_score`, defender_score);
     set_variable(`defender_score`, attacker_score);
 
-    UiStateManager.setNotifyMessage(L.translate('game.switch_side.title'), 20 * 17);
+    UiStateManager.setNotifyMessage(`${FC.Bold}${FC.Gold}<<${L.translate('game.switch_side.title')}>>`, 20 * 20);
 }
 
 function processWinner() {
     const winnerTeam = variable(`round_winner`) as TeamEnum;
     if (winnerTeam === TeamEnum.Attacker) {
-        set_variable(`attacker_score`, variable(`attacker_score`) + 1);
+        set_variable(`attacker_score`, (variable(`attacker_score`) || 0) + 1);
     } else if (winnerTeam === TeamEnum.Defender) {
-        set_variable(`defender_score`, variable(`defender_score`) + 1);
+        set_variable(`defender_score`, (variable(`defender_score`) || 0) + 1);
     }
 }

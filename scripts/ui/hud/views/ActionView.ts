@@ -79,7 +79,7 @@ export class ActionView implements InGameHud {
         let text: string | string[] = '';
         switch (phase.phaseTag) {
             case PhaseEnum.Buying:
-                text = Language.translate('hud.buying.subtitle');
+                text = `${FC.Bold}${FC.Yellow}${Language.translate('hud.buying.subtitle')}`;
                 break;
         }
 

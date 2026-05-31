@@ -8,6 +8,7 @@ import { TeamEnum } from '../../../player/TeamEnum';
 
 import { HudDriver } from '../../../../ui/hud/drivers/HudDriver';
 import { Language as L } from '../../../../utils/Language';
+import { FormatCode as FC } from '../../../../utils/FormatCode';
 
 import { Entity, ItemStack, Player, world } from '@minecraft/server';
 import { EntityHitEntityAfterEvent } from '@minecraft/server';
@@ -73,7 +74,7 @@ export class C4DroppedState implements IC4StateHandler {
 
         const attackers = MemberManager.getPlayers({ team: TeamEnum.Attacker });
 
-        HudDriver.chat(L.translate('c4.pickup.broadcast', player.name), attackers);
+        HudDriver.chat(`${FC.Bold}${FC.Gray}> ${FC.Blue}${L.translate('c4.pickup.broadcast', player.name)}`, attackers);
 
         C4Manager.updateState(new C4IdleState());
     }

@@ -1,6 +1,6 @@
 import { Player, system, world, DisplaySlotId, ScoreboardObjective } from '@minecraft/server';
 import { Language as L } from '../../../utils/Language';
-import { FormatCode } from '../../../utils/FormatCode';
+import { FormatCode as FC } from '../../../utils/FormatCode';
 
 export interface HudMessage {
     text: string;
@@ -144,7 +144,7 @@ class _HudDriver {
 
     private getSidebarObjective(): ScoreboardObjective {
         let obj = world.scoreboard.getObjective('xblockfire_sidebar');
-        if (!obj) obj = world.scoreboard.addObjective('xblockfire_sidebar', L.translate('system.name'));
+        if (!obj) obj = world.scoreboard.addObjective('xblockfire_sidebar', FC.Gold + FC.Bold + L.translate('system.name'));
         return obj;
     }
 
@@ -192,7 +192,7 @@ class _HudDriver {
         const now = system.currentTick;
         const active = messages.filter((m) => m.expireTick > now);
         if (active.length !== messages.length) queueMap.set(player, active);
-        if (active.length > 0) return active.map((m) => m.text).join(`\n${FormatCode.Reset}`);
+        if (active.length > 0) return active.map((m) => m.text).join(`\n${FC.Reset}`);
         return undefined;
     }
 }

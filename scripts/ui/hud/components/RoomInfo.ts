@@ -6,6 +6,9 @@ export class RoomInfo {
      * Returns an array of strings representing map and mode
      */
     static format(mapName: string, gameMode: string): string[] {
-        return [L.translate('hud.sidebar.map', mapName), `${L.translate('hud.sidebar.mode')} ${FC.Yellow}${gameMode}`];
+        return [
+            `${FC.White}${L.translate('hud.sidebar.map', `${FC.Green}${mapName}${FC.White}`)}`,
+            `${FC.White}${L.translate('hud.sidebar.mode')} ${FC.Yellow}${gameMode}`,
+        ];
     }
 }
