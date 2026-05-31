@@ -2,11 +2,12 @@ import { ItemActor } from "../../actors/Actor";
 import { OffsetCalculator } from "./OffsetCaculator";
 import { getPlayerGunOffset } from "../gun/GunOffsetSystem";
 import { DamageSystem } from "./BulletDamage";
+import { BulletAnimation } from "./BulletAnimation";
 
 import { entity_dynamic_property } from "../../../../../utils/Property";
 
 import { Vector3Utils } from "@minecraft/math";
-import { BlockRaycastHit, DimensionLocation, Direction, Player, system, Vector3 } from "@minecraft/server";
+import { BlockRaycastHit, DimensionLocation, Player, system, Vector3 } from "@minecraft/server";
 
 const MAX_DISTANCE = 100;
 
@@ -31,9 +32,17 @@ export class BulletSystem {
         );
 
         system.run(() => {
-            if (hitBlock) {
-                this.spawnBulletHole(hitBlock);
+            // Determine the actual stopping distance (entity takes precedence if closer)
+            let finalDistance = hitBlockDistance;
+            if (hitEntity && hitEntity.distance < hitBlockDistance) {
+                finalDistance = hitEntity.distance;
             }
+
+            // Calculate exact physical hit location: Start + (Direction * Distance)
+            const exactHitLocation = Vector3Utils.add(eyeLocation, Vector3Utils.scale(shootVector, finalDistance));
+
+            // Spawn visual effects at the exact point
+            BulletAnimation.spawnBulletEffects(owner, exactHitLocation, hitBlock);
 
             if (hitEntity && hitEntity.entity instanceof Player) {
                 const hitHeight = eyeLocation.y + shootVector.y * hitEntity.distance;
@@ -69,34 +78,6 @@ export class BulletSystem {
             return hitEntities.at(0);
         }
         return undefined;
-    }
-
-    private static spawnBulletHole(raycast: BlockRaycastHit) {
-        
-        const offsetValue = 0.02;
-        const particleOffset = {
-            [Direction.Up]: { y: 1 + offsetValue },
-            [Direction.Down]: { y: -offsetValue },
-            [Direction.South]: { z: 1 + offsetValue },
-            [Direction.North]: { z: -offsetValue },
-            [Direction.East]: { x: 1 + offsetValue },
-            [Direction.West]: { x: -offsetValue }
-        }
-        
-        const particleTypes = {
-            [Direction.Up]: 'xblockfire:bullet_hole_xz',
-            [Direction.Down]: 'xblockfire:bullet_hole_xz',
-            [Direction.South]: 'xblockfire:bullet_hole_xy',
-            [Direction.North]: 'xblockfire:bullet_hole_xy',
-            [Direction.East]: 'xblockfire:bullet_hole_yz',
-            [Direction.West]: 'xblockfire:bullet_hole_yz'
-        }
-        
-        const hitLocation = Vector3Utils.add(raycast.block, raycast.faceLocation);
-        const spawnLocation = Vector3Utils.add(hitLocation, particleOffset[raycast.face]);
-
-        const dimension = raycast.block.dimension;
-        try { dimension.spawnParticle(particleTypes[raycast.face], spawnLocation); } catch { }
     }
 
 }
