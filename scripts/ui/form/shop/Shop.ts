@@ -24,6 +24,8 @@ import {
 
 type ShopAction = 'select_product' | 'clear_primary' | 'clear_throwables';
 
+const CLEAR_BUTTON_ICON = 'textures/blocks/barrier';
+
 export class Shop {
     static async openShop(player: Player, tabId: ShopCategoryId = 'primary') {
         const pointLimit = getCurrentPointLimit();
@@ -35,12 +37,12 @@ export class Shop {
             form.tab(category, label);
         }
 
+        addPrimaryControls(form);
         for (const category of Object.keys(ShopCategories) as ShopCategoryId[]) {
             for (const product of ShopCatalogLookup.getProductsByCategory(category)) {
                 addProductButton(form, player, product);
             }
         }
-        addPrimaryControls(form);
         addThrowableControls(form, player);
 
         const response = await form.show(player, tabId);
@@ -97,6 +99,7 @@ function addProductButton(form: TabbedActionForm<ShopAction>, player: Player, pr
 function addPrimaryControls(form: TabbedActionForm<ShopAction>) {
     form.button('primary', {
         text: L.translate('shop.primary.clear'),
+        iconPath: CLEAR_BUTTON_ICON,
         action: 'clear_primary',
     });
 }
@@ -104,6 +107,7 @@ function addPrimaryControls(form: TabbedActionForm<ShopAction>) {
 function addThrowableControls(form: TabbedActionForm<ShopAction>, player: Player) {
     form.button('throwable', {
         text: L.translate('shop.throwable.clear', LoadoutManager.getThrowableTotal(player), THROWABLE_TOTAL_LIMIT),
+        iconPath: CLEAR_BUTTON_ICON,
         action: 'clear_throwables',
     });
 }
