@@ -34,7 +34,7 @@ export class Shop {
             .body(buildBody(player, pointLimit));
 
         for (const [category, label] of Object.entries(ShopCategories) as [ShopCategoryId, string][]) {
-            form.tab(category, FC.Bold + label);
+            form.tab(category, label);
         }
 
         addPrimaryControls(form);
@@ -108,7 +108,7 @@ function getProductName(player: Player, product: ShopProduct) {
 
 function addPrimaryControls(form: TabbedActionForm<ShopAction>) {
     form.button('primary', {
-        text: FC.Bold + FC.Red + L.translate('shop.primary.clear'),
+        text: FC.Red + L.translate('shop.primary.clear'),
         iconPath: CLEAR_BUTTON_ICON,
         action: 'clear_primary',
     });
@@ -117,7 +117,6 @@ function addPrimaryControls(form: TabbedActionForm<ShopAction>) {
 function addThrowableControls(form: TabbedActionForm<ShopAction>, player: Player) {
     form.button('throwable', {
         text:
-            FC.Bold +
             FC.Red +
             L.translate('shop.throwable.clear', LoadoutManager.getThrowableTotal(player), THROWABLE_TOTAL_LIMIT),
         iconPath: CLEAR_BUTTON_ICON,

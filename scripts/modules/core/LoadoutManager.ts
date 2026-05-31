@@ -215,9 +215,9 @@ export class LoadoutManager {
 
     static describeLoadout(player: Player) {
         const loadout = this.getLoadout(player);
-        const primary = loadout.primary ? ShopCatalogLookup.getProduct(loadout.primary)?.name : 'None';
+        const primary = loadout.primary ? ShopCatalogLookup.getProduct(loadout.primary)?.name : '無';
         const secondary = ShopCatalogLookup.getProduct(loadout.secondary)?.name ?? 'Glock17';
-        const armor = ShopCatalogLookup.getArmorProduct(loadout.armorTier)?.name ?? 'No Armor';
+        const armor = ShopCatalogLookup.getArmorProduct(loadout.armorTier)?.name ?? '無護甲';
         const throwables =
             [...loadout.throwables.entries()]
                 .map(

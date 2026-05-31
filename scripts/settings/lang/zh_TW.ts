@@ -69,11 +69,11 @@ export const zh_TW = {
 
     'shop.title': '商店',
     'shop.body': [
-        `${FC.Reset}${FC.Bold}裝備點數 ${FC.Gray}- ${FC.MinecoinGold}%1/%2`,
-        `${FC.Reset}${FC.Bold}主武器 ${FC.Gray}- ${FC.Green}%3`,
-        `${FC.Reset}${FC.Bold}副武器 ${FC.Gray}- ${FC.Green}%4`,
-        `${FC.Reset}${FC.Bold}護甲 ${FC.Gray}- ${FC.Green}%5`,
-        `${FC.Reset}${FC.Bold}投擲物 ${FC.Gray}- ${FC.Green}%6`,
+        `${FC.Reset}裝備點數 ${FC.Gray}- ${FC.MinecoinGold}%1/%2`,
+        `${FC.Reset}主武器 ${FC.Gray}- ${FC.Green}%3`,
+        `${FC.Reset}副武器 ${FC.Gray}- ${FC.Green}%4`,
+        `${FC.Reset}護甲 ${FC.Gray}- ${FC.Green}%5`,
+        `${FC.Reset}投擲物 ${FC.Gray}- ${FC.Green}%6`,
     ],
     'shop.remaining_points': '剩餘 %1P',
     'shop.primary.clear': `清空`,
