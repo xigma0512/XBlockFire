@@ -10,9 +10,9 @@ export interface GameMapType {
     description: string;
     positions: {
         spawns: {
-            'Attacker': Position[],
-            'Defender': Position[],
-            'Spectator': Position[],
-        }
-    }
+            Attacker: Position[];
+            Defender: Position[];
+            Spectator: Position[];
+        };
+    };
 }

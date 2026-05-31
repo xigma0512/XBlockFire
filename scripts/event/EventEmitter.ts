@@ -1,9 +1,8 @@
-import { GameEvent } from "./GameEvent";
+import { GameEvent } from './GameEvent';
 
 type Listener<T extends keyof GameEvent> = (data: GameEvent[T]) => void;
 
 class EventEmitter {
-
     private listeners: Map<keyof GameEvent, Listener<any>[]> = new Map();
 
     public subscribe<T extends keyof GameEvent>(eventName: T, listener: Listener<T>) {
@@ -31,4 +30,3 @@ class EventEmitter {
 }
 
 export const gameEvents = new EventEmitter();
-

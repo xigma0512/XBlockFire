@@ -1,11 +1,11 @@
-import { DisplaySlotId, system, world } from "@minecraft/server";
-import { set_entity_native_property } from "./utils/Property";
-import { Deagle } from "./modules/combat/weapon/actors/item/Deagle";
-import { SG200 } from "./modules/combat/weapon/actors/item/SG200";
-import { AWP } from "./modules/combat/weapon/actors/item/AWP";
-import { P90 } from "./modules/combat/weapon/actors/item/P90";
+import { DisplaySlotId, system, world } from '@minecraft/server';
+import { set_entity_native_property } from './utils/Property';
+import { Deagle } from './modules/combat/weapon/actors/item/Deagle';
+import { SG200 } from './modules/combat/weapon/actors/item/SG200';
+import { AWP } from './modules/combat/weapon/actors/item/AWP';
+import { P90 } from './modules/combat/weapon/actors/item/P90';
 
-world.afterEvents.chatSend.subscribe(ev => {
+world.afterEvents.chatSend.subscribe((ev) => {
     if (ev.message === 'test') {
         const deagle = new Deagle();
         const sg200 = new SG200();
@@ -17,7 +17,7 @@ world.afterEvents.chatSend.subscribe(ev => {
         ev.sender.getComponent('inventory')?.container.addItem(p90.item);
         set_entity_native_property(ev.sender, 'player:can_use_item', true);
     }
-})
+});
 
 system.run(() => {
     if (world.scoreboard.getObjective('test') === undefined) {
@@ -25,13 +25,12 @@ system.run(() => {
     }
     const scoreboard = world.scoreboard.getObjective('test')!;
     world.scoreboard.setObjectiveAtDisplaySlot(DisplaySlotId.Sidebar, {
-        'objective': scoreboard
-    })
-})
+        objective: scoreboard,
+    });
+});
 
 system.runInterval(() => {
     const sb = world.scoreboard.getObjective('test')!;
     sb.setScore('§6test1', 0);
     sb.setScore('§ctest2', 1);
 }, 40);
-

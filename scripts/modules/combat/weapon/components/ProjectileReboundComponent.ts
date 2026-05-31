@@ -1,11 +1,10 @@
-import { Component } from "./Component";
+import { Component } from './Component';
 
 type ComponentDataType = {
     bounceFactor: number;
-}
+};
 
 export class ProjectileReboundComponent extends Component {
-
     readonly bounceFactor: number;
 
     constructor(data: ComponentDataType) {
@@ -13,6 +12,4 @@ export class ProjectileReboundComponent extends Component {
 
         this.bounceFactor = data.bounceFactor;
     }
-    
 }
-

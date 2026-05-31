@@ -1,27 +1,26 @@
-import { ItemActor } from "../../actors/Actor";
-import { BulletSystem } from "../bullet/BulletSystem";
-import { ActorManager } from "../ActorManager";
-import { GunAnimations } from "./GunAnimations";
+import { ItemActor } from '../../actors/Actor';
+import { BulletSystem } from '../bullet/BulletSystem';
+import { ActorManager } from '../ActorManager';
+import { GunAnimations } from './GunAnimations';
 
-import { FireModeEnum } from "../../WeaponEnum";
+import { FireModeEnum } from '../../WeaponEnum';
 
-import { getPlayerHandItem } from "../../../../../utils/others/Entity";
-import { entity_native_property } from "../../../../../utils/Property";
+import { getPlayerHandItem } from '../../../../../utils/others/Entity';
+import { entity_native_property } from '../../../../../utils/Property';
 
-import { Player, system, world } from "@minecraft/server";
+import { Player, system, world } from '@minecraft/server';
 
 export class GunFireSystem {
-
     private static _cooldowns = new Set<Player>();
 
     static startFiring(player: Player, gunActor: ItemActor) {
         const gunFireComp = gunActor.getComponent('gun_fire')!;
 
-        switch(gunFireComp.fire_mode) {
-            case FireModeEnum["Fully-Auto"]:
+        switch (gunFireComp.fire_mode) {
+            case FireModeEnum['Fully-Auto']:
                 this.fullAutoFire(player, gunActor);
                 break;
-            case FireModeEnum["Semi-Auto"]:
+            case FireModeEnum['Semi-Auto']:
                 this.semiAutoFire(player, gunActor);
                 break;
         }
@@ -38,37 +37,33 @@ export class GunFireSystem {
 
         this._cooldowns.add(player);
         system.runTimeout(() => this._cooldowns.delete(player), fireRate);
-        
+
         this.stopFiringTrigger(player, taskId);
     }
 
     private static semiAutoFire(player: Player, actor: ItemActor) {
-        
         const gunFireComp = actor.getComponent('gun_fire')!;
         const fireRate = gunFireComp.fire_rate;
-        
-        if (gunFireComp.release_to_fire) 
-        {
+
+        if (gunFireComp.release_to_fire) {
             system.run(() => {
-                const releaseUseCallback = world.afterEvents.itemReleaseUse.subscribe(ev => {
+                const releaseUseCallback = world.afterEvents.itemReleaseUse.subscribe((ev) => {
                     if (!this._cooldowns.has(player) && ev.source.id === player.id) {
                         this.fire(player, actor);
-                        
+
                         this._cooldowns.add(player);
                         system.runTimeout(() => this._cooldowns.delete(player), fireRate);
                     }
                     world.afterEvents.itemReleaseUse.unsubscribe(releaseUseCallback);
                 });
-                const stopUseCallback = world.afterEvents.itemStopUse.subscribe(ev => {
+                const stopUseCallback = world.afterEvents.itemStopUse.subscribe((ev) => {
                     if (ev.source.id === player.id) {
                         world.afterEvents.itemReleaseUse.unsubscribe(releaseUseCallback);
                         world.afterEvents.itemStopUse.unsubscribe(stopUseCallback);
                     }
                 });
             });
-        }
-        else 
-        {
+        } else {
             if (this._cooldowns.has(player)) return;
 
             this.fire(player, actor);
@@ -83,10 +78,10 @@ export class GunFireSystem {
             system.run(() => player.playSound('xblockfire.empty_gun'));
             return;
         }
-        
-        magazineComp.ammo --;
-        const gunFireComp = gunActor.getComponent('gun_fire')!;        
-        for (let _ = 0; _ < gunFireComp.bullet_spread; _ ++) {
+
+        magazineComp.ammo--;
+        const gunFireComp = gunActor.getComponent('gun_fire')!;
+        for (let _ = 0; _ < gunFireComp.bullet_spread; _++) {
             BulletSystem.shoot(player, gunActor);
         }
 
@@ -94,38 +89,35 @@ export class GunFireSystem {
     }
 
     private static stopFiringTrigger(player: Player, firingTaskId: number) {
-
         system.run(() => {
-
-            const afterItemStopUse = world.afterEvents.itemStopUse.subscribe((ev) => { 
-                if (ev.source.id === player.id) stopFire(); 
+            const afterItemStopUse = world.afterEvents.itemStopUse.subscribe((ev) => {
+                if (ev.source.id === player.id) stopFire();
             });
             const afterPlayerHotbarSelected = world.afterEvents.playerHotbarSelectedSlotChange.subscribe((ev) => {
-                if (ev.player.id === player.id) stopFire(); 
+                if (ev.player.id === player.id) stopFire();
             });
             const afterPlayerLeave = world.afterEvents.playerLeave.subscribe((ev) => {
-                if (ev.playerId === player.id) stopFire(); 
+                if (ev.playerId === player.id) stopFire();
             });
-            
+
             const stopFire = () => {
                 system.clearRun(firingTaskId);
-                
+
                 world.afterEvents.itemStopUse.unsubscribe(afterItemStopUse);
                 world.afterEvents.playerHotbarSelectedSlotChange.unsubscribe(afterPlayerHotbarSelected);
                 world.afterEvents.playerLeave.unsubscribe(afterPlayerLeave);
-            }
-
+            };
         });
     }
 }
 
-const startFireTrigger = world.beforeEvents.itemUse.subscribe(ev => {
+const startFireTrigger = world.beforeEvents.itemUse.subscribe((ev) => {
     const player = ev.source;
     if (!entity_native_property(player, 'player:can_use_item')) return;
 
     const isReloading = entity_native_property(player, 'player:state.reload');
     if (isReloading === 'reloading') return;
-    
+
     const handItem = getPlayerHandItem(player);
     if (handItem === undefined || !ActorManager.isActor(handItem)) return;
     const actor = ActorManager.getActor(handItem) as ItemActor;
@@ -134,4 +126,3 @@ const startFireTrigger = world.beforeEvents.itemUse.subscribe(ev => {
         GunFireSystem.startFiring(player, actor);
     }
 });
-

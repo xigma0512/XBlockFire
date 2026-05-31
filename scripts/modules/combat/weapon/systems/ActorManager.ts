@@ -1,8 +1,8 @@
-import { entity_dynamic_property, set_entity_dynamic_property } from "../../../../utils/Property";
-import { ActorType } from "../actors/Actor";
+import { entity_dynamic_property, set_entity_dynamic_property } from '../../../../utils/Property';
+import { ActorType } from '../actors/Actor';
 
-import { system, world } from "@minecraft/server";
-import { Entity, ItemStack } from "@minecraft/server"; 
+import { system, world } from '@minecraft/server';
+import { Entity, ItemStack } from '@minecraft/server';
 
 export class ActorManager {
     private static _entities = new Map<string, ActorType>();
@@ -13,7 +13,7 @@ export class ActorManager {
             this._entities.set(target.id, actor);
             return true;
         }
-        
+
         if (target instanceof ItemStack) {
             set_entity_dynamic_property(target, 'item:uuid', actor.uuid);
             this._items.set(actor.uuid, actor);
@@ -60,7 +60,7 @@ export class ActorManager {
 }
 
 /* Event */
-world.beforeEvents.entityRemove.subscribe(ev => {        
+world.beforeEvents.entityRemove.subscribe((ev) => {
     const entity = ev.removedEntity;
     system.runTimeout(() => {
         if (!ActorManager.isActor(entity)) return;
@@ -68,4 +68,3 @@ world.beforeEvents.entityRemove.subscribe(ev => {
         ActorManager.removeActor(actor.uuid);
     }, 2);
 });
-

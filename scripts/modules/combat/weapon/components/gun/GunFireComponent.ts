@@ -1,5 +1,5 @@
-import { FireModeEnum } from "../../WeaponEnum";
-import { Component } from "../Component";
+import { FireModeEnum } from '../../WeaponEnum';
+import { Component } from '../Component';
 
 type ComponentDataType = {
     fire_mode: FireModeEnum;
@@ -8,7 +8,7 @@ type ComponentDataType = {
     fire_rate: number;
 
     fire_sound?: string;
-}
+};
 
 export class GunFireComponent extends Component {
     readonly fire_mode: FireModeEnum;
@@ -20,7 +20,7 @@ export class GunFireComponent extends Component {
 
     constructor(data: ComponentDataType) {
         super('gun_fire');
-        
+
         this.fire_mode = data.fire_mode;
         this.release_to_fire = data.release_to_fire;
         this.bullet_spread = data.bullet_spread;
@@ -29,4 +29,3 @@ export class GunFireComponent extends Component {
         this.fire_sound = data.fire_sound;
     }
 }
-

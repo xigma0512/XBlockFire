@@ -1,5 +1,5 @@
-import { GrenadeTypeEnum } from "../WeaponEnum";
-import { Component } from "./Component";
+import { GrenadeTypeEnum } from '../WeaponEnum';
+import { Component } from './Component';
 
 type ComponentDataType = {
     grenadeTypeId: GrenadeTypeEnum;
@@ -7,10 +7,9 @@ type ComponentDataType = {
 
     throwing_sound?: string;
     explode_sound?: string;
-}
+};
 
 export class GrenadeComponent extends Component {
-    
     readonly grenadeTypeId: GrenadeTypeEnum;
     readonly executeDelay: number;
 
@@ -22,10 +21,8 @@ export class GrenadeComponent extends Component {
 
         this.grenadeTypeId = data.grenadeTypeId;
         this.executeDelay = data.executeDelay;
-        
+
         this.throwing_sound = data.throwing_sound;
         this.explode_sound = data.explode_sound;
     }
-
 }
-

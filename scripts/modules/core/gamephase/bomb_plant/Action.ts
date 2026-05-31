@@ -1,19 +1,19 @@
-import { MemberManager } from "../../../player/MemberManager";
-import { PhaseManager } from "../PhaseManager";
+import { MemberManager } from '../../../player/MemberManager';
+import { PhaseManager } from '../PhaseManager';
 
-import { GameOverPhase } from "./Gameover";
-import { RoundEndPhase } from "./RoundEnd";
-import { ActionView as ActionHud } from "../../../../ui/hud/views/ActionView";
+import { GameOverPhase } from './Gameover';
+import { RoundEndPhase } from './RoundEnd';
+import { ActionView as ActionHud } from '../../../../ui/hud/views/ActionView';
 
-import { PhaseEnum as BombPlantPhaseEnum } from "../BombPlantPhaseEnum"
-import { TeamEnum } from "../../../player/TeamEnum";
+import { PhaseEnum as BombPlantPhaseEnum } from '../BombPlantPhaseEnum';
+import { TeamEnum } from '../../../player/TeamEnum';
 
-import { HudDriver } from "../../../../ui/hud/drivers/HudDriver";
-import { Sound } from "../../../../ui/media/Sound";
-import { UiStateManager } from "../../../../ui/hud/state/UiState";
-import { Language as L } from "../../../../utils/Language";
-import { set_variable } from "../../../../utils/Variable";
-import { LanguageKey } from "../../../../settings/lang/LanguageKey";
+import { HudDriver } from '../../../../ui/hud/drivers/HudDriver';
+import { Sound } from '../../../../ui/media/Sound';
+import { UiStateManager } from '../../../../ui/hud/state/UiState';
+import { Language as L } from '../../../../utils/Language';
+import { set_variable } from '../../../../utils/Variable';
+import { LanguageKey } from '../../../../settings/lang/LanguageKey';
 
 const ACTION_TIME = 120 * 20;
 
@@ -22,8 +22,8 @@ const enum EndReasonEnum {
     'Attacker-Eliminated',
     'Attacker-Disconnect',
     'Defender-Eliminated',
-    'Defender-Disconnect'
-};
+    'Defender-Disconnect',
+}
 
 interface EndReasonData {
     winner: TeamEnum;
@@ -35,43 +35,44 @@ interface EndReasonData {
 const endReasonTable: Record<number, EndReasonData> = {
     [EndReasonEnum['Time-up']]: {
         winner: TeamEnum.Defender,
-        langKey: "round.end.time_up",
+        langKey: 'round.end.time_up',
         isGameOver: false,
-        nextPhaseGenerator: () => new RoundEndPhase()
+        nextPhaseGenerator: () => new RoundEndPhase(),
     },
     [EndReasonEnum['Attacker-Eliminated']]: {
         winner: TeamEnum.Defender,
-        langKey: "round.end.attacker_eliminated",
+        langKey: 'round.end.attacker_eliminated',
         isGameOver: false,
-        nextPhaseGenerator: () => new RoundEndPhase()
+        nextPhaseGenerator: () => new RoundEndPhase(),
     },
     [EndReasonEnum['Attacker-Disconnect']]: {
         winner: TeamEnum.Defender,
-        langKey: "game.over.attacker_disconnect",
+        langKey: 'game.over.attacker_disconnect',
         isGameOver: true,
-        nextPhaseGenerator: () => new GameOverPhase()
+        nextPhaseGenerator: () => new GameOverPhase(),
     },
     [EndReasonEnum['Defender-Eliminated']]: {
         winner: TeamEnum.Attacker,
-        langKey: "round.end.defender_eliminated",
+        langKey: 'round.end.defender_eliminated',
         isGameOver: false,
-        nextPhaseGenerator: () => new RoundEndPhase()
+        nextPhaseGenerator: () => new RoundEndPhase(),
     },
     [EndReasonEnum['Defender-Disconnect']]: {
         winner: TeamEnum.Attacker,
-        langKey: "game.over.defender_disconnect",
+        langKey: 'game.over.defender_disconnect',
         isGameOver: true,
-        nextPhaseGenerator: () => new GameOverPhase()
-    }
-}
+        nextPhaseGenerator: () => new GameOverPhase(),
+    },
+};
 
 export class ActionPhase implements IPhaseHandler {
-
     readonly phaseTag = BombPlantPhaseEnum.Action;
     readonly hud: ActionHud;
-    
+
     private _currentTick: number = ACTION_TIME;
-    get currentTick() { return this._currentTick; }
+    get currentTick() {
+        return this._currentTick;
+    }
 
     constructor() {
         this.hud = new ActionHud();
@@ -82,18 +83,17 @@ export class ActionPhase implements IPhaseHandler {
     }
 
     on_running() {
-        this._currentTick --;
+        this._currentTick--;
         voiceBroadcast(this.currentTick);
         this.hud.update();
         this.transitions();
     }
-    
-    on_exit() {
-    }
+
+    on_exit() {}
 
     private transitions() {
         if (PhaseManager.isPhaseTransitioning) return;
-        
+
         let endReason: EndReasonEnum | null = null;
 
         const attackers = MemberManager.getPlayers({ team: TeamEnum.Attacker });
@@ -107,7 +107,7 @@ export class ActionPhase implements IPhaseHandler {
         if (attackers.length === 0) endReason = EndReasonEnum['Attacker-Disconnect'];
         if (defenders.length === 0) endReason = EndReasonEnum['Defender-Disconnect'];
         if (this.currentTick <= 0) endReason = EndReasonEnum['Time-up'];
-    
+
         if (endReason) {
             const result = endReasonTable[endReason];
 
@@ -118,7 +118,6 @@ export class ActionPhase implements IPhaseHandler {
             PhaseManager.updatePhase(result.nextPhaseGenerator());
         }
     }
-
 }
 
 function voiceBroadcast(currentTick: number) {

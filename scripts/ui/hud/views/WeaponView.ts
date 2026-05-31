@@ -1,13 +1,12 @@
-import { system, world } from "@minecraft/server";
+import { system, world } from '@minecraft/server';
 
-import { getPlayerHandItem } from "../../../utils/others/Entity";
-import { ActorManager } from "../../../modules/combat/weapon/systems/ActorManager";
-import { HudDriver } from "../drivers/HudDriver";
+import { getPlayerHandItem } from '../../../utils/others/Entity';
+import { ActorManager } from '../../../modules/combat/weapon/systems/ActorManager';
+import { HudDriver } from '../drivers/HudDriver';
 
-import { InGameHud } from "../../InGameHud";
+import { InGameHud } from '../../InGameHud';
 
 export class WeaponView implements InGameHud {
-    
     update() {
         this.updateActionbar();
     }
@@ -17,30 +16,30 @@ export class WeaponView implements InGameHud {
             propertyOptions: [
                 {
                     propertyId: 'player:is_holding_gun',
-                    value: true
+                    value: true,
                 },
                 {
                     propertyId: 'player:state.reload',
                     exclude: true,
-                    value: 'reloading'
-                }
-            ]
+                    value: 'reloading',
+                },
+            ],
         });
 
         for (const player of players) {
             const item = getPlayerHandItem(player);
             if (item === undefined || !ActorManager.isActor(item)) continue;
-            
+
             const itemActor = ActorManager.getActor(item)!;
             if (!itemActor.hasComponent('gun_magazine')) continue;
 
             const magazineComp = itemActor.getComponent('gun_magazine')!;
             // Direct call to HudDriver to ensure precedence logic is handled
-            HudDriver.pushActionbar(player, `${magazineComp.ammo}/${magazineComp.storageAmmo}`, 2, "weapon_info");
+            HudDriver.pushActionbar(player, `${magazineComp.ammo}/${magazineComp.storageAmmo}`, 2, 'weapon_info');
         }
     }
 }
 
 world.afterEvents.worldLoad.subscribe(() => {
     system.runInterval(() => new WeaponView().update());
-})
+});

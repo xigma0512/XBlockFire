@@ -1,8 +1,8 @@
-import { Player } from "@minecraft/server";
-import { TeamEnum } from "../../../modules/player/TeamEnum";
-import { MemberManager } from "../../../modules/player/MemberManager";
-import { FormatCode as FC } from "../../../utils/FormatCode";
-import { variable } from "../../../utils/Variable";
+import { Player } from '@minecraft/server';
+import { TeamEnum } from '../../../modules/player/TeamEnum';
+import { MemberManager } from '../../../modules/player/MemberManager';
+import { FormatCode as FC } from '../../../utils/FormatCode';
+import { variable } from '../../../utils/Variable';
 
 export class PlayerList {
     /**
@@ -32,16 +32,16 @@ export class PlayerList {
                 text += ` ${FC.Gray}[${k}/${d}]`;
             }
             return text;
-        }
+        };
 
         const sortedDefenders = sortPlayers(defenders);
         const sortedAttackers = sortPlayers(attackers);
 
         for (const p of sortedDefenders) lines.push(formatLine(p, FC.Aqua));
         for (const p of sortedAttackers) lines.push(formatLine(p, FC.Gold));
-        
+
         if (spectators.length > 0) {
-            if (lines.length > 0) lines.push("");
+            if (lines.length > 0) lines.push('');
             for (const p of spectators) lines.push(`${FC.Gray}- ${p.name}`);
         }
 

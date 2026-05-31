@@ -1,38 +1,33 @@
-import { gameroom } from "../GameRoom";
-import { PhaseManager } from "./PhaseManager";
+import { gameroom } from '../GameRoom';
+import { PhaseManager } from './PhaseManager';
 
-import { IdlePhase } from "./bomb_plant/Idle";
+import { IdlePhase } from './bomb_plant/Idle';
 
-import { GameModeEnum } from "../GameModeEnum";
+import { GameModeEnum } from '../GameModeEnum';
 
-import { InGameHud } from "../../../ui/InGameHud";
+import { InGameHud } from '../../../ui/InGameHud';
 
 export class BlankPhase implements IPhaseHandler {
-
     readonly phaseTag = -1;
     readonly hud!: InGameHud;
     readonly currentTick = -1;
-    
-    constructor() { }
 
-    on_entry() {
-    }
+    constructor() {}
+
+    on_entry() {}
 
     on_running() {
         if (!gameroom()) return;
         this.transitions();
     }
 
-    on_exit() {
-    }
+    on_exit() {}
 
     private transitions() {
-        switch(gameroom().gameMode) {
-            case GameModeEnum.BombPlant: 
+        switch (gameroom().gameMode) {
+            case GameModeEnum.BombPlant:
                 PhaseManager.updatePhase(new IdlePhase());
                 break;
         }
     }
-
 }
-

@@ -1,12 +1,11 @@
-import { GunTypeEnum } from "../../WeaponEnum";
-import { Component } from "../Component";
+import { GunTypeEnum } from '../../WeaponEnum';
+import { Component } from '../Component';
 
 type ComponentDataType = {
     gunTypeId: GunTypeEnum;
-}
+};
 
 export class GunComponent extends Component {
-    
     readonly gunTypeId: GunTypeEnum;
 
     constructor(data: ComponentDataType) {
@@ -14,6 +13,4 @@ export class GunComponent extends Component {
 
         this.gunTypeId = data.gunTypeId;
     }
-
 }
-

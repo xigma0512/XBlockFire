@@ -1,4 +1,4 @@
-import { FormatCode as FC } from "../../../utils/FormatCode";
+import { FormatCode as FC } from '../../../utils/FormatCode';
 
 export class SurvivalIcons {
     /**
@@ -10,19 +10,19 @@ export class SurvivalIcons {
      * @param maxCount Max players for alignment padding
      */
     static format(total: number, alive: number, alignRight: boolean, maxCount: number): string {
-        let icons = "";
+        let icons = '';
         const dead = total - alive;
 
         if (alignRight) {
             // Padding from left
-            for (let i = 0; i < maxCount - total; i++) icons += "  ";
+            for (let i = 0; i < maxCount - total; i++) icons += '  ';
             for (let i = 0; i < dead; i++) icons += `${FC.Gray}X `;
             for (let i = 0; i < alive; i++) icons += `${FC.MaterialEmerald}O `;
         } else {
             // Align Left (default)
             for (let i = 0; i < alive; i++) icons += ` ${FC.MaterialRedstone}O`;
             for (let i = 0; i < dead; i++) icons += ` ${FC.Gray}X`;
-            for (let i = 0; i < maxCount - total; i++) icons += "  ";
+            for (let i = 0; i < maxCount - total; i++) icons += '  ';
         }
 
         return icons;

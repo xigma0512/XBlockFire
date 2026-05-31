@@ -1,29 +1,30 @@
-import { MemberManager } from "../../../player/MemberManager";
-import { PhaseManager } from "../PhaseManager";
-import { ActionView as ActionHud } from "../../../../ui/hud/views/ActionView"; 
+import { MemberManager } from '../../../player/MemberManager';
+import { PhaseManager } from '../PhaseManager';
+import { ActionView as ActionHud } from '../../../../ui/hud/views/ActionView';
 
-import { GameOverPhase } from "./Gameover";
-import { PreRoundStartPhase } from "./PreRoundStart";
+import { GameOverPhase } from './Gameover';
+import { PreRoundStartPhase } from './PreRoundStart';
 
-import { PhaseEnum as BombPlantPhaseEnum } from "../BombPlantPhaseEnum";
-import { TeamEnum } from "../../../player/TeamEnum";
+import { PhaseEnum as BombPlantPhaseEnum } from '../BombPlantPhaseEnum';
+import { TeamEnum } from '../../../player/TeamEnum';
 
-import { set_entity_dynamic_property } from "../../../../utils/Property";
-import { set_variable, variable } from "../../../../utils/Variable";
-import { Sound } from "../../../../ui/media/Sound";
-import { Language as L } from "../../../../utils/Language";
+import { set_entity_dynamic_property } from '../../../../utils/Property';
+import { set_variable, variable } from '../../../../utils/Variable';
+import { Sound } from '../../../../ui/media/Sound';
+import { Language as L } from '../../../../utils/Language';
 
-import { UiStateManager } from "../../../../ui/hud/state/UiState";
+import { UiStateManager } from '../../../../ui/hud/state/UiState';
 
 const COUNTDOWN_TIME = 6 * 20;
 const WINNING_SCORE = 8;
 
 export class RoundEndPhase implements IPhaseHandler {
-
     readonly phaseTag = BombPlantPhaseEnum.RoundEnd;
     readonly hud: ActionHud;
     private _currentTick = COUNTDOWN_TIME;
-    get currentTick() { return this._currentTick; }
+    get currentTick() {
+        return this._currentTick;
+    }
 
     constructor() {
         this.hud = new ActionHud();
@@ -34,7 +35,7 @@ export class RoundEndPhase implements IPhaseHandler {
         processWinner();
     }
 
-    on_running() {        
+    on_running() {
         if (this._currentTick-- % 20 == 0) {
             Sound.play('FIREWORK', MemberManager.getPlayers(), {});
         }
@@ -42,8 +43,7 @@ export class RoundEndPhase implements IPhaseHandler {
         this.transitions();
     }
 
-    on_exit() {
-    }
+    on_exit() {}
 
     private transitions() {
         const attackerScore = variable(`attacker_score`);
@@ -60,21 +60,19 @@ export class RoundEndPhase implements IPhaseHandler {
         }
 
         if (this.currentTick <= 0) {
-            
             if (attackerScore + defenderScore == WINNING_SCORE - 1) {
                 switchSide();
             }
-            
+
             PhaseManager.updatePhase(new PreRoundStartPhase());
         }
     }
-
 }
 
 function switchSide() {
     for (const player of MemberManager.getPlayers()) {
         const playerTeam = MemberManager.getPlayerTeam(player);
-        MemberManager.setPlayerTeam(player, (playerTeam === TeamEnum.Attacker) ? TeamEnum.Defender : TeamEnum.Attacker)
+        MemberManager.setPlayerTeam(player, playerTeam === TeamEnum.Attacker ? TeamEnum.Defender : TeamEnum.Attacker);
         // clear players inventory
         set_entity_dynamic_property(player, 'player:is_alive', false);
     }
@@ -85,14 +83,14 @@ function switchSide() {
     set_variable(`attacker_score`, defender_score);
     set_variable(`defender_score`, attacker_score);
 
-    UiStateManager.setNotifyMessage(L.translate("game.switch_side.title"), 20 * 17);
+    UiStateManager.setNotifyMessage(L.translate('game.switch_side.title'), 20 * 17);
 }
 
 function processWinner() {
     const winnerTeam = variable(`round_winner`) as TeamEnum;
     if (winnerTeam === TeamEnum.Attacker) {
         set_variable(`attacker_score`, variable(`attacker_score`) + 1);
-    } else if (winnerTeam === TeamEnum.Defender) { 
+    } else if (winnerTeam === TeamEnum.Defender) {
         set_variable(`defender_score`, variable(`defender_score`) + 1);
     }
 }

@@ -1,28 +1,32 @@
-import { gameroom } from "../../GameRoom";
-import { PhaseManager } from "../PhaseManager";
-import { EquipmentPointManager } from "../../EquipmentPointManager";
-import { LoadoutManager } from "../../LoadoutManager";
-import { MemberManager } from "../../../player/MemberManager";
-import { C4Manager } from "../../c4state/C4Manager";
-import { HotbarManager, HotbarTemplate } from "../../../../ui/hotbar/Hotbar";
-import { MapRegister } from "../../../world/MapRegister";
+import { gameroom } from '../../GameRoom';
+import { PhaseManager } from '../PhaseManager';
+import { EquipmentPointManager } from '../../EquipmentPointManager';
+import { LoadoutManager } from '../../LoadoutManager';
+import { MemberManager } from '../../../player/MemberManager';
+import { C4Manager } from '../../c4state/C4Manager';
+import { HotbarManager, HotbarTemplate } from '../../../../ui/hotbar/Hotbar';
+import { MapRegister } from '../../../world/MapRegister';
 
-import { C4IdleState } from "../../c4state/states/Idle";
-import { BuyingPhase } from "./Buying";
+import { C4IdleState } from '../../c4state/states/Idle';
+import { BuyingPhase } from './Buying';
 
-import { InGameHud } from "../../../../ui/InGameHud";
+import { InGameHud } from '../../../../ui/InGameHud';
 
-import { PhaseEnum as BombPlantPhaseEnum } from "../BombPlantPhaseEnum";
-import { TeamEnum } from "../../../player/TeamEnum";
+import { PhaseEnum as BombPlantPhaseEnum } from '../BombPlantPhaseEnum';
+import { TeamEnum } from '../../../player/TeamEnum';
 
-import { entity_dynamic_property, set_entity_dynamic_property, set_entity_native_property } from "../../../../utils/Property";
-import { ItemStackFactory } from "../../../../utils/ItemStackFactory";
-import { Language as L } from "../../../../utils/Language";
-import { UnCommonItems } from "../../../combat/ItemManager";
-import { variable } from "../../../../utils/Variable";
+import {
+    entity_dynamic_property,
+    set_entity_dynamic_property,
+    set_entity_native_property,
+} from '../../../../utils/Property';
+import { ItemStackFactory } from '../../../../utils/ItemStackFactory';
+import { Language as L } from '../../../../utils/Language';
+import { UnCommonItems } from '../../../combat/ItemManager';
+import { variable } from '../../../../utils/Variable';
 
-import { EquipmentSlot, GameMode, InputPermissionCategory, ItemLockMode, system } from "@minecraft/server";
-import { ItemStack } from "@minecraft/server";
+import { EquipmentSlot, GameMode, InputPermissionCategory, ItemLockMode, system } from '@minecraft/server';
+import { ItemStack } from '@minecraft/server';
 
 export class PreRoundStartPhase implements IPhaseHandler {
     readonly phaseTag = BombPlantPhaseEnum.PreRoundStart;
@@ -42,8 +46,7 @@ export class PreRoundStartPhase implements IPhaseHandler {
         this.transitions();
     }
 
-    on_exit() {
-    }
+    on_exit() {}
 
     private transitions() {
         PhaseManager.updatePhase(new BuyingPhase());
@@ -56,14 +59,13 @@ function resetC4State() {
 
 function initializePlayers() {
     for (const player of MemberManager.getPlayers()) {
-
         if (MemberManager.getPlayerTeam(player) === TeamEnum.Spectator) {
             player.setGameMode(GameMode.Spectator);
             continue;
         }
 
-        player.inputPermissions.setPermissionCategory(InputPermissionCategory.LateralMovement, false); 
-        
+        player.inputPermissions.setPermissionCategory(InputPermissionCategory.LateralMovement, false);
+
         set_entity_dynamic_property(player, 'player:is_alive', true);
         set_entity_native_property(player, 'player:can_use_item', false);
 
@@ -76,14 +78,14 @@ function initializePlayers() {
         system.runTimeout(() => {
             player.addEffect('saturation', 1, { amplifier: 5, showParticles: false });
         }, 120);
-        
+
         player.removeTag('attacker');
         player.removeTag('defender');
         player.addTag(MemberManager.getPlayerTeam(player) === TeamEnum.Attacker ? 'attacker' : 'defender');
 
-        const pointLimit = EquipmentPointManager.getPointLimit(variable("attacker_score"), variable("defender_score"));
+        const pointLimit = EquipmentPointManager.getPointLimit(variable('attacker_score'), variable('defender_score'));
         const reset = LoadoutManager.sanitizeForCurrentRound(player, pointLimit);
-        if (reset) player.sendMessage(L.translate("shop.loadout.reset"));
+        if (reset) player.sendMessage(L.translate('shop.loadout.reset'));
     }
 }
 
@@ -93,8 +95,8 @@ function teleportPlayers() {
     let nextSpawnIndex = {
         [TeamEnum.Attacker]: 0,
         [TeamEnum.Defender]: 0,
-        [TeamEnum.Spectator]: 0
-    }
+        [TeamEnum.Spectator]: 0,
+    };
 
     for (const player of MemberManager.getPlayers()) {
         const playerTeam = MemberManager.getPlayerTeam(player);
@@ -118,8 +120,8 @@ function resetPlayerInventory() {
         }
     }
 
-    for (const player of MemberManager.getPlayers({team: TeamEnum.Defender})) {
-        const hotbar = HotbarManager.getPlayerHotbar(player)
+    for (const player of MemberManager.getPlayers({ team: TeamEnum.Defender })) {
+        const hotbar = HotbarManager.getPlayerHotbar(player);
         hotbar.items[3] = ItemStackFactory.new({ typeId: 'xblockfire:defuser', lockMode: ItemLockMode.slot });
         HotbarManager.sendHotbar(player, hotbar);
     }
@@ -128,7 +130,7 @@ function resetPlayerInventory() {
     if (attackers.length > 0) {
         const C4Player = attackers[Math.floor(Math.random() * attackers.length)];
 
-        const hotbar = HotbarManager.getPlayerHotbar(C4Player)
+        const hotbar = HotbarManager.getPlayerHotbar(C4Player);
         hotbar.items[3] = new ItemStack('xblockfire:c4');
         HotbarManager.sendHotbar(C4Player, hotbar);
     }
@@ -150,4 +152,3 @@ function resetPlayerInventory() {
         equippable.setEquipment(EquipmentSlot.Feet, UnCommonItems.getItem('defender_boots'));
     }
 }
-

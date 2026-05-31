@@ -1,13 +1,8 @@
-import { ItemLockMode, Player } from "@minecraft/server";
+import { ItemLockMode, Player } from '@minecraft/server';
 
-import { HotbarManager } from "../../ui/hotbar/Hotbar";
-import {
-    ArmorTier,
-    ItemShopProduct,
-    ShopCatalogLookup,
-    THROWABLE_TOTAL_LIMIT
-} from "../../ui/form/shop/ShopCatalog";
-import { ItemStackFactory } from "../../utils/ItemStackFactory";
+import { HotbarManager } from '../../ui/hotbar/Hotbar';
+import { ArmorTier, ItemShopProduct, ShopCatalogLookup, THROWABLE_TOTAL_LIMIT } from '../../ui/form/shop/ShopCatalog';
+import { ItemStackFactory } from '../../utils/ItemStackFactory';
 
 interface PlayerLoadout {
     primary?: string;
@@ -23,9 +18,9 @@ export class LoadoutManager {
 
     static initialize(player: Player) {
         this.loadouts.set(player, {
-            secondary: "glock17",
-            armorTier: "none",
-            throwables: new Map()
+            secondary: 'glock17',
+            armorTier: 'none',
+            throwables: new Map(),
         });
     }
 
@@ -49,7 +44,9 @@ export class LoadoutManager {
     static getUsedPoints(player: Player) {
         const loadout = this.getLoadout(player);
         let usedPoints = 0;
-        const productIds = [loadout.primary, loadout.secondary].filter((productId): productId is string => productId !== undefined);
+        const productIds = [loadout.primary, loadout.secondary].filter(
+            (productId): productId is string => productId !== undefined
+        );
 
         for (const productId of productIds) {
             const product = ShopCatalogLookup.getProduct(productId);
@@ -72,41 +69,41 @@ export class LoadoutManager {
     }
 
     static setPrimary(player: Player, productId: string, pointLimit: number) {
-        const product = this.requireItemProduct(productId, "primary");
+        const product = this.requireItemProduct(productId, 'primary');
         const loadout = this.getLoadout(player);
         const previous = loadout.primary;
         loadout.primary = product.productId;
-        this.assertWithinPoints(player, pointLimit, () => loadout.primary = previous);
+        this.assertWithinPoints(player, pointLimit, () => (loadout.primary = previous));
         this.applyHotbar(player);
     }
 
     static setSecondary(player: Player, productId: string, pointLimit: number) {
-        const product = this.requireItemProduct(productId, "secondary");
+        const product = this.requireItemProduct(productId, 'secondary');
         const loadout = this.getLoadout(player);
         const previous = loadout.secondary;
         loadout.secondary = product.productId;
-        this.assertWithinPoints(player, pointLimit, () => loadout.secondary = previous);
+        this.assertWithinPoints(player, pointLimit, () => (loadout.secondary = previous));
         this.applyHotbar(player);
     }
 
     static setArmor(player: Player, armorTier: ArmorTier, pointLimit: number) {
         const armorProduct = ShopCatalogLookup.getArmorProduct(armorTier);
-        if (!armorProduct) throw new LoadoutError("shop.error.product_not_found");
+        if (!armorProduct) throw new LoadoutError('shop.error.product_not_found');
 
         const loadout = this.getLoadout(player);
         const previous = loadout.armorTier;
         loadout.armorTier = armorProduct.armorTier;
-        this.assertWithinPoints(player, pointLimit, () => loadout.armorTier = previous);
+        this.assertWithinPoints(player, pointLimit, () => (loadout.armorTier = previous));
     }
 
     static addThrowable(player: Player, productId: string, pointLimit: number) {
-        const product = this.requireItemProduct(productId, "throwable");
+        const product = this.requireItemProduct(productId, 'throwable');
         const loadout = this.getLoadout(player);
         const currentAmount = loadout.throwables.get(product.productId) ?? 0;
         const totalAmount = this.getThrowableTotal(player);
 
-        if (currentAmount >= product.maxAmount) throw new LoadoutError("shop.error.item_limit_reached");
-        if (totalAmount >= THROWABLE_TOTAL_LIMIT) throw new LoadoutError("shop.error.throwable_total_limit_reached");
+        if (currentAmount >= product.maxAmount) throw new LoadoutError('shop.error.item_limit_reached');
+        if (totalAmount >= THROWABLE_TOTAL_LIMIT) throw new LoadoutError('shop.error.throwable_total_limit_reached');
 
         loadout.throwables.set(product.productId, currentAmount + 1);
         this.assertWithinPoints(player, pointLimit, () => {
@@ -140,10 +137,10 @@ export class LoadoutManager {
 
         loadout.primary = undefined;
         loadout.throwables.clear();
-        loadout.armorTier = "none";
+        loadout.armorTier = 'none';
 
         const secondary = ShopCatalogLookup.getProduct(loadout.secondary);
-        if (!secondary || secondary.pointCost > pointLimit) loadout.secondary = "glock17";
+        if (!secondary || secondary.pointCost > pointLimit) loadout.secondary = 'glock17';
 
         this.applyHotbar(player);
         return true;
@@ -151,8 +148,8 @@ export class LoadoutManager {
 
     static getArmorReduction(player: Player) {
         const armorTier = this.getLoadout(player).armorTier;
-        if (armorTier === "light") return 0.15;
-        if (armorTier === "heavy") return 0.30;
+        if (armorTier === 'light') return 0.15;
+        if (armorTier === 'heavy') return 0.3;
         return 0;
     }
 
@@ -172,12 +169,15 @@ export class LoadoutManager {
 
     static describeLoadout(player: Player) {
         const loadout = this.getLoadout(player);
-        const primary = loadout.primary ? ShopCatalogLookup.getProduct(loadout.primary)?.name : "None";
-        const secondary = ShopCatalogLookup.getProduct(loadout.secondary)?.name ?? "Glock17";
-        const armor = ShopCatalogLookup.getArmorProduct(loadout.armorTier)?.name ?? "No Armor";
-        const throwables = [...loadout.throwables.entries()]
-            .map(([productId, amount]) => `${ShopCatalogLookup.getProduct(productId)?.name ?? productId} x${amount}`)
-            .join(", ") || "None";
+        const primary = loadout.primary ? ShopCatalogLookup.getProduct(loadout.primary)?.name : 'None';
+        const secondary = ShopCatalogLookup.getProduct(loadout.secondary)?.name ?? 'Glock17';
+        const armor = ShopCatalogLookup.getArmorProduct(loadout.armorTier)?.name ?? 'No Armor';
+        const throwables =
+            [...loadout.throwables.entries()]
+                .map(
+                    ([productId, amount]) => `${ShopCatalogLookup.getProduct(productId)?.name ?? productId} x${amount}`
+                )
+                .join(', ') || 'None';
 
         return { primary, secondary, armor, throwables };
     }
@@ -186,15 +186,17 @@ export class LoadoutManager {
         const loadout = this.getLoadout(player);
         const hotbar = HotbarManager.getPlayerHotbar(player);
 
-        hotbar.items[0] = loadout.primary ? this.createProductItem(this.requireItemProduct(loadout.primary, "primary")) : undefined;
-        hotbar.items[1] = this.createProductItem(this.requireItemProduct(loadout.secondary, "secondary"));
+        hotbar.items[0] = loadout.primary
+            ? this.createProductItem(this.requireItemProduct(loadout.primary, 'primary'))
+            : undefined;
+        hotbar.items[1] = this.createProductItem(this.requireItemProduct(loadout.secondary, 'secondary'));
 
-        for (const product of ShopCatalogLookup.getProductsByCategory("throwable")) {
+        for (const product of ShopCatalogLookup.getProductsByCategory('throwable')) {
             hotbar.items[(product as ItemShopProduct).slot] = undefined;
         }
 
         for (const [productId, amount] of loadout.throwables) {
-            const product = this.requireItemProduct(productId, "throwable");
+            const product = this.requireItemProduct(productId, 'throwable');
             const item = this.createProductItem(product);
             item.amount = amount;
             hotbar.items[product.slot] = item;
@@ -212,19 +214,19 @@ export class LoadoutManager {
 
         return ItemStackFactory.new({
             typeId: product.itemStackTypeId!,
-            lockMode: ItemLockMode.slot
+            lockMode: ItemLockMode.slot,
         });
     }
 
-    private static requireItemProduct(productId: string, category: ItemShopProduct["category"]) {
+    private static requireItemProduct(productId: string, category: ItemShopProduct['category']) {
         const product = ShopCatalogLookup.getProduct(productId);
-        if (!product || product.category !== category) throw new LoadoutError("shop.error.product_not_found");
+        if (!product || product.category !== category) throw new LoadoutError('shop.error.product_not_found');
         return product as ItemShopProduct;
     }
 
     private static assertWithinPoints(player: Player, pointLimit: number, rollback: () => void) {
         if (this.getUsedPoints(player) <= pointLimit) return;
         rollback();
-        throw new LoadoutError("shop.error.no_points");
+        throw new LoadoutError('shop.error.no_points');
     }
 }

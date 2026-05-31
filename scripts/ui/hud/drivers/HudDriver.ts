@@ -1,6 +1,6 @@
-import { Player, system, world, DisplaySlotId, ScoreboardObjective } from "@minecraft/server";
-import { Language as L } from "../../../utils/Language";
-import { FormatCode } from "../../../utils/FormatCode";
+import { Player, system, world, DisplaySlotId, ScoreboardObjective } from '@minecraft/server';
+import { Language as L } from '../../../utils/Language';
+import { FormatCode } from '../../../utils/FormatCode';
 
 export interface HudMessage {
     text: string;
@@ -12,12 +12,14 @@ export type MessageTarget = Player | Player[] | undefined;
 
 class _HudDriver {
     private static _instance: _HudDriver;
-    static get instance() { return (this._instance || (this._instance = new this())); }
+    static get instance() {
+        return this._instance || (this._instance = new this());
+    }
 
     private titleQueue = new Map<Player, HudMessage[]>();
     private subtitleQueue = new Map<Player, HudMessage[]>();
     private actionbarQueue = new Map<Player, HudMessage[]>();
-    
+
     private lastTitleText = new Map<Player, string>();
     private lastSubtitleText = new Map<Player, string>();
     private lastActionbarText = new Map<Player, string>();
@@ -28,7 +30,14 @@ class _HudDriver {
     }
 
     private cleanupPlayer(playerName: string) {
-        const maps = [this.titleQueue, this.subtitleQueue, this.actionbarQueue, this.lastTitleText, this.lastSubtitleText, this.lastActionbarText];
+        const maps = [
+            this.titleQueue,
+            this.subtitleQueue,
+            this.actionbarQueue,
+            this.lastTitleText,
+            this.lastSubtitleText,
+            this.lastActionbarText,
+        ];
         for (const map of maps) {
             for (const [player] of map) {
                 if (player.name === playerName) map.delete(player);
@@ -48,39 +57,45 @@ class _HudDriver {
         }
     }
 
-    pushTitle(target: MessageTarget, text: string, duration: number, category: string = "default") {
+    pushTitle(target: MessageTarget, text: string, duration: number, category: string = 'default') {
         for (const player of this.getPlayers(target)) {
             this.pushMessage(player, this.titleQueue, text, duration, category);
         }
     }
 
-    pushSubtitle(target: MessageTarget, text: string, duration: number, category: string = "default") {
+    pushSubtitle(target: MessageTarget, text: string, duration: number, category: string = 'default') {
         for (const player of this.getPlayers(target)) {
             this.pushMessage(player, this.subtitleQueue, text, duration, category);
         }
     }
 
-    pushActionbar(target: MessageTarget, text: string, duration: number, category: string = "default") {
+    pushActionbar(target: MessageTarget, text: string, duration: number, category: string = 'default') {
         for (const player of this.getPlayers(target)) {
             this.actionbarQueue.set(player, []); // Last one wins logic
             this.pushMessage(player, this.actionbarQueue, text, duration, category);
         }
     }
 
-    private pushMessage(player: Player, queueMap: Map<Player, HudMessage[]>, text: string, duration: number, category: string) {
+    private pushMessage(
+        player: Player,
+        queueMap: Map<Player, HudMessage[]>,
+        text: string,
+        duration: number,
+        category: string
+    ) {
         if (!queueMap.has(player)) queueMap.set(player, []);
         const queue = queueMap.get(player)!;
         const now = system.currentTick;
         const expireTick = now + duration;
 
-        if (category === "default") {
-            const existing = queue.find(m => m.text === text && m.category === "default");
+        if (category === 'default') {
+            const existing = queue.find((m) => m.text === text && m.category === 'default');
             if (existing) {
                 existing.expireTick = Math.max(existing.expireTick, expireTick);
                 return;
             }
         } else {
-            const index = queue.findIndex(m => m.category === category);
+            const index = queue.findIndex((m) => m.category === category);
             if (index !== -1) queue.splice(index, 1);
         }
 
@@ -89,7 +104,9 @@ class _HudDriver {
 
     setSidebar(lines: string[]) {
         const obj = this.getSidebarObjective();
-        try { world.scoreboard.setObjectiveAtDisplaySlot(DisplaySlotId.Sidebar, { objective: obj }); } catch {}
+        try {
+            world.scoreboard.setObjectiveAtDisplaySlot(DisplaySlotId.Sidebar, { objective: obj });
+        } catch {}
 
         const uniqueLines: string[] = [];
         const spacesCount = new Map<string, number>();
@@ -102,9 +119,12 @@ class _HudDriver {
             uniqueLines.push(line);
         }
 
-        const currentParticipants = obj.getParticipants().map(p => p.displayName);
+        const currentParticipants = obj.getParticipants().map((p) => p.displayName);
         for (const pName of currentParticipants) {
-            if (!uniqueLines.includes(pName)) try { obj.removeParticipant(pName); } catch {}
+            if (!uniqueLines.includes(pName))
+                try {
+                    obj.removeParticipant(pName);
+                } catch {}
         }
 
         let score = uniqueLines.length;
@@ -136,14 +156,19 @@ class _HudDriver {
     }
 
     private updateTitleSubtitle(player: Player) {
-        const titleText = this.getActiveMessageText(player, this.titleQueue) || "";
-        const subtitleText = this.getActiveMessageText(player, this.subtitleQueue) || "";
+        const titleText = this.getActiveMessageText(player, this.titleQueue) || '';
+        const subtitleText = this.getActiveMessageText(player, this.subtitleQueue) || '';
 
-        if (titleText !== (this.lastTitleText.get(player) || "") || subtitleText !== (this.lastSubtitleText.get(player) || "")) {
+        if (
+            titleText !== (this.lastTitleText.get(player) || '') ||
+            subtitleText !== (this.lastSubtitleText.get(player) || '')
+        ) {
             try {
-                player.onScreenDisplay.setTitle(titleText || " ", {
-                    subtitle: subtitleText || " ",
-                    fadeInDuration: 0, fadeOutDuration: 0, stayDuration: 20000000
+                player.onScreenDisplay.setTitle(titleText || ' ', {
+                    subtitle: subtitleText || ' ',
+                    fadeInDuration: 0,
+                    fadeOutDuration: 0,
+                    stayDuration: 20000000,
                 });
                 this.lastTitleText.set(player, titleText);
                 this.lastSubtitleText.set(player, subtitleText);
@@ -152,8 +177,8 @@ class _HudDriver {
     }
 
     private updateActionbar(player: Player) {
-        const text = this.getActiveMessageText(player, this.actionbarQueue) || "";
-        if (text !== (this.lastActionbarText.get(player) || "")) {
+        const text = this.getActiveMessageText(player, this.actionbarQueue) || '';
+        if (text !== (this.lastActionbarText.get(player) || '')) {
             try {
                 player.onScreenDisplay.setActionBar(text);
                 this.lastActionbarText.set(player, text);
@@ -165,9 +190,9 @@ class _HudDriver {
         if (!queueMap.has(player)) return undefined;
         const messages = queueMap.get(player)!;
         const now = system.currentTick;
-        const active = messages.filter(m => m.expireTick > now);
+        const active = messages.filter((m) => m.expireTick > now);
         if (active.length !== messages.length) queueMap.set(player, active);
-        if (active.length > 0) return active.map(m => m.text).join(`\n${FormatCode.Reset}`);
+        if (active.length > 0) return active.map((m) => m.text).join(`\n${FormatCode.Reset}`);
         return undefined;
     }
 }
