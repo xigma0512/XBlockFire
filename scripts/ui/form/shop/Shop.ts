@@ -22,7 +22,7 @@ import {
     THROWABLE_TOTAL_LIMIT,
 } from './ShopCatalog';
 
-type ShopAction = 'select_product' | 'remove_throwable' | 'clear_throwables';
+type ShopAction = 'select_product' | 'clear_primary' | 'clear_throwables';
 
 export class Shop {
     static async openShop(player: Player, tabId: ShopCategoryId = 'primary') {
@@ -37,9 +37,10 @@ export class Shop {
 
         for (const category of Object.keys(ShopCategories) as ShopCategoryId[]) {
             for (const product of ShopCatalogLookup.getProductsByCategory(category)) {
-                addProductButton(form, player, product, pointLimit);
+                addProductButton(form, player, product);
             }
         }
+        addPrimaryControls(form);
         addThrowableControls(form, player);
 
         const response = await form.show(player, tabId);
@@ -68,6 +69,7 @@ function buildBody(player: Player, pointLimit: number) {
         'shop.body',
         LoadoutManager.getUsedPoints(player),
         pointLimit,
+        LoadoutManager.getAvailablePoints(player, pointLimit),
         loadout.primary ?? 'None',
         loadout.secondary,
         loadout.armor,
@@ -75,23 +77,14 @@ function buildBody(player: Player, pointLimit: number) {
     );
 }
 
-function addProductButton(
-    form: TabbedActionForm<ShopAction>,
-    player: Player,
-    product: ShopProduct,
-    pointLimit: number
-) {
+function addProductButton(form: TabbedActionForm<ShopAction>, player: Player, product: ShopProduct) {
     const suffix =
         product.category === 'throwable'
             ? ` x${LoadoutManager.getThrowableAmount(player, product.productId)}/${
                   (product as ItemShopProduct).maxAmount
               }`
             : '';
-    const remaining = LoadoutManager.getAvailablePoints(player, pointLimit);
-    const label = `${product.name}${suffix} ${FC.Yellow}${product.pointCost}P\n${FC.DarkGray}${L.translate(
-        'shop.remaining_points',
-        remaining
-    )}`;
+    const label = `${product.name}${suffix} ${FC.Yellow}${product.pointCost}P`;
 
     form.button(product.category, {
         text: label,
@@ -101,37 +94,32 @@ function addProductButton(
     });
 }
 
-function addThrowableControls(form: TabbedActionForm<ShopAction>, player: Player) {
-    const throwableProducts = ShopCatalogLookup.getProductsByCategory('throwable') as ItemShopProduct[];
-    for (const product of throwableProducts) {
-        if (LoadoutManager.getThrowableAmount(player, product.productId) <= 0) continue;
-        form.button('throwable', {
-            text: L.translate('shop.throwable.remove', product.name),
-            action: 'remove_throwable',
-            value: product.productId,
-        });
-    }
+function addPrimaryControls(form: TabbedActionForm<ShopAction>) {
+    form.button('primary', {
+        text: L.translate('shop.primary.clear'),
+        action: 'clear_primary',
+    });
+}
 
-    if (LoadoutManager.getThrowableTotal(player) > 0) {
-        form.button('throwable', {
-            text: L.translate('shop.throwable.clear', LoadoutManager.getThrowableTotal(player), THROWABLE_TOTAL_LIMIT),
-            action: 'clear_throwables',
-        });
-    }
+function addThrowableControls(form: TabbedActionForm<ShopAction>, player: Player) {
+    form.button('throwable', {
+        text: L.translate('shop.throwable.clear', LoadoutManager.getThrowableTotal(player), THROWABLE_TOTAL_LIMIT),
+        action: 'clear_throwables',
+    });
 }
 
 function handleAction(player: Player, action: ShopAction, value: string | undefined, pointLimit: number) {
+    if (action === 'clear_primary') {
+        LoadoutManager.clearPrimary(player);
+        return;
+    }
+
     if (action === 'clear_throwables') {
         LoadoutManager.clearThrowables(player);
         return;
     }
 
     if (!value) throw new LoadoutError('shop.error.product_not_found');
-
-    if (action === 'remove_throwable') {
-        LoadoutManager.removeThrowable(player, value);
-        return;
-    }
 
     const product = ShopCatalogLookup.getProduct(value);
     if (!product) throw new LoadoutError('shop.error.product_not_found');
