@@ -2150,6 +2150,7 @@
           "enable_profanity_filter": true,
           "layer": 31,
           "text": "$actionbar_text",
+          "font_type": "smooth",
           "shadow": true,
           "localize": false,
           "alpha": "@hud.anim_actionbar_text_alpha_out"
@@ -2293,6 +2294,7 @@
                 "layer": 31,
                 "localize": false,
                 "font_size": "large",
+                "font_type": "smooth",
                 "variables": [
                   {
                     "requires": "(not $title_shadow)",
@@ -2357,6 +2359,7 @@
                 "layer": 31,
                 "localize": false,
                 "font_size": "normal",
+                "font_type": "smooth",
                 "variables": [
                   {
                     "requires": "$subtitle_initially_visible",

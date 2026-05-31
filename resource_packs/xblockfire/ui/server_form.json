@@ -148,7 +148,8 @@
                 "size": ["100%", "default"],
                 "anchor_from": "top_left",
                 "anchor_to": "top_left",
-                "text": "#form_text"
+                "text": "#form_text",
+                "font_type": "smooth"
               }
             }
           ]
@@ -198,6 +199,7 @@
                 "anchor_from": "top_left",
                 "anchor_to": "top_left",
                 "text": "#final_text",
+                "font_type": "smooth",
                 "bindings": [
                   {
                     "binding_name": "#form_text"
@@ -505,6 +507,7 @@
                                         "offset": [0, -11],
                                         "anchor_from": "bottom_middle",
                                         "text_alignment": "center",
+                                        "font_type": "smooth",
                                         "bindings": [
                                             {
                                                 "binding_name": "#form_button_text",
