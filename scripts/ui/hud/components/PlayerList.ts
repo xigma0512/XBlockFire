@@ -3,17 +3,22 @@ import { TeamEnum } from '../../../modules/player/TeamEnum';
 import { MemberManager } from '../../../modules/player/MemberManager';
 import { FormatCode as FC } from '../../../utils/FormatCode';
 import { variable } from '../../../utils/Variable';
+import { Language as L } from '../../../utils/Language';
 
 export class PlayerList {
     /**
      * Returns an array of formatted player lines for the sidebar
      */
-    static format(showKD: boolean = false): string[] {
-        const lines: string[] = [];
-
+    static format(showKD: boolean = false): string[] {        
         const attackers = MemberManager.getPlayers({ team: TeamEnum.Attacker });
         const defenders = MemberManager.getPlayers({ team: TeamEnum.Defender });
         const spectators = MemberManager.getPlayers({ team: TeamEnum.Spectator });
+
+        const playerNum = attackers.length + defenders.length + spectators.length;
+        const lines: string[] = [
+            '',
+            `${FC.White}${L.translate('hud.sidebar.players', FC.Yellow + playerNum)}`
+        ];
 
         const sortPlayers = (players: Player[]) => {
             return [...players].sort((a, b) => {
@@ -41,7 +46,6 @@ export class PlayerList {
         for (const p of sortedAttackers) lines.push(formatLine(p, FC.Gold));
 
         if (spectators.length > 0) {
-            if (lines.length > 0) lines.push('');
             for (const p of spectators) lines.push(`${FC.Gray}- ${p.name}`);
         }
 

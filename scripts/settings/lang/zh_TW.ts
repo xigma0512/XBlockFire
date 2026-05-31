@@ -35,8 +35,9 @@ export const zh_TW = {
     'hud.start_in': '遊戲將在 %1 秒後開始。',
     'hud.buying.subtitle': '<手持羽毛右鍵來打開商店>',
     'hud.sidebar.map': '地圖: %1',
-    'hud.sidebar.players': '人數: %1 (%2/%3)',
-    'hud.sidebar.mode': '模式:',
+    'hud.sidebar.mode': '模式: %1',
+    'hud.sidebar.players': '房間人數: %1',
+
     'member.join': '%1 加入了房間。',
     'member.leave': '%1 離開了房間。',
     'command.join_team': '%1 加入了 [%2]',
