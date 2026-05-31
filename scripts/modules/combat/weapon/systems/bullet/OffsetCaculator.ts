@@ -1,9 +1,8 @@
-import { Vector3Builder, Vector3Utils } from "@minecraft/math";
-import { Vector3 } from "@minecraft/server";
+import { Vector3Builder, Vector3Utils } from '@minecraft/math';
+import { Vector3 } from '@minecraft/server';
 
 export class OffsetCalculator {
     static addRandomOffset(originalVector: Vector3, uncertainty: number = 0) {
-
         const randemOffsetVector = new Vector3Builder(originalVector);
 
         const offsetX = (Math.random() * 2 - 1) * uncertainty;
@@ -24,7 +23,6 @@ export class OffsetCalculator {
     }
 
     static addHorizontalRandomOffset(originalVector: Vector3, uncertainty: number = 0) {
-
         const offsetX = (Math.random() * 2 - 1) * uncertainty;
         const offsetZ = (Math.random() * 2 - 1) * uncertainty;
 
@@ -33,4 +31,3 @@ export class OffsetCalculator {
         return Vector3Utils.normalize(result);
     }
 }
-

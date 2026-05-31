@@ -1,10 +1,9 @@
-import { EntityActor } from "../../../actors/Actor";
-import { GrenadeHandler } from "./GrenadeHandler";
+import { EntityActor } from '../../../actors/Actor';
+import { GrenadeHandler } from './GrenadeHandler';
 
-import { system } from "@minecraft/server";
+import { system } from '@minecraft/server';
 
 export class SmokeGrenadeHandler extends GrenadeHandler {
-
     constructor(actor: EntityActor) {
         super(actor);
 
@@ -15,12 +14,13 @@ export class SmokeGrenadeHandler extends GrenadeHandler {
     execute() {
         const dimension = this.entityActor.entity.dimension;
         const location = this.entityActor.entity.location;
-        
+
         const generatingSmoke = system.runInterval(() => {
-            try { for (let i = 0; i < 2; i++) dimension.spawnParticle('minecraft:huge_explosion_emitter', location); }
-            catch { }
+            try {
+                for (let i = 0; i < 2; i++) dimension.spawnParticle('minecraft:huge_explosion_emitter', location);
+            } catch {}
         });
-        
+
         const duration = 300;
         system.runTimeout(() => {
             system.clearRun(generatingSmoke);
@@ -29,4 +29,3 @@ export class SmokeGrenadeHandler extends GrenadeHandler {
         super.execute();
     }
 }
-

@@ -1,11 +1,11 @@
-import { gameEvents } from "../../../../../event/EventEmitter";
-import { LoadoutManager } from "../../../../core/LoadoutManager";
-import { MemberManager } from "../../../../player/MemberManager";
+import { gameEvents } from '../../../../../event/EventEmitter';
+import { LoadoutManager } from '../../../../core/LoadoutManager';
+import { MemberManager } from '../../../../player/MemberManager';
 
-import { ItemActor } from "../../actors/Actor";
+import { ItemActor } from '../../actors/Actor';
 
-import { Vector3Utils } from "@minecraft/math";
-import { EntityDamageCause, Player } from "@minecraft/server";
+import { Vector3Utils } from '@minecraft/math';
+import { EntityDamageCause, Player } from '@minecraft/server';
 
 const NEAR_DISTANCE = 10;
 const MEDIUM_DISTANCE = 30;
@@ -13,36 +13,36 @@ const MEDIUM_DISTANCE = 30;
 export class DamageSystem {
     static applyBulletDamage(attacker: Player, target: Player, gunActor: ItemActor, hitHeight: number) {
         if (this.isTeamDamage(attacker, target)) return;
-        
+
         const distance = this.getDistance(attacker, target);
         const hitPart = this.getHitPart(target, hitHeight);
-        
+
         const damageComp = gunActor.getComponent('gun_damage')!;
         const rawDamage = damageComp[distance][hitPart];
         const damage = LoadoutManager.applyArmorReduction(target, rawDamage);
-        
+
         if (!target.hasComponent('health')) return;
         const healthComp = target.getComponent('health')!;
-        
+
         if (healthComp.currentValue - damage > 0) {
             healthComp.setCurrentValue(healthComp.currentValue - damage);
         } else {
             gameEvents.emit('playerDied', {
                 attacker: attacker,
-                deadPlayer: target
+                deadPlayer: target,
             });
         }
 
-        target.addEffect('slowness', 5, {amplifier: 0, showParticles: false})
+        target.addEffect('slowness', 5, { amplifier: 0, showParticles: false });
         target.playSound('random.hurt');
-        target.applyDamage(0.001, {cause: EntityDamageCause.override});
+        target.applyDamage(0.001, { cause: EntityDamageCause.override });
         attacker.playSound('random.orb');
     }
 
     private static isTeamDamage(attacker: Player, target: Player) {
         const attackerTeam = MemberManager.getPlayerTeam(attacker);
         const targetTeam = MemberManager.getPlayerTeam(target);
-        return attackerTeam === targetTeam; 
+        return attackerTeam === targetTeam;
     }
 
     private static getDistance(attacker: Player, target: Player): DamageDistanceType {
@@ -63,4 +63,3 @@ export class DamageSystem {
         return 'head';
     }
 }
-

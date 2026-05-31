@@ -1,6 +1,6 @@
 export const enum FireModeEnum {
     'Fully-Auto',
-    'Semi-Auto'
+    'Semi-Auto',
 }
 
 export const enum GunTypeEnum {
@@ -10,13 +10,12 @@ export const enum GunTypeEnum {
     'SG200',
     'P90',
     'Glock17',
-    'Deagle'
+    'Deagle',
 }
 
 export const enum GrenadeTypeEnum {
     'Flashbang' = 0,
-    'SmokeGrenade'
+    'SmokeGrenade',
 }
 
-export type GunReloadStateEnum = 'idle' | 'pre_reload' |'reloading' | 'success' | 'fail' 
-
+export type GunReloadStateEnum = 'idle' | 'pre_reload' | 'reloading' | 'success' | 'fail';

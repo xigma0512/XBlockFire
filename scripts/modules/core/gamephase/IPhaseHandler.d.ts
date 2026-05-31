@@ -6,4 +6,3 @@ declare abstract class IPhaseHandler {
     on_running(): void;
     on_exit(): void;
 }
-

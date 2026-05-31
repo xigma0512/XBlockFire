@@ -1,22 +1,21 @@
-import { ItemActor } from "../../actors/Actor";
-import { OffsetCalculator } from "./OffsetCaculator";
-import { getPlayerGunOffset } from "../gun/GunOffsetSystem";
-import { DamageSystem } from "./BulletDamage";
-import { BulletAnimation } from "./BulletAnimation";
+import { ItemActor } from '../../actors/Actor';
+import { OffsetCalculator } from './OffsetCaculator';
+import { getPlayerGunOffset } from '../gun/GunOffsetSystem';
+import { DamageSystem } from './BulletDamage';
+import { BulletAnimation } from './BulletAnimation';
 
-import { entity_dynamic_property } from "../../../../../utils/Property";
+import { entity_dynamic_property } from '../../../../../utils/Property';
 
-import { Vector3Utils } from "@minecraft/math";
-import { BlockRaycastHit, DimensionLocation, Player, system, Vector3 } from "@minecraft/server";
+import { Vector3Utils } from '@minecraft/math';
+import { BlockRaycastHit, DimensionLocation, Player, system, Vector3 } from '@minecraft/server';
 
 const MAX_DISTANCE = 100;
 
 export class BulletSystem {
-
     static shoot(owner: Player, gunActor: ItemActor) {
         const dimension = owner.dimension;
-        const eyeLocation = Vector3Utils.add(owner.getHeadLocation(), { y:0.12 });
-        
+        const eyeLocation = Vector3Utils.add(owner.getHeadLocation(), { y: 0.12 });
+
         const viewVector = owner.getViewDirection();
         const playerOffset = getPlayerGunOffset(owner, gunActor);
         const shootVector = OffsetCalculator.addRandomOffset(viewVector, playerOffset);
@@ -65,20 +64,25 @@ export class BulletSystem {
         if (raycast === undefined) return MAX_DISTANCE;
         return Vector3Utils.distance(launchLocation, raycast.block.location);
     }
-    
-    private static getHitEntityRaycast(location: DimensionLocation, shootVector: Vector3, shooterName: string, distance: number) {
+
+    private static getHitEntityRaycast(
+        location: DimensionLocation,
+        shootVector: Vector3,
+        shooterName: string,
+        distance: number
+    ) {
         const dimension = location.dimension;
         if (distance == -1) distance = MAX_DISTANCE;
-        const hitEntities = dimension.getEntitiesFromRay(location, shootVector, { 
-            excludeNames: [ shooterName ],
-            maxDistance: distance
-        }).filter(raycast => entity_dynamic_property(raycast.entity, 'player:is_alive'));
-        
+        const hitEntities = dimension
+            .getEntitiesFromRay(location, shootVector, {
+                excludeNames: [shooterName],
+                maxDistance: distance,
+            })
+            .filter((raycast) => entity_dynamic_property(raycast.entity, 'player:is_alive'));
+
         if (hitEntities.length > 0) {
             return hitEntities.at(0);
         }
         return undefined;
     }
-
 }
-

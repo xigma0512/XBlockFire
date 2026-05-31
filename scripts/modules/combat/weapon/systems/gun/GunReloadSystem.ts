@@ -1,14 +1,13 @@
-import { ActorManager } from "../ActorManager";
-import { ItemActor } from "../../actors/Actor";
-import { set_entity_native_property, entity_native_property } from "../../../../../utils/Property";
-import { getPlayerHandItem } from "../../../../../utils/others/Entity";
-import { progressBar } from "../../../../../utils/others/Format";
+import { ActorManager } from '../ActorManager';
+import { ItemActor } from '../../actors/Actor';
+import { set_entity_native_property, entity_native_property } from '../../../../../utils/Property';
+import { getPlayerHandItem } from '../../../../../utils/others/Entity';
+import { progressBar } from '../../../../../utils/others/Format';
 
-import { Player, system, world } from "@minecraft/server";
-import { GunAnimations } from "./GunAnimations";
+import { Player, system, world } from '@minecraft/server';
+import { GunAnimations } from './GunAnimations';
 
 class GunReloadSystem {
-
     private player: Player;
     private reloadTaskId: number = -1;
 
@@ -17,20 +16,17 @@ class GunReloadSystem {
     }
 
     playerReload() {
-        try 
-        {
+        try {
             const handItem = getPlayerHandItem(this.player);
             if (!handItem) throw 'player hand item is undefined.';
-            
+
             if (!ActorManager.isActor(handItem)) throw 'hand item actor is undefined.';
             const actor = ActorManager.getActor(handItem) as ItemActor;
-            
+
             if (!this.canReload(actor)) throw 'cannot reload now';
-            
+
             this.startReload(actor);
-        } 
-        catch(err: any)
-        {
+        } catch (err: any) {
             return this.failure();
         }
     }
@@ -39,7 +35,7 @@ class GunReloadSystem {
         const reloadComp = actor.getComponent('gun_reload')!;
         const reloadTime = reloadComp.reload_time;
         const startTick = system.currentTick;
-        
+
         const progressBarTaskId = system.runInterval(() => {
             const progressBarStr = `${progressBar(reloadTime, system.currentTick - startTick, 30)}`;
             this.player.onScreenDisplay.setActionBar(progressBarStr);
@@ -47,12 +43,12 @@ class GunReloadSystem {
 
         this.reloadTaskId = system.runTimeout(() => {
             this.complete(actor);
-            
+
             system.clearRun(progressBarTaskId);
             world.afterEvents.dataDrivenEntityTrigger.unsubscribe(failTriggerCallback);
         }, reloadTime);
 
-        const failTriggerCallback = world.afterEvents.dataDrivenEntityTrigger.subscribe(ev => {
+        const failTriggerCallback = world.afterEvents.dataDrivenEntityTrigger.subscribe((ev) => {
             if (this.player.id === ev.entity.id && ev.eventId === 'property:state.reload.fail') {
                 this.failure();
 
@@ -91,14 +87,13 @@ class GunReloadSystem {
 
         magazineComp.ammo += ammoToTransfer;
         magazineComp.storageAmmo -= ammoToTransfer;
-        
+
         set_entity_native_property(this.player, 'player:state.reload', 'success');
     }
 }
 
-world.afterEvents.dataDrivenEntityTrigger.subscribe(ev => {
+world.afterEvents.dataDrivenEntityTrigger.subscribe((ev) => {
     if (ev.entity instanceof Player && ev.eventId === 'property:state.reload.pre_reload') {
         new GunReloadSystem(ev.entity).playerReload();
     }
 });
-

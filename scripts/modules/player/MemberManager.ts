@@ -1,7 +1,7 @@
-import { Player, world } from "@minecraft/server";
-import { TeamEnum } from "./TeamEnum";
-import { HudDriver } from "../../ui/hud/drivers/HudDriver";
-import { Language as L } from "../../utils/Language";
+import { Player, world } from '@minecraft/server';
+import { TeamEnum } from './TeamEnum';
+import { HudDriver } from '../../ui/hud/drivers/HudDriver';
+import { Language as L } from '../../utils/Language';
 
 interface PlayerOptions {
     team?: TeamEnum;
@@ -10,18 +10,20 @@ interface PlayerOptions {
 
 class _MemberManager {
     private static _instance: _MemberManager;
-    static get instance() { return (this._instance || (this._instance = new this)); }
+    static get instance() {
+        return this._instance || (this._instance = new this());
+    }
 
     private playerTeam = new Map<Player, TeamEnum>();
 
     joinRoom(player: Player) {
         this.playerTeam.set(player, TeamEnum.Spectator);
-        HudDriver.chat(L.translate("member.join", player.name), this.getPlayers());
+        HudDriver.chat(L.translate('member.join', player.name), this.getPlayers());
     }
 
     leaveRoom(player: Player) {
         this.playerTeam.delete(player);
-        HudDriver.chat(L.translate("member.leave", player.name), this.getPlayers());
+        HudDriver.chat(L.translate('member.leave', player.name), this.getPlayers());
     }
 
     includePlayer(player: Player) {
@@ -32,11 +34,11 @@ class _MemberManager {
         let players = world.getAllPlayers();
 
         if (options.team !== undefined) {
-            players = players.filter(p => this.getPlayerTeam(p) === options.team);
+            players = players.filter((p) => this.getPlayerTeam(p) === options.team);
         }
 
         if (options.is_alive !== undefined) {
-            players = players.filter(p => {
+            players = players.filter((p) => {
                 const isAlive = p.getDynamicProperty('player:is_alive') as boolean;
                 return isAlive === options.is_alive;
             });
@@ -65,12 +67,12 @@ world.afterEvents.worldLoad.subscribe(() => {
     }
 });
 
-world.afterEvents.playerSpawn.subscribe(ev => {
+world.afterEvents.playerSpawn.subscribe((ev) => {
     if (ev.initialSpawn) {
         MemberManager.joinRoom(ev.player);
     }
 });
 
-world.beforeEvents.playerLeave.subscribe(ev => {
+world.beforeEvents.playerLeave.subscribe((ev) => {
     MemberManager.leaveRoom(ev.player);
 });

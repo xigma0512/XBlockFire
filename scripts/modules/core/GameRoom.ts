@@ -1,11 +1,10 @@
-import { AlliesMarker } from "../player/AlliesMarker";
+import { AlliesMarker } from '../player/AlliesMarker';
 
-import { GameModeEnum } from "./GameModeEnum";
+import { GameModeEnum } from './GameModeEnum';
 
-import { system } from "@minecraft/server";
+import { system } from '@minecraft/server';
 
 class GameRoom {
-
     static gameroom: GameRoom;
 
     readonly gameMode: GameModeEnum;
@@ -21,9 +20,9 @@ class GameRoom {
     }
 
     private addMarkerTask() {
-        switch(this.gameMode) {
+        switch (this.gameMode) {
             default:
-            case GameModeEnum.BombPlant: 
+            case GameModeEnum.BombPlant:
                 return system.runInterval(() => {
                     AlliesMarker.updateMark();
                 }, 3);
@@ -33,7 +32,6 @@ class GameRoom {
     close() {
         system.clearRun(this.markerTaskId);
     }
-
 }
 
 export class GameRoomFactory {
@@ -46,6 +44,5 @@ export const gameroom = () => {
     if (!GameRoom.gameroom) {
         GameRoom.gameroom = new GameRoom(GameModeEnum.BombPlant, 0);
     }
-    return GameRoom.gameroom; 
-}
-
+    return GameRoom.gameroom;
+};

@@ -1,13 +1,12 @@
-import { Component } from "../Component";
+import { Component } from '../Component';
 
 type ComponentDataType = {
-    near: IDamageTable,
-    medium: IDamageTable,
-    far: IDamageTable
-}
+    near: IDamageTable;
+    medium: IDamageTable;
+    far: IDamageTable;
+};
 
 export class GunDamageComponent extends Component {
-
     readonly near: IDamageTable;
     readonly medium: IDamageTable;
     readonly far: IDamageTable;
@@ -20,4 +19,3 @@ export class GunDamageComponent extends Component {
         this.far = data.far;
     }
 }
-

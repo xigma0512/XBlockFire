@@ -1,12 +1,11 @@
-import { Component } from "../Component";
+import { Component } from '../Component';
 
 type ComponentDataType = {
-    ammo: number,
+    ammo: number;
     count: number;
-}
+};
 
 export class GunMagazineComponent extends Component {
-
     ammo: number;
     storageAmmo: number;
     readonly capacity: number;
@@ -16,7 +15,6 @@ export class GunMagazineComponent extends Component {
 
         this.ammo = data.ammo;
         this.capacity = this.ammo;
-        this.storageAmmo = this.ammo * data.count; 
+        this.storageAmmo = this.ammo * data.count;
     }
 }
-

@@ -1,4 +1,3 @@
 export enum GameModeEnum {
-    'BombPlant' = 'BombPlant'
+    'BombPlant' = 'BombPlant',
 }
-

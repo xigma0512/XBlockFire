@@ -1,4 +1,4 @@
-import { FormatCode as FC } from "../../../utils/FormatCode";
+import { FormatCode as FC } from '../../../utils/FormatCode';
 
 export class MatchScore {
     /**

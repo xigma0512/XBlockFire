@@ -1,6 +1,6 @@
-import { Component } from "./Component";
+import { Component } from './Component';
 
-import { ItemLockMode } from "@minecraft/server";
+import { ItemLockMode } from '@minecraft/server';
 
 type ComponentDataType = Partial<{
     nametag: string;
@@ -10,10 +10,9 @@ type ComponentDataType = Partial<{
     lockMode: ItemLockMode;
     canDestroy: string[];
     canPlaceOn: string[];
-}>
+}>;
 
 export class ItemComponent extends Component {
-
     readonly nametag?: string;
     readonly lore?: string[];
 
@@ -33,4 +32,3 @@ export class ItemComponent extends Component {
         this.canPlaceOn = data.canPlaceOn;
     }
 }
-

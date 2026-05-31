@@ -1,4 +1,4 @@
-import { Component } from "../Component";
+import { Component } from '../Component';
 
 interface Recoil {
     level: number;
@@ -8,10 +8,9 @@ interface Recoil {
 type ComponentDataType = {
     scope_recoil: Recoil;
     hipfire_recoil: Recoil;
-}
+};
 
 export class GunRecoilComponent extends Component {
-
     readonly scope_recoil: Recoil;
     readonly hipfire_recoil: Recoil;
 
@@ -21,6 +20,4 @@ export class GunRecoilComponent extends Component {
         this.scope_recoil = data.scope_recoil;
         this.hipfire_recoil = data.hipfire_recoil;
     }
-
 }
-

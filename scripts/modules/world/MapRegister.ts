@@ -1,13 +1,14 @@
-import GameMap from "../../settings/game_maps";
-import { GameMapType } from "./GameMapType";
+import GameMap from '../../settings/game_maps';
+import { GameMapType } from './GameMapType';
 
 class _MapRegister {
-    
     private static _instance: _MapRegister;
-    static get instance() { return (this._instance || (this._instance = new this())); }
-    
+    static get instance() {
+        return this._instance || (this._instance = new this());
+    }
+
     readonly availableMaps: Map<number, GameMapType>;
-    
+
     constructor() {
         this.availableMaps = new Map();
         this.initializeMaps();
@@ -25,8 +26,6 @@ class _MapRegister {
             this.availableMaps.set(Number(mapId), mapInfo as any);
         }
     }
-
 }
 
 export const MapRegister = _MapRegister.instance;
-

@@ -1,5 +1,5 @@
-import { world, HudElement, system } from "@minecraft/server";
-import { Language as L } from "../../utils/Language";
+import { world, HudElement, system } from '@minecraft/server';
+import { Language as L } from '../../utils/Language';
 
 world.afterEvents.playerSpawn.subscribe((ev) => {
     if (ev.initialSpawn) {
@@ -8,13 +8,13 @@ world.afterEvents.playerSpawn.subscribe((ev) => {
             HudElement.AirBubbles,
             HudElement.StatusEffects,
             HudElement.Hunger,
-            HudElement.ItemText
+            HudElement.ItemText,
         ]);
         ev.player.camera.setCamera('minecraft:first_person');
         system.runTimeout(() => {
-            ev.player.sendMessage(L.translate("prestart.suggest_settings"));
-            ev.player.sendMessage(L.translate("prestart.camera_shake"));
-            ev.player.sendMessage(L.translate("prestart.fov_adjust"));
+            ev.player.sendMessage(L.translate('prestart.suggest_settings'));
+            ev.player.sendMessage(L.translate('prestart.camera_shake'));
+            ev.player.sendMessage(L.translate('prestart.fov_adjust'));
             ev.player.playSound('note.bell');
         }, 100);
     }

@@ -1,16 +1,16 @@
-import { Component, ComponentTypes } from "../components/Component";
-import { ActorManager } from "../systems/ActorManager";
+import { Component, ComponentTypes } from '../components/Component';
+import { ActorManager } from '../systems/ActorManager';
 
-import { randomUUID } from "../../../../utils/others/Common";
+import { randomUUID } from '../../../../utils/others/Common';
 
-import { Dimension, Entity, ItemStack, Vector3 } from "@minecraft/server";
+import { Dimension, Entity, ItemStack, Vector3 } from '@minecraft/server';
 
 export type ActorType = EntityActor | ItemActor;
 
 abstract class Actor {
     readonly typeId: string;
     readonly uuid: string;
-    protected readonly components = new Map<keyof ComponentTypes, Component>;
+    protected readonly components = new Map<keyof ComponentTypes, Component>();
 
     constructor(typeId: string) {
         this.typeId = typeId;
@@ -32,10 +32,11 @@ export interface DummyEntity {
 }
 
 export abstract class EntityActor extends Actor {
-    
     // readonly entity: Entity;
     private _entity: Entity | DummyEntity;
-    get entity() { return this._entity as Entity; };
+    get entity() {
+        return this._entity as Entity;
+    }
 
     constructor(typeId: string, entity: Entity | DummyEntity) {
         super(typeId);
@@ -78,4 +79,3 @@ export abstract class ItemActor extends Actor {
 
     abstract clone(): ItemActor;
 }
-

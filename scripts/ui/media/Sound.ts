@@ -1,5 +1,5 @@
-import { Player, Vector3, world, PlayerSoundOptions } from "@minecraft/server";
-import { SoundKey, SoundRegistry } from "./SoundTable";
+import { Player, Vector3, world, PlayerSoundOptions } from '@minecraft/server';
+import { SoundKey, SoundRegistry } from './SoundTable';
 
 export type SoundTarget = Player | Player[] | undefined;
 
@@ -19,7 +19,7 @@ export class Sound {
         const soundDef = SoundRegistry[soundKey];
         if (!soundDef) return;
 
-        const baseOptions = "options" in soundDef ? soundDef.options : {};
+        const baseOptions = 'options' in soundDef ? soundDef.options : {};
         const finalOptions: PlayerSoundOptions = { ...baseOptions, ...overrideOptions };
 
         for (const p of this.getPlayers(target)) {

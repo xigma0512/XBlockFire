@@ -1,7 +1,7 @@
-import { entity_native_property } from "../../../../../utils/Property";
-import { ItemActor } from "../../actors/Actor";
+import { entity_native_property } from '../../../../../utils/Property';
+import { ItemActor } from '../../actors/Actor';
 
-import { Player } from "@minecraft/server";
+import { Player } from '@minecraft/server';
 
 function getPlayerGunOffset(player: Player, gunActor: ItemActor) {
     const offsetComp = gunActor.getComponent('gun_offset')!;
@@ -12,4 +12,3 @@ function getPlayerGunOffset(player: Player, gunActor: ItemActor) {
 }
 
 export { getPlayerGunOffset };
-

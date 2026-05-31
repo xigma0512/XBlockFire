@@ -1,5 +1,5 @@
-import { Container, ItemLockMode, world } from "@minecraft/server"
-import { Config } from "../../settings/config";
+import { Container, ItemLockMode, world } from '@minecraft/server';
+import { Config } from '../../settings/config';
 
 const CONTAINER_LOCATION = Config.uncommon_items.CONTAINER_LOCATION;
 
@@ -12,7 +12,7 @@ export class UnCommonItems {
             const chest = world.getDimension('overworld').getBlock(CONTAINER_LOCATION);
             if (chest === undefined || chest.getComponent('inventory') === undefined) {
                 throw Error('Cannot found UnCommonItems container.');
-            } 
+            }
             this.container = chest.getComponent('inventory')!.container!;
         }
 
@@ -24,4 +24,3 @@ export class UnCommonItems {
         return item;
     }
 }
-
