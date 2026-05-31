@@ -1,7 +1,6 @@
 import { PhaseManager } from "../../gamephase/PhaseManager";
 import { MemberManager } from "../../../player/MemberManager";
 import { C4Manager } from "../C4Manager";
-import { EconomyManager } from "../../EconomyManager";
 
 import { C4IdleState } from "./Idle";
 import { C4PlantedPhase } from "../../gamephase/bomb_plant/C4Planted";
@@ -52,10 +51,6 @@ export class C4PlantedState implements IC4StateHandler {
 
         if (PhaseManager.getPhase().phaseTag === BombPlantPhaseEnum.Action) {
             PhaseManager.updatePhase(new C4PlantedPhase());
-        }
-        
-        for (const player of MemberManager.getPlayers({team: TeamEnum.Attacker})) {
-            EconomyManager.setMoney(player, EconomyManager.getMoney(player) + 300);
         }
     }
     

@@ -4,11 +4,6 @@ export namespace Config {
         LANGUAGE: 'zh_TW',
         DEBUG: true
     }
-    
-    export const economy = {
-        LIMIT: 9000
-    }
-
     export const uncommon_items = {
         CONTAINER_LOCATION: { x: 155, y: 123, z: -2 },
         ITEM_LIST: {

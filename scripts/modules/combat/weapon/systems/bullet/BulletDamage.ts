@@ -1,4 +1,5 @@
 import { gameEvents } from "../../../../../event/EventEmitter";
+import { LoadoutManager } from "../../../../core/LoadoutManager";
 import { MemberManager } from "../../../../player/MemberManager";
 
 import { ItemActor } from "../../actors/Actor";
@@ -17,7 +18,8 @@ export class DamageSystem {
         const hitPart = this.getHitPart(target, hitHeight);
         
         const damageComp = gunActor.getComponent('gun_damage')!;
-        const damage = damageComp[distance][hitPart];
+        const rawDamage = damageComp[distance][hitPart];
+        const damage = LoadoutManager.applyArmorReduction(target, rawDamage);
         
         if (!target.hasComponent('health')) return;
         const healthComp = target.getComponent('health')!;

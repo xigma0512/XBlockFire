@@ -1,7 +1,6 @@
 import { MemberManager } from "./MemberManager";
 import { C4Manager } from "../core/c4state/C4Manager";
 import { gameEvents } from "../../event/EventEmitter";
-import { EconomyManager } from "../core/EconomyManager";
 
 import { C4DroppedState } from "../core/c4state/states/Dropped";
 
@@ -47,8 +46,6 @@ gameEvents.subscribe('playerDied', (ev: any) => {
     if (ev.attacker && ev.attacker instanceof Player) {
         showDeathMessage(deadPlayer, ev.attacker);
         set_variable(`${ev.attacker.name}.kills`, variable(`${ev.attacker.name}.kills`) + 1);
-
-        EconomyManager.setMoney(ev.attacker, EconomyManager.getMoney(ev.attacker) + 200);
     }
 });
 
