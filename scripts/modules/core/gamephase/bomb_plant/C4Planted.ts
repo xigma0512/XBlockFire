@@ -11,9 +11,7 @@ import { UiStateManager } from "../../../../ui/hud/state/UiState";
 import { Language as L } from "../../../../utils/Language";
 import { LanguageKey } from "../../../../settings/lang/LanguageKey";
 
-import { Config } from "../../../../settings/config";
-
-const c4_config = Config.bombplant.C4planted;
+const COUNTDOWN_TIME = 50 * 20;
 
 const enum EndReasonEnum {
     'Time-up' = 1,
@@ -59,7 +57,7 @@ export class C4PlantedPhase implements IPhaseHandler {
 
     constructor() {
         this.hud = new ActionHud();
-        this._currentTick = c4_config.COUNTDOWN_TIME;
+        this._currentTick = COUNTDOWN_TIME;
     }
 
     on_entry() {

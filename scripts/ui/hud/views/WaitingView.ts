@@ -11,8 +11,7 @@ import { DebugInfo } from "../components/DebugInfo";
 
 import { Config } from "../../../settings/config";
 
-const game_config = Config.game;
-const idle_config = Config.bombplant.idle;
+const COUNTDOWN_TIME = 20 * 20;
 
 import { InGameHud } from "../../InGameHud";
 
@@ -30,11 +29,11 @@ export class WaitingView implements InGameHud {
         
         let text = L.translate("hud.waiting");
         
-        if (game_config.AUTO_START && playerAmount >= game_config.AUTO_START_MIN_PLAYER) {
+        if (playerAmount >= Config.game.AUTO_START_MIN_PLAYER) {
             text = L.translate("hud.start_in", (phase.currentTick / 20).toFixed(0));
         }
         
-        if (phase.currentTick !== idle_config.COUNTDOWN_TIME && playerAmount < game_config.AUTO_START_MIN_PLAYER) {
+        if (phase.currentTick !== COUNTDOWN_TIME && playerAmount < Config.game.AUTO_START_MIN_PLAYER) {
             HudDriver.chat(L.translate("game.wait_players"), players);
         }
         

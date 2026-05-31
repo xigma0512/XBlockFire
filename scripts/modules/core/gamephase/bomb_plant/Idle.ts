@@ -17,15 +17,14 @@ import { ItemLockMode } from "@minecraft/server";
 
 import { Config } from "../../../../settings/config";
 
-const game_config = Config.game;
-const idle_config = Config.bombplant.idle;
+const COUNTDOWN_TIME = 20 * 20;
 
 export class IdlePhase implements IPhaseHandler {
 
     readonly phaseTag = BombPlantPhaseEnum.Idle;
     readonly hud: WaitingHud;
     
-    private _currentTick: number = idle_config.COUNTDOWN_TIME;
+    private _currentTick: number = COUNTDOWN_TIME;
     get currentTick() { return this._currentTick; }
 
     constructor() { 
@@ -33,22 +32,22 @@ export class IdlePhase implements IPhaseHandler {
     }
 
     on_entry() {
-        this._currentTick = idle_config.COUNTDOWN_TIME;
+        this._currentTick = COUNTDOWN_TIME;
     }
 
     on_running() {
         const members = MemberManager.getPlayers();
         const playerAmount = members.length;
 
-        if (game_config.AUTO_START && playerAmount >= game_config.AUTO_START_MIN_PLAYER) this._currentTick --;
-        if (this.currentTick !== idle_config.COUNTDOWN_TIME && playerAmount < game_config.AUTO_START_MIN_PLAYER) this._currentTick = idle_config.COUNTDOWN_TIME;
+        if (playerAmount >= Config.game.AUTO_START_MIN_PLAYER) this._currentTick --;
+        if (this.currentTick !== COUNTDOWN_TIME && playerAmount < Config.game.AUTO_START_MIN_PLAYER) this._currentTick = COUNTDOWN_TIME;
 
         this.hud.update();
         this.transitions();
     }
 
     on_exit() {
-        if (game_config.RANDOM_ASSIGNED) randomTeam();
+        randomTeam();
         initializePlayers();
         initializeVariable();
     }

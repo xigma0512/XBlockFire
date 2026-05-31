@@ -23,12 +23,11 @@ import { VanillaEntityIdentifier } from "@minecraft/server";
 import { DimensionLocation, Entity, Player, system, world } from "@minecraft/server";
 import { ItemUseBeforeEvent, ItemCompleteUseAfterEvent } from "@minecraft/server"
 
-import { Config } from "../../../../settings/config";
-
 const DEFUSER_ITEM_ID = 'xblockfire:defuser';
 const PLANTED_C4_ENTITY_ID = 'xblockfire:planted_c4' as VanillaEntityIdentifier;
-const DEFUSE_RANGE = Config.c4.DEFUSE_RANGE;
+const DEFUSE_RANGE = 1.5;
 const DEFUSING_TIME = 6 * 20;
+const COUNTDOWN_TIME = 50 * 20;
 
 export class C4PlantedState implements IC4StateHandler {
 
@@ -37,7 +36,7 @@ export class C4PlantedState implements IC4StateHandler {
     private _entity!: Entity;
     get entity() { return this._entity; }
     
-    private currentTick = Config.bombplant.C4planted.COUNTDOWN_TIME;
+    private currentTick = COUNTDOWN_TIME;
 
     private beforeItemUseListener = (ev: ItemUseBeforeEvent) => { };
     private afterItemCompleteUseListener = (ev: ItemCompleteUseAfterEvent) => { };
@@ -155,7 +154,7 @@ function defuseComplete(defuser: Player) {
 
 let soundPlayInterval = 20;
 function playC4Effect(currentTick: number, entity: Entity) {
-    const totalTime = Config.bombplant.C4planted.COUNTDOWN_TIME;
+    const totalTime = COUNTDOWN_TIME;
 
     const bar = progressBar(totalTime, currentTick, 30);
     entity.nameTag = `| ${bar} |`;
