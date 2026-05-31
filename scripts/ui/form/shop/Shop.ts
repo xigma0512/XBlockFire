@@ -83,10 +83,10 @@ function addProductButton(
     product: ShopProduct,
     pointLimit: number
 ) {
-    const selectedColor = LoadoutManager.isProductSelected(player, product) ? `${FC.Green}` : '';
+    const isSelected = (product_name: string) => LoadoutManager.isProductSelected(player, product) ? `${FC.Green}>${product_name}<` : product_name;
     const canAfford = LoadoutManager.canAffordProduct(player, product, pointLimit);
     const pointColor = canAfford ? FC.Yellow : FC.Red;
-    const label = `${selectedColor}${getProductName(player, product)}\n${pointColor}${product.pointCost}P`;
+    const label = `${isSelected(getProductName(player, product))}\n${pointColor}${product.pointCost}P`;
 
     form.button(product.category, {
         text: label,
