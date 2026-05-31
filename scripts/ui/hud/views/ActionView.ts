@@ -10,6 +10,7 @@ import { SurvivalIcons } from "../components/SurvivalIcons";
 import { MatchScore } from "../components/MatchScore";
 import { RoomInfo } from "../components/RoomInfo";
 import { PlayerList } from "../components/PlayerList";
+import { DebugInfo } from "../components/DebugInfo";
 
 import { variable } from "../../../utils/Variable";
 
@@ -96,7 +97,8 @@ export class ActionView implements InGameHud {
         
         const lines = [
             ...RoomInfo.format(map.name, room.gameMode),
-            ...PlayerList.format(true) // showKD: true
+            ...PlayerList.format(true), // showKD: true
+            ...DebugInfo.format()
         ];
 
         HudDriver.setSidebar(lines);

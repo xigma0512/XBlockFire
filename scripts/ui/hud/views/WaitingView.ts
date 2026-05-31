@@ -7,6 +7,7 @@ import { Language as L } from "../../../utils/Language";
 import { HudDriver } from "../drivers/HudDriver";
 import { RoomInfo } from "../components/RoomInfo";
 import { PlayerList } from "../components/PlayerList";
+import { DebugInfo } from "../components/DebugInfo";
 
 import { Config } from "../../../settings/config";
 
@@ -46,7 +47,8 @@ export class WaitingView implements InGameHud {
         
         const lines = [
             ...RoomInfo.format(map.name, room.gameMode),
-            ...PlayerList.format(false) // showKD: false
+            ...PlayerList.format(false), // showKD: false
+            ...DebugInfo.format()
         ];
 
         HudDriver.setSidebar(lines);
