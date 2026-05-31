@@ -15,19 +15,36 @@ export class PlayerList {
         const defenders = MemberManager.getPlayers({ team: TeamEnum.Defender });
         const spectators = MemberManager.getPlayers({ team: TeamEnum.Spectator });
 
+        const sortPlayers = (players: Player[]) => {
+            return [...players].sort((a, b) => {
+                const kA = variable(`${a.name}.kills`) || 0;
+                const kB = variable(`${b.name}.kills`) || 0;
+                if (kB !== kA) return kB - kA;
+                return a.name.localeCompare(b.name);
+            });
+        };
+
         const formatLine = (p: Player, color: string) => {
             let text = `${FC.Gray}- ${color}${p.name}`;
             if (showKD) {
                 const k = variable(`${p.name}.kills`) || 0;
                 const d = variable(`${p.name}.deaths`) || 0;
-                text += ` ${FC.Gray}[${k}/${d}]`;
+                text += ` ${FC.Gray}[ ${k} / ${d} ]`;
             }
             return text;
         }
 
-        for (const p of defenders) lines.push(formatLine(p, FC.Green));
-        for (const p of attackers) lines.push(formatLine(p, FC.Red));
-        for (const p of spectators) lines.push(`${FC.Gray}- ${p.name}`);
+        const sortedDefenders = sortPlayers(defenders);
+        const sortedAttackers = sortPlayers(attackers);
+
+        for (const p of sortedDefenders) lines.push(formatLine(p, FC.Aqua));
+        if (sortedDefenders.length > 0 && sortedAttackers.length > 0) lines.push("---");
+        for (const p of sortedAttackers) lines.push(formatLine(p, FC.Gold));
+        
+        if (spectators.length > 0) {
+            if (lines.length > 0) lines.push("");
+            for (const p of spectators) lines.push(`${FC.Gray}- ${p.name}`);
+        }
 
         return lines;
     }
