@@ -77,6 +77,11 @@ export class LoadoutManager {
         this.applyHotbar(player);
     }
 
+    static clearPrimary(player: Player) {
+        this.getLoadout(player).primary = undefined;
+        this.applyHotbar(player);
+    }
+
     static setSecondary(player: Player, productId: string, pointLimit: number) {
         const product = this.requireItemProduct(productId, 'secondary');
         const loadout = this.getLoadout(player);
