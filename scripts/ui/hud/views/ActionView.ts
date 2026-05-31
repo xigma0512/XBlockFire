@@ -28,8 +28,20 @@ export class ActionView implements InGameHud {
 
     private updateTitle() {
         const phase = PhaseManager.getPhase();
-        const seconds = Math.max(0, Math.floor(phase.currentTick / 20));
-        const timeStr = `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')}`;
+        const totalTicks = phase.currentTick;
+        const seconds = Math.max(0, Math.floor(totalTicks / 20));
+
+        let timeStr;
+
+        const phaseTag = PhaseManager.getPhase().phaseTag;
+        if (seconds < 15 && phaseTag === PhaseEnum.Action) {
+            const subSeconds = (totalTicks % 20) * 0.05;
+            const displaySeconds = seconds + subSeconds;
+
+            timeStr = FC.Red + displaySeconds.toFixed(2);
+        } else {
+            timeStr = FC.White + `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')}`;
+        }
 
         // Get data for both teams
         const attackerTotal = MemberManager.getPlayers({ team: TeamEnum.Attacker }).length;
