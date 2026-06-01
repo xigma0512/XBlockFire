@@ -9,16 +9,13 @@ export class PlayerList {
     /**
      * Returns an array of formatted player lines for the sidebar
      */
-    static format(showKD: boolean = false): string[] {        
+    static format(showKD: boolean = false): string[] {
         const attackers = MemberManager.getPlayers({ team: TeamEnum.Attacker });
         const defenders = MemberManager.getPlayers({ team: TeamEnum.Defender });
         const spectators = MemberManager.getPlayers({ team: TeamEnum.Spectator });
 
         const playerNum = attackers.length + defenders.length + spectators.length;
-        const lines: string[] = [
-            '',
-            `${FC.White}${L.translate('hud.sidebar.players', FC.Yellow + playerNum)}`
-        ];
+        const lines: string[] = ['', `${FC.White}${L.translate('hud.sidebar.players', FC.Yellow + playerNum)}`];
 
         const sortPlayers = (players: Player[]) => {
             return [...players].sort((a, b) => {
@@ -29,12 +26,20 @@ export class PlayerList {
             });
         };
 
+        // const getPlayerPing = (p: Player) => {
+        //     const ping = p.getPing();
+        //     if (ping < 50) return `${FC.Green}(${ping})`;
+        //     if (ping < 100) return `${FC.MaterialGold}(${ping})`;
+        //     return `${FC.Red}(${ping})`;
+        // }
+
         const formatLine = (p: Player, color: string) => {
             let text = `${FC.Gray}- ${color}${p.name}`;
             if (showKD) {
+                // const ping = getPlayerPing(p);
                 const k = variable(`${p.name}.kills`) || 0;
                 const d = variable(`${p.name}.deaths`) || 0;
-                text += ` ${FC.Gray}[${k}/${d}]`;
+                text += `${FC.Gray}[${k}/${d}]`;
             }
             return text;
         };
@@ -46,7 +51,10 @@ export class PlayerList {
         for (const p of sortedAttackers) lines.push(formatLine(p, FC.Gold));
 
         if (spectators.length > 0) {
-            for (const p of spectators) lines.push(`${FC.Gray}- ${p.name}`);
+            for (const p of spectators) {
+                // const ping = getPlayerPing(p);
+                lines.push(`${FC.Gray}- ${p.name}`);
+            }
         }
 
         return lines;
