@@ -41,17 +41,7 @@ class _UiStateManager {
 
             let winText: string;
             if (isGameOver) {
-                const title = L.translate(
-                    winner === TeamEnum.Attacker ? 'game.over.attacker_win' : 'game.over.defender_win'
-                );
-                const winnerLabel = L.translate(
-                    winner === TeamEnum.Attacker ? 'game.assigned.attacker' : 'game.assigned.defender'
-                );
-                const lines = box(
-                    title,
-                    `${FC.Yellow}${winnerLabel}${L.translate('round.end.win').replace('[ ', '').replace(' ]', '')}`
-                );
-                winText = lines.join('\n');
+                winText = winner === TeamEnum.Attacker ? 'game.over.attacker_win' : 'game.over.defender_win'
             } else {
                 winText = isWinner ? L.translate('round.end.win') : L.translate('round.end.loss');
             }

@@ -83,7 +83,7 @@ export function register() {
         {
             name: 'xblockfire:setting.gamemode',
             description: '設定遊戲模式',
-            permissionLevel: CommandPermissionLevel.Admin,
+            permissionLevel: CommandPermissionLevel.GameDirectors,
             mandatoryParameters: [
                 {
                     type: CustomCommandParamType.Enum,
@@ -98,7 +98,7 @@ export function register() {
         {
             name: 'xblockfire:setting.gamemap',
             description: '設定遊戲地圖',
-            permissionLevel: CommandPermissionLevel.Admin,
+            permissionLevel: CommandPermissionLevel.GameDirectors,
             mandatoryParameters: [
                 {
                     type: CustomCommandParamType.Integer,
@@ -128,7 +128,7 @@ export function register() {
         {
             name: 'xblockfire:admin.select_team',
             description: '[管理員] 選擇隊伍',
-            permissionLevel: CommandPermissionLevel.Admin,
+            permissionLevel: CommandPermissionLevel.GameDirectors,
             mandatoryParameters: [
                 {
                     type: CustomCommandParamType.PlayerSelector,
@@ -147,7 +147,7 @@ export function register() {
         {
             name: 'xblockfire:forcestart',
             description: '強制開始遊戲',
-            permissionLevel: CommandPermissionLevel.Admin,
+            permissionLevel: CommandPermissionLevel.GameDirectors,
         },
         forcestart
     );
