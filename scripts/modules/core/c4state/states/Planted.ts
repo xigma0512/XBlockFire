@@ -79,7 +79,7 @@ export class C4PlantedState implements IC4StateHandler {
             system.run(() => {
                 const location = ev.source.location;
                 const volume = 3;
-                Sound.play('C4_DEFUSING', ev.source, { location, volume });
+                Sound.play('C4_DEFUSING', world.getAllPlayers(), { location, volume });
             });
             displayDefusingProgress(ev.source);
         }

@@ -17,7 +17,7 @@ import { FormatCode as FC } from '../../../../utils/FormatCode';
 import { UiStateManager } from '../../../../ui/hud/state/UiState';
 
 const COUNTDOWN_TIME = 6 * 20;
-const WINNING_SCORE = 8;
+const WINNING_SCORE = 7;
 
 export class RoundEndPhase implements IPhaseHandler {
     readonly phaseTag = BombPlantPhaseEnum.RoundEnd;
