@@ -160,8 +160,8 @@
                 ]
             },
             "minecraft:health": {
-                "value": 20,
-                "max": 20
+                "value": 40,
+                "max": 40
             },
             "minecraft:player.saturation": {
                 "value": 5,
@@ -169,11 +169,11 @@
             },
             "minecraft:is_hidden_when_invisible": {},
             "minecraft:collision_box": {
-                "width": 0.7,
+                "width": 0.55,
                 "height": 1.8
             },
             "minecraft:movement": {
-                "value": 0.12
+                "value": 0.13
             },
             "minecraft:can_climb": {},
             "minecraft:attack": {
@@ -187,7 +187,7 @@
                 "push_towards_closest_space": true
             },
             "minecraft:pushable": {
-                "is_pushable": false,
+                "is_pushable": true,
                 "is_pushable_by_piston": true
             },
             "minecraft:conditional_bandwidth_optimization": {},
