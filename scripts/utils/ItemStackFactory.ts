@@ -1,4 +1,4 @@
-import { ItemLockMode, ItemStack } from "@minecraft/server";
+import { ItemLockMode, ItemStack } from '@minecraft/server';
 
 interface ItemStackInfo {
     typeId: string;
@@ -16,7 +16,7 @@ interface ItemStackInfo {
 export class ItemStackFactory {
     static new(itemInfo: ItemStackInfo) {
         const item = new ItemStack(itemInfo.typeId, itemInfo.amount ?? 1);
-        
+
         item.nameTag = itemInfo.nametag;
         item.setLore(itemInfo.lore);
         item.keepOnDeath = itemInfo.keepOnDeath ?? false;

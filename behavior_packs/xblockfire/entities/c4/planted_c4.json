@@ -30,11 +30,6 @@
                 "value": 100,
                 "max": 100
             },
-            "minecraft:boss": {
-                "hud_range": 1000,
-                "name": "§d§lC4 Has Been Planted.",
-                "should_darken_sky": false
-            },
             "minecraft:damage_sensor": {
                 "triggers": {
                     "cause": "all",

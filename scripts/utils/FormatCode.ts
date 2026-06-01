@@ -1,4 +1,4 @@
-export const enum FormatCode { 
+export const enum FormatCode {
     Black = '§0',
     DarkBlue = '§1',
     DarkGreen = '§2',
@@ -23,7 +23,7 @@ export const enum FormatCode {
     MaterialCopper = '§n',
     MaterialGold = '§p',
     MaterialEmerald = '§q',
-    MaterialDiamond	 = '§s',
+    MaterialDiamond = '§s',
     MaterialLapis = '§t',
     MaterialAmethyst = '§u',
 
@@ -31,5 +31,5 @@ export const enum FormatCode {
     Bold = '§l',
     Underline = '§m',
     Italic = '§o',
-    Reset = '§r'
+    Reset = '§r',
 }

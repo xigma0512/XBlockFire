@@ -10,6 +10,7 @@
         "typescript": "^5.5.4"
     },
     "scripts": {
+        "prettier": "npx prettier --write ./scripts",
         "lint": "just-scripts lint",
         "build": "just-scripts build",
         "build:production": "just-scripts build --production",

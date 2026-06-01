@@ -1,15 +1,14 @@
-import { system } from "@minecraft/server";
-import { CustomCommandRegistry, CustomCommand, CustomCommandOrigin, CustomCommandResult } from "@minecraft/server";
+import { system } from '@minecraft/server';
+import { CustomCommandRegistry, CustomCommand, CustomCommandOrigin, CustomCommandResult } from '@minecraft/server';
 
-import * as RoomCommand from "./handlers/Rooms";
+import * as RoomCommand from './handlers/Rooms';
 
-type CommandCallbackType = (origin: CustomCommandOrigin, ...args: any[]) => CustomCommandResult | undefined
+type CommandCallbackType = (origin: CustomCommandOrigin, ...args: any[]) => CustomCommandResult | undefined;
 
 export class CommandRegistry {
-    
     private static CustomCommandEnums = new Map<string, string[]>();
     private static CustomCommands = new Map<CustomCommand, CommandCallbackType>();
-    
+
     static addCustomCommand(commandInfo: CustomCommand, callback: CommandCallbackType) {
         this.CustomCommands.set(commandInfo, callback);
     }
@@ -29,8 +28,7 @@ export class CommandRegistry {
     }
 }
 
-system.beforeEvents.startup.subscribe(ev => {
-    
+system.beforeEvents.startup.subscribe((ev) => {
     RoomCommand.register();
 
     const commandRegistry = ev.customCommandRegistry;

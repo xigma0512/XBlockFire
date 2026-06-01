@@ -1,0 +1,61 @@
+export const zh_TW = {
+    'system.name': 'XBlockFire',
+
+    'c4.dropped': 'C4 已掉落。',
+    'c4.pickup.broadcast': '玩家 %1 撿起了 C4。',
+    'c4.planted.title': 'C4 已被安裝',
+    'c4.defuse.no_range': '範圍內沒有 C4。',
+    'c4.planting.not_attacker': '只有進攻方能夠安裝C4',
+    'c4.planting.outside_range': '此處無法安裝C4',
+
+    'game.assigned.attacker': '你已被分配到 進攻方 (Attacker)。',
+    'game.assigned.defender': '你已被分配到 防守方 (Defender)。',
+    'game.wait_players': '玩家人數不足，正在等待更多玩家...',
+    'game.switch_side.title': '攻守互換',
+    'game.player_eliminated': '%1 %2 淘汰了 %3 %4',
+    'game.killed_you': '%1 擊殺了你',
+
+    'round.end.win': '[ 回合勝利 ]',
+    'round.end.loss': '[ 回合失敗 ]',
+
+    // Round End Messages
+    'round.end.c4_defused': 'C4已被拆除',
+    'round.end.time_up': '進攻方時間耗盡。',
+    'round.end.attacker_eliminated': '進攻方已全數被殲滅。',
+    'round.end.defender_eliminated': '防守方已全數被殲滅。',
+    'round.end.c4_detonated': 'C4 已引爆！',
+
+    // Game Over Messages
+    'game.over.attacker_disconnect': '進攻方斷線',
+    'game.over.defender_disconnect': '防守方斷線',
+    'game.over.attacker_win': '進攻方獲勝',
+    'game.over.defender_win': '防守方獲勝',
+
+    'hud.waiting': '等待更多玩家加入遊戲',
+    'hud.start_in': '遊戲將在 %1 秒後開始。',
+    'hud.buying.subtitle': '<手持羽毛右鍵來打開商店>',
+    'hud.sidebar.map': '地圖: %1',
+    'hud.sidebar.mode': '模式: %1',
+    'hud.sidebar.players': '房間人數: %1',
+
+    'member.join': '%1 加入了房間。',
+    'member.leave': '%1 離開了房間。',
+    'command.join_team': '%1 加入了 [%2]',
+
+    'prestart.suggest_settings': '建議設定',
+    'prestart.camera_shake': '設定->視訊->相機晃動%1(開啟)',
+    'prestart.fov_adjust': '設定->視訊->視野可透過遊戲控制調整%1(關閉)',
+
+    'shop.title': '商店',
+    'shop.body': ['§f裝備點數 §7- %1/%2', '§f主武器 §7- %3', '§f副武器 §7- %4', '§f護甲 §7- %5', '§f投擲物 §7- %6'],
+    'shop.remaining_points': '剩餘 %1P',
+    'shop.primary.clear': '清空',
+    'shop.throwable.clear': '清空 (%1/%2)',
+    'shop.error.prefix': '%1',
+    'shop.error.no_points': '裝備點數不足',
+    'shop.error.item_limit_reached': '已達到該裝備上限',
+    'shop.error.throwable_total_limit_reached': '已達到投擲物總上限',
+    'shop.error.product_not_found': '找不到該商品',
+    'shop.error.not_buying': '只能在購買階段開啟商店',
+    'shop.loadout.reset': '上一回合配置超出本回合點數上限，已重置部分裝備。',
+};
