@@ -12,6 +12,7 @@ import { TeamEnum } from '../../../player/TeamEnum';
 import { Language as L } from '../../../../utils/Language';
 import { reset_variables, set_variable } from '../../../../utils/Variable';
 import { ItemStackFactory } from '../../../../utils/ItemStackFactory';
+import { Sound } from '../../../../ui/media/Sound';
 
 import { ItemLockMode } from '@minecraft/server';
 
@@ -39,10 +40,16 @@ export class IdlePhase implements IPhaseHandler {
     on_running() {
         const members = MemberManager.getPlayers();
         const playerAmount = members.length;
+        const countdownWasIdle = this.currentTick === COUNTDOWN_TIME;
 
-        if (playerAmount >= Config.game.AUTO_START_MIN_PLAYER) this._currentTick--;
-        if (this.currentTick !== COUNTDOWN_TIME && playerAmount < Config.game.AUTO_START_MIN_PLAYER)
+        if (playerAmount >= Config.game.AUTO_START_MIN_PLAYER) {
+            if (countdownWasIdle) Sound.play('WAITING_COUNTDOWN_START', members);
+            this._currentTick--;
+        }
+        if (this.currentTick !== COUNTDOWN_TIME && playerAmount < Config.game.AUTO_START_MIN_PLAYER) {
             this._currentTick = COUNTDOWN_TIME;
+            Sound.play('WAITING_COUNTDOWN_CANCEL', members);
+        }
 
         this.hud.update();
         this.transitions();

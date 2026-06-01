@@ -34,7 +34,7 @@ class _UiStateManager {
                 const lines = [
                     `${FC.Bold}${FC.Gray}---- ${FC.DarkPurple}[ ${title} ] ${FC.Gray}----`,
                     ...(Array.isArray(content) ? content : [content]),
-                    `${FC.Bold}${FC.Gray}${footer}`
+                    `${FC.Bold}${FC.Gray}${footer}`,
                 ];
                 return lines;
             }
@@ -47,7 +47,10 @@ class _UiStateManager {
                 const winnerLabel = L.translate(
                     winner === TeamEnum.Attacker ? 'game.assigned.attacker' : 'game.assigned.defender'
                 );
-                const lines = box(title, `${FC.Yellow}${winnerLabel}${L.translate('round.end.win').replace('[ ', '').replace(' ]', '')}`);
+                const lines = box(
+                    title,
+                    `${FC.Yellow}${winnerLabel}${L.translate('round.end.win').replace('[ ', '').replace(' ]', '')}`
+                );
                 winText = lines.join('\n');
             } else {
                 winText = isWinner ? L.translate('round.end.win') : L.translate('round.end.loss');

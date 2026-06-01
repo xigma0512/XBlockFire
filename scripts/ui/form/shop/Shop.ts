@@ -8,6 +8,7 @@ import { PhaseEnum as BombPlantPhaseEnum } from '../../../modules/core/gamephase
 import { FormatCode as FC } from '../../../utils/FormatCode';
 import { Language as L } from '../../../utils/Language';
 import { variable } from '../../../utils/Variable';
+import { Sound } from '../../media/Sound';
 
 import { Player, system, world } from '@minecraft/server';
 
@@ -27,7 +28,9 @@ type ShopAction = 'select_product' | 'clear_primary' | 'clear_throwables';
 const CLEAR_BUTTON_ICON = 'textures/blocks/barrier';
 
 export class Shop {
-    static async openShop(player: Player, tabId: ShopCategoryId = 'secondary') {
+    static async openShop(player: Player, tabId: ShopCategoryId = 'secondary', playOpenSound = true) {
+        if (playOpenSound) Sound.play('SHOP_OPEN', player);
+
         const pointLimit = getCurrentPointLimit();
         const form = new TabbedActionForm<ShopAction>()
             .title(L.translate('shop.title'))
@@ -46,18 +49,21 @@ export class Shop {
         }
 
         const response = await form.show(player, tabId);
-        if (response.canceled || !response.action) return;
+        if (response.canceled || !response.action) {
+            Sound.play('SHOP_CLOSE', player);
+            return;
+        }
 
         try {
             handleAction(player, response.action, response.value, pointLimit);
-            player.playSound('mob.villager.yes');
+            Sound.play('SHOP_YES', player);
         } catch (err: any) {
             const key = err instanceof LoadoutError ? err.message : 'shop.error.product_not_found';
             player.sendMessage(FC.Red + L.translate(key as any));
-            player.playSound('mob.villager.no');
+            Sound.play('SHOP_NO', player);
         }
 
-        system.run(() => this.openShop(player, response.tabId as ShopCategoryId));
+        system.run(() => this.openShop(player, response.tabId as ShopCategoryId, false));
     }
 }
 
@@ -69,7 +75,8 @@ function buildBody(player: Player, pointLimit: number) {
     const loadout = LoadoutManager.describeLoadout(player);
     return L.translate(
         'shop.body',
-        `${FC.MinecoinGold}${LoadoutManager.getUsedPoints(player)}`, pointLimit,
+        `${FC.MinecoinGold}${LoadoutManager.getUsedPoints(player)}`,
+        pointLimit,
         `${FC.Green}${loadout.primary ?? '無'}`,
         `${FC.Green}${loadout.secondary}`,
         `${FC.Green}${loadout.armor}`,
@@ -83,7 +90,8 @@ function addProductButton(
     product: ShopProduct,
     pointLimit: number
 ) {
-    const isSelected = (product_name: string) => LoadoutManager.isProductSelected(player, product) ? `${FC.Green}>${product_name}<` : product_name;
+    const isSelected = (product_name: string) =>
+        LoadoutManager.isProductSelected(player, product) ? `${FC.Green}>${product_name}<` : product_name;
     const canAfford = LoadoutManager.canAffordProduct(player, product, pointLimit);
     const pointColor = canAfford ? FC.Yellow : FC.Red;
     const label = `${isSelected(getProductName(player, product))}\n${pointColor}${product.pointCost}P`;

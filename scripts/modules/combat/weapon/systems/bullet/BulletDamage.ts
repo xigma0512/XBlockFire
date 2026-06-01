@@ -1,4 +1,5 @@
 import { gameEvents } from '../../../../../event/EventEmitter';
+import { Sound } from '../../../../../ui/media/Sound';
 import { LoadoutManager } from '../../../../core/LoadoutManager';
 import { MemberManager } from '../../../../player/MemberManager';
 
@@ -34,9 +35,9 @@ export class DamageSystem {
         }
 
         target.addEffect('slowness', 5, { amplifier: 0, showParticles: false });
-        target.playSound('random.hurt');
+        Sound.play('PLAYER_HURT', target);
         target.applyDamage(0.001, { cause: EntityDamageCause.override });
-        attacker.playSound('random.orb');
+        Sound.play('PLAYER_HIT', attacker);
     }
 
     private static isTeamDamage(attacker: Player, target: Player) {

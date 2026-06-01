@@ -7,6 +7,7 @@ import { C4DroppedState } from '../core/c4state/states/Dropped';
 import { TeamEnum } from './TeamEnum';
 
 import { HudDriver } from '../../ui/hud/drivers/HudDriver';
+import { Sound } from '../../ui/media/Sound';
 import { Language as L } from '../../utils/Language';
 import { FormatCode as FC } from '../../utils/FormatCode';
 import { set_entity_dynamic_property } from '../../utils/Property';
@@ -64,16 +65,19 @@ function showDeathMessage(deadPlayer: Player, attacker: Player) {
     const teamPrefix = (team: TeamEnum) => (team === TeamEnum.Attacker ? `${FC.Red}[A]` : `${FC.Aqua}[D]`);
 
     HudDriver.chat(
-        FC.Bold + L.translate(
-            'game.player_eliminated',
-            teamPrefix(attackerTeam),
-            attacker.name,
-            teamPrefix(deadPlayerTeam),
-            deadPlayer.name
-        )
+        FC.Bold +
+            L.translate(
+                'game.player_eliminated',
+                teamPrefix(attackerTeam),
+                attacker.name,
+                teamPrefix(deadPlayerTeam),
+                deadPlayer.name
+            )
     );
 
     // Using fire-and-forget with 4 seconds duration
     HudDriver.pushSubtitle(attacker, FC.Bold + `\uE109${FC.DarkRed}${deadPlayer.name}`, 4 * 20);
     HudDriver.pushSubtitle(deadPlayer, FC.Bold + `${FC.Red}${L.translate('game.killed_you', attacker.name)}`, 4 * 20);
+    Sound.play('PLAYER_KILL', attacker);
+    Sound.play('PLAYER_DEATH', deadPlayer);
 }

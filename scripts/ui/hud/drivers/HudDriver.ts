@@ -144,7 +144,8 @@ class _HudDriver {
 
     private getSidebarObjective(): ScoreboardObjective {
         let obj = world.scoreboard.getObjective('xblockfire_sidebar');
-        if (!obj) obj = world.scoreboard.addObjective('xblockfire_sidebar', FC.Gold + FC.Bold + L.translate('system.name'));
+        if (!obj)
+            obj = world.scoreboard.addObjective('xblockfire_sidebar', FC.Gold + FC.Bold + L.translate('system.name'));
         return obj;
     }
 
