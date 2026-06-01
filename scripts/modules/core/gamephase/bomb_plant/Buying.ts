@@ -36,17 +36,25 @@ export class BuyingPhase implements IPhaseHandler {
     }
 
     on_running() {
+        playBuyingCountdown(this.currentTick);
         this._currentTick--;
         this.hud.update();
         this.transitions();
     }
 
     on_exit() {
+        Sound.play('ACTION_START', MemberManager.getPlayers(), {});
         restorePlayerDefaults();
     }
 
     private transitions() {
         if (this.currentTick <= 0) return PhaseManager.updatePhase(new ActionPhase());
+    }
+}
+
+function playBuyingCountdown(currentTick: number) {
+    if (currentTick <= 5 * 20 && currentTick > 0 && currentTick % 20 === 0) {
+        Sound.play('BUYING_COUNTDOWN_TICK', MemberManager.getPlayers(), {});
     }
 }
 

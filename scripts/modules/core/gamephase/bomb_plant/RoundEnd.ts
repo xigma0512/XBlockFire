@@ -34,12 +34,12 @@ export class RoundEndPhase implements IPhaseHandler {
     on_entry() {
         this._currentTick = COUNTDOWN_TIME;
         processWinner();
+        playRoundResultSounds();
+        Sound.play('ROUND_END', MemberManager.getPlayers());
     }
 
     on_running() {
-        if (this._currentTick-- % 20 == 0) {
-            Sound.play('FIREWORK', MemberManager.getPlayers(), {});
-        }
+        this._currentTick--;
         this.hud.update();
         this.transitions();
     }
@@ -84,7 +84,17 @@ function switchSide() {
     set_variable(`attacker_score`, defender_score);
     set_variable(`defender_score`, attacker_score);
 
+    Sound.play('SWITCH_SIDE', MemberManager.getPlayers(), {});
     UiStateManager.setNotifyMessage(`${FC.Bold}${FC.Gold}<<${L.translate('game.switch_side.title')}>>`, 20 * 20);
+}
+
+function playRoundResultSounds() {
+    const winnerTeam = variable(`round_winner`) as TeamEnum;
+    if (winnerTeam !== TeamEnum.Attacker && winnerTeam !== TeamEnum.Defender) return;
+
+    const loserTeam = winnerTeam === TeamEnum.Attacker ? TeamEnum.Defender : TeamEnum.Attacker;
+    Sound.play('ROUND_WIN', MemberManager.getPlayers({ team: winnerTeam }), {});
+    Sound.play('ROUND_LOSE', MemberManager.getPlayers({ team: loserTeam }), {});
 }
 
 function processWinner() {

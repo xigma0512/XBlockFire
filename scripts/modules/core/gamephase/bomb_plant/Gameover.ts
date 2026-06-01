@@ -39,12 +39,12 @@ export class GameOverPhase implements IPhaseHandler {
             HudDriver.chat(L.translate(langKey));
             UiStateManager.setRoundEndMessage(winner, true);
         }
+
+        Sound.play('ROUND_END', world.getAllPlayers());
     }
 
     on_running() {
-        if (this._currentTick-- % 20 == 0) {
-            Sound.play('FIREWORK', world.getAllPlayers(), {});
-        }
+        this._currentTick--;
         this.hud.update();
         this.transitions();
     }
