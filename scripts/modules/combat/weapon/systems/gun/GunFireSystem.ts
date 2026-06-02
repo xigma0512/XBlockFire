@@ -97,21 +97,23 @@ const startFireTrigger = world.beforeEvents.itemUse.subscribe((ev) => {
     const player = ev.source;
     if (!entity_native_property(player, 'player:can_use_item')) return;
 
-    const isReloading = entity_native_property(player, 'player:state.reload');
-    if (isReloading === 'reloading') return;
-
     const handItem = getPlayerHandItem(player);
     if (handItem === undefined || !ActorManager.isActor(handItem)) return;
     const actor = ActorManager.getActor(handItem) as ItemActor;
+    if (!actor.hasComponent('gun')) return;
 
-    if (actor.hasComponent('gun')) {
-        GunFireSystem.startFiring(player, actor);
-    }
+    const gunFireComp = actor.getComponent('gun_fire')!;
+    const isReloading = entity_native_property(player, 'player:state.reload') === 'reloading'
+    const releaseToFire = gunFireComp.release_to_fire
+    if (isReloading && !releaseToFire) return;
+
+    GunFireSystem.startFiring(player, actor);
 });
 
 world.afterEvents.itemReleaseUse.subscribe((ev) => {
     const pending = gunRuntimeState.consumePendingReleaseFire(ev.source.id);
     if (!pending) return;
+    if (entity_native_property(ev.source, 'player:state.reload') === 'reloading') return;
     if (!GunRaiseSystem.isRaised(ev.source)) return;
     if (gunRuntimeState.isFireCoolingDown(ev.source.id)) return;
 
