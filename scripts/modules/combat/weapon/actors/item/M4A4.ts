@@ -1,104 +1,12 @@
-import { ItemActor } from '../Actor';
+import { GUN_CONFIGS } from '../../config/gun/GunConfigs';
+import { GunActor } from './GunActor';
 
-import { ItemComponent } from '../../components/ItemComponent';
-import { ItemWeightComponent } from '../../components/ItemWeightComponent';
-
-import { GunComponent } from '../../components/gun/GunComponent';
-import { GunMagazineComponent } from '../../components/gun/GunMagazineComponent';
-import { GunFireComponent } from '../../components/gun/GunFireComponent';
-import { GunRecoilComponent } from '../../components/gun/GunRecoilComponent';
-import { GunReloadComponent } from '../../components/gun/GunReloadComponent';
-import { GunOffsetComponent } from '../../components/gun/GunOffsetComponent';
-import { GunDamageComponent } from '../../components/gun/GunDamageComponent';
-import { GunRaiseComponent } from '../../components/gun/GunRaiseComponent';
-
-import { FireModeEnum, GunTypeEnum } from '../../WeaponEnum';
-import { ItemLockMode, ItemStack } from '@minecraft/server';
-
-export class M4A4 extends ItemActor {
+export class M4A4 extends GunActor {
     clone() {
         return new M4A4();
     }
 
     constructor() {
-        super('m4a4', new ItemStack('xblockfire:m4a4', 1));
-
-        this.components
-            .set(
-                'item',
-                new ItemComponent({
-                    nametag: 'M4A4',
-                    lore: ["I'M A GUN!!!"],
-                    keepOnDeath: true,
-                    lockMode: ItemLockMode.slot,
-                })
-            )
-            .set(
-                'item_weight',
-                new ItemWeightComponent({
-                    weight: 0.105,
-                })
-            )
-            .set(
-                'gun',
-                new GunComponent({
-                    gunTypeId: GunTypeEnum.M4A4,
-                })
-            )
-            .set(
-                'gun_raise',
-                new GunRaiseComponent({
-                    raise_time: 8,
-                })
-            )
-            .set(
-                'gun_magazine',
-                new GunMagazineComponent({
-                    ammo: 30,
-                    count: 5,
-                })
-            )
-            .set(
-                'gun_fire',
-                new GunFireComponent({
-                    fire_mode: FireModeEnum['Fully-Auto'],
-                    release_to_fire: false,
-                    bullet_spread: 1,
-                    fire_rate: 2,
-                    fire_sound: 'xblockfire.m4a4_fire',
-                })
-            )
-            .set(
-                'gun_recoil',
-                new GunRecoilComponent({
-                    scope_recoil: { level: 0.02, duration: 0.2 },
-                    hipfire_recoil: { level: 0.06, duration: 0.2 },
-                })
-            )
-            .set(
-                'gun_damage',
-                new GunDamageComponent({
-                    near: { head: 11, body: 9, legs: 7 },
-                    medium: { head: 10, body: 8, legs: 6 },
-                    far: { head: 8, body: 7, legs: 5 },
-                })
-            )
-            .set(
-                'gun_reload',
-                new GunReloadComponent({
-                    reload_time: 40,
-                    reload_sound: 'xblockfire.m4a4_reload',
-                })
-            )
-            .set(
-                'gun_offset',
-                new GunOffsetComponent({
-                    scope: 0.001,
-                    hipfire: 0.025,
-                    movement: 0.025,
-                })
-            );
-
-        this.setItem();
+        super(GUN_CONFIGS.m4a4);
     }
 }
