@@ -36,7 +36,7 @@ export class GunRaiseSystem {
             return;
         }
 
-        return progressBar(duration, duration - remaining, 20);
+        return progressBar(duration, duration - remaining, 30);
     }
 
     private static getRaiseTime(gunActor: ItemActor) {
