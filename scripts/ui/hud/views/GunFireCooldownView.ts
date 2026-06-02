@@ -33,16 +33,21 @@ export class GunFireCooldownView {
         });
 
         this._states.set(player.id, { player, originalTotalXp, taskId });
-        this.setExperienceBarProgress(player, 1);
+        system.run(() => {
+            if (this._states.get(player.id)?.taskId !== taskId || !player.isValid) return;
+            this.setExperienceBarProgress(player, 1);
+        });
     }
 
     static cleanupPlayer(player: Player) {
         const state = this._states.get(player.id);
         if (!state) return;
 
-        system.clearRun(state.taskId);
-        this.restoreExperience(player, state.originalTotalXp);
         this._states.delete(player.id);
+        system.clearRun(state.taskId);
+        system.run(() => {
+            if (player.isValid) this.restoreExperience(player, state.originalTotalXp);
+        });
     }
 
     private static setExperienceBarProgress(player: Player, progress: number) {

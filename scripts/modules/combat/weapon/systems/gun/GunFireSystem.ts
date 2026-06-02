@@ -103,8 +103,8 @@ const startFireTrigger = world.beforeEvents.itemUse.subscribe((ev) => {
     if (!actor.hasComponent('gun')) return;
 
     const gunFireComp = actor.getComponent('gun_fire')!;
-    const isReloading = entity_native_property(player, 'player:state.reload') === 'reloading'
-    const releaseToFire = gunFireComp.release_to_fire
+    const isReloading = entity_native_property(player, 'player:state.reload') === 'reloading';
+    const releaseToFire = gunFireComp.release_to_fire;
     if (isReloading && !releaseToFire) return;
 
     GunFireSystem.startFiring(player, actor);
