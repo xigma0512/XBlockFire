@@ -1,7 +1,5 @@
-import { DisplaySlotId, system, world } from '@minecraft/server';
+import { system, world } from '@minecraft/server';
 import { set_entity_native_property } from './utils/Property';
-import { Deagle } from './modules/combat/weapon/actors/item/Deagle';
-import { SG200 } from './modules/combat/weapon/actors/item/SG200';
 import { AWP } from './modules/combat/weapon/actors/item/AWP';
 import { P90 } from './modules/combat/weapon/actors/item/P90';
 
@@ -13,4 +11,15 @@ world.afterEvents.chatSend.subscribe((ev) => {
         ev.sender.getComponent('inventory')?.container.addItem(p90.item);
         set_entity_native_property(ev.sender, 'player:can_use_item', true);
     }
+    if (ev.message === 'cd') {
+        if (ev.sender.getItemCooldown('Cooldown')) return ev.sender.sendMessage('still cd');
+        ev.sender.startItemCooldown('Cooldown', 200);
+        ev.sender.sendMessage('success');
+    }
 });
+
+system.runInterval(() => {
+    for(const player of world.getAllPlayers()) {
+        player.onScreenDisplay.setActionBar(player.getItemCooldown('Cooldown').toString());
+    }
+}, 1)
