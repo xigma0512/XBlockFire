@@ -2150,6 +2150,7 @@
           "enable_profanity_filter": true,
           "layer": 31,
           "text": "$actionbar_text",
+          "text_alignment": "center",
           "shadow": true,
           "localize": false,
           "alpha": "@hud.anim_actionbar_text_alpha_out"
@@ -2377,7 +2378,7 @@
                     "$show_shadow": true
                   }
                 ],
-                "shadow": "$show_shadow",
+                "shadow": true, //"$show_shadow",
                 "alpha": "$anim_type",
                 "text_alignment": "center",
                 "offset": [ 0, 0 ],
