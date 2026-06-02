@@ -2,6 +2,8 @@ import { system, world } from '@minecraft/server';
 
 import { getPlayerHandItem } from '../../../utils/others/Entity';
 import { ActorManager } from '../../../modules/combat/weapon/systems/ActorManager';
+import { GunRaiseSystem } from '../../../modules/combat/weapon/systems/gun/GunRaiseSystem';
+import { FormatCode as FC } from '../../../utils/FormatCode';
 import { HudDriver } from '../drivers/HudDriver';
 
 import { InGameHud } from '../../InGameHud';
@@ -34,8 +36,15 @@ export class WeaponView implements InGameHud {
             if (!itemActor.hasComponent('gun_magazine')) continue;
 
             const magazineComp = itemActor.getComponent('gun_magazine')!;
+            const ammoText = `${magazineComp.ammo}/${magazineComp.storageAmmo}`;
+            const raiseProgress = GunRaiseSystem.getRaiseProgressBar(player);
+            if (raiseProgress !== undefined) {
+                HudDriver.pushActionbar(player, `${raiseProgress}\n${FC.Reset}${ammoText}`, 2, 'weapon_info');
+                continue;
+            }
+
             // Direct call to HudDriver to ensure precedence logic is handled
-            HudDriver.pushActionbar(player, `${magazineComp.ammo}/${magazineComp.storageAmmo}`, 2, 'weapon_info');
+            HudDriver.pushActionbar(player, ammoText, 2, 'weapon_info');
         }
     }
 }

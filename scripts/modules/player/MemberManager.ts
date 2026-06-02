@@ -1,4 +1,4 @@
-import { Player, world } from '@minecraft/server';
+import { Player, system, world } from '@minecraft/server';
 import { TeamEnum } from './TeamEnum';
 import { HudDriver } from '../../ui/hud/drivers/HudDriver';
 import { Sound } from '../../ui/media/Sound';
@@ -78,5 +78,5 @@ world.afterEvents.playerSpawn.subscribe((ev) => {
 });
 
 world.beforeEvents.playerLeave.subscribe((ev) => {
-    MemberManager.leaveRoom(ev.player);
+    system.run(() => MemberManager.leaveRoom(ev.player));
 });
