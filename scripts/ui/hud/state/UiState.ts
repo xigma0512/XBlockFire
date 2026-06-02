@@ -41,7 +41,10 @@ class _UiStateManager {
 
             let winText: string;
             if (isGameOver) {
-                winText = winner === TeamEnum.Attacker ? L.translate('game.over.attacker_win') : L.translate('game.over.defender_win')
+                winText =
+                    winner === TeamEnum.Attacker
+                        ? L.translate('game.over.attacker_win')
+                        : L.translate('game.over.defender_win');
             } else {
                 winText = isWinner ? L.translate('round.end.win') : L.translate('round.end.loss');
             }
