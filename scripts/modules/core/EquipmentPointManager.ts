@@ -1,4 +1,4 @@
-const POINT_LIMITS = [3, 4, 5, 5, 6, 7, 7] as const;
+const POINT_LIMITS = [6, 8, 10, 12, 14, 16, 16] as const;
 
 export class EquipmentPointManager {
     static getPointLimitForRound(round: number) {

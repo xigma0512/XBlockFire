@@ -35,7 +35,7 @@ export class M4A4 extends ItemActor {
             .set(
                 'item_weight',
                 new ItemWeightComponent({
-                    weight: 0.09,
+                    weight: 0.105,
                 })
             )
             .set(
@@ -48,7 +48,7 @@ export class M4A4 extends ItemActor {
                 'gun_magazine',
                 new GunMagazineComponent({
                     ammo: 30,
-                    count: 3,
+                    count: 5,
                 })
             )
             .set(
@@ -71,9 +71,9 @@ export class M4A4 extends ItemActor {
             .set(
                 'gun_damage',
                 new GunDamageComponent({
-                    near: { head: 12, body: 8, legs: 6 },
-                    medium: { head: 10, body: 7, legs: 4 },
-                    far: { head: 7, body: 4, legs: 3 },
+                    near: { head: 11, body: 9, legs: 7 },
+                    medium: { head: 10, body: 8, legs: 6 },
+                    far: { head: 8, body: 7, legs: 5 },
                 })
             )
             .set(
@@ -87,8 +87,8 @@ export class M4A4 extends ItemActor {
                 'gun_offset',
                 new GunOffsetComponent({
                     scope: 0.001,
-                    hipfire: 0.03,
-                    movement: 0.02,
+                    hipfire: 0.025,
+                    movement: 0.025,
                 })
             );
 

@@ -8,8 +8,8 @@ import { ItemActor } from '../../actors/Actor';
 import { Vector3Utils } from '@minecraft/math';
 import { EntityDamageCause, Player } from '@minecraft/server';
 
-const NEAR_DISTANCE = 10;
-const MEDIUM_DISTANCE = 30;
+const NEAR_DISTANCE = 7;
+const MEDIUM_DISTANCE = 20;
 
 export class DamageSystem {
     static applyBulletDamage(attacker: Player, target: Player, gunActor: ItemActor, hitHeight: number) {

@@ -35,7 +35,7 @@ export class AWP extends ItemActor {
             .set(
                 'item_weight',
                 new ItemWeightComponent({
-                    weight: 0.085,
+                    weight: 0.08,
                 })
             )
             .set(
@@ -48,7 +48,7 @@ export class AWP extends ItemActor {
                 'gun_magazine',
                 new GunMagazineComponent({
                     ammo: 5,
-                    count: 3,
+                    count: 5,
                 })
             )
             .set(
@@ -71,9 +71,9 @@ export class AWP extends ItemActor {
             .set(
                 'gun_damage',
                 new GunDamageComponent({
-                    near: { head: 200, body: 200, legs: 30 },
-                    medium: { head: 200, body: 200, legs: 30 },
-                    far: { head: 200, body: 200, legs: 25 },
+                    near: { head: 100, body: 58, legs: 45 },
+                    medium: { head: 100, body: 58, legs: 43 },
+                    far: { head: 100, body: 58, legs: 40 },
                 })
             )
             .set(
@@ -87,7 +87,7 @@ export class AWP extends ItemActor {
                 'gun_offset',
                 new GunOffsetComponent({
                     scope: 0,
-                    hipfire: 0.005,
+                    hipfire: 0.008,
                     movement: 0.5,
                 })
             );

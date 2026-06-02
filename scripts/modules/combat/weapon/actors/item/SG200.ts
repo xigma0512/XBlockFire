@@ -47,8 +47,8 @@ export class SG200 extends ItemActor {
             .set(
                 'gun_magazine',
                 new GunMagazineComponent({
-                    ammo: 10,
-                    count: 3,
+                    ammo: 6,
+                    count: 5,
                 })
             )
             .set(
@@ -72,8 +72,8 @@ export class SG200 extends ItemActor {
                 'gun_damage',
                 new GunDamageComponent({
                     near: { head: 5, body: 4, legs: 3 },
-                    medium: { head: 2, body: 1, legs: 1 },
-                    far: { head: 1, body: 0, legs: 0 },
+                    medium: { head: 3, body: 2, legs: 1 },
+                    far: { head: 1, body: 1, legs: 0 },
                 })
             )
             .set(
@@ -87,8 +87,8 @@ export class SG200 extends ItemActor {
                 'gun_offset',
                 new GunOffsetComponent({
                     scope: 0.05,
-                    hipfire: 0.08,
-                    movement: 0.05,
+                    hipfire: 0.09,
+                    movement: 0.06,
                 })
             );
 

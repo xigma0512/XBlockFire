@@ -35,7 +35,7 @@ export class Glock17 extends ItemActor {
             .set(
                 'item_weight',
                 new ItemWeightComponent({
-                    weight: 0.105,
+                    weight: 0.125,
                 })
             )
             .set(
@@ -48,7 +48,7 @@ export class Glock17 extends ItemActor {
                 'gun_magazine',
                 new GunMagazineComponent({
                     ammo: 12,
-                    count: 3,
+                    count: 5,
                 })
             )
             .set(
@@ -57,7 +57,7 @@ export class Glock17 extends ItemActor {
                     fire_mode: FireModeEnum['Semi-Auto'],
                     release_to_fire: false,
                     bullet_spread: 1,
-                    fire_rate: 2,
+                    fire_rate: 3,
                     fire_sound: 'xblockfire.glock17_fire',
                 })
             )
@@ -71,9 +71,9 @@ export class Glock17 extends ItemActor {
             .set(
                 'gun_damage',
                 new GunDamageComponent({
-                    near: { head: 10, body: 5, legs: 3 },
-                    medium: { head: 8, body: 4, legs: 2 },
-                    far: { head: 6, body: 3, legs: 1 },
+                    near: { head: 10, body: 8, legs: 6 },
+                    medium: { head: 8, body: 7, legs: 5 },
+                    far: { head: 6, body: 5, legs: 3 },
                 })
             )
             .set(
@@ -88,7 +88,7 @@ export class Glock17 extends ItemActor {
                 new GunOffsetComponent({
                     scope: 0,
                     hipfire: 0.005,
-                    movement: 0.005,
+                    movement: 0.004,
                 })
             );
 

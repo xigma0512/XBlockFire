@@ -169,8 +169,8 @@ export class LoadoutManager {
 
     static getArmorReduction(player: Player) {
         const armorTier = this.getLoadout(player).armorTier;
-        if (armorTier === 'light') return 0.33;
-        if (armorTier === 'heavy') return 0.66;
+        if (armorTier === 'light') return 0.3;
+        if (armorTier === 'heavy') return 0.45;
         return 0;
     }
 

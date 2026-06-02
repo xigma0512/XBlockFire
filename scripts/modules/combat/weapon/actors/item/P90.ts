@@ -35,14 +35,14 @@ export class P90 extends ItemActor {
             .set(
                 'item_weight',
                 new ItemWeightComponent({
-                    weight: 0.1,
+                    weight: 0.115,
                 })
             )
             .set(
                 'gun_magazine',
                 new GunMagazineComponent({
                     ammo: 50,
-                    count: 3,
+                    count: 5,
                 })
             )
             .set(
@@ -71,9 +71,9 @@ export class P90 extends ItemActor {
             .set(
                 'gun_damage',
                 new GunDamageComponent({
-                    near: { head: 5, body: 4, legs: 4 },
-                    medium: { head: 3, body: 2, legs: 1 },
-                    far: { head: 1, body: 1, legs: 0 },
+                    near: { head: 7, body: 6, legs: 5 },
+                    medium: { head: 5, body: 5, legs: 4 },
+                    far: { head: 3, body: 3, legs: 2 },
                 })
             )
             .set(
@@ -86,9 +86,9 @@ export class P90 extends ItemActor {
             .set(
                 'gun_offset',
                 new GunOffsetComponent({
-                    scope: 0.01,
+                    scope: 0.008,
                     hipfire: 0.02,
-                    movement: 0.01,
+                    movement: 0.008,
                 })
             );
 

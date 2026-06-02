@@ -35,7 +35,7 @@ export class AK47 extends ItemActor {
             .set(
                 'item_weight',
                 new ItemWeightComponent({
-                    weight: 0.09,
+                    weight: 0.1,
                 })
             )
             .set(
@@ -47,8 +47,8 @@ export class AK47 extends ItemActor {
             .set(
                 'gun_magazine',
                 new GunMagazineComponent({
-                    ammo: 30,
-                    count: 3,
+                    ammo: 25,
+                    count: 5,
                 })
             )
             .set(
@@ -71,9 +71,9 @@ export class AK47 extends ItemActor {
             .set(
                 'gun_damage',
                 new GunDamageComponent({
-                    near: { head: 14, body: 11, legs: 9 },
-                    medium: { head: 12, body: 10, legs: 8 },
-                    far: { head: 10, body: 8, legs: 6 },
+                    near: { head: 12, body: 10, legs: 8 },
+                    medium: { head: 11, body: 9, legs: 7 },
+                    far: { head: 9, body: 8, legs: 6 },
                 })
             )
             .set(
@@ -87,8 +87,8 @@ export class AK47 extends ItemActor {
                 'gun_offset',
                 new GunOffsetComponent({
                     scope: 0.001,
-                    hipfire: 0.03,
-                    movement: 0.03,
+                    hipfire: 0.035,
+                    movement: 0.04,
                 })
             );
 

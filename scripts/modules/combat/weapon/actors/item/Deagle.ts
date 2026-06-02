@@ -35,7 +35,7 @@ export class Deagle extends ItemActor {
             .set(
                 'item_weight',
                 new ItemWeightComponent({
-                    weight: 0.105,
+                    weight: 0.12,
                 })
             )
             .set(
@@ -48,7 +48,7 @@ export class Deagle extends ItemActor {
                 'gun_magazine',
                 new GunMagazineComponent({
                     ammo: 7,
-                    count: 3,
+                    count: 5,
                 })
             )
             .set(
@@ -71,9 +71,9 @@ export class Deagle extends ItemActor {
             .set(
                 'gun_damage',
                 new GunDamageComponent({
-                    near: { head: 16, body: 8, legs: 6 },
-                    medium: { head: 13, body: 6, legs: 4 },
-                    far: { head: 8, body: 4, legs: 3 },
+                    near: { head: 16, body: 13, legs: 10 },
+                    medium: { head: 14, body: 11, legs: 9 },
+                    far: { head: 11, body: 9, legs: 7 },
                 })
             )
             .set(
@@ -87,8 +87,8 @@ export class Deagle extends ItemActor {
                 'gun_offset',
                 new GunOffsetComponent({
                     scope: 0.001,
-                    hipfire: 0.007,
-                    movement: 0.003,
+                    hipfire: 0.008,
+                    movement: 0.012,
                 })
             );
 
