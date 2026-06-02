@@ -2,6 +2,7 @@ import { ItemActor } from '../../actors/Actor';
 import { BulletSystem } from '../bullet/BulletSystem';
 import { ActorManager } from '../ActorManager';
 import { GunAnimations } from './GunAnimations';
+import { GunRaiseSystem } from './GunRaiseSystem';
 
 import { FireModeEnum } from '../../WeaponEnum';
 
@@ -14,6 +15,8 @@ export class GunFireSystem {
     private static _cooldowns = new Set<Player>();
 
     static startFiring(player: Player, gunActor: ItemActor) {
+        if (!GunRaiseSystem.canFire(player)) return;
+
         const gunFireComp = gunActor.getComponent('gun_fire')!;
 
         switch (gunFireComp.fire_mode) {

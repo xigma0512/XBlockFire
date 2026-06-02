@@ -10,6 +10,7 @@ import { GunRecoilComponent } from '../../components/gun/GunRecoilComponent';
 import { GunReloadComponent } from '../../components/gun/GunReloadComponent';
 import { GunOffsetComponent } from '../../components/gun/GunOffsetComponent';
 import { GunDamageComponent } from '../../components/gun/GunDamageComponent';
+import { GunRaiseComponent } from '../../components/gun/GunRaiseComponent';
 
 import { FireModeEnum, GunTypeEnum } from '../../WeaponEnum';
 import { ItemLockMode, ItemStack } from '@minecraft/server';
@@ -49,6 +50,12 @@ export class P90 extends ItemActor {
                 'gun',
                 new GunComponent({
                     gunTypeId: GunTypeEnum.P90,
+                })
+            )
+            .set(
+                'gun_raise',
+                new GunRaiseComponent({
+                    raise_time: 7,
                 })
             )
             .set(
