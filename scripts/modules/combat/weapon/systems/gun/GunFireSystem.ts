@@ -29,13 +29,17 @@ export class GunFireSystem {
 
     private static fullAutoFire(player: Player, actor: ItemActor) {
         if (!GunRaiseSystem.isRaised(player)) return;
+        if (gunRuntimeState.hasFullAutoTask(player.id)) return;
         if (gunRuntimeState.isFireCoolingDown(player.id)) return;
 
         const gunFireComp = actor.getComponent('gun_fire')!;
         const fireRate = gunFireComp.fire_rate;
 
         this.fire(player, actor);
-        const taskId = system.runInterval(() => this.fire(player, actor), fireRate);
+        const taskId = system.runInterval(() => {
+            if (!gunRuntimeState.isFullAutoTask(player.id, taskId)) return;
+            this.fire(player, actor);
+        }, fireRate);
 
         const cooldownTaskId = system.runTimeout(() => gunRuntimeState.clearFireCooldown(player.id), fireRate);
         gunRuntimeState.startFireCooldown(player.id, cooldownTaskId);

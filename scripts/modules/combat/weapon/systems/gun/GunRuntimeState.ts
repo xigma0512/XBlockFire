@@ -57,6 +57,10 @@ export class GunRuntimeState {
         return this.get(playerId).fullAutoTaskId !== undefined;
     }
 
+    isFullAutoTask(playerId: string, taskId: number) {
+        return this.get(playerId).fullAutoTaskId === taskId;
+    }
+
     stopFiring(playerId: string) {
         const state = this.get(playerId);
         if (state.fullAutoTaskId === undefined) return;
