@@ -15,8 +15,6 @@ export class GunFireSystem {
     private static _cooldowns = new Set<Player>();
 
     static startFiring(player: Player, gunActor: ItemActor) {
-        if (!GunRaiseSystem.canFire(player)) return;
-
         const gunFireComp = gunActor.getComponent('gun_fire')!;
 
         switch (gunFireComp.fire_mode) {
@@ -30,6 +28,7 @@ export class GunFireSystem {
     }
 
     private static fullAutoFire(player: Player, actor: ItemActor) {
+        if (!GunRaiseSystem.canFire(player)) return;
         if (this._cooldowns.has(player)) return;
 
         const gunFireComp = actor.getComponent('gun_fire')!;
@@ -51,7 +50,7 @@ export class GunFireSystem {
         if (gunFireComp.release_to_fire) {
             system.run(() => {
                 const releaseUseCallback = world.afterEvents.itemReleaseUse.subscribe((ev) => {
-                    if (!this._cooldowns.has(player) && ev.source.id === player.id) {
+                    if (!this._cooldowns.has(player) && GunRaiseSystem.canFire(player) && ev.source.id === player.id) {
                         this.fire(player, actor);
 
                         this._cooldowns.add(player);
