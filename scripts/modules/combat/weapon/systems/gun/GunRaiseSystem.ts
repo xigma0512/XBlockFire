@@ -18,8 +18,8 @@ export class GunRaiseSystem {
         this._raiseStates.set(player.id, raiseTime);
     }
 
-    static canFire(player: Player) {
-        return player.getItemCooldown(GUN_RAISE_COOLDOWN_CATEGORY) <= 0;
+    static isRaised(player: Player) {
+        return player.getItemCooldown(GUN_RAISE_COOLDOWN_CATEGORY);
     }
 
     static cleanupPlayer(player: Player) {

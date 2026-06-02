@@ -6,6 +6,7 @@ import { progressBar } from '../../../../../utils/others/Format';
 
 import { Player, system, world } from '@minecraft/server';
 import { GunAnimations } from './GunAnimations';
+import { GunRaiseSystem } from './GunRaiseSystem';
 
 class GunReloadSystem {
     private player: Player;
@@ -63,6 +64,8 @@ class GunReloadSystem {
     }
 
     private canReload(actor: ItemActor) {
+        if (!GunRaiseSystem.isRaised(this.player)) return false;
+
         const isReloading = entity_native_property(this.player, 'player:state.reload');
         if (isReloading === 'reloading') return false;
 

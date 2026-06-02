@@ -29,7 +29,7 @@ export class GunFireSystem {
     }
 
     private static fullAutoFire(player: Player, actor: ItemActor) {
-        if (!GunRaiseSystem.canFire(player)) return;
+        if (!GunRaiseSystem.isRaised(player)) return;
         if (this._cooldowns.has(player)) return;
 
         const gunFireComp = actor.getComponent('gun_fire')!;
@@ -51,7 +51,7 @@ export class GunFireSystem {
         if (gunFireComp.release_to_fire) {
             system.run(() => {
                 const releaseUseCallback = world.afterEvents.itemReleaseUse.subscribe((ev) => {
-                    if (!this._cooldowns.has(player) && GunRaiseSystem.canFire(player) && ev.source.id === player.id) {
+                    if (!this._cooldowns.has(player) && GunRaiseSystem.isRaised(player) && ev.source.id === player.id) {
                         if (this.fire(player, actor)) this.emitGunFired(player, gunFireComp.fire_mode, fireRate);
 
                         this._cooldowns.add(player);
@@ -67,7 +67,7 @@ export class GunFireSystem {
                 });
             });
         } else {
-            if (!GunRaiseSystem.canFire(player)) return;
+            if (!GunRaiseSystem.isRaised(player)) return;
             if (this._cooldowns.has(player)) return;
 
             if (this.fire(player, actor)) this.emitGunFired(player, gunFireComp.fire_mode, fireRate);
