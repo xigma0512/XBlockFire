@@ -7,10 +7,10 @@ import { progressBar } from '../../../../../utils/others/Format';
 import { Player, system, world } from '@minecraft/server';
 import { GunAnimations } from './GunAnimations';
 import { GunRaiseSystem } from './GunRaiseSystem';
+import { gunRuntimeState } from './GunRuntimeState';
 
 class GunReloadSystem {
     private player: Player;
-    private reloadTaskId: number = -1;
 
     constructor(player: Player) {
         this.player = player;
@@ -28,8 +28,12 @@ class GunReloadSystem {
 
             this.startReload(actor);
         } catch (err: any) {
-            return this.failure();
+            return this.cancelReload();
         }
+    }
+
+    cancelActiveReload() {
+        this.cancelReload();
     }
 
     private startReload(actor: ItemActor) {
@@ -37,26 +41,21 @@ class GunReloadSystem {
         const reloadTime = reloadComp.reload_time;
         const startTick = system.currentTick;
 
+        gunRuntimeState.stopFiring(this.player.id);
+
         const progressBarTaskId = system.runInterval(() => {
             const progressBarStr = `${progressBar(reloadTime, system.currentTick - startTick, 30)}`;
             this.player.onScreenDisplay.setActionBar(progressBarStr);
         });
 
-        this.reloadTaskId = system.runTimeout(() => {
-            this.complete(actor);
-
-            system.clearRun(progressBarTaskId);
-            world.afterEvents.dataDrivenEntityTrigger.unsubscribe(failTriggerCallback);
+        const timeoutTaskId = system.runTimeout(() => {
+            this.finishReload(actor);
         }, reloadTime);
 
-        const failTriggerCallback = world.afterEvents.dataDrivenEntityTrigger.subscribe((ev) => {
-            if (this.player.id === ev.entity.id && ev.eventId === 'property:state.reload.fail') {
-                this.failure();
-
-                system.clearRun(progressBarTaskId);
-                world.afterEvents.dataDrivenEntityTrigger.unsubscribe(failTriggerCallback);
-                this.player.stopSound(reloadComp.reload_sound ?? '');
-            }
+        gunRuntimeState.setReloadSession(this.player.id, {
+            timeoutTaskId,
+            progressTaskId: progressBarTaskId,
+            reloadSound: reloadComp.reload_sound,
         });
 
         set_entity_native_property(this.player, 'player:state.reload', 'reloading');
@@ -75,15 +74,23 @@ class GunReloadSystem {
         return magazineComp.ammo < magazineComp.capacity && magazineComp.storageAmmo > 0;
     }
 
-    private failure() {
-        if (this.reloadTaskId !== -1) system.clearRun(this.reloadTaskId);
+    private cancelReload() {
+        const session = gunRuntimeState.cancelReload(this.player.id);
+        if (session?.reloadSound) this.player.stopSound(session.reloadSound);
 
         set_entity_native_property(this.player, 'player:state.reload', 'fail');
     }
 
+    private finishReload(actor: ItemActor) {
+        const session = gunRuntimeState.completeReload(this.player.id);
+        if (!session) return;
+
+        this.complete(actor);
+    }
+
     private complete(actor: ItemActor) {
         const magazineComp = actor.getComponent('gun_magazine');
-        if (!magazineComp) return this.failure();
+        if (!magazineComp) return this.cancelReload();
 
         const ammoNeeded = magazineComp.capacity - magazineComp.ammo;
         const ammoToTransfer = Math.min(ammoNeeded, magazineComp.storageAmmo);
@@ -96,7 +103,14 @@ class GunReloadSystem {
 }
 
 world.afterEvents.dataDrivenEntityTrigger.subscribe((ev) => {
-    if (ev.entity instanceof Player && ev.eventId === 'property:state.reload.pre_reload') {
+    if (!(ev.entity instanceof Player)) return;
+
+    if (ev.eventId === 'property:state.reload.pre_reload') {
         new GunReloadSystem(ev.entity).playerReload();
+        return;
+    }
+
+    if (ev.eventId === 'property:state.reload.fail') {
+        new GunReloadSystem(ev.entity).cancelActiveReload();
     }
 });

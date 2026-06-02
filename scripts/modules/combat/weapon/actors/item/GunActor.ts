@@ -10,10 +10,10 @@ import { GunOffsetComponent } from '../../components/gun/GunOffsetComponent';
 import { GunRaiseComponent } from '../../components/gun/GunRaiseComponent';
 import { GunRecoilComponent } from '../../components/gun/GunRecoilComponent';
 import { GunReloadComponent } from '../../components/gun/GunReloadComponent';
-import { GunConfig } from '../../config/gun/GunConfigType';
+import { GunConfigType } from '../../config/gun/GunConfigType';
 
 export abstract class GunActor extends ItemActor {
-    constructor(config: GunConfig) {
+    constructor(config: GunConfigType) {
         super(config.id, new ItemStack(config.itemTypeId, 1));
 
         this.components

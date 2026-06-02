@@ -3,6 +3,7 @@ import { BulletSystem } from '../bullet/BulletSystem';
 import { ActorManager } from '../ActorManager';
 import { GunAnimations } from './GunAnimations';
 import { GunRaiseSystem } from './GunRaiseSystem';
+import { gunRuntimeState } from './GunRuntimeState';
 
 import { FireModeEnum } from '../../WeaponEnum';
 
@@ -13,8 +14,6 @@ import { gameEvents } from '../../../../../event/EventEmitter';
 import { Player, system, world } from '@minecraft/server';
 
 export class GunFireSystem {
-    private static _cooldowns = new Set<Player>();
-
     static startFiring(player: Player, gunActor: ItemActor) {
         const gunFireComp = gunActor.getComponent('gun_fire')!;
 
@@ -30,7 +29,7 @@ export class GunFireSystem {
 
     private static fullAutoFire(player: Player, actor: ItemActor) {
         if (!GunRaiseSystem.isRaised(player)) return;
-        if (this._cooldowns.has(player)) return;
+        if (gunRuntimeState.isFireCoolingDown(player.id)) return;
 
         const gunFireComp = actor.getComponent('gun_fire')!;
         const fireRate = gunFireComp.fire_rate;
@@ -38,10 +37,9 @@ export class GunFireSystem {
         this.fire(player, actor);
         const taskId = system.runInterval(() => this.fire(player, actor), fireRate);
 
-        this._cooldowns.add(player);
-        system.runTimeout(() => this._cooldowns.delete(player), fireRate);
-
-        this.stopFiringTrigger(player, taskId);
+        const cooldownTaskId = system.runTimeout(() => gunRuntimeState.clearFireCooldown(player.id), fireRate);
+        gunRuntimeState.startFireCooldown(player.id, cooldownTaskId);
+        gunRuntimeState.setFullAutoTask(player.id, taskId);
     }
 
     private static semiAutoFire(player: Player, actor: ItemActor) {
@@ -49,30 +47,19 @@ export class GunFireSystem {
         const fireRate = gunFireComp.fire_rate;
 
         if (gunFireComp.release_to_fire) {
-            system.run(() => {
-                const releaseUseCallback = world.afterEvents.itemReleaseUse.subscribe((ev) => {
-                    if (!this._cooldowns.has(player) && GunRaiseSystem.isRaised(player) && ev.source.id === player.id) {
-                        if (this.fire(player, actor)) this.emitGunFired(player, gunFireComp.fire_mode, fireRate);
-
-                        this._cooldowns.add(player);
-                        system.runTimeout(() => this._cooldowns.delete(player), fireRate);
-                    }
-                    world.afterEvents.itemReleaseUse.unsubscribe(releaseUseCallback);
-                });
-                const stopUseCallback = world.afterEvents.itemStopUse.subscribe((ev) => {
-                    if (ev.source.id === player.id) {
-                        world.afterEvents.itemReleaseUse.unsubscribe(releaseUseCallback);
-                        world.afterEvents.itemStopUse.unsubscribe(stopUseCallback);
-                    }
-                });
+            gunRuntimeState.setPendingReleaseFire(player.id, {
+                actor,
+                fireMode: gunFireComp.fire_mode,
+                fireRate,
             });
+            return;
         } else {
             if (!GunRaiseSystem.isRaised(player)) return;
-            if (this._cooldowns.has(player)) return;
+            if (gunRuntimeState.isFireCoolingDown(player.id)) return;
 
             if (this.fire(player, actor)) this.emitGunFired(player, gunFireComp.fire_mode, fireRate);
-            this._cooldowns.add(player);
-            system.runTimeout(() => this._cooldowns.delete(player), fireRate);
+            const cooldownTaskId = system.runTimeout(() => gunRuntimeState.clearFireCooldown(player.id), fireRate);
+            gunRuntimeState.startFireCooldown(player.id, cooldownTaskId);
         }
     }
 
@@ -97,26 +84,12 @@ export class GunFireSystem {
         gameEvents.emit('gunFired', { shooter: player, fireMode, fireRate });
     }
 
-    private static stopFiringTrigger(player: Player, firingTaskId: number) {
-        system.run(() => {
-            const afterItemStopUse = world.afterEvents.itemStopUse.subscribe((ev) => {
-                if (ev.source.id === player.id) stopFire();
-            });
-            const afterPlayerHotbarSelected = world.afterEvents.playerHotbarSelectedSlotChange.subscribe((ev) => {
-                if (ev.player.id === player.id) stopFire();
-            });
-            const afterPlayerLeave = world.afterEvents.playerLeave.subscribe((ev) => {
-                if (ev.playerId === player.id) stopFire();
-            });
+    static fireFromRelease(player: Player, actor: ItemActor) {
+        return this.fire(player, actor);
+    }
 
-            const stopFire = () => {
-                system.clearRun(firingTaskId);
-
-                world.afterEvents.itemStopUse.unsubscribe(afterItemStopUse);
-                world.afterEvents.playerHotbarSelectedSlotChange.unsubscribe(afterPlayerHotbarSelected);
-                world.afterEvents.playerLeave.unsubscribe(afterPlayerLeave);
-            };
-        });
+    static emitGunFiredFromRelease(player: Player, fireMode: FireModeEnum, fireRate: number) {
+        this.emitGunFired(player, fireMode, fireRate);
     }
 }
 
@@ -134,4 +107,27 @@ const startFireTrigger = world.beforeEvents.itemUse.subscribe((ev) => {
     if (actor.hasComponent('gun')) {
         GunFireSystem.startFiring(player, actor);
     }
+});
+
+world.afterEvents.itemReleaseUse.subscribe((ev) => {
+    const pending = gunRuntimeState.consumePendingReleaseFire(ev.source.id);
+    if (!pending) return;
+    if (!GunRaiseSystem.isRaised(ev.source)) return;
+    if (gunRuntimeState.isFireCoolingDown(ev.source.id)) return;
+
+    if (GunFireSystem.fireFromRelease(ev.source, pending.actor)) {
+        GunFireSystem.emitGunFiredFromRelease(ev.source, pending.fireMode, pending.fireRate);
+    }
+
+    const cooldownTaskId = system.runTimeout(() => gunRuntimeState.clearFireCooldown(ev.source.id), pending.fireRate);
+    gunRuntimeState.startFireCooldown(ev.source.id, cooldownTaskId);
+});
+
+world.afterEvents.itemStopUse.subscribe((ev) => {
+    gunRuntimeState.clearPendingReleaseFire(ev.source.id);
+    gunRuntimeState.stopFiring(ev.source.id);
+});
+
+world.afterEvents.playerLeave.subscribe((ev) => {
+    gunRuntimeState.cleanupPlayer(ev.playerId);
 });

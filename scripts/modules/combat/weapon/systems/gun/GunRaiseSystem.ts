@@ -1,6 +1,8 @@
 import { ItemActor } from '../../actors/Actor';
 import { ActorManager } from '../ActorManager';
 import { progressBar } from '../../../../../utils/others/Format';
+import { set_entity_native_property } from '../../../../../utils/Property';
+import { gunRuntimeState } from './GunRuntimeState';
 
 import { Player, system, world } from '@minecraft/server';
 
@@ -8,31 +10,29 @@ export const GUN_RAISE_COOLDOWN_CATEGORY = 'xblockfire:raise_gun';
 const DEFAULT_RAISE_TIME = 8;
 
 export class GunRaiseSystem {
-    private static readonly _raiseStates = new Map<string, number>();
-
     static startRaise(player: Player, gunActor: ItemActor) {
         const raiseTime = this.getRaiseTime(gunActor);
         if (raiseTime <= 0) return;
 
         player.startItemCooldown(GUN_RAISE_COOLDOWN_CATEGORY, raiseTime);
-        this._raiseStates.set(player.id, raiseTime);
+        gunRuntimeState.setRaiseDuration(player.id, raiseTime);
     }
 
     static isRaised(player: Player) {
-        return player.getItemCooldown(GUN_RAISE_COOLDOWN_CATEGORY);
+        return gunRuntimeState.isRaiseComplete(player.id, player.getItemCooldown(GUN_RAISE_COOLDOWN_CATEGORY));
     }
 
     static cleanupPlayer(player: Player) {
-        this._raiseStates.delete(player.id);
+        gunRuntimeState.clearRaiseDuration(player.id);
     }
 
     static getRaiseProgressBar(player: Player) {
-        const duration = this._raiseStates.get(player.id);
+        const duration = gunRuntimeState.getRaiseDuration(player.id);
         if (!duration) return;
 
         const remaining = player.getItemCooldown(GUN_RAISE_COOLDOWN_CATEGORY);
         if (remaining <= 0) {
-            this._raiseStates.delete(player.id);
+            gunRuntimeState.clearRaiseDuration(player.id);
             return;
         }
 
@@ -46,6 +46,12 @@ export class GunRaiseSystem {
 
 system.run(() => {
     world.afterEvents.playerHotbarSelectedSlotChange.subscribe((ev) => {
+        gunRuntimeState.clearPendingReleaseFire(ev.player.id);
+        gunRuntimeState.stopFiring(ev.player.id);
+        const reloadSession = gunRuntimeState.cancelReload(ev.player.id);
+        if (reloadSession?.reloadSound) ev.player.stopSound(reloadSession.reloadSound);
+        if (reloadSession) set_entity_native_property(ev.player, 'player:state.reload', 'fail');
+
         const item = ev.itemStack;
         if (!item || !ActorManager.isActor(item)) return;
 
@@ -56,6 +62,6 @@ system.run(() => {
     });
 
     world.beforeEvents.playerLeave.subscribe((ev) => {
-        GunRaiseSystem.cleanupPlayer(ev.player);
+        gunRuntimeState.cleanupPlayer(ev.player.id);
     });
 });
