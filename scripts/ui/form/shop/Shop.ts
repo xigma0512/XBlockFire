@@ -75,12 +75,12 @@ function buildBody(player: Player, pointLimit: number) {
     const loadout = LoadoutManager.describeLoadout(player);
     return L.translate(
         'shop.body',
-        `${FC.MinecoinGold}${LoadoutManager.getUsedPoints(player)}`,
         pointLimit,
+        `${FC.MinecoinGold}${pointLimit - LoadoutManager.getUsedPoints(player)}`,
         `${FC.Green}${loadout.primary ?? '無'}`,
         `${FC.Green}${loadout.secondary}`,
-        `${FC.Green}${loadout.armor}`,
-        `${FC.Green}${loadout.throwables}`
+        `${FC.Green}${loadout.throwables}`,
+        `${FC.Green}${loadout.armor}`
     );
 }
 
