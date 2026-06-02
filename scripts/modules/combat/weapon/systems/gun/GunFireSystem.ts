@@ -8,6 +8,7 @@ import { FireModeEnum } from '../../WeaponEnum';
 
 import { getPlayerHandItem } from '../../../../../utils/others/Entity';
 import { entity_native_property } from '../../../../../utils/Property';
+import { gameEvents } from '../../../../../event/EventEmitter';
 
 import { Player, system, world } from '@minecraft/server';
 
@@ -51,7 +52,7 @@ export class GunFireSystem {
             system.run(() => {
                 const releaseUseCallback = world.afterEvents.itemReleaseUse.subscribe((ev) => {
                     if (!this._cooldowns.has(player) && GunRaiseSystem.canFire(player) && ev.source.id === player.id) {
-                        this.fire(player, actor);
+                        if (this.fire(player, actor)) this.emitGunFired(player, gunFireComp.fire_mode, fireRate);
 
                         this._cooldowns.add(player);
                         system.runTimeout(() => this._cooldowns.delete(player), fireRate);
@@ -66,9 +67,10 @@ export class GunFireSystem {
                 });
             });
         } else {
+            if (!GunRaiseSystem.canFire(player)) return;
             if (this._cooldowns.has(player)) return;
 
-            this.fire(player, actor);
+            if (this.fire(player, actor)) this.emitGunFired(player, gunFireComp.fire_mode, fireRate);
             this._cooldowns.add(player);
             system.runTimeout(() => this._cooldowns.delete(player), fireRate);
         }
@@ -78,7 +80,7 @@ export class GunFireSystem {
         const magazineComp = gunActor.getComponent('gun_magazine')!;
         if (magazineComp.ammo <= 0) {
             system.run(() => player.playSound('xblockfire.empty_gun'));
-            return;
+            return false;
         }
 
         magazineComp.ammo--;
@@ -88,6 +90,11 @@ export class GunFireSystem {
         }
 
         system.run(() => GunAnimations.playerGunFireAnimation(player, gunActor));
+        return true;
+    }
+
+    private static emitGunFired(player: Player, fireMode: FireModeEnum, fireRate: number) {
+        gameEvents.emit('gunFired', { shooter: player, fireMode, fireRate });
     }
 
     private static stopFiringTrigger(player: Player, firingTaskId: number) {
