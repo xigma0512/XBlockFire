@@ -126,7 +126,7 @@ const sniper = {
         item: defaultItem('AWP'),
         weight: 0.095,
         gunTypeId: GunTypeEnum.AWP,
-        raiseTime: 25,
+        raiseTime: 20,
         magazine: { ammo: 5, count: 5 },
         fire: {
             mode: FireModeEnum['Semi-Auto'],
