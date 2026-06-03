@@ -3,7 +3,7 @@ import { ItemActor } from '../../actors/Actor';
 import { Player, world } from '@minecraft/server';
 
 export class GunAnimations {
-    static playerGunFireAnimation(owner: Player, gunActor: ItemActor) {
+    static playGunFireAnimation(owner: Player, gunActor: ItemActor) {
         const recoilComp = gunActor.getComponent('gun_recoil')!;
         if (owner.isSneaking) {
             owner.runCommand(
@@ -15,18 +15,29 @@ export class GunAnimations {
             );
         }
 
-        const gunComp = gunActor.getComponent('gun_fire')!;
-        owner.playSound(gunComp.fire_sound ?? '');
+        const name = gunActor.typeId
+        const sound = `xblockfire.fire.${name}`;
+
+        owner.playSound(sound);
         for (const p of world.getPlayers({ excludeNames: [owner.name] })) {
-            p.playSound(`${gunComp.fire_sound}.3d`, { location: owner.location, volume: 4 });
+            p.playSound(`${sound}.3d`, { location: owner.location, volume: 4 });
         }
     }
 
     static playGunReloadAnimation(owner: Player, gunActor: ItemActor) {
-        const reloadComp = gunActor.getComponent('gun_reload')!;
-        owner.playSound(reloadComp.reload_sound ?? '');
+        const name = gunActor.typeId
+        const sound = `xblockfire.reload.${name}`;
+        
+        owner.playSound(sound);
         for (const p of world.getPlayers({ excludeNames: [owner.name] })) {
-            p.playSound(`${reloadComp.reload_sound}.3d`, { location: owner.location, volume: 2 });
+            p.playSound(`${sound}.3d`, { location: owner.location, volume: 4 });
         }
+    }
+
+    static playGunRaiseAnimation(owner: Player, gunActor: ItemActor) {
+        const name = gunActor.typeId
+        const sound = `xblockfire.raise.${name}`;
+        
+        owner.playSound(sound);
     }
 }

@@ -10,7 +10,7 @@
                     "is3D": false
                 } 
             ],
-            "category": "ambient"
+            "category": "block"
         },
 
         // c4
@@ -21,7 +21,7 @@
                     "is3D": false
                 } 
             ],
-            "category": "ambient"
+            "category": "block"
         },
         "xblockfire.c4_defused": {
             "sounds": [
@@ -30,7 +30,7 @@
                     "is3D": false
                 }
             ],
-            "category": "ambient"
+            "category": "block"
         },
         "xblockfire.c4_explosion": {
             "sounds": [
@@ -39,7 +39,7 @@
                     "volume": 5
                 }
             ],
-            "category": "ambient",
+            "category": "block",
             "max_distance": 256
         },
         "xblockfire.defusing": {
@@ -49,7 +49,7 @@
                     "volume": 5
                 }
             ],
-            "category": "ambient",
+            "category": "block",
             "max_distance": 256
         },
         "xblockfire.planting.broadcast": {
@@ -59,7 +59,7 @@
                     "volume": 5
                 }
             ],
-            "category": "ambient",
+            "category": "block",
             "max_distance": 256
         },
         "xblockfire.planting.self": {
@@ -69,7 +69,7 @@
                     "is3D": false
                 }
             ],
-            "category": "ambient",
+            "category": "block",
             "max_distance": 256
         },
         "xblockfire.c4_beep": {
@@ -79,7 +79,7 @@
                     "volume": 5
                 } 
             ],
-            "category": "ambient",
+            "category": "block",
             "max_distance": 256
         },
 
@@ -91,7 +91,7 @@
                     "volume": 5
                 } 
             ],
-            "category": "ambient",
+            "category": "block",
             "max_distance": 256
         },
         "xblockfire.throwing_smoke": {
@@ -101,7 +101,7 @@
                     "volume": 2
                 }
             ],
-            "category": "ambient",
+            "category": "block",
             "max_distance": 32
         },
         "xblockfire.flash_explode": {
@@ -111,7 +111,7 @@
                     "volume": 5
                 }
             ],
-            "category": "ambient",
+            "category": "block",
             "max_distance": 256
         },
         "xblockfire.throwing_flash": {
@@ -121,7 +121,7 @@
                     "volume": 2
                 }
             ],
-            "category": "ambient",
+            "category": "block",
             "max_distance": 32
         },
 
@@ -133,262 +133,388 @@
                     "is3D": false
                 }
             ],
-            "category": "ambient"
+            "category": "block"
         },
 
 
-        "xblockfire.awp_fire": {
+        "xblockfire.fire.awp": {
             "sounds": [
                 {
-                    "name": "sounds/gun/awp_fire",
+                    "name": "sounds/gun/fire/awp",
                     "is3D": false
                 }
             ],
-            "category": "ambient"
+            "category": "block"
         },
-        "xblockfire.awp_reload": {
+        "xblockfire.reload.awp": {
             "sounds": [
                 {
-                    "name": "sounds/gun/awp_reload",
+                    "name": "sounds/gun/reload/awp",
                     "is3D": false
                 }
             ],
-            "category": "ambient"
+            "category": "block"
         },
-        "xblockfire.ak47_fire": {
+        "xblockfire.raise.awp": {
             "sounds": [
                 {
-                    "name": "sounds/gun/ak47_fire",
+                    "name": "sounds/gun/raise/awp",
                     "is3D": false
                 }
             ],
-            "category": "ambient"
+            "category": "block"
         },
-        "xblockfire.ak47_reload": {
+        "xblockfire.fire.ak47": {
             "sounds": [
                 {
-                    "name": "sounds/gun/ak47_reload",
+                    "name": "sounds/gun/fire/ak47",
                     "is3D": false
                 }
             ],
-            "category": "ambient"
+            "category": "block"
         },
-        "xblockfire.m4a4_fire": {
+        "xblockfire.reload.ak47": {
             "sounds": [
                 {
-                    "name": "sounds/gun/m4a4_fire",
+                    "name": "sounds/gun/reload/ak47",
                     "is3D": false
                 }
             ],
-            "category": "ambient"
+            "category": "block"
         },
-        "xblockfire.m4a4_reload": {
+        "xblockfire.raise.ak47": {
             "sounds": [
                 {
-                    "name": "sounds/gun/m4a4_reload",
+                    "name": "sounds/gun/raise/ak47",
                     "is3D": false
                 }
             ],
-            "category": "ambient"
+            "category": "block"
         },
-        "xblockfire.sg200_fire": {
+        "xblockfire.fire.m4a4": {
             "sounds": [
                 {
-                    "name": "sounds/gun/sg200_fire",
+                    "name": "sounds/gun/fire/m4a4",
                     "is3D": false
                 }
             ],
-            "category": "ambient"
+            "category": "block"
         },
-        "xblockfire.sg200_reload": {
+        "xblockfire.reload.m4a4": {
             "sounds": [
                 {
-                    "name": "sounds/gun/sg200_reload",
+                    "name": "sounds/gun/reload/m4a4",
                     "is3D": false
                 }
             ],
-            "category": "ambient"
+            "category": "block"
         },
-        "xblockfire.p90_fire": {
+        "xblockfire.raise.m4a4": {
             "sounds": [
                 {
-                    "name": "sounds/gun/p90_fire",
+                    "name": "sounds/gun/raise/m4a4",
                     "is3D": false
                 }
             ],
-            "category": "ambient"
+            "category": "block"
         },
-        "xblockfire.p90_reload": {
+        "xblockfire.fire.sg200": {
             "sounds": [
                 {
-                    "name": "sounds/gun/p90_reload",
+                    "name": "sounds/gun/fire/sg200",
                     "is3D": false
                 }
             ],
-            "category": "ambient"
+            "category": "block"
         },
-        "xblockfire.glock17_fire": {
+        "xblockfire.reload.sg200": {
             "sounds": [
                 {
-                    "name": "sounds/gun/glock17_fire",
+                    "name": "sounds/gun/reload/sg200",
                     "is3D": false
                 }
             ],
-            "category": "ambient"
+            "category": "block"
         },
-        "xblockfire.glock17_reload": {
+        "xblockfire.raise.sg200": {
             "sounds": [
                 {
-                    "name": "sounds/gun/glock17_reload",
+                    "name": "sounds/gun/raise/sg200",
                     "is3D": false
                 }
             ],
-            "category": "ambient"
+            "category": "block"
         },
-        "xblockfire.deagle_fire": {
+        "xblockfire.fire.p90": {
             "sounds": [
                 {
-                    "name": "sounds/gun/deagle_fire",
+                    "name": "sounds/gun/fire/p90",
                     "is3D": false
                 }
             ],
-            "category": "ambient"
+            "category": "block"
         },
-        "xblockfire.deagle_reload": {
+        "xblockfire.reload.p90": {
             "sounds": [
                 {
-                    "name": "sounds/gun/deagle_reload",
+                    "name": "sounds/gun/reload/p90",
                     "is3D": false
                 }
             ],
-            "category": "ambient"
+            "category": "block"
+        },
+        "xblockfire.raise.p90": {
+            "sounds": [
+                {
+                    "name": "sounds/gun/raise/p90",
+                    "is3D": false
+                }
+            ],
+            "category": "block"
+        },
+        "xblockfire.fire.glock17": {
+            "sounds": [
+                {
+                    "name": "sounds/gun/fire/glock17",
+                    "is3D": false
+                }
+            ],
+            "category": "block"
+        },
+        "xblockfire.reload.glock17": {
+            "sounds": [
+                {
+                    "name": "sounds/gun/reload/glock17",
+                    "is3D": false
+                }
+            ],
+            "category": "block"
+        },
+        "xblockfire.raise.glock17": {
+            "sounds": [
+                {
+                    "name": "sounds/gun/raise/glock17",
+                    "is3D": false
+                }
+            ],
+            "category": "block"
+        },
+        "xblockfire.fire.deagle": {
+            "sounds": [
+                {
+                    "name": "sounds/gun/fire/deagle",
+                    "is3D": false
+                }
+            ],
+            "category": "block"
+        },
+        "xblockfire.reload.deagle": {
+            "sounds": [
+                {
+                    "name": "sounds/gun/reload/deagle",
+                    "is3D": false
+                }
+            ],
+            "category": "block"
+        },
+        "xblockfire.raise.deagle": {
+            "sounds": [
+                {
+                    "name": "sounds/gun/raise/deagle",
+                    "is3D": false
+                }
+            ],
+            "category": "block"
         },
 
-        "xblockfire.awp_fire.3d": {
+        "xblockfire.fire.awp.3d": {
             "sounds": [
                 {
-                    "name": "sounds/gun/awp_fire",
+                    "name": "sounds/gun/fire/awp",
                     "volume": 5
                 }
             ],
-            "category": "ambient"
+            "category": "block"
         },
-        "xblockfire.awp_reload.3d": {
+        "xblockfire.reload.awp.3d": {
             "sounds": [
                 {
-                    "name": "sounds/gun/awp_reload",
+                    "name": "sounds/gun/reload/awp",
                     "volume": 2
                 }
             ],
-            "category": "ambient"
+            "category": "block"
         },
-        "xblockfire.ak47_fire.3d": {
+        "xblockfire.raise.awp.3d": {
             "sounds": [
                 {
-                    "name": "sounds/gun/ak47_fire",
+                    "name": "sounds/gun/raise/awp",
+                    "is3D": false
+                }
+            ],
+            "category": "block"
+        },
+        "xblockfire.fire.ak47.3d": {
+            "sounds": [
+                {
+                    "name": "sounds/gun/fire/ak47",
                     "volume": 5
                 }
             ],
-            "category": "ambient"
+            "category": "block"
         },
-        "xblockfire.ak47_reload.3d": {
+        "xblockfire.reload.ak47.3d": {
             "sounds": [
                 {
-                    "name": "sounds/gun/ak47_reload",
+                    "name": "sounds/gun/reload/ak47",
                     "volume": 2
                 }
             ],
-            "category": "ambient"
+            "category": "block"
         },
-        "xblockfire.m4a4_fire.3d": {
+        "xblockfire.raise.ak47.3d": {
             "sounds": [
                 {
-                    "name": "sounds/gun/m4a4_fire",
+                    "name": "sounds/gun/raise/ak47",
+                    "is3D": false
+                }
+            ],
+            "category": "block"
+        },
+        "xblockfire.fire.m4a4.3d": {
+            "sounds": [
+                {
+                    "name": "sounds/gun/fire/m4a4",
                     "volume": 5
                 }
             ],
-            "category": "ambient"
+            "category": "block"
         },
-        "xblockfire.m4a4_reload.3d": {
+        "xblockfire.reload.m4a4.3d": {
             "sounds": [
                 {
-                    "name": "sounds/gun/m4a4_reload",
+                    "name": "sounds/gun/reload/m4a4",
                     "volume": 2
                 }
             ],
-            "category": "ambient"
+            "category": "block"
         },
-        "xblockfire.sg200_fire.3d": {
+        "xblockfire.raise.m4a4.3d": {
             "sounds": [
                 {
-                    "name": "sounds/gun/sg200_fire",
+                    "name": "sounds/gun/raise/m4a4",
+                    "is3D": false
+                }
+            ],
+            "category": "block"
+        },
+        "xblockfire.fire.sg200.3d": {
+            "sounds": [
+                {
+                    "name": "sounds/gun/fire/sg200",
                     "volume": 5
                 }
             ],
-            "category": "ambient"
+            "category": "block"
         },
-        "xblockfire.sg200_reload.3d": {
+        "xblockfire.reload.sg200.3d": {
             "sounds": [
                 {
-                    "name": "sounds/gun/sg200_reload",
+                    "name": "sounds/gun/reload/sg200",
                     "volume": 2
                 }
             ],
-            "category": "ambient"
+            "category": "block"
         },
-        "xblockfire.p90_fire.3d": {
+        "xblockfire.raise.sg200.3d": {
             "sounds": [
                 {
-                    "name": "sounds/gun/p90_fire",
+                    "name": "sounds/gun/raise/sg200",
+                    "is3D": false
+                }
+            ],
+            "category": "block"
+        },
+        "xblockfire.fire.p90.3d": {
+            "sounds": [
+                {
+                    "name": "sounds/gun/fire/p90",
                     "volume": 5
                 }
             ],
-            "category": "ambient"
+            "category": "block"
         },
-        "xblockfire.p90_reload.3d": {
+        "xblockfire.reload.p90.3d": {
             "sounds": [
                 {
-                    "name": "sounds/gun/p90_reload",
+                    "name": "sounds/gun/reload/p90",
                     "volume": 2
                 }
             ],
-            "category": "ambient"
+            "category": "block"
         },
-        "xblockfire.glock17_fire.3d": {
+        "xblockfire.raise.p90.3d": {
             "sounds": [
                 {
-                    "name": "sounds/gun/glock17_fire",
+                    "name": "sounds/gun/raise/p90",
+                    "is3D": false
+                }
+            ],
+            "category": "block"
+        },
+        "xblockfire.fire.glock17.3d": {
+            "sounds": [
+                {
+                    "name": "sounds/gun/fire/glock17",
                     "volume": 5
                 }
             ],
-            "category": "ambient"
+            "category": "block"
         },
-        "xblockfire.glock17_reload.3d": {
+        "xblockfire.reload.glock17.3d": {
             "sounds": [
                 {
-                    "name": "sounds/gun/glock17_reload",
+                    "name": "sounds/gun/reload/glock17",
                     "volume": 2
                 }
             ],
-            "category": "ambient"
+            "category": "block"
         },
-        "xblockfire.deagle_fire.3d": {
+        "xblockfire.raise.glock17.3d": {
             "sounds": [
                 {
-                    "name": "sounds/gun/deagle_fire",
+                    "name": "sounds/gun/raise/glock17",
+                    "is3D": false
+                }
+            ],
+            "category": "block"
+        },
+        "xblockfire.fire.deagle.3d": {
+            "sounds": [
+                {
+                    "name": "sounds/gun/fire/deagle",
                     "volume": 5
                 }
             ],
-            "category": "ambient"
+            "category": "block"
         },
-        "xblockfire.deagle_reload.3d": {
+        "xblockfire.reload.deagle.3d": {
             "sounds": [
                 {
-                    "name": "sounds/gun/deagle_reload",
+                    "name": "sounds/gun/reload/deagle",
                     "volume": 2
                 }
             ],
-            "category": "ambient"
+            "category": "block"
+        },
+        "xblockfire.raise.deagle.3d": {
+            "sounds": [
+                {
+                    "name": "sounds/gun/raise/deagle",
+                    "is3D": false
+                }
+            ],
+            "category": "block"
         }
     }
 }

@@ -5,6 +5,7 @@ import { set_entity_native_property } from '../../../../../utils/Property';
 import { gunRuntimeState } from './GunRuntimeState';
 
 import { Player, system, world } from '@minecraft/server';
+import { GunAnimations } from './GunAnimations';
 
 export const GUN_RAISE_COOLDOWN_CATEGORY = 'xblockfire:raise_gun';
 const DEFAULT_RAISE_TIME = 8;
@@ -16,6 +17,7 @@ export class GunRaiseSystem {
 
         player.startItemCooldown(GUN_RAISE_COOLDOWN_CATEGORY, raiseTime);
         gunRuntimeState.setRaiseDuration(player.id, raiseTime);
+        GunAnimations.playGunRaiseAnimation(player, gunActor);
     }
 
     static isRaised(player: Player) {

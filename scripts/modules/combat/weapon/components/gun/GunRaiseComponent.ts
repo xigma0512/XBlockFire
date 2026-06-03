@@ -5,6 +5,7 @@ type ComponentDataType = {
 };
 
 export class GunRaiseComponent extends Component {
+    
     readonly raise_time: number;
 
     constructor(data: ComponentDataType) {

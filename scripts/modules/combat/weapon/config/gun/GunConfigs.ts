@@ -23,7 +23,6 @@ const pistol = {
             releaseToFire: false,
             bulletSpread: 1,
             rate: 3,
-            sound: 'xblockfire.glock17_fire',
         },
         recoil: {
             scope: { level: 0.02, duration: 0.2 },
@@ -34,7 +33,7 @@ const pistol = {
             medium: { head: 8, body: 7, legs: 5 },
             far: { head: 6, body: 5, legs: 3 },
         },
-        reload: { time: 25, sound: 'xblockfire.glock17_reload' },
+        reload: { time: 25 },
         offset: { scope: 0, hipfire: 0.005, movement: 0.004 },
     },
     deagle: {
@@ -50,7 +49,6 @@ const pistol = {
             releaseToFire: false,
             bulletSpread: 1,
             rate: 5,
-            sound: 'xblockfire.deagle_fire',
         },
         recoil: {
             scope: { level: 0.02, duration: 0.2 },
@@ -61,7 +59,7 @@ const pistol = {
             medium: { head: 14, body: 11, legs: 9 },
             far: { head: 11, body: 9, legs: 7 },
         },
-        reload: { time: 36, sound: 'xblockfire.deagle_reload' },
+        reload: { time: 36 },
         offset: { scope: 0.001, hipfire: 0.008, movement: 0.012 },
     },
 };
@@ -80,7 +78,6 @@ const assault = {
             releaseToFire: false,
             bulletSpread: 1,
             rate: 3,
-            sound: 'xblockfire.ak47_fire',
         },
         recoil: {
             scope: { level: 0.02, duration: 0.2 },
@@ -91,7 +88,7 @@ const assault = {
             medium: { head: 11, body: 9, legs: 7 },
             far: { head: 9, body: 8, legs: 6 },
         },
-        reload: { time: 45, sound: 'xblockfire.ak47_reload' },
+        reload: { time: 45 },
         offset: { scope: 0.001, hipfire: 0.035, movement: 0.04 },
     },
     m4a4: {
@@ -107,7 +104,6 @@ const assault = {
             releaseToFire: false,
             bulletSpread: 1,
             rate: 2,
-            sound: 'xblockfire.m4a4_fire',
         },
         recoil: {
             scope: { level: 0.02, duration: 0.2 },
@@ -118,7 +114,7 @@ const assault = {
             medium: { head: 10, body: 8, legs: 6 },
             far: { head: 8, body: 7, legs: 5 },
         },
-        reload: { time: 40, sound: 'xblockfire.m4a4_reload' },
+        reload: { time: 40 },
         offset: { scope: 0.001, hipfire: 0.025, movement: 0.025 },
     },
 };
@@ -137,7 +133,6 @@ const sniper = {
             releaseToFire: true,
             bulletSpread: 1,
             rate: 20,
-            sound: 'xblockfire.awp_fire',
         },
         recoil: {
             scope: { level: 0.06, duration: 0.2 },
@@ -148,7 +143,7 @@ const sniper = {
             medium: { head: 100, body: 58, legs: 43 },
             far: { head: 100, body: 58, legs: 40 },
         },
-        reload: { time: 60, sound: 'xblockfire.awp_reload' },
+        reload: { time: 60 },
         offset: { scope: 0, hipfire: 0.008, movement: 0.5 },
     },
 };
@@ -167,7 +162,6 @@ const machine_gun = {
             releaseToFire: false,
             bulletSpread: 1,
             rate: 2,
-            sound: 'xblockfire.p90_fire',
         },
         recoil: {
             scope: { level: 0.02, duration: 0.2 },
@@ -178,7 +172,7 @@ const machine_gun = {
             medium: { head: 5, body: 5, legs: 4 },
             far: { head: 3, body: 3, legs: 2 },
         },
-        reload: { time: 50, sound: 'xblockfire.p90_reload' },
+        reload: { time: 50 },
         offset: { scope: 0.008, hipfire: 0.02, movement: 0.008 },
     },
 };
@@ -197,7 +191,6 @@ const shotgun = {
             releaseToFire: false,
             bulletSpread: 8,
             rate: 20,
-            sound: 'xblockfire.sg200_fire',
         },
         recoil: {
             scope: { level: 0.08, duration: 0.2 },
@@ -208,7 +201,7 @@ const shotgun = {
             medium: { head: 3, body: 2, legs: 1 },
             far: { head: 1, body: 1, legs: 0 },
         },
-        reload: { time: 40, sound: 'xblockfire.sg200_reload' },
+        reload: { time: 40 },
         offset: { scope: 0.05, hipfire: 0.09, movement: 0.06 },
     },
 };

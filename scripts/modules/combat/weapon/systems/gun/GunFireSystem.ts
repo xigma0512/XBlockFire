@@ -80,7 +80,7 @@ export class GunFireSystem {
             BulletSystem.shoot(player, gunActor);
         }
 
-        system.run(() => GunAnimations.playerGunFireAnimation(player, gunActor));
+        system.run(() => GunAnimations.playGunFireAnimation(player, gunActor));
         return true;
     }
 

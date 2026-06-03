@@ -29,7 +29,6 @@ export abstract class GunActor extends ItemActor {
                     release_to_fire: config.fire.releaseToFire,
                     bullet_spread: config.fire.bulletSpread,
                     fire_rate: config.fire.rate,
-                    fire_sound: config.fire.sound,
                 })
             )
             .set(
@@ -44,7 +43,6 @@ export abstract class GunActor extends ItemActor {
                 'gun_reload',
                 new GunReloadComponent({
                     reload_time: config.reload.time,
-                    reload_sound: config.reload.sound,
                 })
             )
             .set('gun_offset', new GunOffsetComponent(config.offset));

@@ -6,8 +6,6 @@ type ComponentDataType = {
     release_to_fire: boolean;
     bullet_spread: number;
     fire_rate: number;
-
-    fire_sound?: string;
 };
 
 export class GunFireComponent extends Component {
@@ -16,8 +14,6 @@ export class GunFireComponent extends Component {
     readonly bullet_spread: number;
     readonly fire_rate: number;
 
-    readonly fire_sound?: string;
-
     constructor(data: ComponentDataType) {
         super('gun_fire');
 
@@ -25,7 +21,5 @@ export class GunFireComponent extends Component {
         this.release_to_fire = data.release_to_fire;
         this.bullet_spread = data.bullet_spread;
         this.fire_rate = data.fire_rate;
-
-        this.fire_sound = data.fire_sound;
     }
 }

@@ -55,7 +55,7 @@ class GunReloadSystem {
         gunRuntimeState.setReloadSession(this.player.id, {
             timeoutTaskId,
             progressTaskId: progressBarTaskId,
-            reloadSound: reloadComp.reload_sound,
+            reloadSound: `xblockfire.reload.${actor.typeId}`
         });
 
         set_entity_native_property(this.player, 'player:state.reload', 'reloading');

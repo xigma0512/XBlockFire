@@ -34,7 +34,6 @@ export type GunConfigType = {
         releaseToFire: boolean;
         bulletSpread: number;
         rate: number;
-        sound: string;
     };
     recoil: {
         scope: RecoilConfig;
@@ -47,7 +46,6 @@ export type GunConfigType = {
     };
     reload: {
         time: number;
-        sound: string;
     };
     offset: {
         scope: number;
