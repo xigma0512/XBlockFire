@@ -44,24 +44,22 @@ export class GunRaiseSystem {
     }
 }
 
-system.run(() => {
-    world.afterEvents.playerHotbarSelectedSlotChange.subscribe((ev) => {
-        gunRuntimeState.clearPendingReleaseFire(ev.player.id);
-        gunRuntimeState.stopFiring(ev.player.id);
-        const reloadSession = gunRuntimeState.cancelReload(ev.player.id);
-        if (reloadSession?.reloadSound) ev.player.stopSound(reloadSession.reloadSound);
-        if (reloadSession) set_entity_native_property(ev.player, 'player:state.reload', 'fail');
+world.afterEvents.playerHotbarSelectedSlotChange.subscribe((ev) => {
+    gunRuntimeState.clearPendingReleaseFire(ev.player.id);
+    gunRuntimeState.stopFiring(ev.player.id);
+    const reloadSession = gunRuntimeState.cancelReload(ev.player.id);
+    if (reloadSession?.reloadSound) ev.player.stopSound(reloadSession.reloadSound);
+    if (reloadSession) set_entity_native_property(ev.player, 'player:state.reload', 'fail');
 
-        const item = ev.itemStack;
-        if (!item || !ActorManager.isActor(item)) return;
+    const item = ev.itemStack;
+    if (!item || !ActorManager.isActor(item)) return;
 
-        const actor = ActorManager.getActor(item) as ItemActor | undefined;
-        if (!actor?.hasComponent('gun')) return;
+    const actor = ActorManager.getActor(item) as ItemActor | undefined;
+    if (!actor?.hasComponent('gun')) return;
 
-        GunRaiseSystem.startRaise(ev.player, actor);
-    });
+    GunRaiseSystem.startRaise(ev.player, actor);
+});
 
-    world.beforeEvents.playerLeave.subscribe((ev) => {
-        gunRuntimeState.cleanupPlayer(ev.player.id);
-    });
+world.beforeEvents.playerLeave.subscribe((ev) => {
+    gunRuntimeState.cleanupPlayer(ev.player.id);
 });

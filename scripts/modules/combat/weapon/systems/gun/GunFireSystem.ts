@@ -97,7 +97,7 @@ export class GunFireSystem {
     }
 }
 
-const startFireTrigger = world.beforeEvents.itemUse.subscribe((ev) => {
+const fullAutoFireTrigger = world.beforeEvents.itemUse.subscribe((ev) => {
     const player = ev.source;
     if (!entity_native_property(player, 'player:can_use_item')) return;
 
@@ -114,7 +114,7 @@ const startFireTrigger = world.beforeEvents.itemUse.subscribe((ev) => {
     GunFireSystem.startFiring(player, actor);
 });
 
-world.afterEvents.itemReleaseUse.subscribe((ev) => {
+const semiAutoFireTrigger = world.afterEvents.itemReleaseUse.subscribe((ev) => {
     const pending = gunRuntimeState.consumePendingReleaseFire(ev.source.id);
     if (!pending) return;
     if (entity_native_property(ev.source, 'player:state.reload') === 'reloading') return;
@@ -129,11 +129,11 @@ world.afterEvents.itemReleaseUse.subscribe((ev) => {
     gunRuntimeState.startFireCooldown(ev.source.id, cooldownTaskId);
 });
 
-world.afterEvents.itemStopUse.subscribe((ev) => {
+const stopFireTrigger = world.afterEvents.itemStopUse.subscribe((ev) => {
     gunRuntimeState.clearPendingReleaseFire(ev.source.id);
     gunRuntimeState.stopFiring(ev.source.id);
 });
 
-world.afterEvents.playerLeave.subscribe((ev) => {
+const cleanupTrigger = world.afterEvents.playerLeave.subscribe((ev) => {
     gunRuntimeState.cleanupPlayer(ev.playerId);
 });
