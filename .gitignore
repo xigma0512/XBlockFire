@@ -1,5 +1,8 @@
 node_modules
 lib
 dist
-docs
+
 .env
+
+docs
+scripts/test.ts
