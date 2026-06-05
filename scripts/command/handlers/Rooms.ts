@@ -2,7 +2,7 @@ import { gameroom, GameRoomFactory } from '../../modules/core/GameRoom';
 import { PhaseManager } from '../../modules/core/gamephase/PhaseManager';
 import { MemberManager } from '../../modules/player/MemberManager';
 
-import { PreRoundStartPhase } from '../../modules/core/gamephase/bomb_plant/PreRoundStart';
+import { GameModePhaseFactory } from '../../modules/core/gamephase/GameModePhaseFactory';
 
 import { GameModeEnum } from '../../modules/core/GameModeEnum';
 
@@ -39,10 +39,7 @@ function setting_map(origin: CustomCommandOrigin, ...args: any[]) {
 }
 
 function forcestart(origin: CustomCommandOrigin, ...args: any[]) {
-    const startPhase = {
-        [GameModeEnum.BombPlant]: new PreRoundStartPhase(),
-    };
-    PhaseManager.updatePhase(startPhase[gameroom().gameMode]);
+    PhaseManager.updatePhase(GameModePhaseFactory.createForceStartPhase(gameroom().gameMode));
     return { message: `${FC.Gray}>> ${FC.LightPurple}Force start.`, status: 0 };
 }
 

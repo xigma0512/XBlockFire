@@ -1,10 +1,6 @@
 import { gameroom } from '../GameRoom';
 import { PhaseManager } from './PhaseManager';
-
-import { IdlePhase } from './bomb_plant/Idle';
-
-import { GameModeEnum } from '../GameModeEnum';
-
+import { GameModePhaseFactory } from './GameModePhaseFactory';
 import { InGameHud } from '../../../ui/InGameHud';
 
 export class BlankPhase implements IPhaseHandler {
@@ -24,10 +20,7 @@ export class BlankPhase implements IPhaseHandler {
     on_exit() {}
 
     private transitions() {
-        switch (gameroom().gameMode) {
-            case GameModeEnum.BombPlant:
-                PhaseManager.updatePhase(new IdlePhase());
-                break;
-        }
+        PhaseManager.updatePhase(GameModePhaseFactory.createIdlePhase(gameroom().gameMode));
     }
 }
+
