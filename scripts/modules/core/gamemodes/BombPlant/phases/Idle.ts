@@ -18,13 +18,13 @@ import { ItemLockMode } from '@minecraft/server';
 
 import { Config } from '../../../../../settings/config';
 
-const COUNTDOWN_TIME = 20 * 20;
+import { BombPlantConfig } from '../BombPlantConfig';
 
 export class IdlePhase implements IPhaseHandler {
     readonly phaseId = BombPlantPhaseEnum.Idle;
     readonly hud: WaitingHud;
 
-    private _currentTick: number = COUNTDOWN_TIME;
+    private _currentTick: number = BombPlantConfig.IDLE_TIME;
     get currentTick() {
         return this._currentTick;
     }
@@ -34,20 +34,20 @@ export class IdlePhase implements IPhaseHandler {
     }
 
     on_entry() {
-        this._currentTick = COUNTDOWN_TIME;
+        this._currentTick = BombPlantConfig.IDLE_TIME;
     }
 
     on_running() {
         const members = MemberManager.getPlayers();
         const playerAmount = members.length;
-        const countdownWasIdle = this.currentTick === COUNTDOWN_TIME;
+        const countdownWasIdle = this.currentTick === BombPlantConfig.IDLE_TIME;
 
         if (playerAmount >= Config.game.AUTO_START_MIN_PLAYER) {
             if (countdownWasIdle) Sound.play('WAITING_COUNTDOWN_START', members);
             this._currentTick--;
         }
-        if (this.currentTick !== COUNTDOWN_TIME && playerAmount < Config.game.AUTO_START_MIN_PLAYER) {
-            this._currentTick = COUNTDOWN_TIME;
+        if (this.currentTick !== BombPlantConfig.IDLE_TIME && playerAmount < Config.game.AUTO_START_MIN_PLAYER) {
+            this._currentTick = BombPlantConfig.IDLE_TIME;
             Sound.play('WAITING_COUNTDOWN_CANCEL', members);
         }
 

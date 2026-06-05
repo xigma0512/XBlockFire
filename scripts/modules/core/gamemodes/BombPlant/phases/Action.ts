@@ -15,7 +15,7 @@ import { Language as L } from '../../../../../utils/Language';
 import { set_variable } from '../../../../../utils/Variable';
 import { LanguageKey } from '../../../../../types/Language';
 
-const ACTION_TIME = 120 * 20;
+import { BombPlantConfig } from '../BombPlantConfig';
 
 const enum EndReasonEnum {
     'Time-up' = 1,
@@ -69,7 +69,7 @@ export class ActionPhase implements IPhaseHandler {
     readonly phaseId = BombPlantPhaseEnum.Action;
     readonly hud: ActionHud;
 
-    private _currentTick: number = ACTION_TIME;
+    private _currentTick: number = BombPlantConfig.ACTION_TIME;
     get currentTick() {
         return this._currentTick;
     }
@@ -79,7 +79,7 @@ export class ActionPhase implements IPhaseHandler {
     }
 
     on_entry() {
-        this._currentTick = ACTION_TIME;
+        this._currentTick = BombPlantConfig.ACTION_TIME;
     }
 
     on_running() {

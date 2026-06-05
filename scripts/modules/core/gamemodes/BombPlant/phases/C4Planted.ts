@@ -15,7 +15,7 @@ import { FormatCode as FC } from '../../../../../utils/FormatCode';
 import { RoundEndPhase } from './RoundEnd';
 import { GameOverPhase } from './Gameover';
 
-const COUNTDOWN_TIME = 50 * 20;
+import { BombPlantConfig } from '../BombPlantConfig';
 
 const enum EndReasonEnum {
     'Time-up' = 1,
@@ -58,7 +58,7 @@ export class C4PlantedPhase implements IPhaseHandler {
 
     constructor() {
         this.hud = new ActionHud();
-        this._currentTick = COUNTDOWN_TIME;
+        this._currentTick = BombPlantConfig.C4_PLANTED_TIME;
     }
 
     on_entry() {
@@ -84,7 +84,7 @@ export class C4PlantedPhase implements IPhaseHandler {
 
         if (defendersAlive.length === 0) endReason = EndReasonEnum['Defender-Eliminated'];
         if (defenders.length === 0) endReason = EndReasonEnum['Defender-Disconnect'];
-        if (this.currentTick <= 0) endReason = EndReasonEnum['Time-up'];
+        if (this._currentTick <= 0) endReason = EndReasonEnum['Time-up'];
 
         if (endReason) {
             const result = endReasonTable[endReason];

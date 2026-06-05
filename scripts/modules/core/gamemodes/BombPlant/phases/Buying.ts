@@ -14,13 +14,13 @@ import { ItemStackFactory } from '../../../../../utils/ItemStackFactory';
 import { InputPermissionCategory, ItemLockMode } from '@minecraft/server';
 import { uiManager } from '@minecraft/server-ui';
 
-const COUNTDOWN_TIME = 20 * 20;
+import { BombPlantConfig } from '../BombPlantConfig';
 
 export class BuyingPhase implements IPhaseHandler {
     readonly phaseId = BombPlantPhaseEnum.Buying;
     readonly hud: ActionHud;
 
-    private _currentTick: number = COUNTDOWN_TIME;
+    private _currentTick: number = BombPlantConfig.BUYING_TIME;
     get currentTick() {
         return this._currentTick;
     }
@@ -30,9 +30,10 @@ export class BuyingPhase implements IPhaseHandler {
     }
 
     on_entry() {
-        this._currentTick = COUNTDOWN_TIME;
-        Sound.play('START_ROUND', MemberManager.getPlayers(), {});
-        sendShopItem();
+        if (this._currentTick === BombPlantConfig.BUYING_TIME) {
+            Sound.play('START_ROUND', MemberManager.getPlayers(), {});
+            sendShopItem();
+        }
     }
 
     on_running() {

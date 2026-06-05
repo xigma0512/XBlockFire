@@ -1,6 +1,6 @@
 import { Player } from '@minecraft/server';
 import { ShopCatalogLookup, THROWABLE_TOTAL_LIMIT } from '../../../../ui/form/shop/ShopCatalog';
-import { ArmorShopProduct, ArmorTier, ItemShopProduct, ShopProduct } from '../../../../ui/form/shop/ShopTypes';
+import { ArmorTier, ShopProduct } from '../../../../ui/form/shop/ShopTypes';
 import { LoadoutManager, LoadoutError } from '../../LoadoutManager';
 
 export class EconomyManager {

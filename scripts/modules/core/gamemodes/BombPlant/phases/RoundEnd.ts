@@ -15,14 +15,12 @@ import { Language as L } from '../../../../../utils/Language';
 import { FormatCode as FC } from '../../../../../utils/FormatCode';
 
 import { UiStateManager } from '../../../../../ui/hud/state/UiState';
-
-const COUNTDOWN_TIME = 6 * 20;
-const WINNING_SCORE = 7;
+import { BombPlantConfig } from '../BombPlantConfig';
 
 export class RoundEndPhase implements IPhaseHandler {
     readonly phaseId = BombPlantPhaseEnum.RoundEnd;
     readonly hud: ActionHud;
-    private _currentTick = COUNTDOWN_TIME;
+    private _currentTick = BombPlantConfig.ROUND_END_TIME;
     get currentTick() {
         return this._currentTick;
     }
@@ -32,7 +30,7 @@ export class RoundEndPhase implements IPhaseHandler {
     }
 
     on_entry() {
-        this._currentTick = COUNTDOWN_TIME;
+        this._currentTick = BombPlantConfig.ROUND_END_TIME;
         processWinner();
         playRoundResultSounds();
         Sound.play('ROUND_END', MemberManager.getPlayers());
@@ -51,8 +49,8 @@ export class RoundEndPhase implements IPhaseHandler {
         const defenderScore = variable(`defender_score`);
 
         let winner = null;
-        if (attackerScore >= WINNING_SCORE) winner = TeamEnum.Attacker;
-        if (defenderScore >= WINNING_SCORE) winner = TeamEnum.Defender;
+        if (attackerScore >= BombPlantConfig.WINNING_SCORE) winner = TeamEnum.Attacker;
+        if (defenderScore >= BombPlantConfig.WINNING_SCORE) winner = TeamEnum.Defender;
 
         if (winner) {
             set_variable(`winner`, winner);
@@ -61,7 +59,7 @@ export class RoundEndPhase implements IPhaseHandler {
         }
 
         if (this.currentTick <= 0) {
-            if (attackerScore + defenderScore == WINNING_SCORE - 1) {
+            if (attackerScore + defenderScore == BombPlantConfig.WINNING_SCORE - 1) {
                 switchSide();
             }
 
