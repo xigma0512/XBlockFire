@@ -13,6 +13,7 @@ type DeathmatchTabId = Extract<ShopCategoryId, 'primary' | 'secondary'>;
 
 export class DeathmatchShop {
     static async open(player: Player, tabId: DeathmatchTabId = 'primary', playOpenSound = true) {
+        if (!player.isValid) return;
         if (PhaseManager.getPhase().phaseId !== PhaseIdentity.Deathmatch.Action) {
             player.sendMessage(`${FC.Red}Deathmatch shop is only available during action.`);
             return;

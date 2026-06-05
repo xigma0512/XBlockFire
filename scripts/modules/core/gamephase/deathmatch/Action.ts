@@ -57,6 +57,7 @@ export class DeathmatchActionPhase implements IPhaseHandler {
     }
 
     private respawn(player: Player) {
+        if (!player.isValid) return;
         if (gameroom().gameMode !== GameModeEnum.Deathmatch) return;
         if (PhaseManager.getPhase() !== this) return;
         if (!MemberManager.includePlayer(player)) return;
