@@ -21,7 +21,7 @@ import { Config } from '../../../../../settings/config';
 const COUNTDOWN_TIME = 20 * 20;
 
 export class IdlePhase implements IPhaseHandler {
-    readonly phaseTag = BombPlantPhaseEnum.Idle;
+    readonly phaseId = BombPlantPhaseEnum.Idle;
     readonly hud: WaitingHud;
 
     private _currentTick: number = COUNTDOWN_TIME;

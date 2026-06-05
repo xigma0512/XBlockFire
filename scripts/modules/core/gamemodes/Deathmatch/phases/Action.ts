@@ -3,7 +3,7 @@ import { MemberManager } from '../../../../player/MemberManager';
 import { TeamEnum } from '../../../../player/TeamEnum';
 import { gameroom } from '../../../GameRoom';
 import { GameModeEnum } from '../../../GameModeEnum';
-import { PhaseIdentity } from '../../../gamephase/PhaseIdentity';
+import { DeathmatchPhaseEnum } from './DeathmatchPhaseEnum';
 import { PhaseManager } from '../../../gamephase/PhaseManager';
 import { DeathmatchGameOverPhase } from './Gameover';
 import { DeathmatchActionView } from '../../../../../ui/hud/views/DeathmatchActionView';
@@ -20,8 +20,7 @@ import { DeathmatchSpawn } from '../DeathmatchSpawn';
 import { DeathmatchLoadout } from '../DeathmatchLoadout';
 
 export class DeathmatchActionPhase implements IPhaseHandler {
-    readonly phaseTag = 102;
-    readonly phaseId = PhaseIdentity.Deathmatch.Action;
+    readonly phaseId = DeathmatchPhaseEnum.Action;
     readonly hud: DeathmatchActionView;
 
     private _currentTick = DeathmatchConfig.ACTION_TIME;
@@ -77,7 +76,7 @@ export class DeathmatchActionPhase implements IPhaseHandler {
         set_entity_native_property(player, 'player:can_use_item', true);
         player.addEffect('regeneration', 40, { amplifier: 255, showParticles: false });
         player.addEffect('saturation', 20, { amplifier: 5, showParticles: false });
-        DeathmatchLoadout.apply(player);
+        gameroom().activeMode.applyLoadout?.(player);
     }
 
     private transitions() {

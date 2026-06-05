@@ -20,7 +20,7 @@ import { GameMode, world } from '@minecraft/server';
 const COUNTDOWN_TIME = 10 * 20;
 
 export class GameOverPhase implements IPhaseHandler {
-    readonly phaseTag = BombPlantPhaseEnum.Gameover;
+    readonly phaseId = BombPlantPhaseEnum.Gameover;
     readonly hud: ActionHud;
     private _currentTick: number = COUNTDOWN_TIME;
     get currentTick() {

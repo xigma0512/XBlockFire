@@ -1,7 +1,7 @@
 import { GameMode, world } from '@minecraft/server';
 import { MemberManager } from '../../../../player/MemberManager';
 import { TeamEnum } from '../../../../player/TeamEnum';
-import { PhaseIdentity } from '../../../gamephase/PhaseIdentity';
+import { DeathmatchPhaseEnum } from './DeathmatchPhaseEnum';
 import { PhaseManager } from '../../../gamephase/PhaseManager';
 import { DeathmatchIdlePhase } from './Idle';
 import { DeathmatchActionView } from '../../../../../ui/hud/views/DeathmatchActionView';
@@ -12,8 +12,7 @@ import { set_entity_dynamic_property, set_entity_native_property } from '../../.
 import { DeathmatchConfig } from '../DeathmatchConfig';
 
 export class DeathmatchGameOverPhase implements IPhaseHandler {
-    readonly phaseTag = 103;
-    readonly phaseId = PhaseIdentity.Deathmatch.Gameover;
+    readonly phaseId = DeathmatchPhaseEnum.Gameover;
     readonly hud: DeathmatchActionView;
 
     private _currentTick = DeathmatchConfig.GAMEOVER_TIME;

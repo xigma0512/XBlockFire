@@ -3,7 +3,7 @@ import { LoadoutManager } from '../../../LoadoutManager';
 import { PhaseManager } from '../../../gamephase/PhaseManager';
 import { WaitingView as WaitingHud } from '../../../../../ui/hud/views/WaitingView';
 import { DeathmatchPreStartPhase } from './PreStart';
-import { PhaseIdentity } from '../../../gamephase/PhaseIdentity';
+import { DeathmatchPhaseEnum } from './DeathmatchPhaseEnum';
 import { TeamEnum } from '../../../../player/TeamEnum';
 import { Language as L } from '../../../../../utils/Language';
 import { reset_variables, set_variable } from '../../../../../utils/Variable';
@@ -13,8 +13,7 @@ import { Config } from '../../../../../settings/config';
 const COUNTDOWN_TIME = 20 * 20;
 
 export class DeathmatchIdlePhase implements IPhaseHandler {
-    readonly phaseTag = 100;
-    readonly phaseId = PhaseIdentity.Deathmatch.Idle;
+    readonly phaseId = DeathmatchPhaseEnum.Idle;
     readonly hud: WaitingHud;
 
     private _currentTick = COUNTDOWN_TIME;

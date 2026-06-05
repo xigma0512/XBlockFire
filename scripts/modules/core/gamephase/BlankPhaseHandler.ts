@@ -3,7 +3,7 @@ import { PhaseManager } from './PhaseManager';
 import { InGameHud } from '../../../ui/InGameHud';
 
 export class BlankPhase implements IPhaseHandler {
-    readonly phaseTag = -1;
+    readonly phaseId = 'blank';
     readonly hud!: InGameHud;
     readonly currentTick = -1;
 

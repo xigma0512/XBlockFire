@@ -51,7 +51,7 @@ export class C4PlantedState implements IC4StateHandler {
         );
         this._entity = this.position.dimension.spawnEntity(PLANTED_C4_ENTITY_ID, this.position);
 
-        if (PhaseManager.getPhase().phaseTag === BombPlantPhaseEnum.Action) {
+        if (PhaseManager.getPhase().phaseId === BombPlantPhaseEnum.Action) {
             PhaseManager.updatePhase(new C4PlantedPhase());
         }
     }
@@ -132,7 +132,7 @@ function c4Explosion(C4Entity: Entity) {
 }
 
 function defuseComplete(defuser: Player) {
-    if (PhaseManager.getPhase().phaseTag === BombPlantPhaseEnum.C4Planted) {
+    if (PhaseManager.getPhase().phaseId === BombPlantPhaseEnum.C4Planted) {
         set_variable(`round_winner`, TeamEnum.Defender);
         UiStateManager.setRoundEndMessage(TeamEnum.Defender);
         PhaseManager.updatePhase(new RoundEndPhase());

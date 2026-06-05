@@ -3,15 +3,15 @@ import { MemberManager } from '../../../../player/MemberManager';
 import { TeamEnum } from '../../../../player/TeamEnum';
 import { PhaseManager } from '../../../gamephase/PhaseManager';
 import { DeathmatchActionPhase } from './Action';
-import { PhaseIdentity } from '../../../gamephase/PhaseIdentity';
+import { DeathmatchPhaseEnum } from './DeathmatchPhaseEnum';
 import { InGameHud } from '../../../../../ui/InGameHud';
 import { set_entity_dynamic_property, set_entity_native_property } from '../../../../../utils/Property';
+import { gameroom } from '../../../GameRoom';
 import { DeathmatchSpawn } from '../DeathmatchSpawn';
 import { DeathmatchLoadout } from '../DeathmatchLoadout';
 
 export class DeathmatchPreStartPhase implements IPhaseHandler {
-    readonly phaseTag = 101;
-    readonly phaseId = PhaseIdentity.Deathmatch.PreStart;
+    readonly phaseId = DeathmatchPhaseEnum.PreStart;
     readonly hud!: InGameHud;
     readonly currentTick = -1;
 
@@ -28,10 +28,10 @@ export class DeathmatchPreStartPhase implements IPhaseHandler {
             player.setGameMode(GameMode.Adventure);
             player.inputPermissions.setPermissionCategory(InputPermissionCategory.LateralMovement, true);
             set_entity_dynamic_property(player, 'player:is_alive', true);
-            set_entity_native_property(player, 'player:can_use_item', true);
+            set_entity_native_property(player, 'player:can_use_item', false);
+            gameroom().activeMode.applyLoadout?.(player);
             player.addEffect('regeneration', 40, { amplifier: 255, showParticles: false });
             player.addEffect('saturation', 20, { amplifier: 5, showParticles: false });
-            DeathmatchLoadout.apply(player);
         }
     }
 

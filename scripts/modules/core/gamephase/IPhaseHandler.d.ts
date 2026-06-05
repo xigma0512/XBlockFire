@@ -1,8 +1,7 @@
-declare abstract class IPhaseHandler {
-    readonly phaseTag: number;
-    readonly phaseId?: string;
+declare interface IPhaseHandler {
+    readonly phaseId: string;
     readonly currentTick: number;
-    readonly hud: InGameHud;
+    readonly hud?: any;
     on_entry(): void;
     on_running(): void;
     on_exit(): void;

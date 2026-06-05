@@ -16,6 +16,7 @@ import { PhaseEnum as BombPlantPhaseEnum } from './phases/BombPlantPhaseEnum';
 import { Shop } from '../../../../ui/form/shop/Shop';
 import { Language as L } from '../../../../utils/Language';
 import { FormatCode as FC } from '../../../../utils/FormatCode';
+import { LoadoutManager } from '../../LoadoutManager';
 
 export class BombPlantMode implements IGameMode {
     readonly modeId = GameModeEnum.BombPlant;
@@ -73,7 +74,7 @@ export class BombPlantMode implements IGameMode {
 
     openShop(player: Player): void {
         const phase = PhaseManager.getPhase();
-        if (phase.phaseTag !== BombPlantPhaseEnum.Buying) {
+        if (phase.phaseId !== BombPlantPhaseEnum.Buying) {
             system.run(() => player.sendMessage(FC.Red + L.translate('shop.error.not_buying')));
             return;
         }
@@ -81,5 +82,9 @@ export class BombPlantMode implements IGameMode {
         system.run(() => {
             Shop.openShop(player);
         });
+    }
+
+    applyLoadout(player: Player): void {
+        LoadoutManager.applyCurrentHotbar(player);
     }
 }

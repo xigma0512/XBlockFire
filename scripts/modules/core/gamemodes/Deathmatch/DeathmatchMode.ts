@@ -8,9 +8,10 @@ import { MemberManager } from '../../../player/MemberManager';
 import { TeamEnum } from '../../../player/TeamEnum';
 import { set_variable, variable } from '../../../../utils/Variable';
 import { PhaseManager } from '../../gamephase/PhaseManager';
-import { PhaseIdentity } from '../../gamephase/PhaseIdentity';
+import { DeathmatchPhaseEnum } from './phases/DeathmatchPhaseEnum';
 import { DeathmatchActionPhase } from './phases/Action';
 import { DeathmatchShop } from '../../../../ui/form/shop/DeathmatchShop';
+import { DeathmatchLoadout } from './DeathmatchLoadout';
 
 export class DeathmatchMode implements IGameMode {
     readonly modeId = GameModeEnum.Deathmatch;
@@ -45,7 +46,7 @@ export class DeathmatchMode implements IGameMode {
         }
 
         const phase = PhaseManager.getPhase();
-        if (phase.phaseId === PhaseIdentity.Deathmatch.Action) {
+        if (phase.phaseId === DeathmatchPhaseEnum.Action) {
             (phase as DeathmatchActionPhase).queueRespawn(deadPlayer);
         }
     }
@@ -61,5 +62,9 @@ export class DeathmatchMode implements IGameMode {
         system.run(() => {
             DeathmatchShop.open(player);
         });
+    }
+
+    applyLoadout(player: Player): void {
+        DeathmatchLoadout.apply(player);
     }
 }

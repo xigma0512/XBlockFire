@@ -54,7 +54,7 @@ export class C4PlantingState implements IC4StateHandler {
         if (ev.source.id !== this.source.id) return;
 
         const phase = PhaseManager.getPhase();
-        if (phase.phaseTag !== BombPlantPhaseEnum.Action && phase.phaseTag !== BombPlantPhaseEnum.RoundEnd) return;
+        if (phase.phaseId !== BombPlantPhaseEnum.Action && phase.phaseId !== BombPlantPhaseEnum.RoundEnd) return;
 
         // eslint-disable-next-line
         ev.source.runCommand('clear @s xblockfire:c4');

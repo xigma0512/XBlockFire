@@ -33,8 +33,8 @@ export class ActionView implements InGameHud {
 
         let timeStr;
 
-        const phaseTag = PhaseManager.getPhase().phaseTag;
-        if (seconds < 15 && phaseTag === PhaseEnum.Action) {
+        const phaseId = PhaseManager.getPhase().phaseId;
+        if (seconds < 15 && phaseId === PhaseEnum.Action) {
             const subSeconds = (totalTicks % 20) * 0.05;
             const displaySeconds = seconds + subSeconds;
 
@@ -89,7 +89,7 @@ export class ActionView implements InGameHud {
         const phase = PhaseManager.getPhase();
 
         let text: string | string[] = '';
-        switch (phase.phaseTag) {
+        switch (phase.phaseId) {
             case PhaseEnum.Buying:
                 text = `${FC.Bold}${FC.Yellow}${Language.translate('hud.buying.subtitle')}`;
                 break;

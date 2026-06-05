@@ -58,7 +58,7 @@ class _UiStateManager {
         const data = this.roundEndMessages.get(player);
         if (!data) return undefined;
 
-        const phase = PhaseManager.getPhase().phaseTag;
+        const phase = PhaseManager.getPhase().phaseId;
         const isPersistentPhase = phase === BombPlantPhaseEnum.RoundEnd || phase === BombPlantPhaseEnum.Gameover;
 
         if (isPersistentPhase || system.currentTick <= data.expireTick) {

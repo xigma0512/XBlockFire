@@ -20,7 +20,7 @@ const COUNTDOWN_TIME = 6 * 20;
 const WINNING_SCORE = 7;
 
 export class RoundEndPhase implements IPhaseHandler {
-    readonly phaseTag = BombPlantPhaseEnum.RoundEnd;
+    readonly phaseId = BombPlantPhaseEnum.RoundEnd;
     readonly hud: ActionHud;
     private _currentTick = COUNTDOWN_TIME;
     get currentTick() {

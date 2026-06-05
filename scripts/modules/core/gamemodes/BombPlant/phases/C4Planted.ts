@@ -48,7 +48,7 @@ const endReasonTable: Record<number, EndReasonData> = {
 };
 
 export class C4PlantedPhase implements IPhaseHandler {
-    readonly phaseTag = PhaseEnum.C4Planted;
+    readonly phaseId = PhaseEnum.C4Planted;
     readonly hud: ActionHud;
 
     private _currentTick: number;

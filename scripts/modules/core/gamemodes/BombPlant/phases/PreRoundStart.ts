@@ -29,7 +29,7 @@ import { EquipmentSlot, GameMode, InputPermissionCategory, ItemLockMode, system 
 import { ItemStack } from '@minecraft/server';
 
 export class PreRoundStartPhase implements IPhaseHandler {
-    readonly phaseTag = BombPlantPhaseEnum.PreRoundStart;
+    readonly phaseId = BombPlantPhaseEnum.PreRoundStart;
     readonly hud!: InGameHud;
     readonly currentTick = -1;
 

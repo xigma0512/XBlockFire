@@ -13,4 +13,5 @@ export interface IGameMode {
         groupPlayers: import('@minecraft/server').Player[]
     ): void;
     openShop?(player: import('@minecraft/server').Player): void;
+    applyLoadout?(player: import('@minecraft/server').Player): void;
 }

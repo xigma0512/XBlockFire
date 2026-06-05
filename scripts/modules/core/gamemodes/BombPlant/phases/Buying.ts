@@ -17,7 +17,7 @@ import { uiManager } from '@minecraft/server-ui';
 const COUNTDOWN_TIME = 20 * 20;
 
 export class BuyingPhase implements IPhaseHandler {
-    readonly phaseTag = BombPlantPhaseEnum.Buying;
+    readonly phaseId = BombPlantPhaseEnum.Buying;
     readonly hud: ActionHud;
 
     private _currentTick: number = COUNTDOWN_TIME;

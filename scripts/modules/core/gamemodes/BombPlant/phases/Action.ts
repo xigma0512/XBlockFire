@@ -66,7 +66,7 @@ const endReasonTable: Record<number, EndReasonData> = {
 };
 
 export class ActionPhase implements IPhaseHandler {
-    readonly phaseTag = BombPlantPhaseEnum.Action;
+    readonly phaseId = BombPlantPhaseEnum.Action;
     readonly hud: ActionHud;
 
     private _currentTick: number = ACTION_TIME;
