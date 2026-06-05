@@ -1,15 +1,18 @@
+import { system, Player, GameMode } from '@minecraft/server';
+
+
 import { GameModeEnum } from '../../GameModeEnum';
 import { IGameMode } from '../IGameMode';
+import { DeathmatchPhaseEnum } from './phases/DeathmatchPhaseEnum';
 import { DeathmatchIdlePhase } from './phases/Idle';
 import { DeathmatchPreStartPhase } from './phases/PreStart';
+import { DeathmatchActionPhase } from './phases/Action';
+
 import { AlliesMarker } from '../../../player/AlliesMarker';
-import { system, Player, GameMode } from '@minecraft/server';
 import { MemberManager } from '../../../player/MemberManager';
 import { TeamEnum } from '../../../player/TeamEnum';
 import { set_variable, variable } from '../../../../utils/Variable';
 import { PhaseManager } from '../../gamephase/PhaseManager';
-import { DeathmatchPhaseEnum } from './phases/DeathmatchPhaseEnum';
-import { DeathmatchActionPhase } from './phases/Action';
 import { DeathmatchShop } from '../../../../ui/form/shop/DeathmatchShop';
 import { DeathmatchLoadout } from './DeathmatchLoadout';
 
