@@ -14,5 +14,10 @@ export interface GameMapType {
             Defender: Position[];
             Spectator: Position[];
         };
+        dm_spawns: {
+            Attacker: Position[];
+            Defender: Position[];
+        };
     };
 }
+
