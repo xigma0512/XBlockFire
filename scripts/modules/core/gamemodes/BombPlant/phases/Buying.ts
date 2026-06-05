@@ -79,4 +79,3 @@ function restorePlayerDefaults() {
         uiManager.closeAllForms(player);
     }
 }
-

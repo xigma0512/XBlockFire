@@ -10,4 +10,3 @@ export class DeathmatchSpawn {
         return spawns[Math.floor(Math.random() * spawns.length)];
     }
 }
-

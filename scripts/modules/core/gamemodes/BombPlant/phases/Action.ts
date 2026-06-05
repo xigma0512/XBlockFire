@@ -125,4 +125,3 @@ function voiceBroadcast(currentTick: number) {
         Sound.play('THIRTY_SEC_LEFT', MemberManager.getPlayers(), {});
     }
 }
-

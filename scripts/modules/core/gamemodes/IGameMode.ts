@@ -8,7 +8,9 @@ export interface IGameMode {
 
     onPlayerDeath?(deadPlayer: import('@minecraft/server').Player, attacker?: import('@minecraft/server').Player): void;
     getShopPointLimit?(attackerScore: number, defenderScore: number): number;
-    onAlliesMarkerUpdate?(viewer: import('@minecraft/server').Player, groupPlayers: import('@minecraft/server').Player[]): void;
+    onAlliesMarkerUpdate?(
+        viewer: import('@minecraft/server').Player,
+        groupPlayers: import('@minecraft/server').Player[]
+    ): void;
     openShop?(player: import('@minecraft/server').Player): void;
 }
-

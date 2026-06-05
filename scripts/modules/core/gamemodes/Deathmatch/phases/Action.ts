@@ -102,4 +102,3 @@ export class DeathmatchActionPhase implements IPhaseHandler {
         PhaseManager.updatePhase(new DeathmatchGameOverPhase());
     }
 }
-

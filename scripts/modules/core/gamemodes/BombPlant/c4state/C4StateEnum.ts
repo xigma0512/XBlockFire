@@ -4,4 +4,3 @@ export const enum C4StateEnum {
     Planted,
     Dropped,
 }
-

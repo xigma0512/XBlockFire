@@ -13,11 +13,8 @@ import { Sound } from '../../media/Sound';
 import { Player, system, world } from '@minecraft/server';
 
 import { gameroom } from '../../../modules/core/GameRoom';
-import {
-    ShopCatalogLookup,
-    ShopCategories,
-    THROWABLE_TOTAL_LIMIT,
-} from './ShopCatalog';
+import { TabbedActionForm } from '../common/TabbedActionForm';
+import { ShopCatalogLookup, ShopCategories, THROWABLE_TOTAL_LIMIT } from './ShopCatalog';
 import { ArmorShopProduct, ItemShopProduct, ShopCategoryId, ShopProduct } from './ShopTypes';
 
 type ShopAction = 'select_product' | 'clear_primary' | 'clear_throwables';
@@ -159,7 +156,5 @@ world.beforeEvents.itemUse.subscribe((ev) => {
     const player = ev.source;
     if (!MemberManager.includePlayer(player)) return;
 
-    if (gameroom().activeMode.openShop) {
-        gameroom().activeMode.openShop(player);
-    }
+    gameroom().activeMode.openShop?.(player);
 });

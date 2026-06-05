@@ -41,4 +41,3 @@ export class DeathmatchPreStartPhase implements IPhaseHandler {
 
     on_exit() {}
 }
-

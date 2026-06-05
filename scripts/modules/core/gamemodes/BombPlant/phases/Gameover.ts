@@ -78,4 +78,3 @@ function showScoreboard() {
     }
     HudDriver.chat(stat);
 }
-

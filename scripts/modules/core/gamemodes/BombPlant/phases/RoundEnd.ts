@@ -105,4 +105,3 @@ function processWinner() {
         set_variable(`defender_score`, (variable(`defender_score`) || 0) + 1);
     }
 }
-

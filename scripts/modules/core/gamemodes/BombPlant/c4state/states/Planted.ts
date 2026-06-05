@@ -167,4 +167,3 @@ function playC4Effect(currentTick: number, entity: Entity) {
         } catch {}
     }
 }
-

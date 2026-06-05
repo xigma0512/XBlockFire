@@ -109,4 +109,3 @@ function canPlantC4(source: Player) {
         return false;
     }
 }
-

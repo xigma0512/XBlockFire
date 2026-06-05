@@ -7,4 +7,3 @@ export const enum PhaseEnum {
     Gameover,
     C4Planted,
 }
-

@@ -1,5 +1,4 @@
-import { EntityActor } from './actors/EntityActor';
-import { ItemActor } from './actors/item/ItemActor';
+import { EntityActor, ItemActor } from './actors/Actor';
 
 export type GunReloadStateEnum = 'idle' | 'pre_reload' | 'reloading' | 'success' | 'fail';
 

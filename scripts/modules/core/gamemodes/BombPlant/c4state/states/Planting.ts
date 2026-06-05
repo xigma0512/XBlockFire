@@ -81,4 +81,3 @@ function playPlantingSound(source: Player) {
     for (const p of players) p.playSound(PLANTING_BROADCAST_SOUND_ID, { location: source.location, volume: 3 });
     source.playSound(PLANTING_SELF_SOUND_ID);
 }
-

@@ -10,7 +10,7 @@ import { set_variable, variable } from '../../../../utils/Variable';
 import { PhaseManager } from '../../gamephase/PhaseManager';
 import { PhaseIdentity } from '../../gamephase/PhaseIdentity';
 import { DeathmatchActionPhase } from './phases/Action';
-import { DeathmatchShop } from '../../../../../ui/form/shop/DeathmatchShop';
+import { DeathmatchShop } from '../../../../ui/form/shop/DeathmatchShop';
 
 export class DeathmatchMode implements IGameMode {
     readonly modeId = GameModeEnum.Deathmatch;
@@ -63,4 +63,3 @@ export class DeathmatchMode implements IGameMode {
         });
     }
 }
-

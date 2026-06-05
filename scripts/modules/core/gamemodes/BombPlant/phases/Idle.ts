@@ -108,4 +108,3 @@ function initializeVariable() {
         set_variable(`${player.name}.deaths`, 0);
     }
 }
-

@@ -2,7 +2,6 @@ import { gameroom, GameRoomFactory } from '../../modules/core/GameRoom';
 import { PhaseManager } from '../../modules/core/gamephase/PhaseManager';
 import { MemberManager } from '../../modules/player/MemberManager';
 
-
 import { GameModeEnum } from '../../modules/core/GameModeEnum';
 
 import { FormatCode as FC } from '../../utils/FormatCode';

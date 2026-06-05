@@ -151,4 +151,3 @@ function resetPlayerInventory() {
         equippable.setEquipment(EquipmentSlot.Feet, UnCommonItems.getItem('defender_boots'));
     }
 }
-

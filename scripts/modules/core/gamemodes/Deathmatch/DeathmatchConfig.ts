@@ -6,4 +6,3 @@ export const DeathmatchConfig = {
     SHOP_ITEM_ID: 'minecraft:feather',
     ARMOR_TIER: 'heavy',
 } as const;
-

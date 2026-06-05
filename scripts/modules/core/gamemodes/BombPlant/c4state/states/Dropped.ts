@@ -79,4 +79,3 @@ export class C4DroppedState implements IC4StateHandler {
         C4Manager.updateState(new C4IdleState());
     }
 }
-

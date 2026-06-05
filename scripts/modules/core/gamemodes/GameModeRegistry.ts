@@ -6,7 +6,7 @@ import { DeathmatchMode } from './Deathmatch/DeathmatchMode';
 export class GameModeRegistry {
     private static modes = new Map<GameModeEnum, IGameMode>([
         [GameModeEnum.BombPlant, new BombPlantMode()],
-        [GameModeEnum.Deathmatch, new DeathmatchMode()]
+        [GameModeEnum.Deathmatch, new DeathmatchMode()],
     ]);
 
     static register(mode: IGameMode) {
@@ -21,4 +21,3 @@ export class GameModeRegistry {
         return mode;
     }
 }
-
