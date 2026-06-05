@@ -1,9 +1,5 @@
-import { C4Manager } from '../core/gamemodes/BombPlant/c4state/C4Manager';
 import { MemberManager } from './MemberManager';
-import { C4StateEnum } from '../core/gamemodes/BombPlant/c4state/C4StateEnum';
-import { TeamEnum } from './TeamEnum';
 import { gameroom } from '../core/GameRoom';
-import { GameModeEnum } from '../core/GameModeEnum';
 
 import { Vector3Builder, Vector3Utils } from '@minecraft/math';
 import { Direction, MolangVariableMap, Player, RGBA } from '@minecraft/server';
@@ -26,27 +22,11 @@ export class AlliesMarker {
                 const varMap = this.getVarMap(transform.size);
                 viewer.spawnParticle('xblockfire:allies_mark', transform.location, varMap);
             }
-
-            if (team === TeamEnum.Attacker && gameroom().gameMode === GameModeEnum.BombPlant) {
-                const c4state = C4Manager.getHandler();
-                if (c4state.stateTag === C4StateEnum.Dropped && c4state.entity) {
-                    const targetLoc = Vector3Utils.add(c4state.entity.location, { y: 2.3 });
-                    const transform = this.getMarkerTransform(viewer, targetLoc);
-                    if (transform) {
-                        const varMap = this.getVarMap(transform.size, {
-                            red: 0,
-                            green: 0,
-                            blue: 1,
-                            alpha: 1,
-                        });
-                        viewer.spawnParticle('xblockfire:allies_mark', transform.location, varMap);
-                    }
-                }
-            }
+            gameroom().activeMode.onAlliesMarkerUpdate?.(viewer, groupPlayers);
         }
     }
 
-    private static getMarkerTransform(viewer: Player, targetLocation: { x: number; y: number; z: number }) {
+    static getMarkerTransform(viewer: Player, targetLocation: { x: number; y: number; z: number }) {
         const headLoc = viewer.getHeadLocation();
 
         const eyeToTarget = Vector3Utils.subtract(targetLocation, headLoc);
@@ -109,7 +89,7 @@ export class AlliesMarker {
         };
     }
 
-    private static getVarMap(size: number, color?: RGBA) {
+    static getVarMap(size: number, color?: RGBA) {
         const varMap = new MolangVariableMap();
 
         varMap.setColorRGBA(

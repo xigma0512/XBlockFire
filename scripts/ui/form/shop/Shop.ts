@@ -13,9 +13,6 @@ import { Sound } from '../../media/Sound';
 import { Player, system, world } from '@minecraft/server';
 
 import { gameroom } from '../../../modules/core/GameRoom';
-import { GameModeEnum } from '../../../modules/core/GameModeEnum';
-import { DeathmatchShop } from './DeathmatchShop';
-
 import { TabbedActionForm } from '../common/TabbedActionForm';
 import {
     ArmorShopProduct,
@@ -72,7 +69,10 @@ export class Shop {
 }
 
 function getCurrentPointLimit() {
-    return EquipmentPointManager.getPointLimit(variable('attacker_score'), variable('defender_score'));
+    return (
+        gameroom().activeMode.getShopPointLimit?.(variable('attacker_score') || 0, variable('defender_score') || 0) ??
+        EquipmentPointManager.getPointLimit(variable('attacker_score') || 0, variable('defender_score') || 0)
+    );
 }
 
 function buildBody(player: Player, pointLimit: number) {
@@ -163,20 +163,7 @@ world.beforeEvents.itemUse.subscribe((ev) => {
     const player = ev.source;
     if (!MemberManager.includePlayer(player)) return;
 
-    if (gameroom().gameMode === GameModeEnum.Deathmatch) {
-        system.run(() => {
-            DeathmatchShop.open(player);
-        });
-        return;
+    if (gameroom().activeMode.openShop) {
+        gameroom().activeMode.openShop(player);
     }
-
-    const phase = PhaseManager.getPhase();
-    if (phase.phaseTag !== BombPlantPhaseEnum.Buying) {
-        system.run(() => player.sendMessage(FC.Red + L.translate('shop.error.not_buying')));
-        return;
-    }
-
-    system.run(() => {
-        Shop.openShop(player);
-    });
 });

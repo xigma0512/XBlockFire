@@ -1,8 +1,5 @@
 import { MemberManager } from './MemberManager';
-import { C4Manager } from '../core/gamemodes/BombPlant/c4state/C4Manager';
 import { gameEvents } from '../../event/EventEmitter';
-
-import { C4DroppedState } from '../core/gamemodes/BombPlant/c4state/states/Dropped';
 
 import { TeamEnum } from './TeamEnum';
 
@@ -14,13 +11,9 @@ import { set_entity_dynamic_property } from '../../utils/Property';
 import { set_variable, variable } from '../../utils/Variable';
 
 import { GameMode } from '@minecraft/server';
-import { ItemStack, Player, system, world } from '@minecraft/server';
+import { Player, system, world } from '@minecraft/server';
 
 import { gameroom } from '../core/GameRoom';
-import { GameModeEnum } from '../core/GameModeEnum';
-import { PhaseIdentity } from '../core/gamephase/PhaseIdentity';
-import { PhaseManager } from '../core/gamephase/PhaseManager';
-import { DeathmatchActionPhase } from '../core/gamemodes/Deathmatch/phases/Action';
 
 const deathPlayers = new Set<Player>();
 
@@ -52,46 +45,8 @@ gameEvents.subscribe('playerDied', (ev: any) => {
         set_variable(`${attacker.name}.kills`, (variable(`${attacker.name}.kills`) || 0) + 1);
     }
 
-    if (gameroom().gameMode === GameModeEnum.Deathmatch) {
-        handleDeathmatchDeath(deadPlayer, attacker);
-        return;
-    }
-
-    handleBombPlantDeath(deadPlayer);
+    gameroom().activeMode.onPlayerDeath?.(deadPlayer, attacker);
 });
-
-function handleBombPlantDeath(deadPlayer: Player) {
-    dropC4(deadPlayer);
-    deadPlayer.getComponent('inventory')?.container.clearAll();
-    deadPlayer.setGameMode(GameMode.Spectator);
-}
-
-function handleDeathmatchDeath(deadPlayer: Player, attacker: Player | undefined) {
-    deadPlayer.getComponent('inventory')?.container.clearAll();
-    deadPlayer.setGameMode(GameMode.Spectator);
-
-    if (attacker && MemberManager.getPlayerTeam(attacker) !== MemberManager.getPlayerTeam(deadPlayer)) {
-        const attackerTeam = MemberManager.getPlayerTeam(attacker);
-        if (attackerTeam === TeamEnum.Attacker) {
-            set_variable('attacker_score', (variable('attacker_score') || 0) + 1);
-        } else if (attackerTeam === TeamEnum.Defender) {
-            set_variable('defender_score', (variable('defender_score') || 0) + 1);
-        }
-    }
-
-    const phase = PhaseManager.getPhase();
-    if (phase.phaseId === PhaseIdentity.Deathmatch.Action) {
-        (phase as DeathmatchActionPhase).queueRespawn(deadPlayer);
-    }
-}
-
-const C4_ITEM_ID = 'xblockfire:c4';
-function dropC4(player: Player) {
-    const container = player.getComponent('inventory')!.container!;
-    if (container.find(new ItemStack(C4_ITEM_ID)) === undefined) return;
-
-    C4Manager.updateState(new C4DroppedState(player.location));
-}
 
 function showDeathMessage(deadPlayer: Player, attacker: Player) {
     const deadPlayerTeam = MemberManager.getPlayerTeam(deadPlayer);
