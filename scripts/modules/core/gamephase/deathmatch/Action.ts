@@ -1,4 +1,4 @@
-import { GameMode, Player, system } from '@minecraft/server';
+import { GameMode, InputPermissionCategory, Player, system } from '@minecraft/server';
 import { MemberManager } from '../../../player/MemberManager';
 import { TeamEnum } from '../../../player/TeamEnum';
 import { gameroom } from '../../GameRoom';
@@ -9,7 +9,11 @@ import { DeathmatchGameOverPhase } from './Gameover';
 import { DeathmatchActionView } from '../../../../ui/hud/views/DeathmatchActionView';
 import { HudDriver } from '../../../../ui/hud/drivers/HudDriver';
 import { Language as L } from '../../../../utils/Language';
-import { set_entity_dynamic_property, entity_dynamic_property } from '../../../../utils/Property';
+import {
+    set_entity_dynamic_property,
+    entity_dynamic_property,
+    set_entity_native_property,
+} from '../../../../utils/Property';
 import { set_variable, variable } from '../../../../utils/Variable';
 import { DeathmatchConfig } from '../../deathmatch/DeathmatchConfig';
 import { DeathmatchSpawn } from '../../deathmatch/DeathmatchSpawn';
@@ -68,7 +72,9 @@ export class DeathmatchActionPhase implements IPhaseHandler {
 
         player.teleport(DeathmatchSpawn.randomSpawn(team));
         player.setGameMode(GameMode.Adventure);
+        player.inputPermissions.setPermissionCategory(InputPermissionCategory.LateralMovement, true);
         set_entity_dynamic_property(player, 'player:is_alive', true);
+        set_entity_native_property(player, 'player:can_use_item', true);
         player.addEffect('regeneration', 40, { amplifier: 255, showParticles: false });
         player.addEffect('saturation', 20, { amplifier: 5, showParticles: false });
         DeathmatchLoadout.apply(player);

@@ -8,6 +8,7 @@ import { DeathmatchActionView } from '../../../../ui/hud/views/DeathmatchActionV
 import { HudDriver } from '../../../../ui/hud/drivers/HudDriver';
 import { Language as L } from '../../../../utils/Language';
 import { variable } from '../../../../utils/Variable';
+import { set_entity_dynamic_property, set_entity_native_property } from '../../../../utils/Property';
 import { DeathmatchConfig } from '../../deathmatch/DeathmatchConfig';
 
 export class DeathmatchGameOverPhase implements IPhaseHandler {
@@ -42,6 +43,8 @@ export class DeathmatchGameOverPhase implements IPhaseHandler {
         for (const player of world.getAllPlayers()) {
             player.setGameMode(GameMode.Adventure);
             player.teleport(world.getDefaultSpawnLocation());
+            set_entity_dynamic_property(player, 'player:is_alive', false);
+            set_entity_native_property(player, 'player:can_use_item', false);
         }
     }
 }

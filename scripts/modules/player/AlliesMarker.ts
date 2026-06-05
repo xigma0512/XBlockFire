@@ -2,6 +2,8 @@ import { C4Manager } from '../core/c4state/C4Manager';
 import { MemberManager } from './MemberManager';
 import { C4StateEnum } from '../core/c4state/C4StateEnum';
 import { TeamEnum } from './TeamEnum';
+import { gameroom } from '../core/GameRoom';
+import { GameModeEnum } from '../core/GameModeEnum';
 
 import { Vector3Builder, Vector3Utils } from '@minecraft/math';
 import { Direction, MolangVariableMap, Player, RGBA } from '@minecraft/server';
@@ -25,7 +27,7 @@ export class AlliesMarker {
                 viewer.spawnParticle('xblockfire:allies_mark', transform.location, varMap);
             }
 
-            if (team === TeamEnum.Attacker) {
+            if (team === TeamEnum.Attacker && gameroom().gameMode === GameModeEnum.BombPlant) {
                 const c4state = C4Manager.getHandler();
                 if (c4state.stateTag === C4StateEnum.Dropped && c4state.entity) {
                     const targetLoc = Vector3Utils.add(c4state.entity.location, { y: 2.3 });
