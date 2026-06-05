@@ -7,9 +7,9 @@ import { MatchScore } from '../components/MatchScore';
 import { RoomInfo } from '../components/RoomInfo';
 import { PlayerList } from '../components/PlayerList';
 import { DebugInfo } from '../components/DebugInfo';
-import { variable } from '../../../utils/Variable';
 import { InGameHud } from '../../InGameHud';
 import { FormatCode as FC } from '../../../utils/FormatCode';
+import { DeathmatchState } from '../../../modules/core/gamemodes/Deathmatch/DeathmatchState';
 
 export class DeathmatchActionView implements InGameHud {
     update() {
@@ -26,8 +26,7 @@ export class DeathmatchActionView implements InGameHud {
                 ? FC.Red + (seconds + (totalTicks % 20) * 0.05).toFixed(2)
                 : FC.White + `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')}`;
 
-        const aScore = variable('attacker_score') || 0;
-        const dScore = variable('defender_score') || 0;
+        const { attacker: aScore, defender: dScore } = DeathmatchState.getScores();
         const title = MatchScore.format(aScore, timeStr, dScore);
 
         for (const player of MemberManager.getPlayers()) {

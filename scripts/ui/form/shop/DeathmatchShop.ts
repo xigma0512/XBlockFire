@@ -1,6 +1,4 @@
 import { Player, system } from '@minecraft/server';
-import { DeathmatchPhaseEnum } from '../../../modules/core/gamemodes/Deathmatch/phases/DeathmatchPhaseEnum';
-import { PhaseManager } from '../../../modules/core/gamephase/PhaseManager';
 import { LoadoutError, LoadoutManager } from '../../../modules/core/LoadoutManager';
 import { entity_dynamic_property } from '../../../utils/Property';
 import { FormatCode as FC } from '../../../utils/FormatCode';
@@ -13,12 +11,14 @@ type DeathmatchShopAction = 'select_product';
 type DeathmatchTabId = Extract<ShopCategoryId, 'primary' | 'secondary'>;
 
 export class DeathmatchShop {
-    static async open(player: Player, tabId: DeathmatchTabId = 'primary', playOpenSound = true) {
+    static async open(
+        player: Player,
+        tabId: DeathmatchTabId = 'primary',
+        playOpenSound = true,
+        canOpen: () => boolean = () => true
+    ) {
         if (!player.isValid) return;
-        if (PhaseManager.getPhase().phaseId !== DeathmatchPhaseEnum.Action) {
-            player.sendMessage(`${FC.Red}Deathmatch shop is only available during action.`);
-            return;
-        }
+        if (!canOpen()) return;
 
         if (playOpenSound) Sound.play('SHOP_OPEN', player);
 
@@ -47,7 +47,7 @@ export class DeathmatchShop {
             Sound.play('SHOP_NO', player);
         }
 
-        system.run(() => this.open(player, response.tabId as DeathmatchTabId, false));
+        system.run(() => this.open(player, response.tabId as DeathmatchTabId, false, canOpen));
     }
 }
 

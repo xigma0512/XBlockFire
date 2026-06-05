@@ -6,9 +6,9 @@ import { DeathmatchPreStartPhase } from './PreStart';
 import { DeathmatchPhaseEnum } from './DeathmatchPhaseEnum';
 import { TeamEnum } from '../../../../player/TeamEnum';
 import { Language as L } from '../../../../../utils/Language';
-import { reset_variables, set_variable } from '../../../../../utils/Variable';
 import { Sound } from '../../../../../ui/media/Sound';
 import { Config } from '../../../../../settings/config';
+import { DeathmatchState } from '../DeathmatchState';
 
 const COUNTDOWN_TIME = 20 * 20;
 
@@ -80,13 +80,5 @@ function initializePlayers() {
 }
 
 function initializeVariables() {
-    reset_variables();
-    set_variable('attacker_score', 0);
-    set_variable('defender_score', 0);
-    set_variable('winner', TeamEnum.Spectator);
-    set_variable('deathmatch_sudden_death', false);
-    for (const player of MemberManager.getPlayers()) {
-        set_variable(`${player.name}.kills`, 0);
-        set_variable(`${player.name}.deaths`, 0);
-    }
+    DeathmatchState.reset(MemberManager.getPlayers());
 }

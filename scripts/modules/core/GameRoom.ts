@@ -11,6 +11,7 @@ class GameRoom {
     readonly activeMode: IGameMode;
 
     private modeTaskIds: number[] = [];
+    private isClosed = false;
 
     constructor(gameMode: GameModeEnum, gameMapId: number) {
         this.gameMode = gameMode;
@@ -22,14 +23,19 @@ class GameRoom {
     }
 
     close() {
+        if (this.isClosed) return;
+
         for (const taskId of this.modeTaskIds) {
             system.clearRun(taskId);
         }
+        this.modeTaskIds = [];
+        this.isClosed = true;
     }
 }
 
 export class GameRoomFactory {
     static createRoom(mode: GameModeEnum, gameMapId: number) {
+        GameRoom.gameroom?.close();
         GameRoom.gameroom = new GameRoom(mode, gameMapId);
     }
 }

@@ -7,9 +7,9 @@ import { DeathmatchIdlePhase } from './Idle';
 import { DeathmatchActionView } from '../../../../../ui/hud/views/DeathmatchActionView';
 import { HudDriver } from '../../../../../ui/hud/drivers/HudDriver';
 import { Language as L } from '../../../../../utils/Language';
-import { variable } from '../../../../../utils/Variable';
 import { set_entity_dynamic_property, set_entity_native_property } from '../../../../../utils/Property';
 import { DeathmatchConfig } from '../DeathmatchConfig';
+import { DeathmatchState } from '../DeathmatchState';
 
 export class DeathmatchGameOverPhase implements IPhaseHandler {
     readonly phaseId = DeathmatchPhaseEnum.Gameover;
@@ -26,7 +26,7 @@ export class DeathmatchGameOverPhase implements IPhaseHandler {
 
     on_entry() {
         this._currentTick = DeathmatchConfig.GAMEOVER_TIME;
-        const winner = variable('winner') as TeamEnum;
+        const winner = DeathmatchState.getWinner();
         if (winner === TeamEnum.Attacker) HudDriver.chat(L.translate('deathmatch.gameover.attacker_win'));
         if (winner === TeamEnum.Defender) HudDriver.chat(L.translate('deathmatch.gameover.defender_win'));
         showScoreboard();
@@ -39,7 +39,7 @@ export class DeathmatchGameOverPhase implements IPhaseHandler {
     }
 
     on_exit() {
-        for (const player of world.getAllPlayers()) {
+        for (const player of MemberManager.getPlayers()) {
             player.setGameMode(GameMode.Adventure);
             player.teleport(world.getDefaultSpawnLocation());
             set_entity_dynamic_property(player, 'player:is_alive', false);
@@ -51,9 +51,9 @@ export class DeathmatchGameOverPhase implements IPhaseHandler {
 function showScoreboard() {
     let stat = '';
     for (const player of MemberManager.getPlayers()) {
-        stat += `${player.name} | K:${variable(`${player.name}.kills`) || 0} D:${
-            variable(`${player.name}.deaths`) || 0
-        }\n`;
+        stat += `${player.name} | K:${DeathmatchState.getKills(player.name)} D:${DeathmatchState.getDeaths(
+            player.name
+        )}\n`;
     }
     HudDriver.chat(stat);
 }
