@@ -7,5 +7,4 @@ export const PhaseIdentity = {
     },
 } as const;
 
-export type PhaseIdentityId =
-    (typeof PhaseIdentity.Deathmatch)[keyof typeof PhaseIdentity.Deathmatch];
+export type PhaseIdentityId = (typeof PhaseIdentity.Deathmatch)[keyof typeof PhaseIdentity.Deathmatch];

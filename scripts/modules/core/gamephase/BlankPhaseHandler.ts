@@ -23,4 +23,3 @@ export class BlankPhase implements IPhaseHandler {
         PhaseManager.updatePhase(GameModePhaseFactory.createIdlePhase(gameroom().gameMode));
     }
 }
-

@@ -15,7 +15,7 @@ export class GunAnimations {
             );
         }
 
-        const name = gunActor.typeId
+        const name = gunActor.typeId;
         const sound = `xblockfire.fire.${name}`;
 
         owner.playSound(sound);
@@ -25,9 +25,9 @@ export class GunAnimations {
     }
 
     static playGunReloadAnimation(owner: Player, gunActor: ItemActor) {
-        const name = gunActor.typeId
+        const name = gunActor.typeId;
         const sound = `xblockfire.reload.${name}`;
-        
+
         owner.playSound(sound);
         for (const p of world.getPlayers({ excludeNames: [owner.name] })) {
             p.playSound(`${sound}.3d`, { location: owner.location, volume: 4 });
@@ -35,9 +35,9 @@ export class GunAnimations {
     }
 
     static playGunRaiseAnimation(owner: Player, gunActor: ItemActor) {
-        const name = gunActor.typeId
+        const name = gunActor.typeId;
         const sound = `xblockfire.raise.${name}`;
-        
+
         owner.playSound(sound);
     }
 }
