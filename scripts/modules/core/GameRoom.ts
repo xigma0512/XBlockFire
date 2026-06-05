@@ -1,7 +1,6 @@
-import { AlliesMarker } from '../player/AlliesMarker';
-
 import { GameModeEnum } from './GameModeEnum';
-
+import { IGameMode } from './gamemodes/IGameMode';
+import { GameModeRegistry } from './gamemodes/GameModeRegistry';
 import { system } from '@minecraft/server';
 
 class GameRoom {
@@ -9,28 +8,23 @@ class GameRoom {
 
     readonly gameMode: GameModeEnum;
     readonly gameMapId: number;
+    readonly activeMode: IGameMode;
 
-    private markerTaskId = -1;
+    private modeTaskIds: number[] = [];
 
     constructor(gameMode: GameModeEnum, gameMapId: number) {
         this.gameMode = gameMode;
         this.gameMapId = gameMapId;
+        this.activeMode = GameModeRegistry.getMode(gameMode);
 
-        this.markerTaskId = this.addMarkerTask();
-    }
-
-    private addMarkerTask() {
-        switch (this.gameMode) {
-            default:
-            case GameModeEnum.BombPlant:
-                return system.runInterval(() => {
-                    AlliesMarker.updateMark();
-                }, 3);
-        }
+        const tasks = this.activeMode.setupModeTasks();
+        this.modeTaskIds = Array.isArray(tasks) ? tasks : [tasks];
     }
 
     close() {
-        system.clearRun(this.markerTaskId);
+        for (const taskId of this.modeTaskIds) {
+            system.clearRun(taskId);
+        }
     }
 }
 

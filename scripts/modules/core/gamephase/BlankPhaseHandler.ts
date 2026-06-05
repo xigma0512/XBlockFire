@@ -1,6 +1,5 @@
 import { gameroom } from '../GameRoom';
 import { PhaseManager } from './PhaseManager';
-import { GameModePhaseFactory } from './GameModePhaseFactory';
 import { InGameHud } from '../../../ui/InGameHud';
 
 export class BlankPhase implements IPhaseHandler {
@@ -20,6 +19,6 @@ export class BlankPhase implements IPhaseHandler {
     on_exit() {}
 
     private transitions() {
-        PhaseManager.updatePhase(GameModePhaseFactory.createIdlePhase(gameroom().gameMode));
+        PhaseManager.updatePhase(gameroom().activeMode.createIdlePhase());
     }
 }

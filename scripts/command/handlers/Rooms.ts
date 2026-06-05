@@ -2,7 +2,6 @@ import { gameroom, GameRoomFactory } from '../../modules/core/GameRoom';
 import { PhaseManager } from '../../modules/core/gamephase/PhaseManager';
 import { MemberManager } from '../../modules/player/MemberManager';
 
-import { GameModePhaseFactory } from '../../modules/core/gamephase/GameModePhaseFactory';
 
 import { GameModeEnum } from '../../modules/core/GameModeEnum';
 
@@ -39,7 +38,7 @@ function setting_map(origin: CustomCommandOrigin, ...args: any[]) {
 }
 
 function forcestart(origin: CustomCommandOrigin, ...args: any[]) {
-    PhaseManager.updatePhase(GameModePhaseFactory.createForceStartPhase(gameroom().gameMode));
+    PhaseManager.updatePhase(gameroom().activeMode.createForceStartPhase());
     return { message: `${FC.Gray}>> ${FC.LightPurple}Force start.`, status: 0 };
 }
 
