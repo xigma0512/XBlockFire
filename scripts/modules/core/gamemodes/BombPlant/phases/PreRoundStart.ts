@@ -1,7 +1,8 @@
 import { gameroom } from '../../../GameRoom';
 import { PhaseManager } from '../../../gamephase/PhaseManager';
-import { EquipmentPointManager } from '../../../EquipmentPointManager';
+import { EquipmentPointManager } from '../EquipmentPointManager';
 import { LoadoutManager } from '../../../LoadoutManager';
+import { EconomyManager } from '../EconomyManager';
 import { MemberManager } from '../../../../player/MemberManager';
 import { C4Manager } from '../c4state/C4Manager';
 import { HotbarManager, HotbarTemplate } from '../../../../../ui/hotbar/Hotbar';
@@ -83,7 +84,7 @@ function initializePlayers() {
         player.addTag(MemberManager.getPlayerTeam(player) === TeamEnum.Attacker ? 'attacker' : 'defender');
 
         const pointLimit = EquipmentPointManager.getPointLimit(variable('attacker_score'), variable('defender_score'));
-        const reset = LoadoutManager.sanitizeForCurrentRound(player, pointLimit);
+        const reset = EconomyManager.sanitizeForCurrentRound(player, pointLimit);
         if (reset) player.sendMessage(L.translate('shop.loadout.reset'));
     }
 }

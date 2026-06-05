@@ -42,125 +42,6 @@ export class LoadoutManager {
         return this.loadouts.get(player)!;
     }
 
-    static getUsedPoints(player: Player) {
-        const loadout = this.getLoadout(player);
-        let usedPoints = 0;
-        const productIds = [loadout.primary, loadout.secondary].filter(
-            (productId): productId is string => productId !== undefined
-        );
-
-        for (const productId of productIds) {
-            const product = ShopCatalogLookup.getProduct(productId);
-            if (product) usedPoints += product.pointCost;
-        }
-
-        const armorProduct = ShopCatalogLookup.getArmorProduct(loadout.armorTier);
-        if (armorProduct) usedPoints += armorProduct.pointCost;
-
-        for (const [productId, amount] of loadout.throwables) {
-            const product = ShopCatalogLookup.getProduct(productId);
-            if (product) usedPoints += product.pointCost * amount;
-        }
-
-        return usedPoints;
-    }
-
-    static isProductSelected(player: Player, product: ShopProduct) {
-        const loadout = this.getLoadout(player);
-
-        if (product.category === 'primary') return loadout.primary === product.productId;
-        if (product.category === 'secondary') return loadout.secondary === product.productId;
-        if (product.category === 'throwable') return this.getThrowableAmount(player, product.productId) > 0;
-        return loadout.armorTier === (product as ArmorShopProduct).armorTier;
-    }
-
-    static canAffordProduct(player: Player, product: ShopProduct, pointLimit: number) {
-        return this.getUsedPoints(player) + this.getAdditionalPointCost(player, product) <= pointLimit;
-    }
-
-    static setPrimary(player: Player, productId: string, pointLimit: number) {
-        const product = this.requireItemProduct(productId, 'primary');
-        const loadout = this.getLoadout(player);
-        const previous = loadout.primary;
-        loadout.primary = product.productId;
-        this.assertWithinPoints(player, pointLimit, () => (loadout.primary = previous));
-        this.applyHotbar(player);
-    }
-
-    static clearPrimary(player: Player) {
-        this.getLoadout(player).primary = undefined;
-        this.applyHotbar(player);
-    }
-
-    static setSecondary(player: Player, productId: string, pointLimit: number) {
-        const product = this.requireItemProduct(productId, 'secondary');
-        const loadout = this.getLoadout(player);
-        const previous = loadout.secondary;
-        loadout.secondary = product.productId;
-        this.assertWithinPoints(player, pointLimit, () => (loadout.secondary = previous));
-        this.applyHotbar(player);
-    }
-
-    static setArmor(player: Player, armorTier: ArmorTier, pointLimit: number) {
-        const armorProduct = ShopCatalogLookup.getArmorProduct(armorTier);
-        if (!armorProduct) throw new LoadoutError('shop.error.product_not_found');
-
-        const loadout = this.getLoadout(player);
-        const previous = loadout.armorTier;
-        loadout.armorTier = armorProduct.armorTier;
-        this.assertWithinPoints(player, pointLimit, () => (loadout.armorTier = previous));
-    }
-
-    static addThrowable(player: Player, productId: string, pointLimit: number) {
-        const product = this.requireItemProduct(productId, 'throwable');
-        const loadout = this.getLoadout(player);
-        const currentAmount = loadout.throwables.get(product.productId) ?? 0;
-        const totalAmount = this.getThrowableTotal(player);
-
-        if (currentAmount >= product.maxAmount) throw new LoadoutError('shop.error.item_limit_reached');
-        if (totalAmount >= THROWABLE_TOTAL_LIMIT) throw new LoadoutError('shop.error.throwable_total_limit_reached');
-
-        loadout.throwables.set(product.productId, currentAmount + 1);
-        this.assertWithinPoints(player, pointLimit, () => {
-            if (currentAmount === 0) loadout.throwables.delete(product.productId);
-            else loadout.throwables.set(product.productId, currentAmount);
-        });
-        this.applyHotbar(player);
-    }
-
-    static removeThrowable(player: Player, productId: string) {
-        const loadout = this.getLoadout(player);
-        const currentAmount = loadout.throwables.get(productId) ?? 0;
-
-        if (currentAmount <= 1) loadout.throwables.delete(productId);
-        else loadout.throwables.set(productId, currentAmount - 1);
-
-        this.applyHotbar(player);
-    }
-
-    static clearThrowables(player: Player) {
-        this.getLoadout(player).throwables.clear();
-        this.applyHotbar(player);
-    }
-
-    static sanitizeForCurrentRound(player: Player, pointLimit: number) {
-        const loadout = this.getLoadout(player);
-        if (this.getUsedPoints(player) <= pointLimit) {
-            this.applyHotbar(player);
-            return false;
-        }
-
-        loadout.primary = undefined;
-        loadout.throwables.clear();
-        loadout.armorTier = 'none';
-
-        const secondary = ShopCatalogLookup.getProduct(loadout.secondary);
-        if (!secondary || secondary.pointCost > pointLimit) loadout.secondary = 'glock17';
-
-        this.applyHotbar(player);
-        return true;
-    }
-
     static getArmorReduction(player: Player) {
         const armorTier = this.getLoadout(player).armorTier;
         if (armorTier === 'light') return 0.3;
@@ -182,29 +63,33 @@ export class LoadoutManager {
         return total;
     }
 
-    private static getAdditionalPointCost(player: Player, product: ShopProduct) {
-        if (product.category === 'throwable') return product.pointCost;
-
-        const selectedProduct = this.getSelectedProductInCategory(player, product);
-        return product.pointCost - (selectedProduct?.pointCost ?? 0);
-    }
-
-    private static getSelectedProductInCategory(player: Player, product: ShopProduct) {
+    static isProductSelected(player: Player, product: ShopProduct) {
         const loadout = this.getLoadout(player);
 
-        if (product.category === 'primary') {
-            return loadout.primary ? ShopCatalogLookup.getProduct(loadout.primary) : undefined;
-        }
+        if (product.category === 'primary') return loadout.primary === product.productId;
+        if (product.category === 'secondary') return loadout.secondary === product.productId;
+        if (product.category === 'throwable') return this.getThrowableAmount(player, product.productId) > 0;
+        return loadout.armorTier === (product as ArmorShopProduct).armorTier;
+    }
 
-        if (product.category === 'secondary') {
-            return ShopCatalogLookup.getProduct(loadout.secondary);
-        }
+    static clearPrimary(player: Player) {
+        this.getLoadout(player).primary = undefined;
+        this.applyHotbar(player);
+    }
 
-        if (product.category === 'armor') {
-            return ShopCatalogLookup.getArmorProduct(loadout.armorTier);
-        }
+    static removeThrowable(player: Player, productId: string) {
+        const loadout = this.getLoadout(player);
+        const currentAmount = loadout.throwables.get(productId) ?? 0;
 
-        return undefined;
+        if (currentAmount <= 1) loadout.throwables.delete(productId);
+        else loadout.throwables.set(productId, currentAmount - 1);
+
+        this.applyHotbar(player);
+    }
+
+    static clearThrowables(player: Player) {
+        this.getLoadout(player).throwables.clear();
+        this.applyHotbar(player);
     }
 
     static describeLoadout(player: Player) {
@@ -258,16 +143,10 @@ export class LoadoutManager {
         });
     }
 
-    private static requireItemProduct(productId: string, category: ItemShopProduct['category']) {
+    static requireItemProduct(productId: string, category: ItemShopProduct['category']) {
         const product = ShopCatalogLookup.getProduct(productId);
         if (!product || product.category !== category) throw new LoadoutError('shop.error.product_not_found');
         return product as ItemShopProduct;
-    }
-
-    private static assertWithinPoints(player: Player, pointLimit: number, rollback: () => void) {
-        if (this.getUsedPoints(player) <= pointLimit) return;
-        rollback();
-        throw new LoadoutError('shop.error.no_points');
     }
 
     static setPrimaryFree(player: Player, productId: string) {

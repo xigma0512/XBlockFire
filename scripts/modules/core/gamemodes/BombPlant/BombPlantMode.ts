@@ -6,7 +6,7 @@ import { AlliesMarker } from '../../../player/AlliesMarker';
 import { system, Player, GameMode, ItemStack } from '@minecraft/server';
 import { C4Manager } from './c4state/C4Manager';
 import { C4DroppedState } from './c4state/states/Dropped';
-import { EquipmentPointManager } from '../../EquipmentPointManager';
+import { EquipmentPointManager } from './EquipmentPointManager';
 import { TeamEnum } from '../../../player/TeamEnum';
 import { MemberManager } from '../../../player/MemberManager';
 import { C4StateEnum } from './c4state/C4StateEnum';

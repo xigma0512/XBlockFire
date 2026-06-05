@@ -1,7 +1,8 @@
 import { PhaseManager } from '../../../modules/core/gamephase/PhaseManager';
 import { MemberManager } from '../../../modules/player/MemberManager';
-import { EquipmentPointManager } from '../../../modules/core/EquipmentPointManager';
+import { EquipmentPointManager } from '../../../modules/core/gamemodes/BombPlant/EquipmentPointManager';
 import { LoadoutError, LoadoutManager } from '../../../modules/core/LoadoutManager';
+import { EconomyManager } from '../../../modules/core/gamemodes/BombPlant/EconomyManager';
 
 import { PhaseEnum as BombPlantPhaseEnum } from '../../../modules/core/gamemodes/BombPlant/phases/BombPlantPhaseEnum';
 
@@ -73,7 +74,7 @@ function buildBody(player: Player, pointLimit: number) {
     return L.translate(
         'shop.body',
         pointLimit,
-        `${FC.MinecoinGold}${pointLimit - LoadoutManager.getUsedPoints(player)}`,
+        `${FC.MinecoinGold}${pointLimit - EconomyManager.getUsedPoints(player)}`,
         `${FC.Green}${loadout.primary ?? '無'}`,
         `${FC.Green}${loadout.secondary}`,
         `${FC.Green}${loadout.throwables}`,
@@ -89,7 +90,7 @@ function addProductButton(
 ) {
     const isSelected = (product_name: string) =>
         LoadoutManager.isProductSelected(player, product) ? `${FC.Green}>${product_name}<` : product_name;
-    const canAfford = LoadoutManager.canAffordProduct(player, product, pointLimit);
+    const canAfford = EconomyManager.canAffordProduct(player, product, pointLimit);
     const pointColor = canAfford ? FC.Yellow : FC.Red;
     const label = `${isSelected(getProductName(player, product))}\n${pointColor}${product.pointCost}P`;
 
@@ -144,10 +145,10 @@ function handleAction(player: Player, action: ShopAction, value: string | undefi
     const product = ShopCatalogLookup.getProduct(value);
     if (!product) throw new LoadoutError('shop.error.product_not_found');
 
-    if (product.category === 'primary') LoadoutManager.setPrimary(player, product.productId, pointLimit);
-    else if (product.category === 'secondary') LoadoutManager.setSecondary(player, product.productId, pointLimit);
-    else if (product.category === 'throwable') LoadoutManager.addThrowable(player, product.productId, pointLimit);
-    else LoadoutManager.setArmor(player, (product as ArmorShopProduct).armorTier, pointLimit);
+    if (product.category === 'primary') EconomyManager.setPrimary(player, product.productId, pointLimit);
+    else if (product.category === 'secondary') EconomyManager.setSecondary(player, product.productId, pointLimit);
+    else if (product.category === 'throwable') EconomyManager.addThrowable(player, product.productId, pointLimit);
+    else EconomyManager.setArmor(player, (product as ArmorShopProduct).armorTier, pointLimit);
 }
 
 world.beforeEvents.itemUse.subscribe((ev) => {
