@@ -12,6 +12,10 @@ import { Sound } from '../../media/Sound';
 
 import { Player, system, world } from '@minecraft/server';
 
+import { gameroom } from '../../../modules/core/GameRoom';
+import { GameModeEnum } from '../../../modules/core/GameModeEnum';
+import { DeathmatchShop } from './DeathmatchShop';
+
 import { TabbedActionForm } from '../common/TabbedActionForm';
 import {
     ArmorShopProduct,
@@ -158,6 +162,13 @@ world.beforeEvents.itemUse.subscribe((ev) => {
 
     const player = ev.source;
     if (!MemberManager.includePlayer(player)) return;
+
+    if (gameroom().gameMode === GameModeEnum.Deathmatch) {
+        system.run(() => {
+            DeathmatchShop.open(player);
+        });
+        return;
+    }
 
     const phase = PhaseManager.getPhase();
     if (phase.phaseTag !== BombPlantPhaseEnum.Buying) {
