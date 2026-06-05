@@ -68,4 +68,8 @@ export const zh_TW = {
     'shop.error.product_not_found': '找不到該商品',
     'shop.error.not_buying': '只能在購買階段開啟商店',
     'shop.loadout.reset': '上一回合配置超出本回合點數上限，已重置部分裝備。',
+    'deathmatch.sudden_death': '驟死賽開始，下一個有效擊殺決定勝負',
+    'deathmatch.respawn_in': '重生倒數 %1 秒',
+    'deathmatch.gameover.attacker_win': 'Attacker 贏得死鬥',
+    'deathmatch.gameover.defender_win': 'Defender 贏得死鬥',
 };
