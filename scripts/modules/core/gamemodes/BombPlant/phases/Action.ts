@@ -13,7 +13,7 @@ import { Sound } from '../../../../../ui/media/Sound';
 import { UiStateManager } from '../../../../../ui/hud/state/UiState';
 import { Language as L } from '../../../../../utils/Language';
 import { set_variable } from '../../../../../utils/Variable';
-import { LanguageKey } from '../../../../../settings/lang/LanguageKey';
+import { LanguageKey } from '../../../../../types/Language';
 
 const ACTION_TIME = 120 * 20;
 

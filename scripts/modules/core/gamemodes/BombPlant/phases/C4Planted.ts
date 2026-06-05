@@ -9,7 +9,7 @@ import { set_variable } from '../../../../../utils/Variable';
 import { HudDriver } from '../../../../../ui/hud/drivers/HudDriver';
 import { UiStateManager } from '../../../../../ui/hud/state/UiState';
 import { Language as L } from '../../../../../utils/Language';
-import { LanguageKey } from '../../../../../settings/lang/LanguageKey';
+import { LanguageKey } from '../../../../../types/Language';
 import { FormatCode as FC } from '../../../../../utils/FormatCode';
 
 import { RoundEndPhase } from './RoundEnd';

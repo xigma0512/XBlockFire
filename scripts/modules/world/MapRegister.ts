@@ -1,5 +1,5 @@
 import GameMap from '../../settings/game_maps';
-import { GameMapType } from './GameMapType';
+import { GameMapType } from '../../types/GameMap';
 
 class _MapRegister {
     private static _instance: _MapRegister;

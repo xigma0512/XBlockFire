@@ -1,5 +1,5 @@
 import { zh_TW } from '../settings/lang/zh_TW';
-import { LanguageKey } from '../settings/lang/LanguageKey';
+import { LanguageKey } from '../types/Language';
 
 export class Language {
     private static readonly dictionary = zh_TW;

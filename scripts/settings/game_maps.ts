@@ -1,4 +1,4 @@
-import { GameMapType } from '../modules/world/GameMapType';
+import { GameMapType } from '../types/GameMap';
 
 export default {
     0: {

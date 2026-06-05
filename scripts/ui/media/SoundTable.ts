@@ -43,5 +43,3 @@ export const SoundRegistry = {
     C4_DEFUSED: { id: 'xblockfire.c4_defused' },
     C4_DEFUSING: { id: 'xblockfire.defusing', options: { volume: 3 } },
 } as Record<string, SoundDefinition>;
-
-export type SoundKey = keyof typeof SoundRegistry;

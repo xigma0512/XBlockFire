@@ -6,7 +6,8 @@ import { entity_dynamic_property } from '../../../utils/Property';
 import { FormatCode as FC } from '../../../utils/FormatCode';
 import { Sound } from '../../media/Sound';
 import { TabbedActionForm } from '../common/TabbedActionForm';
-import { ShopCatalogLookup, ShopCategoryId, ShopProduct } from './ShopCatalog';
+import { ShopCatalogLookup } from './ShopCatalog';
+import { ShopCategoryId, ShopProduct } from './ShopTypes';
 
 type DeathmatchShopAction = 'select_product';
 type DeathmatchTabId = Extract<ShopCategoryId, 'primary' | 'secondary'>;

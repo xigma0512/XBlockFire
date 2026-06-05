@@ -13,16 +13,12 @@ import { Sound } from '../../media/Sound';
 import { Player, system, world } from '@minecraft/server';
 
 import { gameroom } from '../../../modules/core/GameRoom';
-import { TabbedActionForm } from '../common/TabbedActionForm';
 import {
-    ArmorShopProduct,
-    ItemShopProduct,
     ShopCatalogLookup,
     ShopCategories,
-    ShopCategoryId,
-    ShopProduct,
     THROWABLE_TOTAL_LIMIT,
 } from './ShopCatalog';
+import { ArmorShopProduct, ItemShopProduct, ShopCategoryId, ShopProduct } from './ShopTypes';
 
 type ShopAction = 'select_product' | 'clear_primary' | 'clear_throwables';
 

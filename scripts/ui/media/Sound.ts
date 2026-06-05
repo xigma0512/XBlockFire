@@ -1,7 +1,6 @@
 import { Player, Vector3, world, PlayerSoundOptions } from '@minecraft/server';
-import { SoundKey, SoundRegistry } from './SoundTable';
-
-export type SoundTarget = Player | Player[] | undefined;
+import { SoundKey, SoundTarget } from '../../types/Sound';
+import { SoundRegistry } from './SoundTable';
 
 export class Sound {
     private static getPlayers(target: SoundTarget): Player[] {

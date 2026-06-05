@@ -1,4 +1,4 @@
-import { ItemActor } from '../../../modules/combat/weapon/actors/Actor';
+import { ArmorShopProduct, ArmorTier, ItemShopProduct, ShopCategoryId, ShopProduct } from './ShopTypes';
 
 import { AK47 } from '../../../modules/combat/weapon/actors/item/AK47';
 import { AWP } from '../../../modules/combat/weapon/actors/item/AWP';
@@ -7,32 +7,6 @@ import { Glock17 } from '../../../modules/combat/weapon/actors/item/Glock17';
 import { M4A4 } from '../../../modules/combat/weapon/actors/item/M4A4';
 import { P90 } from '../../../modules/combat/weapon/actors/item/P90';
 import { SG200 } from '../../../modules/combat/weapon/actors/item/SG200';
-
-export type ShopCategoryId = 'primary' | 'secondary' | 'throwable' | 'armor';
-export type ArmorTier = 'none' | 'light' | 'heavy';
-
-export interface BaseShopProduct {
-    productId: string;
-    category: ShopCategoryId;
-    name: string;
-    pointCost: number;
-    iconPath?: string;
-}
-
-export interface ItemShopProduct extends BaseShopProduct {
-    category: 'primary' | 'secondary' | 'throwable';
-    slot: number;
-    maxAmount: number;
-    itemActor?: new () => ItemActor;
-    itemStackTypeId?: string;
-}
-
-export interface ArmorShopProduct extends BaseShopProduct {
-    category: 'armor';
-    armorTier: ArmorTier;
-}
-
-export type ShopProduct = ItemShopProduct | ArmorShopProduct;
 
 export const THROWABLE_TOTAL_LIMIT = 4;
 

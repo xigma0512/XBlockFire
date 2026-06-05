@@ -1,7 +1,7 @@
 import { gameroom } from '../../GameRoom';
 import { TeamEnum } from '../../../player/TeamEnum';
 import { MapRegister } from '../../../world/MapRegister';
-import { Position } from '../../../world/GameMapType';
+import { Position } from '../../../../types/GameMap';
 
 export class DeathmatchSpawn {
     static randomSpawn(team: TeamEnum.Attacker | TeamEnum.Defender): Position {
