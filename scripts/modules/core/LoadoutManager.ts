@@ -275,4 +275,26 @@ export class LoadoutManager {
         rollback();
         throw new LoadoutError('shop.error.no_points');
     }
+
+    static setPrimaryFree(player: Player, productId: string) {
+        const product = this.requireItemProduct(productId, 'primary');
+        this.getLoadout(player).primary = product.productId;
+        this.applyHotbar(player);
+    }
+
+    static setSecondaryFree(player: Player, productId: string) {
+        const product = this.requireItemProduct(productId, 'secondary');
+        this.getLoadout(player).secondary = product.productId;
+        this.applyHotbar(player);
+    }
+
+    static setArmorFree(player: Player, armorTier: ArmorTier) {
+        const armorProduct = ShopCatalogLookup.getArmorProduct(armorTier);
+        if (!armorProduct) throw new LoadoutError('shop.error.product_not_found');
+        this.getLoadout(player).armorTier = armorProduct.armorTier;
+    }
+
+    static applyCurrentHotbar(player: Player) {
+        this.applyHotbar(player);
+    }
 }
