@@ -3,7 +3,7 @@ import { MemberManager } from '../../../modules/player/MemberManager';
 import { EquipmentPointManager } from '../../../modules/core/EquipmentPointManager';
 import { LoadoutError, LoadoutManager } from '../../../modules/core/LoadoutManager';
 
-import { PhaseEnum as BombPlantPhaseEnum } from '../../../modules/core/gamephase/BombPlantPhaseEnum';
+import { PhaseEnum as BombPlantPhaseEnum } from '../../../modules/core/gamemodes/BombPlant/phases/BombPlantPhaseEnum';
 
 import { FormatCode as FC } from '../../../utils/FormatCode';
 import { Language as L } from '../../../utils/Language';

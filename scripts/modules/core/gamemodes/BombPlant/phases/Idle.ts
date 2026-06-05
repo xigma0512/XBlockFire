@@ -1,22 +1,22 @@
-import { MemberManager } from '../../../player/MemberManager';
-import { LoadoutManager } from '../../LoadoutManager';
-import { PhaseManager } from '../PhaseManager';
-import { HotbarManager, HotbarTemplate } from '../../../../ui/hotbar/Hotbar';
-import { WaitingView as WaitingHud } from '../../../../ui/hud/views/WaitingView';
+import { MemberManager } from '../../../../player/MemberManager';
+import { LoadoutManager } from '../../../LoadoutManager';
+import { PhaseManager } from '../../../gamephase/PhaseManager';
+import { HotbarManager, HotbarTemplate } from '../../../../../ui/hotbar/Hotbar';
+import { WaitingView as WaitingHud } from '../../../../../ui/hud/views/WaitingView';
 
 import { BuyingPhase } from './Buying';
 
-import { PhaseEnum as BombPlantPhaseEnum } from '../BombPlantPhaseEnum';
-import { TeamEnum } from '../../../player/TeamEnum';
+import { PhaseEnum as BombPlantPhaseEnum } from './BombPlantPhaseEnum';
+import { TeamEnum } from '../../../../player/TeamEnum';
 
-import { Language as L } from '../../../../utils/Language';
-import { reset_variables, set_variable } from '../../../../utils/Variable';
-import { ItemStackFactory } from '../../../../utils/ItemStackFactory';
-import { Sound } from '../../../../ui/media/Sound';
+import { Language as L } from '../../../../../utils/Language';
+import { reset_variables, set_variable } from '../../../../../utils/Variable';
+import { ItemStackFactory } from '../../../../../utils/ItemStackFactory';
+import { Sound } from '../../../../../ui/media/Sound';
 
 import { ItemLockMode } from '@minecraft/server';
 
-import { Config } from '../../../../settings/config';
+import { Config } from '../../../../../settings/config';
 
 const COUNTDOWN_TIME = 20 * 20;
 
@@ -108,3 +108,4 @@ function initializeVariable() {
         set_variable(`${player.name}.deaths`, 0);
     }
 }
+

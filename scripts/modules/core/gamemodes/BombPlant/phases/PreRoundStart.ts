@@ -1,29 +1,29 @@
-import { gameroom } from '../../GameRoom';
-import { PhaseManager } from '../PhaseManager';
-import { EquipmentPointManager } from '../../EquipmentPointManager';
-import { LoadoutManager } from '../../LoadoutManager';
-import { MemberManager } from '../../../player/MemberManager';
-import { C4Manager } from '../../c4state/C4Manager';
-import { HotbarManager, HotbarTemplate } from '../../../../ui/hotbar/Hotbar';
-import { MapRegister } from '../../../world/MapRegister';
+import { gameroom } from '../../../GameRoom';
+import { PhaseManager } from '../../../gamephase/PhaseManager';
+import { EquipmentPointManager } from '../../../EquipmentPointManager';
+import { LoadoutManager } from '../../../LoadoutManager';
+import { MemberManager } from '../../../../player/MemberManager';
+import { C4Manager } from '../c4state/C4Manager';
+import { HotbarManager, HotbarTemplate } from '../../../../../ui/hotbar/Hotbar';
+import { MapRegister } from '../../../../world/MapRegister';
 
-import { C4IdleState } from '../../c4state/states/Idle';
+import { C4IdleState } from '../c4state/states/Idle';
 import { BuyingPhase } from './Buying';
 
-import { InGameHud } from '../../../../ui/InGameHud';
+import { InGameHud } from '../../../../../ui/InGameHud';
 
-import { PhaseEnum as BombPlantPhaseEnum } from '../BombPlantPhaseEnum';
-import { TeamEnum } from '../../../player/TeamEnum';
+import { PhaseEnum as BombPlantPhaseEnum } from './BombPlantPhaseEnum';
+import { TeamEnum } from '../../../../player/TeamEnum';
 
 import {
     entity_dynamic_property,
     set_entity_dynamic_property,
     set_entity_native_property,
-} from '../../../../utils/Property';
-import { ItemStackFactory } from '../../../../utils/ItemStackFactory';
-import { Language as L } from '../../../../utils/Language';
-import { UnCommonItems } from '../../../combat/ItemManager';
-import { variable } from '../../../../utils/Variable';
+} from '../../../../../utils/Property';
+import { ItemStackFactory } from '../../../../../utils/ItemStackFactory';
+import { Language as L } from '../../../../../utils/Language';
+import { UnCommonItems } from '../../../../combat/ItemManager';
+import { variable } from '../../../../../utils/Variable';
 
 import { EquipmentSlot, GameMode, InputPermissionCategory, ItemLockMode, system } from '@minecraft/server';
 import { ItemStack } from '@minecraft/server';
@@ -151,3 +151,4 @@ function resetPlayerInventory() {
         equippable.setEquipment(EquipmentSlot.Feet, UnCommonItems.getItem('defender_boots'));
     }
 }
+

@@ -15,7 +15,7 @@ import { DebugInfo } from '../components/DebugInfo';
 import { variable } from '../../../utils/Variable';
 
 import { InGameHud } from '../../InGameHud';
-import { PhaseEnum } from '../../../modules/core/gamephase/BombPlantPhaseEnum';
+import { PhaseEnum } from '../../../modules/core/gamemodes/BombPlant/phases/BombPlantPhaseEnum';
 import { Language } from '../../../utils/Language';
 import { FormatCode as FC } from '../../../utils/FormatCode';
 

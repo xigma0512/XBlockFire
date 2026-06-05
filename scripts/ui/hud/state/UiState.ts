@@ -1,6 +1,6 @@
 import { Player, system } from '@minecraft/server';
 import { PhaseManager } from '../../../modules/core/gamephase/PhaseManager';
-import { PhaseEnum as BombPlantPhaseEnum } from '../../../modules/core/gamephase/BombPlantPhaseEnum';
+import { PhaseEnum as BombPlantPhaseEnum } from '../../../modules/core/gamemodes/BombPlant/phases/BombPlantPhaseEnum';
 import { TeamEnum } from '../../../modules/player/TeamEnum';
 import { MemberManager } from '../../../modules/player/MemberManager';
 import { Language as L } from '../../../utils/Language';

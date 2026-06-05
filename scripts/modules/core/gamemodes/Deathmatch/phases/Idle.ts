@@ -1,14 +1,14 @@
-import { MemberManager } from '../../../player/MemberManager';
-import { LoadoutManager } from '../../LoadoutManager';
-import { PhaseManager } from '../PhaseManager';
-import { WaitingView as WaitingHud } from '../../../../ui/hud/views/WaitingView';
+import { MemberManager } from '../../../../player/MemberManager';
+import { LoadoutManager } from '../../../LoadoutManager';
+import { PhaseManager } from '../../../gamephase/PhaseManager';
+import { WaitingView as WaitingHud } from '../../../../../ui/hud/views/WaitingView';
 import { DeathmatchPreStartPhase } from './PreStart';
-import { PhaseIdentity } from '../PhaseIdentity';
-import { TeamEnum } from '../../../player/TeamEnum';
-import { Language as L } from '../../../../utils/Language';
-import { reset_variables, set_variable } from '../../../../utils/Variable';
-import { Sound } from '../../../../ui/media/Sound';
-import { Config } from '../../../../settings/config';
+import { PhaseIdentity } from '../../../gamephase/PhaseIdentity';
+import { TeamEnum } from '../../../../player/TeamEnum';
+import { Language as L } from '../../../../../utils/Language';
+import { reset_variables, set_variable } from '../../../../../utils/Variable';
+import { Sound } from '../../../../../ui/media/Sound';
+import { Config } from '../../../../../settings/config';
 
 const COUNTDOWN_TIME = 20 * 20;
 
@@ -91,3 +91,4 @@ function initializeVariables() {
         set_variable(`${player.name}.deaths`, 0);
     }
 }
+

@@ -1,15 +1,15 @@
-import { MemberManager } from '../../../player/MemberManager';
-import { PhaseManager } from '../PhaseManager';
-import { ActionView as ActionHud } from '../../../../ui/hud/views/ActionView';
-import { HotbarManager } from '../../../../ui/hotbar/Hotbar';
+import { MemberManager } from '../../../../player/MemberManager';
+import { PhaseManager } from '../../../gamephase/PhaseManager';
+import { ActionView as ActionHud } from '../../../../../ui/hud/views/ActionView';
+import { HotbarManager } from '../../../../../ui/hotbar/Hotbar';
 
 import { ActionPhase } from './Action';
 
-import { PhaseEnum as BombPlantPhaseEnum } from '../BombPlantPhaseEnum';
+import { PhaseEnum as BombPlantPhaseEnum } from './BombPlantPhaseEnum';
 
-import { Sound } from '../../../../ui/media/Sound';
-import { set_entity_native_property } from '../../../../utils/Property';
-import { ItemStackFactory } from '../../../../utils/ItemStackFactory';
+import { Sound } from '../../../../../ui/media/Sound';
+import { set_entity_native_property } from '../../../../../utils/Property';
+import { ItemStackFactory } from '../../../../../utils/ItemStackFactory';
 
 import { InputPermissionCategory, ItemLockMode } from '@minecraft/server';
 import { uiManager } from '@minecraft/server-ui';
@@ -79,3 +79,4 @@ function restorePlayerDefaults() {
         uiManager.closeAllForms(player);
     }
 }
+

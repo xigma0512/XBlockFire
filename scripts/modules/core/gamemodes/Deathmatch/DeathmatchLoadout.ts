@@ -1,10 +1,10 @@
 import { EquipmentSlot, ItemLockMode, Player } from '@minecraft/server';
-import { TeamEnum } from '../../player/TeamEnum';
-import { MemberManager } from '../../player/MemberManager';
-import { LoadoutManager } from '../LoadoutManager';
-import { HotbarManager } from '../../../ui/hotbar/Hotbar';
-import { ItemStackFactory } from '../../../utils/ItemStackFactory';
-import { UnCommonItems } from '../../combat/ItemManager';
+import { TeamEnum } from '../../../player/TeamEnum';
+import { MemberManager } from '../../../player/MemberManager';
+import { LoadoutManager } from '../../LoadoutManager';
+import { HotbarManager } from '../../../../ui/hotbar/Hotbar';
+import { ItemStackFactory } from '../../../../utils/ItemStackFactory';
+import { UnCommonItems } from '../../../combat/ItemManager';
 import { DeathmatchConfig } from './DeathmatchConfig';
 
 export class DeathmatchLoadout {
@@ -44,3 +44,4 @@ export class DeathmatchLoadout {
         equippable.setEquipment(EquipmentSlot.Feet, UnCommonItems.getItem('defender_boots'));
     }
 }
+

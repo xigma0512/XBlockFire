@@ -1,15 +1,15 @@
 import { GameMode, world } from '@minecraft/server';
-import { MemberManager } from '../../../player/MemberManager';
-import { TeamEnum } from '../../../player/TeamEnum';
-import { PhaseIdentity } from '../PhaseIdentity';
-import { PhaseManager } from '../PhaseManager';
+import { MemberManager } from '../../../../player/MemberManager';
+import { TeamEnum } from '../../../../player/TeamEnum';
+import { PhaseIdentity } from '../../../gamephase/PhaseIdentity';
+import { PhaseManager } from '../../../gamephase/PhaseManager';
 import { DeathmatchIdlePhase } from './Idle';
-import { DeathmatchActionView } from '../../../../ui/hud/views/DeathmatchActionView';
-import { HudDriver } from '../../../../ui/hud/drivers/HudDriver';
-import { Language as L } from '../../../../utils/Language';
-import { variable } from '../../../../utils/Variable';
-import { set_entity_dynamic_property, set_entity_native_property } from '../../../../utils/Property';
-import { DeathmatchConfig } from '../../deathmatch/DeathmatchConfig';
+import { DeathmatchActionView } from '../../../../../ui/hud/views/DeathmatchActionView';
+import { HudDriver } from '../../../../../ui/hud/drivers/HudDriver';
+import { Language as L } from '../../../../../utils/Language';
+import { variable } from '../../../../../utils/Variable';
+import { set_entity_dynamic_property, set_entity_native_property } from '../../../../../utils/Property';
+import { DeathmatchConfig } from '../DeathmatchConfig';
 
 export class DeathmatchGameOverPhase implements IPhaseHandler {
     readonly phaseTag = 103;
@@ -58,3 +58,4 @@ function showScoreboard() {
     }
     HudDriver.chat(stat);
 }
+

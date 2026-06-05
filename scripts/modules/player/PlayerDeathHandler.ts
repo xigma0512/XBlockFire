@@ -1,8 +1,8 @@
 import { MemberManager } from './MemberManager';
-import { C4Manager } from '../core/c4state/C4Manager';
+import { C4Manager } from '../core/gamemodes/BombPlant/c4state/C4Manager';
 import { gameEvents } from '../../event/EventEmitter';
 
-import { C4DroppedState } from '../core/c4state/states/Dropped';
+import { C4DroppedState } from '../core/gamemodes/BombPlant/c4state/states/Dropped';
 
 import { TeamEnum } from './TeamEnum';
 
@@ -20,7 +20,7 @@ import { gameroom } from '../core/GameRoom';
 import { GameModeEnum } from '../core/GameModeEnum';
 import { PhaseIdentity } from '../core/gamephase/PhaseIdentity';
 import { PhaseManager } from '../core/gamephase/PhaseManager';
-import { DeathmatchActionPhase } from '../core/gamephase/deathmatch/Action';
+import { DeathmatchActionPhase } from '../core/gamemodes/Deathmatch/phases/Action';
 
 const deathPlayers = new Set<Player>();
 

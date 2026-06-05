@@ -1,13 +1,13 @@
 import { GameMode, InputPermissionCategory } from '@minecraft/server';
-import { MemberManager } from '../../../player/MemberManager';
-import { TeamEnum } from '../../../player/TeamEnum';
-import { PhaseManager } from '../PhaseManager';
+import { MemberManager } from '../../../../player/MemberManager';
+import { TeamEnum } from '../../../../player/TeamEnum';
+import { PhaseManager } from '../../../gamephase/PhaseManager';
 import { DeathmatchActionPhase } from './Action';
-import { PhaseIdentity } from '../PhaseIdentity';
-import { InGameHud } from '../../../../ui/InGameHud';
-import { set_entity_dynamic_property, set_entity_native_property } from '../../../../utils/Property';
-import { DeathmatchSpawn } from '../../deathmatch/DeathmatchSpawn';
-import { DeathmatchLoadout } from '../../deathmatch/DeathmatchLoadout';
+import { PhaseIdentity } from '../../../gamephase/PhaseIdentity';
+import { InGameHud } from '../../../../../ui/InGameHud';
+import { set_entity_dynamic_property, set_entity_native_property } from '../../../../../utils/Property';
+import { DeathmatchSpawn } from '../DeathmatchSpawn';
+import { DeathmatchLoadout } from '../DeathmatchLoadout';
 
 export class DeathmatchPreStartPhase implements IPhaseHandler {
     readonly phaseTag = 101;
@@ -41,3 +41,4 @@ export class DeathmatchPreStartPhase implements IPhaseHandler {
 
     on_exit() {}
 }
+

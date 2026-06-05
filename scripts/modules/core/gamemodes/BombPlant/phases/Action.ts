@@ -1,19 +1,19 @@
-import { MemberManager } from '../../../player/MemberManager';
-import { PhaseManager } from '../PhaseManager';
+import { MemberManager } from '../../../../player/MemberManager';
+import { PhaseManager } from '../../../gamephase/PhaseManager';
 
 import { GameOverPhase } from './Gameover';
 import { RoundEndPhase } from './RoundEnd';
-import { ActionView as ActionHud } from '../../../../ui/hud/views/ActionView';
+import { ActionView as ActionHud } from '../../../../../ui/hud/views/ActionView';
 
-import { PhaseEnum as BombPlantPhaseEnum } from '../BombPlantPhaseEnum';
-import { TeamEnum } from '../../../player/TeamEnum';
+import { PhaseEnum as BombPlantPhaseEnum } from './BombPlantPhaseEnum';
+import { TeamEnum } from '../../../../player/TeamEnum';
 
-import { HudDriver } from '../../../../ui/hud/drivers/HudDriver';
-import { Sound } from '../../../../ui/media/Sound';
-import { UiStateManager } from '../../../../ui/hud/state/UiState';
-import { Language as L } from '../../../../utils/Language';
-import { set_variable } from '../../../../utils/Variable';
-import { LanguageKey } from '../../../../settings/lang/LanguageKey';
+import { HudDriver } from '../../../../../ui/hud/drivers/HudDriver';
+import { Sound } from '../../../../../ui/media/Sound';
+import { UiStateManager } from '../../../../../ui/hud/state/UiState';
+import { Language as L } from '../../../../../utils/Language';
+import { set_variable } from '../../../../../utils/Variable';
+import { LanguageKey } from '../../../../../settings/lang/LanguageKey';
 
 const ACTION_TIME = 120 * 20;
 
@@ -125,3 +125,4 @@ function voiceBroadcast(currentTick: number) {
         Sound.play('THIRTY_SEC_LEFT', MemberManager.getPlayers(), {});
     }
 }
+

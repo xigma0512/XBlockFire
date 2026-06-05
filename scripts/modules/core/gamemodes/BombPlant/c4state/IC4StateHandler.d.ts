@@ -5,3 +5,4 @@ declare abstract class IC4StateHandler {
     on_running(): void;
     on_exit(): void;
 }
+

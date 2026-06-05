@@ -1,14 +1,14 @@
-import { MemberManager } from '../../../player/MemberManager';
+import { MemberManager } from '../../../../../player/MemberManager';
 import { C4Manager } from '../C4Manager';
 
 import { C4IdleState } from './Idle';
 
 import { C4StateEnum } from '../C4StateEnum';
-import { TeamEnum } from '../../../player/TeamEnum';
+import { TeamEnum } from '../../../../../player/TeamEnum';
 
-import { HudDriver } from '../../../../ui/hud/drivers/HudDriver';
-import { Language as L } from '../../../../utils/Language';
-import { FormatCode as FC } from '../../../../utils/FormatCode';
+import { HudDriver } from '../../../../../../ui/hud/drivers/HudDriver';
+import { Language as L } from '../../../../../../utils/Language';
+import { FormatCode as FC } from '../../../../../../utils/FormatCode';
 
 import { Entity, ItemStack, Player, world } from '@minecraft/server';
 import { EntityHitEntityAfterEvent } from '@minecraft/server';
@@ -79,3 +79,4 @@ export class C4DroppedState implements IC4StateHandler {
         C4Manager.updateState(new C4IdleState());
     }
 }
+

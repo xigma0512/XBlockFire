@@ -1,22 +1,22 @@
-import { PhaseManager } from '../../gamephase/PhaseManager';
-import { MemberManager } from '../../../player/MemberManager';
+import { PhaseManager } from '../../../../gamephase/PhaseManager';
+import { MemberManager } from '../../../../../player/MemberManager';
 import { C4Manager } from '../C4Manager';
 
 import { C4IdleState } from './Idle';
-import { C4PlantedPhase } from '../../gamephase/bomb_plant/C4Planted';
-import { RoundEndPhase } from '../../gamephase/bomb_plant/RoundEnd';
+import { C4PlantedPhase } from '../../phases/C4Planted';
+import { RoundEndPhase } from '../../phases/RoundEnd';
 
 import { C4StateEnum } from '../C4StateEnum';
-import { TeamEnum } from '../../../player/TeamEnum';
-import { PhaseEnum as BombPlantPhaseEnum } from '../../gamephase/BombPlantPhaseEnum';
+import { TeamEnum } from '../../../../../player/TeamEnum';
+import { PhaseEnum as BombPlantPhaseEnum } from '../../phases/BombPlantPhaseEnum';
 
-import { set_variable, variable } from '../../../../utils/Variable';
-import { HudDriver } from '../../../../ui/hud/drivers/HudDriver';
-import { Sound } from '../../../../ui/media/Sound';
-import { UiStateManager } from '../../../../ui/hud/state/UiState';
-import { Language as L } from '../../../../utils/Language';
-import { FormatCode as FC } from '../../../../utils/FormatCode';
-import { progressBar } from '../../../../utils/others/Format';
+import { set_variable, variable } from '../../../../../../utils/Variable';
+import { HudDriver } from '../../../../../../ui/hud/drivers/HudDriver';
+import { Sound } from '../../../../../../ui/media/Sound';
+import { UiStateManager } from '../../../../../../ui/hud/state/UiState';
+import { Language as L } from '../../../../../../utils/Language';
+import { FormatCode as FC } from '../../../../../../utils/FormatCode';
+import { progressBar } from '../../../../../../utils/others/Format';
 
 import { Vector3Utils } from '@minecraft/math';
 import { VanillaEntityIdentifier } from '@minecraft/server';
@@ -167,3 +167,4 @@ function playC4Effect(currentTick: number, entity: Entity) {
         } catch {}
     }
 }
+

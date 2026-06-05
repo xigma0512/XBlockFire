@@ -1,16 +1,16 @@
-import { PhaseManager } from '../PhaseManager';
-import { MemberManager } from '../../../player/MemberManager';
-import { ActionView as ActionHud } from '../../../../ui/hud/views/ActionView';
+import { PhaseManager } from '../../../gamephase/PhaseManager';
+import { MemberManager } from '../../../../player/MemberManager';
+import { ActionView as ActionHud } from '../../../../../ui/hud/views/ActionView';
 
-import { TeamEnum } from '../../../player/TeamEnum';
-import { PhaseEnum } from '../BombPlantPhaseEnum';
+import { TeamEnum } from '../../../../player/TeamEnum';
+import { PhaseEnum } from './BombPlantPhaseEnum';
 
-import { set_variable } from '../../../../utils/Variable';
-import { HudDriver } from '../../../../ui/hud/drivers/HudDriver';
-import { UiStateManager } from '../../../../ui/hud/state/UiState';
-import { Language as L } from '../../../../utils/Language';
-import { LanguageKey } from '../../../../settings/lang/LanguageKey';
-import { FormatCode as FC } from '../../../../utils/FormatCode';
+import { set_variable } from '../../../../../utils/Variable';
+import { HudDriver } from '../../../../../ui/hud/drivers/HudDriver';
+import { UiStateManager } from '../../../../../ui/hud/state/UiState';
+import { Language as L } from '../../../../../utils/Language';
+import { LanguageKey } from '../../../../../settings/lang/LanguageKey';
+import { FormatCode as FC } from '../../../../../utils/FormatCode';
 
 import { RoundEndPhase } from './RoundEnd';
 import { GameOverPhase } from './Gameover';
@@ -97,3 +97,4 @@ export class C4PlantedPhase implements IPhaseHandler {
         }
     }
 }
+

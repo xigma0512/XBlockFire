@@ -1,23 +1,23 @@
 import { GameMode, InputPermissionCategory, Player, system } from '@minecraft/server';
-import { MemberManager } from '../../../player/MemberManager';
-import { TeamEnum } from '../../../player/TeamEnum';
-import { gameroom } from '../../GameRoom';
-import { GameModeEnum } from '../../GameModeEnum';
-import { PhaseIdentity } from '../PhaseIdentity';
-import { PhaseManager } from '../PhaseManager';
+import { MemberManager } from '../../../../player/MemberManager';
+import { TeamEnum } from '../../../../player/TeamEnum';
+import { gameroom } from '../../../GameRoom';
+import { GameModeEnum } from '../../../GameModeEnum';
+import { PhaseIdentity } from '../../../gamephase/PhaseIdentity';
+import { PhaseManager } from '../../../gamephase/PhaseManager';
 import { DeathmatchGameOverPhase } from './Gameover';
-import { DeathmatchActionView } from '../../../../ui/hud/views/DeathmatchActionView';
-import { HudDriver } from '../../../../ui/hud/drivers/HudDriver';
-import { Language as L } from '../../../../utils/Language';
+import { DeathmatchActionView } from '../../../../../ui/hud/views/DeathmatchActionView';
+import { HudDriver } from '../../../../../ui/hud/drivers/HudDriver';
+import { Language as L } from '../../../../../utils/Language';
 import {
     set_entity_dynamic_property,
     entity_dynamic_property,
     set_entity_native_property,
-} from '../../../../utils/Property';
-import { set_variable, variable } from '../../../../utils/Variable';
-import { DeathmatchConfig } from '../../deathmatch/DeathmatchConfig';
-import { DeathmatchSpawn } from '../../deathmatch/DeathmatchSpawn';
-import { DeathmatchLoadout } from '../../deathmatch/DeathmatchLoadout';
+} from '../../../../../utils/Property';
+import { set_variable, variable } from '../../../../../utils/Variable';
+import { DeathmatchConfig } from '../DeathmatchConfig';
+import { DeathmatchSpawn } from '../DeathmatchSpawn';
+import { DeathmatchLoadout } from '../DeathmatchLoadout';
 
 export class DeathmatchActionPhase implements IPhaseHandler {
     readonly phaseTag = 102;
@@ -102,3 +102,4 @@ export class DeathmatchActionPhase implements IPhaseHandler {
         PhaseManager.updatePhase(new DeathmatchGameOverPhase());
     }
 }
+

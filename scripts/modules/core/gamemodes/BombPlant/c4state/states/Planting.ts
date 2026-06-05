@@ -1,14 +1,14 @@
-import { PhaseManager } from '../../gamephase/PhaseManager';
-import { MemberManager } from '../../../player/MemberManager';
+import { PhaseManager } from '../../../../gamephase/PhaseManager';
+import { MemberManager } from '../../../../../player/MemberManager';
 import { C4Manager } from '../C4Manager';
 
 import { C4PlantedState } from './Planted';
 import { C4IdleState } from './Idle';
 
 import { C4StateEnum } from '../C4StateEnum';
-import { PhaseEnum as BombPlantPhaseEnum } from '../../gamephase/BombPlantPhaseEnum';
-import { HudDriver } from '../../../../ui/hud/drivers/HudDriver';
-import { progressBar } from '../../../../utils/others/Format';
+import { PhaseEnum as BombPlantPhaseEnum } from '../../phases/BombPlantPhaseEnum';
+import { HudDriver } from '../../../../../../ui/hud/drivers/HudDriver';
+import { progressBar } from '../../../../../../utils/others/Format';
 
 import { ItemCompleteUseAfterEvent, ItemStopUseAfterEvent } from '@minecraft/server';
 import { Player, world } from '@minecraft/server';
@@ -81,3 +81,4 @@ function playPlantingSound(source: Player) {
     for (const p of players) p.playSound(PLANTING_BROADCAST_SOUND_ID, { location: source.location, volume: 3 });
     source.playSound(PLANTING_SELF_SOUND_ID);
 }
+
