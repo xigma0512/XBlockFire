@@ -18,6 +18,7 @@ import { DeathmatchConfig } from '../DeathmatchConfig';
 import { DeathmatchSpawn } from '../DeathmatchSpawn';
 import { DeathmatchLoadout } from '../DeathmatchLoadout';
 import { DeathmatchState } from '../DeathmatchState';
+import { InvincibilitySystem } from '../../../../combat/InvincibilitySystem';
 
 export class DeathmatchActionPhase implements IPhaseHandler {
     readonly phaseId = DeathmatchPhaseEnum.Action;
@@ -25,6 +26,7 @@ export class DeathmatchActionPhase implements IPhaseHandler {
 
     private _currentTick = DeathmatchConfig.ACTION_TIME;
     private readonly respawnTasks = new Map<string, number>();
+    private readonly clearShopItemTasks = new Map<string, number>();
     private playerLeaveListener?: (ev: PlayerLeaveAfterEvent) => void;
 
     get currentTick() {
@@ -40,6 +42,21 @@ export class DeathmatchActionPhase implements IPhaseHandler {
         this.playerLeaveListener = world.afterEvents.playerLeave.subscribe((ev) => {
             this.cancelRespawn(ev.playerName);
         });
+
+        for (const player of MemberManager.getPlayers()) {
+            if (entity_dynamic_property(player, 'player:is_alive')) {
+                set_entity_native_property(player, 'player:can_use_item', true);
+                
+                const clearShopItemTask = system.runTimeout(() => {
+                    this.clearShopItemTasks.delete(player.name);
+                    const p = world.getPlayers().find(p => p.name === player.name);
+                    if (p && p.isValid) {
+                        DeathmatchLoadout.clearShopItem(p);
+                    }
+                }, 200);
+                this.clearShopItemTasks.set(player.name, clearShopItemTask);
+            }
+        }
     }
 
     on_running() {
@@ -56,6 +73,9 @@ export class DeathmatchActionPhase implements IPhaseHandler {
 
         for (const taskId of this.respawnTasks.values()) system.clearRun(taskId);
         this.respawnTasks.clear();
+
+        for (const taskId of this.clearShopItemTasks.values()) system.clearRun(taskId);
+        this.clearShopItemTasks.clear();
     }
 
     queueRespawn(player: Player) {
@@ -96,11 +116,30 @@ export class DeathmatchActionPhase implements IPhaseHandler {
         set_entity_native_property(player, 'player:can_use_item', true);
         player.addEffect('regeneration', 40, { amplifier: 255, showParticles: false });
         player.addEffect('saturation', 20, { amplifier: 5, showParticles: false });
+        InvincibilitySystem.setInvincible(player, 100);
+        
+        player.getComponent('health')?.resetToDefaultValue();
+
         gameroom().activeMode.applyLoadout?.(player);
+
+        const clearShopItemTask = system.runTimeout(() => {
+            this.clearShopItemTasks.delete(playerName);
+            const p = world.getPlayers().find(p => p.name === playerName);
+            if (p && p.isValid) {
+                DeathmatchLoadout.clearShopItem(p);
+            }
+        }, 200);
+        this.clearShopItemTasks.set(playerName, clearShopItemTask);
     }
 
     private transitions() {
         const { attacker: attackerScore, defender: defenderScore } = DeathmatchState.getScores();
+
+        const attackerCount = MemberManager.getPlayers({ team: TeamEnum.Attacker }).length;
+        const defenderCount = MemberManager.getPlayers({ team: TeamEnum.Defender }).length;
+
+        if (attackerCount === 0) return this.finish(TeamEnum.Defender);
+        if (defenderCount === 0) return this.finish(TeamEnum.Attacker);
 
         if (attackerScore >= DeathmatchConfig.WINNING_SCORE) return this.finish(TeamEnum.Attacker);
         if (defenderScore >= DeathmatchConfig.WINNING_SCORE) return this.finish(TeamEnum.Defender);

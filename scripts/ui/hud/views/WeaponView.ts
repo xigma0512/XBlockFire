@@ -7,6 +7,7 @@ import { FormatCode as FC } from '../../../utils/FormatCode';
 import { HudDriver } from '../drivers/HudDriver';
 
 import { InGameHud } from '../../InGameHud';
+import { InvincibilitySystem } from '../../../modules/combat/InvincibilitySystem';
 
 export class WeaponView implements InGameHud {
     update() {
@@ -38,13 +39,19 @@ export class WeaponView implements InGameHud {
             const magazineComp = itemActor.getComponent('gun_magazine')!;
             const ammoText = `${magazineComp.ammo}/${magazineComp.storageAmmo}`;
             const raiseProgress = GunRaiseSystem.getRaiseProgressBar(player);
+            const invText = InvincibilitySystem.getInvincibilityText(player);
+
+            let finalText = '';
+            if (invText) finalText += `${invText}\n`;
+
             if (raiseProgress !== undefined) {
-                HudDriver.pushActionbar(player, `${raiseProgress}\n${FC.Reset}${ammoText}`, 2, 'weapon_info');
-                continue;
+                finalText += `${raiseProgress}\n${FC.Reset}${ammoText}`;
+            } else {
+                finalText += ammoText;
             }
 
-            // Direct call to HudDriver to ensure precedence logic is handled
-            HudDriver.pushActionbar(player, ammoText, 2, 'weapon_info');
+            const forceUpdateChar = system.currentTick % 40 === 0 ? FC.Reset : '';
+            HudDriver.pushActionbar(player, finalText + forceUpdateChar, 2, 'weapon_info');
         }
     }
 }

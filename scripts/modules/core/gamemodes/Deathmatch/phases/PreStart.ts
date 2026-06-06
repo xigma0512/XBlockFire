@@ -9,6 +9,7 @@ import { set_entity_dynamic_property, set_entity_native_property } from '../../.
 import { gameroom } from '../../../GameRoom';
 import { DeathmatchSpawn } from '../DeathmatchSpawn';
 import { DeathmatchLoadout } from '../DeathmatchLoadout';
+import { InvincibilitySystem } from '../../../../combat/InvincibilitySystem';
 
 export class DeathmatchPreStartPhase implements IPhaseHandler {
     readonly phaseId = DeathmatchPhaseEnum.PreStart;
@@ -32,6 +33,7 @@ export class DeathmatchPreStartPhase implements IPhaseHandler {
             gameroom().activeMode.applyLoadout?.(player);
             player.addEffect('regeneration', 40, { amplifier: 255, showParticles: false });
             player.addEffect('saturation', 20, { amplifier: 5, showParticles: false });
+            InvincibilitySystem.setInvincible(player, 100);
         }
     }
 

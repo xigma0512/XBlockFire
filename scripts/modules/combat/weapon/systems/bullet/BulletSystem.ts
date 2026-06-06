@@ -3,6 +3,7 @@ import { OffsetCalculator } from './OffsetCaculator';
 import { getPlayerGunOffset } from '../gun/GunOffsetSystem';
 import { DamageSystem } from './BulletDamage';
 import { BulletAnimation } from './BulletAnimation';
+import { InvincibilitySystem } from '../../../InvincibilitySystem';
 
 import { entity_dynamic_property } from '../../../../../utils/Property';
 
@@ -78,7 +79,13 @@ export class BulletSystem {
                 excludeNames: [shooterName],
                 maxDistance: distance,
             })
-            .filter((raycast) => entity_dynamic_property(raycast.entity, 'player:is_alive'));
+            .filter((raycast) => entity_dynamic_property(raycast.entity, 'player:is_alive'))
+            .filter((raycast) => {
+                if (raycast.entity instanceof Player) {
+                    return !InvincibilitySystem.isInvincible(raycast.entity);
+                }
+                return true;
+            });
 
         if (hitEntities.length > 0) {
             return hitEntities.at(0);

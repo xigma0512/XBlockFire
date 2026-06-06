@@ -25,6 +25,14 @@ export class DeathmatchLoadout {
         HotbarManager.sendHotbar(player, hotbar);
     }
 
+    static clearShopItem(player: Player) {
+        const hotbar = HotbarManager.getPlayerHotbar(player);
+        if (hotbar.items[8]?.typeId === DeathmatchConfig.SHOP_ITEM_ID) {
+            hotbar.items[8] = undefined;
+            HotbarManager.sendHotbar(player, hotbar);
+        }
+    }
+
     static applyTeamArmor(player: Player) {
         const team = MemberManager.getPlayerTeam(player);
         if (team !== TeamEnum.Attacker && team !== TeamEnum.Defender) return;
