@@ -26,10 +26,10 @@ export const zh_TW = {
     'round.end.c4_detonated': 'C4 已引爆！',
 
     // Game Over Messages
-    'game.over.attacker_disconnect': '進攻方斷線',
-    'game.over.defender_disconnect': '防守方斷線',
-    'game.over.attacker_win': '進攻方獲勝',
-    'game.over.defender_win': '防守方獲勝',
+    'game.over.attacker_disconnect': '[ 進攻方斷線 ]',
+    'game.over.defender_disconnect': '[ 防守方斷線 ]',
+    'game.over.attacker_win': '[ 進攻方獲勝 ]',
+    'game.over.defender_win': '[ 防守方獲勝 ]',
 
     'hud.waiting': '等待更多玩家加入遊戲',
     'hud.start_in': '遊戲將在 %1 秒後開始。',
@@ -42,9 +42,9 @@ export const zh_TW = {
     'member.leave': '%1 離開了房間。',
     'command.join_team': '%1 加入了 [%2]',
 
-    'prestart.suggest_settings': '建議設定',
-    'prestart.camera_shake': '設定->視訊->相機晃動%1(開啟)',
-    'prestart.fov_adjust': '設定->視訊->視野可透過遊戲控制調整%1(關閉)',
+    'prestart.suggest_settings': '* 建議設定',
+    'prestart.camera_shake': '  * 設定->視訊->相機晃動%1(開啟)',
+    'prestart.fov_adjust': '  * 設定->視訊->視野可透過遊戲控制調整%1(關閉)',
 
     'shop.title': '商店',
     'shop.body': [
@@ -70,6 +70,7 @@ export const zh_TW = {
     'shop.loadout.reset': '上一回合配置超出本回合點數上限，已重置部分裝備。',
     'deathmatch.sudden_death': '驟死賽開始，下一個有效擊殺決定勝負',
     'deathmatch.respawn_in': '重生倒數 %1 秒',
+    
     'deathmatch.gameover.attacker_win': 'Attacker 贏得死鬥',
     'deathmatch.gameover.defender_win': 'Defender 贏得死鬥',
 };
