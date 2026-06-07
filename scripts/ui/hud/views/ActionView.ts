@@ -62,14 +62,14 @@ export class ActionView implements InGameHud {
                 leftScore = aScore;
                 rightScore = dScore;
 
-                leftIcons = '\uE015 ' + SurvivalIcons.format(attackerTotal, attackerAlive, true, maxPlayers);
-                rightIcons = SurvivalIcons.format(defenderTotal, defenderAlive, false, maxPlayers) + ' \uE089';
+                leftIcons = '[T] ' + SurvivalIcons.format(attackerTotal, attackerAlive, true, maxPlayers);
+                rightIcons = SurvivalIcons.format(defenderTotal, defenderAlive, false, maxPlayers) + '[CT] ';
             } else {
                 leftScore = dScore;
                 rightScore = aScore;
 
-                leftIcons = '\uE089 ' + SurvivalIcons.format(defenderTotal, defenderAlive, true, maxPlayers);
-                rightIcons = SurvivalIcons.format(attackerTotal, attackerAlive, false, maxPlayers) + ' \uE015';
+                leftIcons = '[T] ' + SurvivalIcons.format(defenderTotal, defenderAlive, true, maxPlayers);
+                rightIcons = SurvivalIcons.format(attackerTotal, attackerAlive, false, maxPlayers) + '[CT] ';
             }
 
             const matchLine = MatchScore.format(leftScore, timeStr, rightScore);
