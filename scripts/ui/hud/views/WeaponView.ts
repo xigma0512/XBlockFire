@@ -1,12 +1,7 @@
 import { system, world } from '@minecraft/server';
 
-import { getPlayerHandItem } from '../../../utils/others/Entity';
 import { ActorManager } from '../../../modules/combat/weapon/systems/ActorManager';
 import { GunRaiseSystem } from '../../../modules/combat/weapon/systems/gun/GunRaiseSystem';
-import { FormatCode as FC } from '../../../utils/FormatCode';
-import { HudDriver } from '../drivers/HudDriver';
-
-import { InGameHud } from '../../InGameHud';
 import { InvincibilitySystem } from '../../../modules/combat/InvincibilitySystem';
 
 export class WeaponView implements InGameHud {

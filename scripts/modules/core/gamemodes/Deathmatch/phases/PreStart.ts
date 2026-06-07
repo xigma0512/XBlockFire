@@ -1,15 +1,21 @@
 import { GameMode, InputPermissionCategory } from '@minecraft/server';
-import { MemberManager } from '../../../../player/MemberManager';
-import { TeamEnum } from '../../../../player/TeamEnum';
-import { PhaseManager } from '../../../gamephase/PhaseManager';
-import { DeathmatchActionPhase } from './Action';
-import { DeathmatchPhaseEnum } from './DeathmatchPhaseEnum';
-import { InGameHud } from '../../../../../ui/InGameHud';
-import { set_entity_dynamic_property, set_entity_native_property } from '../../../../../utils/Property';
+
 import { gameroom } from '../../../GameRoom';
+import { PhaseManager } from '../../../gamephase/PhaseManager';
+
+import { DeathmatchPhaseEnum } from './DeathmatchPhaseEnum';
+import { DeathmatchActionPhase } from './Action';
 import { DeathmatchSpawn } from '../DeathmatchSpawn';
 import { DeathmatchLoadout } from '../DeathmatchLoadout';
+
+import { MemberManager } from '../../../../player/MemberManager';
+import { TeamEnum } from '../../../../player/TeamEnum';
 import { InvincibilitySystem } from '../../../../combat/InvincibilitySystem';
+
+import { DeathmatchActionView } from '../../../../../ui/hud/views/DeathmatchActionView';
+import { Sound } from '../../../../../ui/media/Sound';
+
+import { set_entity_dynamic_property, set_entity_native_property } from '../../../../../utils/Property';
 
 export class DeathmatchPreStartPhase implements IPhaseHandler {
     readonly phaseId = DeathmatchPhaseEnum.PreStart;

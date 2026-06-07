@@ -1,24 +1,30 @@
 import { GameMode, InputPermissionCategory, Player, PlayerLeaveAfterEvent, system, world } from '@minecraft/server';
-import { MemberManager } from '../../../../player/MemberManager';
-import { TeamEnum } from '../../../../player/TeamEnum';
+
 import { gameroom } from '../../../GameRoom';
 import { GameModeEnum } from '../../../GameModeEnum';
-import { DeathmatchPhaseEnum } from './DeathmatchPhaseEnum';
 import { PhaseManager } from '../../../gamephase/PhaseManager';
+
+import { DeathmatchPhaseEnum } from './DeathmatchPhaseEnum';
 import { DeathmatchGameOverPhase } from './Gameover';
+import { DeathmatchConfig } from '../DeathmatchConfig';
+import { DeathmatchState } from '../DeathmatchState';
+import { DeathmatchSpawn } from '../DeathmatchSpawn';
+import { DeathmatchLoadout } from '../DeathmatchLoadout';
+
+import { MemberManager } from '../../../../player/MemberManager';
+import { TeamEnum } from '../../../../player/TeamEnum';
+import { InvincibilitySystem } from '../../../../combat/InvincibilitySystem';
+
 import { DeathmatchActionView } from '../../../../../ui/hud/views/DeathmatchActionView';
 import { HudDriver } from '../../../../../ui/hud/drivers/HudDriver';
+import { Sound } from '../../../../../ui/media/Sound';
+
 import { Language as L } from '../../../../../utils/Language';
 import {
     set_entity_dynamic_property,
     entity_dynamic_property,
     set_entity_native_property,
 } from '../../../../../utils/Property';
-import { DeathmatchConfig } from '../DeathmatchConfig';
-import { DeathmatchSpawn } from '../DeathmatchSpawn';
-import { DeathmatchLoadout } from '../DeathmatchLoadout';
-import { DeathmatchState } from '../DeathmatchState';
-import { InvincibilitySystem } from '../../../../combat/InvincibilitySystem';
 
 export class DeathmatchActionPhase implements IPhaseHandler {
     readonly phaseId = DeathmatchPhaseEnum.Action;
