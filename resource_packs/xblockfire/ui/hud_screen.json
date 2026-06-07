@@ -2307,7 +2307,7 @@
                 ],
                 "shadow": "$show_shadow",
                 "text_alignment": "center",
-                "offset": [ 0, 1 ],
+                "offset": [ 3, 1 ],
                 "bindings": [
                   {
                     "binding_name": "#hud_title_text_string",

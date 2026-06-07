@@ -27,6 +27,7 @@
     "text": "#player_name_sidebar",
     "text_alignment": "left",
     "size": [ "default", 10 ],
+    "max_size": [ 500, 10 ],
     "anchor_from": "top_right",
     "anchor_to": "top_right",
     "inherit_max_sibling_width": true,
