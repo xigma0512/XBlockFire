@@ -206,7 +206,7 @@
                   },
                   {
                     "binding_type": "view",
-                    "source_property_name": "(('§f' + #form_text - ('%.12s' * ('§f' + #form_text))) - ']')",
+                    "source_property_name": "#form_text",
                     "target_property_name": "#final_text"
                   }
                 ]
@@ -275,20 +275,11 @@
     "collection_name": "form_buttons",
     "bindings": [
       {
-        "binding_name": "#form_text"
-      },
-      {
-        "binding_type": "view",
-        "source_property_name": "(1 * ('%.10s' * #form_text - ']'))",
-        "target_property_name": "#len"
-      },
-      {
         "binding_name": "#form_button_length"
-
       },
       {
         "binding_type": "view",
-        "source_property_name": "(#form_button_length - #len)",
+        "source_property_name": "#form_button_length",
         "target_property_name": "#maximum_grid_items"
       }
     ]
@@ -555,7 +546,7 @@
       },
       {
         "binding_type": "view",
-        "source_property_name": "((#form_button_text - 'category' = #form_button_text))",
+        "source_property_name": "((#form_button_text - '§c§a§t§e§g§o§r§y' = #form_button_text))",
         "target_property_name": "#visible"
       }
     ]

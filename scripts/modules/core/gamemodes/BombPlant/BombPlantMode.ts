@@ -13,7 +13,7 @@ import { C4StateEnum } from './c4state/C4StateEnum';
 import { Vector3Utils } from '@minecraft/math';
 import { PhaseManager } from '../../gamephase/PhaseManager';
 import { PhaseEnum as BombPlantPhaseEnum } from './phases/BombPlantPhaseEnum';
-import { Shop } from '../../../../ui/form/shop/Shop';
+import { Shop } from '../../../../ui/form/shop/BombPlantShop';
 import { Language as L } from '../../../../utils/Language';
 import { FormatCode as FC } from '../../../../utils/FormatCode';
 import { LoadoutManager } from '../../LoadoutManager';

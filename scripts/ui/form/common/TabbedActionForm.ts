@@ -64,7 +64,8 @@ export class TabbedActionForm<TAction extends string> {
         for (const candidate of this.tabs) {
             form.button(`${CATEGORY_MARKER} ${candidate.label}`);
         }
-        form.body(`${this.tabs.length}${createBodyPadding(this.tabs.length)}${this.bodyText}`);
+
+        form.body(this.bodyText);
 
         const response: ActionFormResponse = await form.show(player);
         if (response.canceled || response.selection === undefined) {
@@ -85,16 +86,4 @@ export class TabbedActionForm<TAction extends string> {
             value: selectedButton.value,
         };
     }
-}
-
-function createBodyPadding(tabCount: number) {
-    const tabCountLength = JSON.stringify(tabCount).length;
-    const paddingStart = tabCountLength % 2 === 0 ? tabCountLength : tabCountLength + 1;
-    let padding = '';
-
-    for (let index = paddingStart; index <= 10; index++) {
-        padding += ']';
-    }
-
-    return padding;
 }

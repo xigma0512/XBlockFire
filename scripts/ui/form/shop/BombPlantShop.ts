@@ -23,9 +23,8 @@ export class Shop {
         if (playOpenSound) Sound.play('SHOP_OPEN', player);
 
         const pointLimit = getCurrentPointLimit();
-        const form = new TabbedActionForm<ShopAction>()
-            .title(L.translate('shop.title'))
-            .body(buildBody(player, pointLimit));
+        const bodyText = buildBody(player, pointLimit);
+        const form = new TabbedActionForm<ShopAction>().title(L.translate('shop.title'));
 
         for (const [category, label] of Object.entries(ShopCategories) as [ShopCategoryId, string][]) {
             form.tab(category, label);
@@ -39,7 +38,7 @@ export class Shop {
             }
         }
 
-        const response = await form.show(player, tabId);
+        const response = await form.body(bodyText).show(player, tabId);
         if (response.canceled || !response.action) {
             Sound.play('SHOP_CLOSE', player);
             return;

@@ -22,7 +22,8 @@ export class DeathmatchShop {
 
         if (playOpenSound) Sound.play('SHOP_OPEN', player);
 
-        const form = new TabbedActionForm<DeathmatchShopAction>().title('Deathmatch Shop').body(buildBody(player));
+        const bodyText = buildBody(player);
+        const form = new TabbedActionForm<DeathmatchShopAction>().title('Deathmatch Shop');
 
         form.tab('primary', 'Primary');
         form.tab('secondary', 'Secondary');
@@ -33,7 +34,7 @@ export class DeathmatchShop {
             }
         }
 
-        const response = await form.show(player, tabId);
+        const response = await form.body(bodyText).show(player, tabId);
         if (response.canceled || !response.value) {
             Sound.play('SHOP_CLOSE', player);
             return;
