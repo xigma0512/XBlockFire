@@ -8,6 +8,8 @@ import { Player, system, world } from '@minecraft/server';
 import { GunAnimations } from './GunAnimations';
 import { GunRaiseSystem } from './GunRaiseSystem';
 import { gunRuntimeState } from './GunRuntimeState';
+import { gameroom } from '../../../../core/GameRoom';
+import { GameModeEnum } from '../../../../core/GameModeEnum';
 
 class GunReloadSystem {
     private player: Player;
@@ -71,7 +73,10 @@ class GunReloadSystem {
         const magazineComp = actor.getComponent('gun_magazine');
         if (!magazineComp) return false;
 
-        return magazineComp.ammo < magazineComp.capacity && magazineComp.storageAmmo > 0;
+        return (
+            magazineComp.ammo < magazineComp.capacity &&
+            (isDeathmatchInfiniteAmmoActive() || magazineComp.storageAmmo > 0)
+        );
     }
 
     private cancelReload() {
@@ -93,13 +98,18 @@ class GunReloadSystem {
         if (!magazineComp) return this.cancelReload();
 
         const ammoNeeded = magazineComp.capacity - magazineComp.ammo;
-        const ammoToTransfer = Math.min(ammoNeeded, magazineComp.storageAmmo);
+        const infiniteAmmo = isDeathmatchInfiniteAmmoActive();
+        const ammoToTransfer = infiniteAmmo ? ammoNeeded : Math.min(ammoNeeded, magazineComp.storageAmmo);
 
         magazineComp.ammo += ammoToTransfer;
-        magazineComp.storageAmmo -= ammoToTransfer;
+        if (!infiniteAmmo) magazineComp.storageAmmo -= ammoToTransfer;
 
         set_entity_native_property(this.player, 'player:state.reload', 'success');
     }
+}
+
+function isDeathmatchInfiniteAmmoActive() {
+    return gameroom().gameMode === GameModeEnum.Deathmatch;
 }
 
 world.afterEvents.dataDrivenEntityTrigger.subscribe((ev) => {

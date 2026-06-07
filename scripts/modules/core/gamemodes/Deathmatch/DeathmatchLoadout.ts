@@ -9,6 +9,7 @@ import { DeathmatchConfig } from './DeathmatchConfig';
 
 export class DeathmatchLoadout {
     static apply(player: Player) {
+        this.clearObjectiveItems(player);
         LoadoutManager.setArmorFree(player, DeathmatchConfig.ARMOR_TIER);
         LoadoutManager.clearThrowables(player);
         LoadoutManager.applyCurrentHotbar(player);
@@ -50,5 +51,17 @@ export class DeathmatchLoadout {
         equippable.setEquipment(EquipmentSlot.Chest, UnCommonItems.getItem('defender_chestplate'));
         equippable.setEquipment(EquipmentSlot.Legs, UnCommonItems.getItem('defender_leggings'));
         equippable.setEquipment(EquipmentSlot.Feet, UnCommonItems.getItem('defender_boots'));
+    }
+
+    private static clearObjectiveItems(player: Player) {
+        const container = player.getComponent('inventory')?.container;
+        if (!container) return;
+
+        for (let slot = 0; slot < container.size; slot++) {
+            const item = container.getItem(slot);
+            if (item?.typeId === 'xblockfire:c4' || item?.typeId === 'xblockfire:defuser') {
+                container.setItem(slot, undefined);
+            }
+        }
     }
 }

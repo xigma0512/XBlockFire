@@ -1,6 +1,7 @@
 import { Player, system } from '@minecraft/server';
 import { PhaseManager } from '../../../modules/core/gamephase/PhaseManager';
 import { PhaseEnum as BombPlantPhaseEnum } from '../../../modules/core/gamemodes/BombPlant/phases/BombPlantPhaseEnum';
+import { DeathmatchPhaseEnum } from '../../../modules/core/gamemodes/Deathmatch/phases/DeathmatchPhaseEnum';
 import { TeamEnum } from '../../../modules/player/TeamEnum';
 import { MemberManager } from '../../../modules/player/MemberManager';
 import { Language as L } from '../../../utils/Language';
@@ -30,15 +31,6 @@ class _UiStateManager {
             const isWinner = playerTeam === winner;
             const color = isWinner ? FC.Green : FC.Red;
 
-            function box(title: string, content: string | string[], footer: string = '--------------------'): string[] {
-                const lines = [
-                    `${FC.Bold}${FC.Gray}---- ${FC.DarkPurple}[ ${title} ] ${FC.Gray}----`,
-                    ...(Array.isArray(content) ? content : [content]),
-                    `${FC.Bold}${FC.Gray}${footer}`,
-                ];
-                return lines;
-            }
-
             let winText: string;
             if (isGameOver) {
                 winText =
@@ -59,7 +51,10 @@ class _UiStateManager {
         if (!data) return undefined;
 
         const phase = PhaseManager.getPhase().phaseId;
-        const isPersistentPhase = phase === BombPlantPhaseEnum.RoundEnd || phase === BombPlantPhaseEnum.Gameover;
+        const isPersistentPhase =
+            phase === BombPlantPhaseEnum.RoundEnd ||
+            phase === BombPlantPhaseEnum.Gameover ||
+            phase === DeathmatchPhaseEnum.Gameover;
 
         if (isPersistentPhase || system.currentTick <= data.expireTick) {
             return data.text;

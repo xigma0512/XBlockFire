@@ -16,12 +16,27 @@ import { Player, system, world } from '@minecraft/server';
 import { gameroom } from '../core/GameRoom';
 
 const deathPlayers = new Set<Player>();
+const lastDamageByPlayer = new Map<string, { attacker: Player; expireTick: number }>();
+const LAST_DAMAGE_TTL = 10 * 20;
+
+world.afterEvents.entityHurt.subscribe((ev) => {
+    if (!(ev.hurtEntity instanceof Player) || !MemberManager.includePlayer(ev.hurtEntity)) return;
+    if (!(ev.damageSource.damagingEntity instanceof Player)) return;
+
+    const attacker = ev.damageSource.damagingEntity;
+    if (attacker === ev.hurtEntity) return;
+
+    lastDamageByPlayer.set(ev.hurtEntity.name, {
+        attacker,
+        expireTick: system.currentTick + LAST_DAMAGE_TTL,
+    });
+});
 
 world.afterEvents.entityDie.subscribe((ev) => {
     if (!(ev.deadEntity instanceof Player) || !MemberManager.includePlayer(ev.deadEntity)) return;
     const deadPlayer = ev.deadEntity;
     const source = ev.damageSource;
-    const attacker = source.damagingEntity;
+    const attacker = source.damagingEntity ?? getRecentAttacker(deadPlayer);
     system.runTimeout(() => gameEvents.emit('playerDied', { deadPlayer, attacker }), 5);
 });
 
@@ -36,6 +51,7 @@ gameEvents.subscribe('playerDied', (ev: any) => {
 
     const deadPlayer = ev.deadPlayer as Player;
     const attacker = ev.attacker instanceof Player ? ev.attacker : undefined;
+    lastDamageByPlayer.delete(deadPlayer.name);
 
     set_entity_dynamic_property(deadPlayer, 'player:is_alive', false);
     set_variable(`${deadPlayer.name}.deaths`, (variable(`${deadPlayer.name}.deaths`) || 0) + 1);
@@ -47,6 +63,17 @@ gameEvents.subscribe('playerDied', (ev: any) => {
 
     gameroom().activeMode.onPlayerDeath?.(deadPlayer, attacker);
 });
+
+function getRecentAttacker(deadPlayer: Player) {
+    const lastDamage = lastDamageByPlayer.get(deadPlayer.name);
+    lastDamageByPlayer.delete(deadPlayer.name);
+
+    if (!lastDamage) return undefined;
+    if (system.currentTick > lastDamage.expireTick) return undefined;
+    if (!lastDamage.attacker.isValid) return undefined;
+
+    return lastDamage.attacker;
+}
 
 function showDeathMessage(deadPlayer: Player, attacker: Player) {
     const deadPlayerTeam = MemberManager.getPlayerTeam(deadPlayer);

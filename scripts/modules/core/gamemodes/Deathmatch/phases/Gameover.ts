@@ -17,8 +17,6 @@ import { Sound } from '../../../../../ui/media/Sound';
 
 import { Language as L } from '../../../../../utils/Language';
 import { set_entity_dynamic_property, set_entity_native_property } from '../../../../../utils/Property';
-import { DeathmatchConfig } from '../DeathmatchConfig';
-import { DeathmatchState } from '../DeathmatchState';
 
 export class DeathmatchGameOverPhase implements IPhaseHandler {
     readonly phaseId = DeathmatchPhaseEnum.Gameover;
@@ -36,8 +34,23 @@ export class DeathmatchGameOverPhase implements IPhaseHandler {
     on_entry() {
         this._currentTick = DeathmatchConfig.GAMEOVER_TIME;
         const winner = DeathmatchState.getWinner();
-        if (winner === TeamEnum.Attacker) HudDriver.chat(L.translate('deathmatch.gameover.attacker_win'));
-        if (winner === TeamEnum.Defender) HudDriver.chat(L.translate('deathmatch.gameover.defender_win'));
+
+        Sound.play('ROUND_END', MemberManager.getPlayers());
+        if (winner !== undefined) {
+            UiStateManager.setRoundEndMessage(winner, true);
+        }
+
+        if (winner === TeamEnum.Attacker) {
+            HudDriver.chat(L.translate('deathmatch.gameover.attacker_win'));
+            Sound.play('ROUND_WIN', MemberManager.getPlayers({ team: TeamEnum.Attacker }), {});
+            Sound.play('ROUND_LOSE', MemberManager.getPlayers({ team: TeamEnum.Defender }), {});
+        } else if (winner === TeamEnum.Defender) {
+            HudDriver.chat(L.translate('deathmatch.gameover.defender_win'));
+            Sound.play('ROUND_WIN', MemberManager.getPlayers({ team: TeamEnum.Defender }), {});
+            Sound.play('ROUND_LOSE', MemberManager.getPlayers({ team: TeamEnum.Attacker }), {});
+        } else {
+        }
+
         showScoreboard();
     }
 

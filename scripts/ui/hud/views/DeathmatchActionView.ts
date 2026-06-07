@@ -32,10 +32,18 @@ export class DeathmatchActionView implements InGameHud {
                 : FC.White + `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')}`;
 
         const { attacker: aScore, defender: dScore } = DeathmatchState.getScores();
-        const title = MatchScore.format(aScore, timeStr, dScore);
+        let title = MatchScore.format(aScore, timeStr, dScore);
 
         for (const player of MemberManager.getPlayers()) {
-            HudDriver.pushTitle(player, title, 2, 'game_status');
+            let finalTitle = title;
+
+            const notify = UiStateManager.getNotifyMessage(player);
+            if (notify) finalTitle += `\n${notify}`;
+
+            const extra = UiStateManager.getRoundEndMessage(player);
+            if (extra) finalTitle += `\n${extra}`;
+
+            HudDriver.pushTitle(player, finalTitle, 2, 'game_status');
         }
     }
 

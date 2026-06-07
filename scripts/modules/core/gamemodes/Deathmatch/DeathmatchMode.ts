@@ -9,6 +9,7 @@ import { DeathmatchActionPhase } from './phases/Action';
 
 import { AlliesMarker } from '../../../player/AlliesMarker';
 import { MemberManager } from '../../../player/MemberManager';
+import { TeamEnum } from '../../../player/TeamEnum';
 import { PhaseManager } from '../../gamephase/PhaseManager';
 import { DeathmatchShop } from '../../../../ui/form/shop/DeathmatchShop';
 import { DeathmatchLoadout } from './DeathmatchLoadout';
@@ -38,8 +39,17 @@ export class DeathmatchMode implements IGameMode {
         deadPlayer.getComponent('inventory')?.container.clearAll();
         deadPlayer.setGameMode(GameMode.Spectator);
 
-        if (attacker && MemberManager.getPlayerTeam(attacker) !== MemberManager.getPlayerTeam(deadPlayer)) {
-            DeathmatchState.addTeamScore(MemberManager.getPlayerTeam(attacker));
+        if (attacker) {
+            const attackerTeam = MemberManager.getPlayerTeam(attacker);
+            const deadPlayerTeam = MemberManager.getPlayerTeam(deadPlayer);
+
+            if (
+                attackerTeam !== deadPlayerTeam &&
+                (attackerTeam === TeamEnum.Attacker || attackerTeam === TeamEnum.Defender) &&
+                (deadPlayerTeam === TeamEnum.Attacker || deadPlayerTeam === TeamEnum.Defender)
+            ) {
+                DeathmatchState.addTeamScore(attackerTeam);
+            }
         }
 
         const phase = PhaseManager.getPhase();
@@ -53,10 +63,15 @@ export class DeathmatchMode implements IGameMode {
     }
 
     openShop(player: Player): void {
-        const canOpen = () => PhaseManager.getPhase().phaseId === DeathmatchPhaseEnum.Action;
+        const canOpen = () => {
+            const phaseId = PhaseManager.getPhase().phaseId;
+            return phaseId === DeathmatchPhaseEnum.PreStart || phaseId === DeathmatchPhaseEnum.Action;
+        };
 
         if (!canOpen()) {
-            system.run(() => player.sendMessage(`${FC.Red}Deathmatch shop is only available during action.`));
+            system.run(() =>
+                player.sendMessage(`${FC.Red}Deathmatch shop is only available before and during action.`)
+            );
             return;
         }
 

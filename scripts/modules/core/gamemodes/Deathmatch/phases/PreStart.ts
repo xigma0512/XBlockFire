@@ -19,8 +19,16 @@ import { set_entity_dynamic_property, set_entity_native_property } from '../../.
 
 export class DeathmatchPreStartPhase implements IPhaseHandler {
     readonly phaseId = DeathmatchPhaseEnum.PreStart;
-    readonly hud!: InGameHud;
-    readonly currentTick = -1;
+    readonly hud: DeathmatchActionView;
+
+    private _currentTick = 10 * 20;
+    get currentTick() {
+        return this._currentTick;
+    }
+
+    constructor() {
+        this.hud = new DeathmatchActionView();
+    }
 
     on_entry() {
         for (const player of MemberManager.getPlayers()) {
@@ -33,19 +41,37 @@ export class DeathmatchPreStartPhase implements IPhaseHandler {
 
             player.teleport(DeathmatchSpawn.randomSpawn(team));
             player.setGameMode(GameMode.Adventure);
-            player.inputPermissions.setPermissionCategory(InputPermissionCategory.LateralMovement, true);
+            player.inputPermissions.setPermissionCategory(InputPermissionCategory.LateralMovement, false);
             set_entity_dynamic_property(player, 'player:is_alive', true);
             set_entity_native_property(player, 'player:can_use_item', false);
             gameroom().activeMode.applyLoadout?.(player);
-            player.addEffect('regeneration', 40, { amplifier: 255, showParticles: false });
-            player.addEffect('saturation', 20, { amplifier: 5, showParticles: false });
+            player.getComponent('health')?.resetToDefaultValue();
+            player.addEffect('regeneration', 100, { amplifier: 255, showParticles: false });
             InvincibilitySystem.setInvincible(player, 100);
+        }
+
+        if (this._currentTick === 10 * 20) {
+            Sound.play('START_ROUND', MemberManager.getPlayers(), {});
         }
     }
 
     on_running() {
-        PhaseManager.updatePhase(new DeathmatchActionPhase());
+        this.playCountdown(this.currentTick);
+        this._currentTick--;
+        this.hud.update();
+
+        if (this.currentTick <= 0) {
+            PhaseManager.updatePhase(new DeathmatchActionPhase());
+        }
     }
 
-    on_exit() {}
+    on_exit() {
+        Sound.play('ACTION_START', MemberManager.getPlayers(), {});
+    }
+
+    private playCountdown(currentTick: number) {
+        if (currentTick <= 5 * 20 && currentTick > 0 && currentTick % 20 === 0) {
+            Sound.play('BUYING_COUNTDOWN_TICK', MemberManager.getPlayers(), {});
+        }
+    }
 }

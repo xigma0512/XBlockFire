@@ -17,7 +17,6 @@ import { InvincibilitySystem } from '../../../../combat/InvincibilitySystem';
 
 import { DeathmatchActionView } from '../../../../../ui/hud/views/DeathmatchActionView';
 import { HudDriver } from '../../../../../ui/hud/drivers/HudDriver';
-import { Sound } from '../../../../../ui/media/Sound';
 
 import { Language as L } from '../../../../../utils/Language';
 import {
@@ -51,11 +50,12 @@ export class DeathmatchActionPhase implements IPhaseHandler {
 
         for (const player of MemberManager.getPlayers()) {
             if (entity_dynamic_property(player, 'player:is_alive')) {
+                player.inputPermissions.setPermissionCategory(InputPermissionCategory.LateralMovement, true);
                 set_entity_native_property(player, 'player:can_use_item', true);
-                
+
                 const clearShopItemTask = system.runTimeout(() => {
                     this.clearShopItemTasks.delete(player.name);
-                    const p = world.getPlayers().find(p => p.name === player.name);
+                    const p = world.getPlayers().find((p) => p.name === player.name);
                     if (p && p.isValid) {
                         DeathmatchLoadout.clearShopItem(p);
                     }
@@ -123,14 +123,14 @@ export class DeathmatchActionPhase implements IPhaseHandler {
         player.addEffect('regeneration', 40, { amplifier: 255, showParticles: false });
         player.addEffect('saturation', 20, { amplifier: 5, showParticles: false });
         InvincibilitySystem.setInvincible(player, 100);
-        
+
         player.getComponent('health')?.resetToDefaultValue();
 
         gameroom().activeMode.applyLoadout?.(player);
 
         const clearShopItemTask = system.runTimeout(() => {
             this.clearShopItemTasks.delete(playerName);
-            const p = world.getPlayers().find(p => p.name === playerName);
+            const p = world.getPlayers().find((p) => p.name === playerName);
             if (p && p.isValid) {
                 DeathmatchLoadout.clearShopItem(p);
             }
