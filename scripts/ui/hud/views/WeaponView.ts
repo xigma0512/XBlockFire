@@ -49,7 +49,7 @@ export class WeaponView implements InGameHud {
             if (invText) finalText += `${invText}\n`;
 
             finalText += ammoText;
-            
+
             const forceUpdateChar = system.currentTick % 40 === 0 ? FC.Reset : '';
             HudDriver.pushActionbar(player, finalText + forceUpdateChar, 2, 'weapon_info');
         }

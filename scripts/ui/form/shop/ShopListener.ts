@@ -1,6 +1,6 @@
-import { world } from "@minecraft/server";
-import { MemberManager } from "../../../modules/player/MemberManager";
-import { gameroom } from "../../../modules/core/GameRoom";
+import { world } from '@minecraft/server';
+import { MemberManager } from '../../../modules/player/MemberManager';
+import { gameroom } from '../../../modules/core/GameRoom';
 
 world.beforeEvents.itemUse.subscribe((ev) => {
     if (ev.itemStack.typeId !== 'minecraft:feather') return;
