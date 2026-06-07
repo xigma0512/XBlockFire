@@ -28,19 +28,6 @@ export class GunRaiseSystem {
         gunRuntimeState.clearRaiseDuration(player.id);
     }
 
-    static getRaiseProgressBar(player: Player) {
-        const duration = gunRuntimeState.getRaiseDuration(player.id);
-        if (!duration) return;
-
-        const remaining = player.getItemCooldown(GUN_RAISE_COOLDOWN_CATEGORY);
-        if (remaining <= 0) {
-            gunRuntimeState.clearRaiseDuration(player.id);
-            return;
-        }
-
-        return progressBar(duration, duration - remaining, 30);
-    }
-
     private static getRaiseTime(gunActor: ItemActor) {
         return gunActor.getComponent('gun_raise')?.raise_time ?? DEFAULT_RAISE_TIME;
     }
