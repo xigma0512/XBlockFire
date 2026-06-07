@@ -112,9 +112,10 @@ export class ActionPhase implements IPhaseHandler {
             const result = endReasonTable[endReason];
 
             HudDriver.chat(L.translate(result.langKey));
-            UiStateManager.setRoundEndMessage(result.winner);
+            UiStateManager.setRoundEndMessage(result.winner, result.isGameOver);
 
             set_variable(`round_winner`, result.winner);
+            if (result.isGameOver) set_variable(`winner`, result.winner);
             PhaseManager.updatePhase(result.nextPhaseGenerator());
         }
     }

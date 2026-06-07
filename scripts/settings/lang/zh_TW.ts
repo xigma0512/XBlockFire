@@ -26,10 +26,10 @@ export const zh_TW = {
     'round.end.c4_detonated': 'C4 已引爆！',
 
     // Game Over Messages
-    'game.over.attacker_disconnect': '[ 進攻方斷線 ]',
-    'game.over.defender_disconnect': '[ 防守方斷線 ]',
-    'game.over.attacker_win': '[ 進攻方獲勝 ]',
-    'game.over.defender_win': '[ 防守方獲勝 ]',
+    'game.over.attacker_disconnect': '<進攻方斷線>',
+    'game.over.defender_disconnect': '<防守方斷線>',
+    'game.over.attacker_win': '<進攻方獲勝>',
+    'game.over.defender_win': '<防守方獲勝>',
 
     'hud.waiting': '等待更多玩家加入遊戲',
     'hud.start_in': '遊戲將在 %1 秒後開始。',
@@ -68,9 +68,10 @@ export const zh_TW = {
     'shop.error.product_not_found': '找不到該商品',
     'shop.error.not_buying': '只能在購買階段開啟商店',
     'shop.loadout.reset': '上一回合配置超出本回合點數上限，已重置部分裝備。',
+
     'deathmatch.sudden_death': '驟死賽開始，下一個有效擊殺決定勝負',
     'deathmatch.respawn_in': '重生倒數 %1 秒',
-    
+
     'deathmatch.gameover.attacker_win': 'Attacker 贏得死鬥',
     'deathmatch.gameover.defender_win': 'Defender 贏得死鬥',
 };
