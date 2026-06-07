@@ -1,17 +1,13 @@
-import { PhaseManager } from '../../../modules/core/gamephase/PhaseManager';
-import { MemberManager } from '../../../modules/player/MemberManager';
 import { EquipmentPointManager } from '../../../modules/core/gamemodes/BombPlant/EquipmentPointManager';
 import { LoadoutError, LoadoutManager } from '../../../modules/core/LoadoutManager';
 import { EconomyManager } from '../../../modules/core/gamemodes/BombPlant/EconomyManager';
-
-import { PhaseEnum as BombPlantPhaseEnum } from '../../../modules/core/gamemodes/BombPlant/phases/BombPlantPhaseEnum';
 
 import { FormatCode as FC } from '../../../utils/FormatCode';
 import { Language as L } from '../../../utils/Language';
 import { variable } from '../../../utils/Variable';
 import { Sound } from '../../media/Sound';
 
-import { Player, system, world } from '@minecraft/server';
+import { Player, system } from '@minecraft/server';
 
 import { gameroom } from '../../../modules/core/GameRoom';
 import { TabbedActionForm } from '../common/TabbedActionForm';
@@ -150,12 +146,3 @@ function handleAction(player: Player, action: ShopAction, value: string | undefi
     else if (product.category === 'throwable') EconomyManager.addThrowable(player, product.productId, pointLimit);
     else EconomyManager.setArmor(player, (product as ArmorShopProduct).armorTier, pointLimit);
 }
-
-world.beforeEvents.itemUse.subscribe((ev) => {
-    if (ev.itemStack.typeId !== 'minecraft:feather') return;
-
-    const player = ev.source;
-    if (!MemberManager.includePlayer(player)) return;
-
-    gameroom().activeMode.openShop?.(player);
-});
