@@ -15,6 +15,14 @@ export class GunFireCooldownView {
     private static readonly _states = new Map<string, FireCooldownState>();
 
     static start(player: Player, duration: number) {
+        this.startProgress(player, duration, (elapsed) => 1 - elapsed / duration);
+    }
+
+    static startRaise(player: Player, duration: number) {
+        this.startProgress(player, duration, (elapsed) => elapsed / duration);
+    }
+
+    private static startProgress(player: Player, duration: number, getProgress: (elapsed: number) => number) {
         const existing = this._states.get(player.id);
         if (existing) system.clearRun(existing.taskId);
 
@@ -23,7 +31,7 @@ export class GunFireCooldownView {
 
         const taskId = system.runInterval(() => {
             const elapsed = Math.min(system.currentTick - startTick, duration);
-            this.setExperienceBarProgress(player, 1 - elapsed / duration);
+            this.setExperienceBarProgress(player, getProgress(elapsed));
 
             if (elapsed >= duration) {
                 this.restoreExperience(player, originalTotalXp);

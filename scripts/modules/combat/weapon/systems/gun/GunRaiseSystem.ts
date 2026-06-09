@@ -6,6 +6,7 @@ import { gunRuntimeState } from './GunRuntimeState';
 
 import { Player, system, world } from '@minecraft/server';
 import { GunAnimations } from './GunAnimations';
+import { GunFireCooldownView } from '../../../../../ui/hud/views/GunFireCooldownView';
 
 export const GUN_RAISE_COOLDOWN_CATEGORY = 'xblockfire:raise_gun';
 const DEFAULT_RAISE_TIME = 8;
@@ -17,6 +18,7 @@ export class GunRaiseSystem {
 
         player.startItemCooldown(GUN_RAISE_COOLDOWN_CATEGORY, raiseTime);
         gunRuntimeState.setRaiseDuration(player.id, raiseTime);
+        GunFireCooldownView.startRaise(player, raiseTime);
         GunAnimations.playGunRaiseAnimation(player, gunActor);
     }
 
