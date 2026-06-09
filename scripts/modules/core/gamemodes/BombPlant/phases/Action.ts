@@ -8,10 +8,8 @@ import { ActionView as ActionHud } from '../../../../../ui/hud/views/ActionView'
 import { PhaseEnum as BombPlantPhaseEnum } from './BombPlantPhaseEnum';
 import { TeamEnum } from '../../../../player/TeamEnum';
 
-import { HudDriver } from '../../../../../ui/hud/drivers/HudDriver';
 import { Sound } from '../../../../../ui/media/Sound';
 import { UiStateManager } from '../../../../../ui/hud/state/UiState';
-import { Language as L } from '../../../../../utils/Language';
 import { set_variable } from '../../../../../utils/Variable';
 import { LanguageKey } from '../../../../../types/Language';
 
@@ -27,7 +25,6 @@ const enum EndReasonEnum {
 
 interface EndReasonData {
     winner: TeamEnum;
-    langKey: LanguageKey;
     isGameOver: boolean;
     nextPhaseGenerator: () => IPhaseHandler;
 }
@@ -35,31 +32,26 @@ interface EndReasonData {
 const endReasonTable: Record<number, EndReasonData> = {
     [EndReasonEnum['Time-up']]: {
         winner: TeamEnum.Defender,
-        langKey: 'round.end.time_up',
         isGameOver: false,
         nextPhaseGenerator: () => new RoundEndPhase(),
     },
     [EndReasonEnum['Attacker-Eliminated']]: {
         winner: TeamEnum.Defender,
-        langKey: 'round.end.attacker_eliminated',
         isGameOver: false,
         nextPhaseGenerator: () => new RoundEndPhase(),
     },
     [EndReasonEnum['Attacker-Disconnect']]: {
         winner: TeamEnum.Defender,
-        langKey: 'game.over.attacker_disconnect',
         isGameOver: true,
         nextPhaseGenerator: () => new GameOverPhase(),
     },
     [EndReasonEnum['Defender-Eliminated']]: {
         winner: TeamEnum.Attacker,
-        langKey: 'round.end.defender_eliminated',
         isGameOver: false,
         nextPhaseGenerator: () => new RoundEndPhase(),
     },
     [EndReasonEnum['Defender-Disconnect']]: {
         winner: TeamEnum.Attacker,
-        langKey: 'game.over.defender_disconnect',
         isGameOver: true,
         nextPhaseGenerator: () => new GameOverPhase(),
     },
@@ -111,7 +103,6 @@ export class ActionPhase implements IPhaseHandler {
         if (endReason) {
             const result = endReasonTable[endReason];
 
-            HudDriver.chat(L.translate(result.langKey));
             UiStateManager.setRoundEndMessage(result.winner, result.isGameOver);
 
             set_variable(`round_winner`, result.winner);

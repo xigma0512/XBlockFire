@@ -20,13 +20,15 @@ class _MemberManager {
 
     joinRoom(player: Player) {
         this.playerTeam.set(player, TeamEnum.Spectator);
-        HudDriver.chat(`${FC.Bold}${FC.Green}${L.translate('member.join', player.name)}`), this.getPlayers();
+        const text = FC.Green + L.translate('member.join', player.name);
+        HudDriver.chat(text, this.getPlayers());
         Sound.play('MEMBER_JOIN', this.getPlayers());
     }
 
     leaveRoom(player: Player) {
         this.playerTeam.delete(player);
-        HudDriver.chat(`${FC.Bold}${FC.Red}${L.translate('member.leave', player.name)}`), this.getPlayers();
+        const text = FC.Red + L.translate('member.leave', player.name);
+        HudDriver.chat(text, this.getPlayers());
         Sound.play('MEMBER_LEAVE', this.getPlayers());
     }
 

@@ -97,7 +97,8 @@ function canDefuseC4(C4Entity: Entity, player: Player) {
     const distance = Vector3Utils.distance(player.location, C4Entity.location);
     if (distance > DEFUSE_RANGE) {
         system.run(() => {
-            HudDriver.pushActionbar(player, FC.Red + L.translate('c4.defuse.no_range'), 40, 'c4_status');
+            const text = FC.Red + L.translate('c4.defuse.no_range');
+            HudDriver.pushActionbar(player, text, 40, 'c4_status');
         });
         return false;
     }
@@ -142,8 +143,6 @@ function defuseComplete(defuser: Player) {
 
     const players = MemberManager.getPlayers();
     Sound.play('C4_DEFUSED', players);
-
-    HudDriver.chat(`${FC.Bold}${FC.Gray}> ${FC.Red}${L.translate('round.end.c4_defused', defuser.name)}`, players);
 }
 
 let soundPlayInterval = 20;

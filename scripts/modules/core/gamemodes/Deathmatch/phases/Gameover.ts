@@ -41,11 +41,9 @@ export class DeathmatchGameOverPhase implements IPhaseHandler {
         }
 
         if (winner === TeamEnum.Attacker) {
-            HudDriver.chat(L.translate('deathmatch.gameover.attacker_win'));
             Sound.play('ROUND_WIN', MemberManager.getPlayers({ team: TeamEnum.Attacker }), {});
             Sound.play('ROUND_LOSE', MemberManager.getPlayers({ team: TeamEnum.Defender }), {});
         } else if (winner === TeamEnum.Defender) {
-            HudDriver.chat(L.translate('deathmatch.gameover.defender_win'));
             Sound.play('ROUND_WIN', MemberManager.getPlayers({ team: TeamEnum.Defender }), {});
             Sound.play('ROUND_LOSE', MemberManager.getPlayers({ team: TeamEnum.Attacker }), {});
         } else {

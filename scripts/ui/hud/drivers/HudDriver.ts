@@ -53,7 +53,7 @@ class _HudDriver {
     chat(message: string | string[], target?: MessageTarget) {
         const text = Array.isArray(message) ? message.join('\n') : message;
         for (const p of this.getPlayers(target)) {
-            p.sendMessage(text);
+            p.sendMessage(`${FC.Bold}${FC.Gray}> ` + text);
         }
     }
 

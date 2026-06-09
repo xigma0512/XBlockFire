@@ -35,8 +35,6 @@ export class GameOverPhase implements IPhaseHandler {
         this._currentTick = BombPlantConfig.GAMEOVER_TIME;
         const winner = variable('winner') as TeamEnum;
         if (winner === TeamEnum.Attacker || winner === TeamEnum.Defender) {
-            const langKey = winner === TeamEnum.Attacker ? 'game.over.attacker_win' : 'game.over.defender_win';
-            HudDriver.chat(L.translate(langKey));
             UiStateManager.setRoundEndMessage(winner, true);
         }
 

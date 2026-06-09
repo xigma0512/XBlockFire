@@ -53,7 +53,8 @@ function select_team(origin: CustomCommandOrigin, ...args: any[]) {
     }
 
     MemberManager.setPlayerTeam(executer, team as TeamEnum);
-    HudDriver.chat(L.translate('command.join_team', executer.name, team));
+    const text = FC.Yellow + L.translate('command.join_team', executer.name, team);
+    HudDriver.chat(text);
 }
 
 function admin_select_team(origin: CustomCommandOrigin, ...args: any[]) {
@@ -66,7 +67,8 @@ function admin_select_team(origin: CustomCommandOrigin, ...args: any[]) {
 
     for (const p of players) {
         MemberManager.setPlayerTeam(p, team as TeamEnum);
-        HudDriver.chat(L.translate('command.join_team', p.name, team));
+        const text = FC.Yellow + L.translate('command.join_team', p.name, team);
+        HudDriver.chat(text);
     }
 }
 

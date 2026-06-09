@@ -19,18 +19,25 @@ import { DeathmatchActionView } from '../../../../../ui/hud/views/DeathmatchActi
 import { HudDriver } from '../../../../../ui/hud/drivers/HudDriver';
 
 import { Language as L } from '../../../../../utils/Language';
+import { Sound } from '../../../../../ui/media/Sound';
+import { FormatCode as FC } from '../../../../../utils/FormatCode';
 import {
     set_entity_dynamic_property,
     entity_dynamic_property,
     set_entity_native_property,
 } from '../../../../../utils/Property';
 
+interface RespawnTask {
+    countdownTaskId: number;
+    respawnTaskId: number;
+}
+
 export class DeathmatchActionPhase implements IPhaseHandler {
     readonly phaseId = DeathmatchPhaseEnum.Action;
     readonly hud: DeathmatchActionView;
 
     private _currentTick = DeathmatchConfig.ACTION_TIME;
-    private readonly respawnTasks = new Map<string, number>();
+    private readonly respawnTasks = new Map<string, RespawnTask>();
     private readonly clearShopItemTasks = new Map<string, number>();
     private playerLeaveListener?: (ev: PlayerLeaveAfterEvent) => void;
 
@@ -77,7 +84,7 @@ export class DeathmatchActionPhase implements IPhaseHandler {
             this.playerLeaveListener = undefined;
         }
 
-        for (const taskId of this.respawnTasks.values()) system.clearRun(taskId);
+        for (const task of this.respawnTasks.values()) this.clearRespawnTask(task);
         this.respawnTasks.clear();
 
         for (const taskId of this.clearShopItemTasks.values()) system.clearRun(taskId);
@@ -88,19 +95,54 @@ export class DeathmatchActionPhase implements IPhaseHandler {
         const playerName = player.name;
         if (this.respawnTasks.has(playerName)) return;
 
-        const taskId = system.runTimeout(() => {
+        const startTick = system.currentTick;
+        this.showRespawnCountdown(player, DeathmatchConfig.RESPAWN_DELAY);
+
+        const countdownTaskId = system.runInterval(() => {
+            const p = world.getPlayers().find((p) => p.name === playerName);
+            if (!p || !p.isValid) return;
+
+            const remainingTicks = DeathmatchConfig.RESPAWN_DELAY - (system.currentTick - startTick);
+            if (remainingTicks <= 0) return;
+
+            this.showRespawnCountdown(p, remainingTicks);
+        }, 20);
+
+        const respawnTaskId = system.runTimeout(() => {
+            const task = this.respawnTasks.get(playerName);
+            if (task) this.clearRespawnCountdown(task);
             this.respawnTasks.delete(playerName);
             this.respawn(playerName);
         }, DeathmatchConfig.RESPAWN_DELAY);
-        this.respawnTasks.set(playerName, taskId);
+
+        this.respawnTasks.set(playerName, { countdownTaskId, respawnTaskId });
     }
 
     cancelRespawn(playerName: string) {
-        const taskId = this.respawnTasks.get(playerName);
-        if (taskId === undefined) return;
+        const task = this.respawnTasks.get(playerName);
+        if (task === undefined) return;
 
-        system.clearRun(taskId);
+        this.clearRespawnTask(task);
         this.respawnTasks.delete(playerName);
+    }
+
+    private clearRespawnTask(task: RespawnTask) {
+        this.clearRespawnCountdown(task);
+        system.clearRun(task.respawnTaskId);
+    }
+
+    private clearRespawnCountdown(task: RespawnTask) {
+        system.clearRun(task.countdownTaskId);
+    }
+
+    private showRespawnCountdown(player: Player, remainingTicks: number) {
+        const remainingSeconds = Math.max(1, Math.ceil(remainingTicks / 20));
+        HudDriver.pushActionbar(
+            player,
+            L.translate('deathmatch.respawn_in', remainingSeconds),
+            20,
+            'deathmatch_respawn'
+        );
     }
 
     private respawn(playerName: string) {
@@ -156,7 +198,8 @@ export class DeathmatchActionPhase implements IPhaseHandler {
 
         if (!DeathmatchState.isSuddenDeath()) {
             DeathmatchState.startSuddenDeath();
-            HudDriver.chat(L.translate('deathmatch.sudden_death'));
+            Sound.play('SUDDEN_DEATH_START');
+            HudDriver.chat(FC.Red + L.translate('deathmatch.sudden_death'));
         }
     }
 

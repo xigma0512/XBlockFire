@@ -25,7 +25,6 @@ const enum EndReasonEnum {
 
 interface EndReasonData {
     winner: TeamEnum;
-    langKey: LanguageKey;
     isGameOver: boolean;
     nextPhaseGenerator: () => IPhaseHandler;
 }
@@ -33,19 +32,16 @@ interface EndReasonData {
 const endReasonTable: Record<number, EndReasonData> = {
     [EndReasonEnum['Time-up']]: {
         winner: TeamEnum.Attacker,
-        langKey: 'round.end.c4_detonated',
         isGameOver: false,
         nextPhaseGenerator: () => new RoundEndPhase(),
     },
     [EndReasonEnum['Defender-Eliminated']]: {
         winner: TeamEnum.Attacker,
-        langKey: 'round.end.defender_eliminated',
         isGameOver: false,
         nextPhaseGenerator: () => new RoundEndPhase(),
     },
     [EndReasonEnum['Defender-Disconnect']]: {
         winner: TeamEnum.Attacker,
-        langKey: 'game.over.defender_disconnect',
         isGameOver: true,
         nextPhaseGenerator: () => new GameOverPhase(),
     },
@@ -66,7 +62,8 @@ export class C4PlantedPhase implements IPhaseHandler {
     }
 
     on_entry() {
-        UiStateManager.setNotifyMessage(`${FC.Bold}${FC.Red}<<${L.translate('c4.planted.title')}>>`, 6 * 20);
+        const text = FC.Bold + FC.Red + L.translate('c4.planted.title');
+        UiStateManager.setNotifyMessage(text, 6 * 20);
     }
 
     on_exit() {}
@@ -93,7 +90,6 @@ export class C4PlantedPhase implements IPhaseHandler {
         if (endReason) {
             const result = endReasonTable[endReason];
 
-            HudDriver.chat(`${FC.Bold}${FC.Gray}>> ${FC.Red}${L.translate(result.langKey)}`);
             UiStateManager.setRoundEndMessage(result.winner, result.isGameOver);
 
             set_variable(`round_winner`, result.winner);

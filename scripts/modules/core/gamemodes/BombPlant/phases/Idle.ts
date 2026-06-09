@@ -13,6 +13,7 @@ import { Language as L } from '../../../../../utils/Language';
 import { reset_variables, set_variable } from '../../../../../utils/Variable';
 import { ItemStackFactory } from '../../../../../utils/ItemStackFactory';
 import { Sound } from '../../../../../ui/media/Sound';
+import { FormatCode as FC } from '../../../../../utils/FormatCode';
 
 import { ItemLockMode } from '@minecraft/server';
 
@@ -77,11 +78,11 @@ function randomTeam() {
         if (attackTeamCount <= defenderTeamCount) {
             MemberManager.setPlayerTeam(player, TeamEnum.Attacker);
             attackTeamCount++;
-            player.sendMessage(L.translate('game.assigned.attacker'));
+            player.sendMessage(FC.Gold + L.translate('game.assigned.attacker'));
         } else {
             MemberManager.setPlayerTeam(player, TeamEnum.Defender);
             defenderTeamCount++;
-            player.sendMessage(L.translate('game.assigned.defender'));
+            player.sendMessage(FC.Gold + L.translate('game.assigned.defender'));
         }
     }
 }

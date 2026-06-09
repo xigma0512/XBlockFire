@@ -38,7 +38,8 @@ export class C4DroppedState implements IC4StateHandler {
         this._entity = world.getDimension('overworld').spawnEntity(DROPPED_C4_ENTITY_ID, this.location);
         world.afterEvents.entityHitEntity.subscribe(this.afterEntityHitEntityListener);
 
-        HudDriver.chat(L.translate('c4.dropped'), MemberManager.getPlayers({ team: TeamEnum.Attacker }));
+        const text = FC.MaterialCopper + L.translate('c4.dropped');
+        HudDriver.chat(text, MemberManager.getPlayers({ team: TeamEnum.Attacker }));
     }
 
     on_running() {
@@ -74,7 +75,8 @@ export class C4DroppedState implements IC4StateHandler {
 
         const attackers = MemberManager.getPlayers({ team: TeamEnum.Attacker });
 
-        HudDriver.chat(`${FC.Bold}${FC.Gray}> ${FC.Blue}${L.translate('c4.pickup.broadcast', player.name)}`, attackers);
+        const text = FC.Blue + L.translate('c4.pickup.broadcast', player.name);
+        HudDriver.chat(text, attackers);
 
         C4Manager.updateState(new C4IdleState());
     }

@@ -54,9 +54,12 @@ export class DeathmatchShop {
 
 function buildBody(player: Player) {
     const loadout = LoadoutManager.describeLoadout(player);
-    return ['---', `${FC.Green}Primary: ${loadout.primary}`, `${FC.Green}Secondary: ${loadout.secondary}`, '---'].join(
-        '\n'
-    );
+    return [
+        '---',
+        `${FC.White}Primary: ${FC.Green}${loadout.primary}`,
+        `${FC.White}Secondary: ${FC.Green}${loadout.secondary}`,
+        `${FC.White}---`,
+    ].join('\n');
 }
 
 function addProductButton(form: TabbedActionForm<DeathmatchShopAction>, player: Player, product: ShopProduct) {

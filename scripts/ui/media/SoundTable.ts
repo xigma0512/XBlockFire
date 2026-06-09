@@ -31,6 +31,8 @@ export const SoundRegistry = {
     MEMBER_JOIN: { id: 'random.pop', options: { pitch: 1.4, volume: 0.8 } },
     MEMBER_LEAVE: { id: 'random.pop2', options: { pitch: 0.8, volume: 0.8 } },
 
+    SUDDEN_DEATH_START: { id: 'mob.wither.spawn' },
+
     // Shop Sounds
     SHOP_OPEN: { id: 'ui.chest_open' },
     SHOP_CLOSE: { id: 'ui.chest_close' },
