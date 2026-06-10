@@ -3,9 +3,12 @@ import { TeamEnum } from '../../../player/TeamEnum';
 import { MemberManager } from '../../../player/MemberManager';
 import { LoadoutManager } from '../../LoadoutManager';
 import { HotbarManager } from '../../../../ui/hotbar/Hotbar';
+import { ShopCatalogLookup } from '../../../../ui/form/shop/ShopCatalog';
+import { ItemShopProduct } from '../../../../ui/form/shop/ShopTypes';
 import { ItemStackFactory } from '../../../../utils/ItemStackFactory';
 import { UnCommonItems } from '../../../combat/ItemManager';
 import { DeathmatchConfig } from './DeathmatchConfig';
+import { getDeathmatchThrowableRestocks } from './DeathmatchThrowableRestock';
 
 export class DeathmatchLoadout {
     static apply(player: Player) {
@@ -13,8 +16,39 @@ export class DeathmatchLoadout {
         LoadoutManager.setArmorFree(player, DeathmatchConfig.ARMOR_TIER);
         LoadoutManager.clearThrowables(player);
         LoadoutManager.applyCurrentHotbar(player);
+        this.applyMeleeItem(player);
+        this.restockThrowables(player);
         this.applyShopItem(player);
         this.applyTeamArmor(player);
+    }
+
+    static applyMeleeItem(player: Player) {
+        const hotbar = HotbarManager.getPlayerHotbar(player);
+        hotbar.items[2] = ItemStackFactory.new({
+            typeId: DeathmatchConfig.MELEE_ITEM_ID,
+            lockMode: ItemLockMode.slot,
+        });
+        HotbarManager.sendHotbar(player, hotbar);
+    }
+
+    static restockThrowables(player: Player) {
+        const hotbar = HotbarManager.getPlayerHotbar(player);
+        const throwableProducts = ShopCatalogLookup.getProductsByCategory('throwable') as ItemShopProduct[];
+        const restocks = getDeathmatchThrowableRestocks(throwableProducts, hotbar.items);
+
+        if (restocks.length === 0) return;
+
+        for (const product of restocks) {
+            if (!product.itemStackTypeId) continue;
+
+            hotbar.items[product.slot] = ItemStackFactory.new({
+                typeId: product.itemStackTypeId,
+                amount: 1,
+                lockMode: ItemLockMode.slot,
+            });
+        }
+
+        HotbarManager.sendHotbar(player, hotbar);
     }
 
     static applyShopItem(player: Player) {

@@ -1,5 +1,6 @@
 import { Player, system } from '@minecraft/server';
 import { LoadoutError, LoadoutManager } from '../../../modules/core/LoadoutManager';
+import { DeathmatchLoadout } from '../../../modules/core/gamemodes/Deathmatch/DeathmatchLoadout';
 import { entity_dynamic_property } from '../../../utils/Property';
 import { FormatCode as FC } from '../../../utils/FormatCode';
 import { Sound } from '../../media/Sound';
@@ -85,4 +86,5 @@ function handleProduct(player: Player, productId: string) {
 
     if (!entity_dynamic_property(player, 'player:is_alive')) return;
     LoadoutManager.applyCurrentHotbar(player);
+    DeathmatchLoadout.restockThrowables(player);
 }

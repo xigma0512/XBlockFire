@@ -39,6 +39,7 @@ export class DeathmatchActionPhase implements IPhaseHandler {
     private _currentTick = DeathmatchConfig.ACTION_TIME;
     private readonly respawnTasks = new Map<string, RespawnTask>();
     private readonly clearShopItemTasks = new Map<string, number>();
+    private throwableRestockTaskId?: number;
     private playerLeaveListener?: (ev: PlayerLeaveAfterEvent) => void;
 
     get currentTick() {
@@ -54,6 +55,14 @@ export class DeathmatchActionPhase implements IPhaseHandler {
         this.playerLeaveListener = world.afterEvents.playerLeave.subscribe((ev) => {
             this.cancelRespawn(ev.playerName);
         });
+        this.throwableRestockTaskId = system.runInterval(() => {
+            for (const player of MemberManager.getPlayers()) {
+                if (!player.isValid) continue;
+                if (!entity_dynamic_property(player, 'player:is_alive')) continue;
+
+                DeathmatchLoadout.restockThrowables(player);
+            }
+        }, DeathmatchConfig.THROWABLE_RESTOCK_INTERVAL);
 
         for (const player of MemberManager.getPlayers()) {
             if (entity_dynamic_property(player, 'player:is_alive')) {
@@ -89,6 +98,11 @@ export class DeathmatchActionPhase implements IPhaseHandler {
 
         for (const taskId of this.clearShopItemTasks.values()) system.clearRun(taskId);
         this.clearShopItemTasks.clear();
+
+        if (this.throwableRestockTaskId !== undefined) {
+            system.clearRun(this.throwableRestockTaskId);
+            this.throwableRestockTaskId = undefined;
+        }
     }
 
     queueRespawn(player: Player) {
