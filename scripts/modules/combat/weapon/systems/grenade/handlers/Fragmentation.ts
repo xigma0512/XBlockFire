@@ -4,9 +4,9 @@ import { GrenadeHandler } from './GrenadeHandler';
 
 import { system } from '@minecraft/server';
 
-const FRAGMENTATION_EXPLOSION_RADIUS = 7.5;
-const FRAGMENTATION_MAX_DAMAGE = 40;
-const FRAGMENTATION_MIN_DAMAGE = 4;
+const FRAGMENTATION_EXPLOSION_RADIUS = 5.5;
+const FRAGMENTATION_MAX_DAMAGE = 30;
+const FRAGMENTATION_MIN_DAMAGE = 5;
 
 export class FragmentationHandler extends GrenadeHandler {
     constructor(actor: EntityActor) {

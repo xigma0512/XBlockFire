@@ -42,18 +42,14 @@ export class ExplosionSystem {
             if (options.obstacleBlocked && this.hasObstacle(options, player)) continue;
 
             const distance = Vector3Utils.distance(options.location, player.location);
-            const rawDamage = calculateExplosionDamage({
+            const damage = calculateExplosionDamage({
                 distance,
                 radius: options.radius,
                 minDamage: options.minDamage,
                 maxDamage: options.maxDamage,
             });
-            if (rawDamage <= 0) continue;
+            if (damage <= 0) continue;
 
-            const damage =
-                options.applyArmorReduction === false
-                    ? rawDamage
-                    : LoadoutManager.applyArmorReduction(player, rawDamage);
             this.applyDamage(player, damage, options.sourcePlayer);
         }
     }

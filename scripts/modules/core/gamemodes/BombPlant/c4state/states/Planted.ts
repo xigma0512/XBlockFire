@@ -136,8 +136,7 @@ function c4Explosion(C4Entity: Entity) {
         source: C4Entity,
         particleType: 'minecraft:huge_explosion_emitter',
         particleCount: 6,
-        obstacleBlocked: false,
-        applyArmorReduction: false,
+        obstacleBlocked: false
     });
 
     UiStateManager.setRoundEndMessage(TeamEnum.Attacker);
