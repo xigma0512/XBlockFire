@@ -10,6 +10,7 @@ import { FireModeEnum } from '../../WeaponEnum';
 import { getPlayerHandItem } from '../../../../../utils/others/Entity';
 import { entity_native_property } from '../../../../../utils/Property';
 import { gameEvents } from '../../../../../event/EventEmitter';
+import { Sound } from '../../../../../ui/media/Sound';
 
 import { Player, system, world } from '@minecraft/server';
 
@@ -70,7 +71,7 @@ export class GunFireSystem {
     private static fire(player: Player, gunActor: ItemActor) {
         const magazineComp = gunActor.getComponent('gun_magazine')!;
         if (magazineComp.ammo <= 0) {
-            system.run(() => player.playSound('xblockfire.empty_gun'));
+            system.run(() => Sound.playTo('xblockfire.empty_gun', player));
             return false;
         }
 

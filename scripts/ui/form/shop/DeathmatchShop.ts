@@ -11,6 +11,11 @@ import { ShopCategoryId, ShopProduct } from './ShopTypes';
 type DeathmatchShopAction = 'select_product';
 type DeathmatchTabId = Extract<ShopCategoryId, 'primary' | 'secondary'>;
 
+const SHOP_OPEN_SOUND_ID = 'ui.chest_open';
+const SHOP_CLOSE_SOUND_ID = 'ui.chest_close';
+const SHOP_YES_SOUND_ID = 'mob.villager.yes';
+const SHOP_NO_SOUND_ID = 'mob.villager.no';
+
 export class DeathmatchShop {
     static async open(
         player: Player,
@@ -21,7 +26,7 @@ export class DeathmatchShop {
         if (!player.isValid) return;
         if (!canOpen()) return;
 
-        if (playOpenSound) Sound.play('SHOP_OPEN', player);
+        if (playOpenSound) Sound.playTo(SHOP_OPEN_SOUND_ID, player);
 
         const bodyText = buildBody(player);
         const form = new TabbedActionForm<DeathmatchShopAction>().title('Deathmatch Shop');
@@ -37,16 +42,16 @@ export class DeathmatchShop {
 
         const response = await form.body(bodyText).show(player, tabId);
         if (response.canceled || !response.value) {
-            Sound.play('SHOP_CLOSE', player);
+            Sound.playTo(SHOP_CLOSE_SOUND_ID, player);
             return;
         }
 
         try {
             handleProduct(player, response.value);
-            Sound.play('SHOP_YES', player);
+            Sound.playTo(SHOP_YES_SOUND_ID, player);
         } catch (err: any) {
             player.sendMessage(FC.Red + (err instanceof LoadoutError ? err.message : 'Product not found'));
-            Sound.play('SHOP_NO', player);
+            Sound.playTo(SHOP_NO_SOUND_ID, player);
         }
 
         system.run(() => this.open(player, response.tabId as DeathmatchTabId, false, canOpen));

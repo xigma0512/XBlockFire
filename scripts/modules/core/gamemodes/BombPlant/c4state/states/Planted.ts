@@ -29,6 +29,10 @@ const PLANTED_C4_ENTITY_ID = 'xblockfire:planted_c4' as VanillaEntityIdentifier;
 const DEFUSE_RANGE = 1.5;
 const DEFUSING_TIME = 6 * 20;
 const COUNTDOWN_TIME = 50 * 20;
+const C4_BEEP_SOUND_ID = 'xblockfire.c4_beep';
+const C4_EXPLOSION_SOUND_ID = 'xblockfire.c4_explosion';
+const C4_DEFUSED_SOUND_ID = 'xblockfire.c4_defused';
+const C4_DEFUSING_SOUND_ID = 'xblockfire.defusing';
 
 export class C4PlantedState implements IC4StateHandler {
     readonly stateTag = C4StateEnum.Planted;
@@ -80,7 +84,7 @@ export class C4PlantedState implements IC4StateHandler {
             system.run(() => {
                 const location = ev.source.location;
                 const volume = 3;
-                Sound.play('C4_DEFUSING', world.getAllPlayers(), { location, volume });
+                Sound.playAt(C4_DEFUSING_SOUND_ID, ev.source.dimension, location, { volume });
             });
             displayDefusingProgress(ev.source);
         }
@@ -125,7 +129,7 @@ function displayDefusingProgress(source: Player) {
 function c4Explosion(C4Entity: Entity) {
     const location = C4Entity.location;
     const volume = 3;
-    Sound.play('C4_EXPLOSION', undefined, { location, volume });
+    Sound.playAt(C4_EXPLOSION_SOUND_ID, C4Entity.dimension, location, { volume });
 
     ExplosionSystem.explode({
         dimension: C4Entity.dimension,
@@ -136,7 +140,7 @@ function c4Explosion(C4Entity: Entity) {
         source: C4Entity,
         particleType: 'minecraft:huge_explosion_emitter',
         particleCount: 6,
-        obstacleBlocked: false
+        obstacleBlocked: false,
     });
 
     UiStateManager.setRoundEndMessage(TeamEnum.Attacker);
@@ -153,7 +157,7 @@ function defuseComplete(defuser: Player) {
     C4Manager.updateState(new C4IdleState());
 
     const players = MemberManager.getPlayers();
-    Sound.play('C4_DEFUSED', players);
+    Sound.playTo(C4_DEFUSED_SOUND_ID, players);
 }
 
 let soundPlayInterval = 20;
@@ -171,7 +175,7 @@ function playC4Effect(currentTick: number, entity: Entity) {
     const location = Vector3Utils.add(entity.location, { y: 0.3 });
 
     if (currentTick % soundPlayInterval === 0) {
-        entity.dimension.playSound('xblockfire.c4_beep', location, { volume: 5 });
+        Sound.playAt(C4_BEEP_SOUND_ID, entity.dimension, location, { volume: 5 });
         try {
             entity.dimension.spawnParticle('minecraft:explosion_particle', location);
         } catch {}

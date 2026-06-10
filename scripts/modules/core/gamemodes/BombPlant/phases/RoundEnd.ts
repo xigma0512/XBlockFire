@@ -17,6 +17,11 @@ import { FormatCode as FC } from '../../../../../utils/FormatCode';
 import { UiStateManager } from '../../../../../ui/hud/state/UiState';
 import { BombPlantConfig } from '../BombPlantConfig';
 
+const ROUND_END_SOUND_ID = 'mob.wolf.whine';
+const SWITCH_SIDE_SOUND_ID = 'beacon.activate';
+const ROUND_WIN_SOUND_ID = 'random.levelup';
+const ROUND_LOSE_SOUND_ID = 'respawn_anchor.deplete';
+
 export class RoundEndPhase implements IPhaseHandler {
     readonly phaseId = BombPlantPhaseEnum.RoundEnd;
     readonly hud: ActionHud;
@@ -33,7 +38,7 @@ export class RoundEndPhase implements IPhaseHandler {
         this._currentTick = BombPlantConfig.ROUND_END_TIME;
         processWinner();
         playRoundResultSounds();
-        Sound.play('ROUND_END', MemberManager.getPlayers());
+        Sound.playTo(ROUND_END_SOUND_ID, MemberManager.getPlayers(), { pitch: 0.8, volume: 1 });
     }
 
     on_running() {
@@ -82,7 +87,7 @@ function switchSide() {
     set_variable(`attacker_score`, defender_score);
     set_variable(`defender_score`, attacker_score);
 
-    Sound.play('SWITCH_SIDE', MemberManager.getPlayers(), {});
+    Sound.playTo(SWITCH_SIDE_SOUND_ID, MemberManager.getPlayers(), { pitch: 0.8, volume: 1 });
     UiStateManager.setNotifyMessage(`${FC.Bold}${FC.Gold}<<${L.translate('game.switch_side.title')}>>`, 20 * 20);
 }
 
@@ -91,8 +96,8 @@ function playRoundResultSounds() {
     if (winnerTeam !== TeamEnum.Attacker && winnerTeam !== TeamEnum.Defender) return;
 
     const loserTeam = winnerTeam === TeamEnum.Attacker ? TeamEnum.Defender : TeamEnum.Attacker;
-    Sound.play('ROUND_WIN', MemberManager.getPlayers({ team: winnerTeam }), {});
-    Sound.play('ROUND_LOSE', MemberManager.getPlayers({ team: loserTeam }), {});
+    Sound.playTo(ROUND_WIN_SOUND_ID, MemberManager.getPlayers({ team: winnerTeam }), { pitch: 1.2, volume: 1 });
+    Sound.playTo(ROUND_LOSE_SOUND_ID, MemberManager.getPlayers({ team: loserTeam }), { pitch: 0.8, volume: 1 });
 }
 
 function processWinner() {

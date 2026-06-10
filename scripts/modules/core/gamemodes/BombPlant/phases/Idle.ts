@@ -21,6 +21,9 @@ import { Config } from '../../../../../settings/config';
 
 import { BombPlantConfig } from '../BombPlantConfig';
 
+const WAITING_COUNTDOWN_START_SOUND_ID = 'random.toast';
+const WAITING_COUNTDOWN_CANCEL_SOUND_ID = 'block.false_permissions';
+
 export class IdlePhase implements IPhaseHandler {
     readonly phaseId = BombPlantPhaseEnum.Idle;
     readonly hud: WaitingHud;
@@ -44,12 +47,12 @@ export class IdlePhase implements IPhaseHandler {
         const countdownWasIdle = this.currentTick === BombPlantConfig.IDLE_TIME;
 
         if (playerAmount >= Config.game.AUTO_START_MIN_PLAYER) {
-            if (countdownWasIdle) Sound.play('WAITING_COUNTDOWN_START', members);
+            if (countdownWasIdle) Sound.playTo(WAITING_COUNTDOWN_START_SOUND_ID, members, { pitch: 1.2, volume: 1 });
             this._currentTick--;
         }
         if (this.currentTick !== BombPlantConfig.IDLE_TIME && playerAmount < Config.game.AUTO_START_MIN_PLAYER) {
             this._currentTick = BombPlantConfig.IDLE_TIME;
-            Sound.play('WAITING_COUNTDOWN_CANCEL', members);
+            Sound.playTo(WAITING_COUNTDOWN_CANCEL_SOUND_ID, members, { pitch: 0.8, volume: 1 });
         }
 
         this.hud.update();

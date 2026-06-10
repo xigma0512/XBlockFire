@@ -18,6 +18,8 @@ import { gameroom } from '../core/GameRoom';
 const deathPlayers = new Set<Player>();
 const lastDamageByPlayer = new Map<string, { attacker: Player; expireTick: number }>();
 const LAST_DAMAGE_TTL = 10 * 20;
+const PLAYER_KILL_SOUND_ID = 'random.levelup';
+const PLAYER_DEATH_SOUND_ID = 'random.hurt';
 
 world.afterEvents.entityHurt.subscribe((ev) => {
     if (!(ev.hurtEntity instanceof Player) || !MemberManager.includePlayer(ev.hurtEntity)) return;
@@ -95,6 +97,6 @@ function showDeathMessage(deadPlayer: Player, attacker: Player) {
     // Using fire-and-forget with 4 seconds duration
     HudDriver.pushSubtitle(attacker, FC.Bold + `\uE109${FC.DarkRed}${deadPlayer.name}`, 4 * 20);
     HudDriver.pushSubtitle(deadPlayer, FC.Bold + `${FC.Red}${L.translate('game.killed_you', attacker.name)}`, 4 * 20);
-    Sound.play('PLAYER_KILL', attacker);
-    Sound.play('PLAYER_DEATH', deadPlayer);
+    Sound.playTo(PLAYER_KILL_SOUND_ID, attacker, { pitch: 1.4, volume: 1 });
+    Sound.playTo(PLAYER_DEATH_SOUND_ID, deadPlayer, { volume: 1, pitch: 0.9 });
 }

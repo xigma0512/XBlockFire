@@ -1,6 +1,7 @@
 import { world, HudElement, system } from '@minecraft/server';
 import { Language as L } from '../../utils/Language';
 import { FormatCode as FC } from '../../utils/FormatCode';
+import { Sound } from '../../ui/media/Sound';
 
 world.afterEvents.playerSpawn.subscribe((ev) => {
     if (ev.initialSpawn) {
@@ -16,7 +17,7 @@ world.afterEvents.playerSpawn.subscribe((ev) => {
             ev.player.sendMessage(FC.Yellow + L.translate('prestart.suggest_settings'));
             ev.player.sendMessage(L.translate('prestart.camera_shake', FC.Green));
             ev.player.sendMessage(L.translate('prestart.fov_adjust', FC.Red));
-            ev.player.playSound('note.bell');
+            Sound.playTo('note.bell', ev.player);
         }, 200);
     }
 });

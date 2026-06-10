@@ -1,5 +1,6 @@
 import { Vector3Utils } from '@minecraft/math';
 import { Entity, world } from '@minecraft/server';
+import { Sound } from '../../../../../ui/media/Sound';
 import { GrenadeSystem } from './GrenadeSystem';
 
 import type { Vector3 } from '@minecraft/server';
@@ -45,7 +46,6 @@ export function calculateGrenadeReboundVector(
     };
 }
 
-
 const bounces = new WeakMap<Entity, number>();
 
 world.afterEvents.projectileHitBlock.subscribe((ev) => {
@@ -75,15 +75,12 @@ world.afterEvents.projectileHitBlock.subscribe((ev) => {
     bounces.set(projectile, count + 1);
 
     const projReboundComp = handler.entityActor.getComponent('projectile_rebound')!;
-    const reboundVector = calculateGrenadeReboundVector(
-        ev.hitVector,
-        face,
-        projReboundComp.bounceFactor,
-        count
-    );
+    const reboundVector = calculateGrenadeReboundVector(ev.hitVector, face, projReboundComp.bounceFactor, count);
     if (Vector3Utils.magnitude(reboundVector) <= 0.01) return;
 
     projectile.getComponent('projectile')!.shoot(reboundVector);
     const soundId = handler.entityActor.getComponent('grenade')?.bounce_sound;
-    projectile.dimension.playSound(soundId ?? '', projectile.location, { volume: 2 });
+    if (soundId) {
+        Sound.playAt(soundId, projectile.dimension, projectile.location, { volume: 2 });
+    }
 });

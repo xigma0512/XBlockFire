@@ -16,6 +16,10 @@ import { uiManager } from '@minecraft/server-ui';
 
 import { BombPlantConfig } from '../BombPlantConfig';
 
+const START_ROUND_SOUND_ID = 'mob.villager.idle';
+const ACTION_START_SOUND_ID = 'mob.blaze.shoot';
+const BUYING_COUNTDOWN_TICK_SOUND_ID = 'random.click';
+
 export class BuyingPhase implements IPhaseHandler {
     readonly phaseId = BombPlantPhaseEnum.Buying;
     readonly hud: ActionHud;
@@ -31,7 +35,7 @@ export class BuyingPhase implements IPhaseHandler {
 
     on_entry() {
         if (this._currentTick === BombPlantConfig.BUYING_TIME) {
-            Sound.play('START_ROUND', MemberManager.getPlayers(), {});
+            Sound.playTo(START_ROUND_SOUND_ID, MemberManager.getPlayers(), { volume: 1 });
             sendShopItem();
         }
     }
@@ -44,7 +48,7 @@ export class BuyingPhase implements IPhaseHandler {
     }
 
     on_exit() {
-        Sound.play('ACTION_START', MemberManager.getPlayers(), {});
+        Sound.playTo(ACTION_START_SOUND_ID, MemberManager.getPlayers(), { pitch: 1.2, volume: 1 });
         restorePlayerDefaults();
     }
 
@@ -55,7 +59,7 @@ export class BuyingPhase implements IPhaseHandler {
 
 function playBuyingCountdown(currentTick: number) {
     if (currentTick <= 5 * 20 && currentTick > 0 && currentTick % 20 === 0) {
-        Sound.play('BUYING_COUNTDOWN_TICK', MemberManager.getPlayers(), {});
+        Sound.playTo(BUYING_COUNTDOWN_TICK_SOUND_ID, MemberManager.getPlayers(), { pitch: 1.5, volume: 1 });
     }
 }
 

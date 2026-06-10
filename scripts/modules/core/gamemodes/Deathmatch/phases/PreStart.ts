@@ -17,6 +17,10 @@ import { Sound } from '../../../../../ui/media/Sound';
 
 import { set_entity_dynamic_property, set_entity_native_property } from '../../../../../utils/Property';
 
+const START_ROUND_SOUND_ID = 'mob.villager.idle';
+const ACTION_START_SOUND_ID = 'mob.blaze.shoot';
+const BUYING_COUNTDOWN_TICK_SOUND_ID = 'random.click';
+
 export class DeathmatchPreStartPhase implements IPhaseHandler {
     readonly phaseId = DeathmatchPhaseEnum.PreStart;
     readonly hud: DeathmatchActionView;
@@ -51,7 +55,7 @@ export class DeathmatchPreStartPhase implements IPhaseHandler {
         }
 
         if (this._currentTick === 10 * 20) {
-            Sound.play('START_ROUND', MemberManager.getPlayers(), {});
+            Sound.playTo(START_ROUND_SOUND_ID, MemberManager.getPlayers(), { volume: 1 });
         }
     }
 
@@ -66,12 +70,12 @@ export class DeathmatchPreStartPhase implements IPhaseHandler {
     }
 
     on_exit() {
-        Sound.play('ACTION_START', MemberManager.getPlayers(), {});
+        Sound.playTo(ACTION_START_SOUND_ID, MemberManager.getPlayers(), { pitch: 1.2, volume: 1 });
     }
 
     private playCountdown(currentTick: number) {
         if (currentTick <= 5 * 20 && currentTick > 0 && currentTick % 20 === 0) {
-            Sound.play('BUYING_COUNTDOWN_TICK', MemberManager.getPlayers(), {});
+            Sound.playTo(BUYING_COUNTDOWN_TICK_SOUND_ID, MemberManager.getPlayers(), { pitch: 1.5, volume: 1 });
         }
     }
 }

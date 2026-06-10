@@ -19,6 +19,8 @@ import { GameMode, world } from '@minecraft/server';
 
 import { BombPlantConfig } from '../BombPlantConfig';
 
+const ROUND_END_SOUND_ID = 'mob.wolf.whine';
+
 export class GameOverPhase implements IPhaseHandler {
     readonly phaseId = BombPlantPhaseEnum.Gameover;
     readonly hud: ActionHud;
@@ -38,7 +40,7 @@ export class GameOverPhase implements IPhaseHandler {
             UiStateManager.setRoundEndMessage(winner, true);
         }
 
-        Sound.play('ROUND_END', world.getAllPlayers());
+        Sound.playTo(ROUND_END_SOUND_ID, world.getAllPlayers(), { pitch: 0.8, volume: 1 });
     }
 
     on_running() {

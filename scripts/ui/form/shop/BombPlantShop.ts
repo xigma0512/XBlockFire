@@ -17,10 +17,14 @@ import { ArmorShopProduct, ItemShopProduct, ShopCategoryId, ShopProduct } from '
 type ShopAction = 'select_product' | 'clear_primary' | 'clear_throwables';
 
 const CLEAR_BUTTON_ICON = 'textures/blocks/barrier';
+const SHOP_OPEN_SOUND_ID = 'ui.chest_open';
+const SHOP_CLOSE_SOUND_ID = 'ui.chest_close';
+const SHOP_YES_SOUND_ID = 'mob.villager.yes';
+const SHOP_NO_SOUND_ID = 'mob.villager.no';
 
 export class Shop {
     static async openShop(player: Player, tabId: ShopCategoryId = 'secondary', playOpenSound = true) {
-        if (playOpenSound) Sound.play('SHOP_OPEN', player);
+        if (playOpenSound) Sound.playTo(SHOP_OPEN_SOUND_ID, player);
 
         const pointLimit = getCurrentPointLimit();
         const bodyText = buildBody(player, pointLimit);
@@ -40,17 +44,17 @@ export class Shop {
 
         const response = await form.body(bodyText).show(player, tabId);
         if (response.canceled || !response.action) {
-            Sound.play('SHOP_CLOSE', player);
+            Sound.playTo(SHOP_CLOSE_SOUND_ID, player);
             return;
         }
 
         try {
             handleAction(player, response.action, response.value, pointLimit);
-            Sound.play('SHOP_YES', player);
+            Sound.playTo(SHOP_YES_SOUND_ID, player);
         } catch (err: any) {
             const key = err instanceof LoadoutError ? err.message : 'shop.error.product_not_found';
             player.sendMessage(FC.Red + L.translate(key as any));
-            Sound.play('SHOP_NO', player);
+            Sound.playTo(SHOP_NO_SOUND_ID, player);
         }
 
         system.run(() => this.openShop(player, response.tabId as ShopCategoryId, false));

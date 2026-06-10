@@ -1,4 +1,5 @@
 import { EntityActor } from '../../../actors/Actor';
+import { Sound } from '../../../../../../ui/media/Sound';
 import { GrenadeSystem } from '../GrenadeSystem';
 
 import { system } from '@minecraft/server';
@@ -16,7 +17,9 @@ export abstract class GrenadeHandler {
             const grenadeComp = this.entityActor.getComponent('grenade')!;
 
             const entity = this.entityActor.entity;
-            entity.dimension.playSound(grenadeComp.throwing_sound ?? '', entity.location, { volume: 3 });
+            if (grenadeComp.throwing_sound) {
+                Sound.playAt(grenadeComp.throwing_sound, entity.dimension, entity.location, { volume: 3 });
+            }
         }
     }
 
@@ -25,7 +28,9 @@ export abstract class GrenadeHandler {
             const grenadeComp = this.entityActor.getComponent('grenade')!;
 
             const entity = this.entityActor.entity;
-            entity.dimension.playSound(grenadeComp.explode_sound ?? '', entity.location, { volume: 5 });
+            if (grenadeComp.explode_sound) {
+                Sound.playAt(grenadeComp.explode_sound, entity.dimension, entity.location, { volume: 5 });
+            }
 
             system.runTimeout(() => {
                 GrenadeSystem.removeHandler(entity);

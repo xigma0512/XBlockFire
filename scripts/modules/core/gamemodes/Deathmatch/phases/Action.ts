@@ -32,6 +32,8 @@ interface RespawnTask {
     respawnTaskId: number;
 }
 
+const SUDDEN_DEATH_START_SOUND_ID = 'mob.wither.spawn';
+
 export class DeathmatchActionPhase implements IPhaseHandler {
     readonly phaseId = DeathmatchPhaseEnum.Action;
     readonly hud: DeathmatchActionView;
@@ -212,7 +214,7 @@ export class DeathmatchActionPhase implements IPhaseHandler {
 
         if (!DeathmatchState.isSuddenDeath()) {
             DeathmatchState.startSuddenDeath();
-            Sound.play('SUDDEN_DEATH_START');
+            Sound.playTo(SUDDEN_DEATH_START_SOUND_ID);
             HudDriver.chat(FC.Red + L.translate('deathmatch.sudden_death'));
         }
     }

@@ -15,6 +15,8 @@ import { LanguageKey } from '../../../../../types/Language';
 
 import { BombPlantConfig } from '../BombPlantConfig';
 
+const THIRTY_SEC_LEFT_SOUND_ID = 'xblockfire.30_sec_left';
+
 const enum EndReasonEnum {
     'Time-up' = 1,
     'Attacker-Eliminated',
@@ -114,6 +116,6 @@ export class ActionPhase implements IPhaseHandler {
 
 function voiceBroadcast(currentTick: number) {
     if (currentTick === 30 * 20) {
-        Sound.play('THIRTY_SEC_LEFT', MemberManager.getPlayers(), {});
+        Sound.playTo(THIRTY_SEC_LEFT_SOUND_ID, MemberManager.getPlayers());
     }
 }

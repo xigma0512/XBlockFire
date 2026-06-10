@@ -18,6 +18,10 @@ import { Sound } from '../../../../../ui/media/Sound';
 import { Language as L } from '../../../../../utils/Language';
 import { set_entity_dynamic_property, set_entity_native_property } from '../../../../../utils/Property';
 
+const ROUND_END_SOUND_ID = 'mob.wolf.whine';
+const ROUND_WIN_SOUND_ID = 'random.levelup';
+const ROUND_LOSE_SOUND_ID = 'respawn_anchor.deplete';
+
 export class DeathmatchGameOverPhase implements IPhaseHandler {
     readonly phaseId = DeathmatchPhaseEnum.Gameover;
     readonly hud: DeathmatchActionView;
@@ -35,17 +39,29 @@ export class DeathmatchGameOverPhase implements IPhaseHandler {
         this._currentTick = DeathmatchConfig.GAMEOVER_TIME;
         const winner = DeathmatchState.getWinner();
 
-        Sound.play('ROUND_END', MemberManager.getPlayers());
+        Sound.playTo(ROUND_END_SOUND_ID, MemberManager.getPlayers(), { pitch: 0.8, volume: 1 });
         if (winner !== undefined) {
             UiStateManager.setRoundEndMessage(winner, true);
         }
 
         if (winner === TeamEnum.Attacker) {
-            Sound.play('ROUND_WIN', MemberManager.getPlayers({ team: TeamEnum.Attacker }), {});
-            Sound.play('ROUND_LOSE', MemberManager.getPlayers({ team: TeamEnum.Defender }), {});
+            Sound.playTo(ROUND_WIN_SOUND_ID, MemberManager.getPlayers({ team: TeamEnum.Attacker }), {
+                pitch: 1.2,
+                volume: 1,
+            });
+            Sound.playTo(ROUND_LOSE_SOUND_ID, MemberManager.getPlayers({ team: TeamEnum.Defender }), {
+                pitch: 0.8,
+                volume: 1,
+            });
         } else if (winner === TeamEnum.Defender) {
-            Sound.play('ROUND_WIN', MemberManager.getPlayers({ team: TeamEnum.Defender }), {});
-            Sound.play('ROUND_LOSE', MemberManager.getPlayers({ team: TeamEnum.Attacker }), {});
+            Sound.playTo(ROUND_WIN_SOUND_ID, MemberManager.getPlayers({ team: TeamEnum.Defender }), {
+                pitch: 1.2,
+                volume: 1,
+            });
+            Sound.playTo(ROUND_LOSE_SOUND_ID, MemberManager.getPlayers({ team: TeamEnum.Attacker }), {
+                pitch: 0.8,
+                volume: 1,
+            });
         } else {
         }
 

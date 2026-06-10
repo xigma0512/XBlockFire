@@ -10,6 +10,8 @@ import { EntityDamageCause, Player } from '@minecraft/server';
 
 const NEAR_DISTANCE = 7;
 const MEDIUM_DISTANCE = 20;
+const PLAYER_HURT_SOUND_ID = 'game.player.hurt';
+const PLAYER_HIT_SOUND_ID = 'damage.fallsmall';
 
 export class DamageSystem {
     static applyBulletDamage(attacker: Player, target: Player, gunActor: ItemActor, hitHeight: number) {
@@ -35,9 +37,9 @@ export class DamageSystem {
         }
 
         target.addEffect('slowness', 5, { amplifier: 0, showParticles: false });
-        Sound.play('PLAYER_HURT', target);
+        Sound.playTo(PLAYER_HURT_SOUND_ID, target);
         target.applyDamage(0.001, { cause: EntityDamageCause.override });
-        Sound.play('PLAYER_HIT', attacker);
+        Sound.playTo(PLAYER_HIT_SOUND_ID, attacker, { pitch: 2.5 });
     }
 
     private static isTeamDamage(attacker: Player, target: Player) {

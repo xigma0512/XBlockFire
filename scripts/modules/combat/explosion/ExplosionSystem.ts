@@ -7,6 +7,8 @@ import { LoadoutManager } from '../../core/LoadoutManager';
 import { MemberManager } from '../../player/MemberManager';
 import { calculateExplosionDamage } from './ExplosionDamage';
 
+const PLAYER_HURT_SOUND_ID = 'game.player.hurt';
+
 export interface ExplosionSystemOptions {
     dimension: Dimension;
     location: Vector3;
@@ -28,7 +30,7 @@ export class ExplosionSystem {
         const particleCount = options.particleCount ?? 1;
 
         if (options.soundId) {
-            Sound.play(options.soundId);
+            Sound.playAt(options.soundId, options.dimension, options.location);
         }
 
         for (let i = 0; i < particleCount; i++) {
@@ -81,6 +83,6 @@ export class ExplosionSystem {
         }
 
         player.applyDamage(0.001, { cause: EntityDamageCause.override });
-        Sound.play('PLAYER_HURT', player);
+        Sound.playTo(PLAYER_HURT_SOUND_ID, player);
     }
 }
