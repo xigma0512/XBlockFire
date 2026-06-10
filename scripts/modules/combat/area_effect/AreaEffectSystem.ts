@@ -38,7 +38,7 @@ export class AreaEffectSystem {
             // Render basic flame particles around each fire point periodically
             if (elapsedTicks % 5 === 0) {
                 for (const point of options.points) {
-                    try {
+                    for (let _=0; _<10; _++) {
                         const randomOffsetX = (Math.random() - 0.5) * point.radius * 2;
                         const randomOffsetZ = (Math.random() - 0.5) * point.radius * 2;
                         
@@ -47,15 +47,7 @@ export class AreaEffectSystem {
                             y: point.location.y,
                             z: point.location.z + randomOffsetZ,
                         });
-                        
-                        if (Math.random() > 0.5) {
-                            options.dimension.spawnParticle('minecraft:camp_fire_smoke_particle', {
-                                x: point.location.x + randomOffsetX,
-                                y: point.location.y + 0.5,
-                                z: point.location.z + randomOffsetZ,
-                            });
-                        }
-                    } catch {}
+                    }
                 }
             }
 
