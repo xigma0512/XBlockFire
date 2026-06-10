@@ -25,6 +25,7 @@ export class Fragmentation extends EntityActor {
                     executeDelay: throwingType === 0 ? 40 : 20,
                     throwing_sound: 'xblockfire.throwing_frag',
                     explode_sound: 'xblockfire.frag_explode',
+                    bounce_sound: 'xblockfire.frag_bounce',
                 })
             );
     }

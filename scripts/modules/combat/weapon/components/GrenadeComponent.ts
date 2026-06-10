@@ -7,6 +7,7 @@ type ComponentDataType = {
 
     throwing_sound?: string;
     explode_sound?: string;
+    bounce_sound?: string;
 };
 
 export class GrenadeComponent extends Component {
@@ -15,6 +16,7 @@ export class GrenadeComponent extends Component {
 
     readonly throwing_sound?: string;
     readonly explode_sound?: string;
+    readonly bounce_sound?: string;
 
     constructor(data: ComponentDataType) {
         super('grenade');
@@ -24,5 +26,6 @@ export class GrenadeComponent extends Component {
 
         this.throwing_sound = data.throwing_sound;
         this.explode_sound = data.explode_sound;
+        this.bounce_sound = data.bounce_sound;
     }
 }

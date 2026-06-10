@@ -44,4 +44,7 @@ export const SoundRegistry = {
     C4_EXPLOSION: { id: 'xblockfire.c4_explosion', options: { volume: 3 } },
     C4_DEFUSED: { id: 'xblockfire.c4_defused' },
     C4_DEFUSING: { id: 'xblockfire.defusing', options: { volume: 3 } },
+
+    // Grenades
+    FRAG_EXPLODE: { id: 'xblockfire.frag_explode', options: { volume: 3 }}
 } as Record<string, SoundDefinition>;

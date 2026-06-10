@@ -18,7 +18,6 @@ export interface ExplosionSystemOptions {
     particleType?: string;
     particleCount?: number;
     soundId?: string;
-    soundVolume?: number;
     obstacleBlocked?: boolean;
     applyArmorReduction?: boolean;
 }
@@ -29,10 +28,7 @@ export class ExplosionSystem {
         const particleCount = options.particleCount ?? 1;
 
         if (options.soundId) {
-            Sound.play(options.soundId, undefined, {
-                location: options.location,
-                volume: options.soundVolume ?? 5,
-            });
+            Sound.play(options.soundId);
         }
 
         for (let i = 0; i < particleCount; i++) {

@@ -99,6 +99,12 @@ const grenadeRebound = world.afterEvents.projectileHitBlock.subscribe((ev) => {
             MirroredVector[hitBlockInfo.face]
         );
         if (Vector3Utils.magnitude(reboundVector) <= 0.01) return;
+
+        const grenadeComp = handler.entityActor.getComponent('grenade')!;
+        if (grenadeComp.bounce_sound) {
+            projectile.dimension.playSound(grenadeComp.bounce_sound, projectile.location, { volume: 2 });
+        }
+
         projectile.getComponent('projectile')!.shoot(reboundVector);
     }
 });

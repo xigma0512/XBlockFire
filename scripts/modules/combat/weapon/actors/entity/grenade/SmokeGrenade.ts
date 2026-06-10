@@ -26,6 +26,7 @@ export class SmokeGrenade extends EntityActor {
                     executeDelay: throwingType === 0 ? 70 : 40,
                     throwing_sound: 'xblockfire.throwing_smoke',
                     explode_sound: 'xblockfire.smoke_explode',
+                    bounce_sound: 'xblockfire.smoke_bounce',
                 })
             );
     }
