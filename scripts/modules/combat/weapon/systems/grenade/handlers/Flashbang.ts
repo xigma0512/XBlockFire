@@ -3,8 +3,9 @@ import { GrenadeHandler } from './GrenadeHandler';
 
 import { EntityActor } from '../../../actors/Actor';
 
-import { Player, system, Vector3 } from '@minecraft/server';
+import { Player, system } from '@minecraft/server';
 import { Vector3Builder, Vector3Utils } from '@minecraft/math';
+import { calculateFacingAngleDegrees } from '../FlashbangBlind';
 
 export class FlashbangHandler extends GrenadeHandler {
     private readonly BlindLevels = [
@@ -48,16 +49,8 @@ export class FlashbangHandler extends GrenadeHandler {
     }
 
     private getBlindLevel(player: Player) {
-        const flatten = (vec: Vector3) => new Vector3Builder(vec.x, 0, vec.z);
-
-        const entityLocation2d = flatten(this.entityActor.entity.location);
-        const headLocation2d = flatten(player.getHeadLocation());
-        const viewDirection2d = flatten(player.getViewDirection());
-        const connect = new Vector3Builder(entityLocation2d).subtract(headLocation2d);
-
-        const dot = Vector3Utils.dot(viewDirection2d, connect);
-        const rad = Math.acos(dot / (viewDirection2d.magnitude() * connect.magnitude()));
-        const deg = rad * (180 / Math.PI);
+        const connect = Vector3Utils.subtract(this.entityActor.entity.location, player.getHeadLocation());
+        const deg = calculateFacingAngleDegrees(player.getViewDirection(), connect);
 
         for (const level of this.BlindLevels) {
             if (deg >= level.min && deg <= level.max) {
