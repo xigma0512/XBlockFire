@@ -4,6 +4,7 @@ import { GrenadeTypeEnum } from '../../WeaponEnum';
 import { GrenadeActorTable } from '../../actors/ActorTypeTables';
 import { SmokeGrenadeHandler } from './handlers/SmokeGrenade';
 import { FlashbangHandler } from './handlers/Flashbang';
+import { FragmentationHandler } from './handlers/Fragmentation';
 
 import { entity_native_property } from '../../../../../utils/Property';
 
@@ -40,6 +41,7 @@ const handlerRegister = world.afterEvents.entitySpawn.subscribe((ev) => {
         const handlers = {
             [GrenadeTypeEnum.SmokeGrenade]: SmokeGrenadeHandler,
             [GrenadeTypeEnum.Flashbang]: FlashbangHandler,
+            [GrenadeTypeEnum.Fragmentation]: FragmentationHandler,
         };
 
         GrenadeSystem.setHandler(grenade, new handlers[grenadeType](grenadeActor));

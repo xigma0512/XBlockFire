@@ -16,4 +16,5 @@ export const enum GunTypeEnum {
 export const enum GrenadeTypeEnum {
     'Flashbang' = 0,
     'SmokeGrenade',
+    'Fragmentation',
 }

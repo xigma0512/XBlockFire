@@ -13,7 +13,8 @@
                     "player_movement",
                     "player_gun_holding",
                     "throwing_flashbang",
-                    "throwing_smoke_grenade"
+                    "throwing_smoke_grenade",
+                    "throwing_fragmentation"
                 ]
             },
             "animations": {
@@ -22,19 +23,14 @@
                 "player_movement": "controller.animation.player.movement",
                 "player_gun_holding": "controller.animation.player.gun_holding",
                 "throwing_flashbang": "controller.animation.player.grenade.flashbang",
-                "throwing_smoke_grenade": "controller.animation.player.grenade.smoke_grenade"
+                "throwing_smoke_grenade": "controller.animation.player.grenade.smoke_grenade",
+                "throwing_fragmentation": "controller.animation.player.grenade.fragmentation"
             },
             "properties": {
                 "player:state.reload": {
                     "client_sync": true,
                     "type": "enum",
-                    "values": [
-                        "idle",
-                        "pre_reload",
-                        "reloading",
-                        "success",
-                        "fail"
-                    ],
+                    "values": ["idle", "pre_reload", "reloading", "success", "fail"],
                     "default": "idle"
                 },
                 "player:is_moving": {
@@ -126,6 +122,42 @@
                         }
                     ]
                 }
+            },
+            "throwing_fragmentation": {
+                "minecraft:spawn_entity": {
+                    "entities": [
+                        {
+                            "filters": [
+                                {
+                                    "test": "is_sneaking",
+                                    "operator": "==",
+                                    "value": false
+                                }
+                            ],
+                            "min_wait_time": 0,
+                            "max_wait_time": 0,
+                            "single_use": true,
+                            "spawn_entity": "xblockfire:fragmentation",
+                            "spawn_event": "set_overhand",
+                            "num_to_spawn": 1
+                        },
+                        {
+                            "filters": [
+                                {
+                                    "test": "is_sneaking",
+                                    "operator": "==",
+                                    "value": true
+                                }
+                            ],
+                            "min_wait_time": 0,
+                            "max_wait_time": 0,
+                            "single_use": true,
+                            "spawn_entity": "xblockfire:fragmentation",
+                            "spawn_event": "set_underhand",
+                            "num_to_spawn": 1
+                        }
+                    ]
+                }
             }
         },
         "components": {
@@ -155,9 +187,7 @@
                 ]
             },
             "minecraft:type_family": {
-                "family": [
-                    "player"
-                ]
+                "family": ["player"]
             },
             "minecraft:health": {
                 "value": 40,
@@ -196,26 +226,26 @@
         "events": {
             "event:throwing_smoke_grenade": {
                 "add": {
-                    "component_groups": [
-                        "throwing_smoke_grenade"
-                    ]
+                    "component_groups": ["throwing_smoke_grenade"]
                 },
                 "queue_command": {
-                    "command": [
-                        "clear @s xblockfire:smoke_grenade_item 0 1"
-                    ]
+                    "command": ["clear @s xblockfire:smoke_grenade_item 0 1"]
                 }
             },
             "event:throwing_flashbang": {
                 "add": {
-                    "component_groups": [
-                        "throwing_flashbang"
-                    ]
+                    "component_groups": ["throwing_flashbang"]
                 },
                 "queue_command": {
-                    "command": [
-                        "clear @s xblockfire:flashbang_item 0 1"
-                    ]
+                    "command": ["clear @s xblockfire:flashbang_item 0 1"]
+                }
+            },
+            "event:throwing_fragmentation": {
+                "add": {
+                    "component_groups": ["throwing_fragmentation"]
+                },
+                "queue_command": {
+                    "command": ["clear @s xblockfire:fragmentation_item 0 1"]
                 }
             },
             "property:state.reload.idle": {

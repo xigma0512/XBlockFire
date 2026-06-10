@@ -124,6 +124,26 @@
             "category": "block",
             "max_distance": 32
         },
+        "xblockfire.throwing_frag": {
+            "sounds": [
+                {
+                    "name": "sounds/grenade/throwing_frag",
+                    "volume": 2
+                }
+            ],
+            "category": "block",
+            "max_distance": 32
+        },
+        "xblockfire.frag_explode": {
+            "sounds": [
+                {
+                    "name": "sounds/grenade/frag_explode",
+                    "volume": 2
+                }
+            ],
+            "category": "block",
+            "max_distance": 32
+        },
 
         // guns
         "xblockfire.empty_gun": {

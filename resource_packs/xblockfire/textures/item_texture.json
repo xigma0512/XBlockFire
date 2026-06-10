@@ -1,13 +1,16 @@
 {
     "resource_pack_name": "XBlockFire",
     "texture_name": "atlas.items",
-	"texture_data": {
+    "texture_data": {
         "flashbang_item": {
-			"textures": "textures/items/grenade/flashbang_item"
-		},
-		"smoke_grenade_item": {
-			"textures": "textures/items/grenade/smoke_grenade_item"
-		},
+            "textures": "textures/items/grenade/flashbang_item"
+        },
+        "smoke_grenade_item": {
+            "textures": "textures/items/grenade/smoke_grenade_item"
+        },
+        "fragmentation_item": {
+            "textures": "textures/items/grenade/flashbang_item"
+        },
 
         "spyglass": {
             "textures": "textures/items/gun/awp"
@@ -37,5 +40,5 @@
         "c4": {
             "textures": "textures/items/c4"
         }
-	}
+    }
 }
