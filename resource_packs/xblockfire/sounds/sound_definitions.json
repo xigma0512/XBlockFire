@@ -184,10 +184,10 @@
             "category": "block",
             "max_distance": 256
         },
-        "xblockfire.inc_flash": {
+        "xblockfire.throwing_inc": {
             "sounds": [
                 {
-                    "name": "sounds/grenade/inc_flash",
+                    "name": "sounds/grenade/throwing_inc",
                     "volume": 2
                 }
             ],
