@@ -1,6 +1,7 @@
 import { PhaseManager } from '../../../../gamephase/PhaseManager';
 import { MemberManager } from '../../../../../player/MemberManager';
 import { C4Manager } from '../C4Manager';
+import { ExplosionSystem } from '../../../../../combat/explosion/ExplosionSystem';
 
 import { C4IdleState } from './Idle';
 import { C4PlantedPhase } from '../../phases/C4Planted';
@@ -126,7 +127,18 @@ function c4Explosion(C4Entity: Entity) {
     const volume = 3;
     Sound.play('C4_EXPLOSION', undefined, { location, volume });
 
-    C4Entity.dimension.createExplosion(C4Entity.location, 20, { causesFire: false, breaksBlocks: false });
+    ExplosionSystem.explode({
+        dimension: C4Entity.dimension,
+        location: C4Entity.location,
+        radius: 20,
+        maxDamage: 999,
+        minDamage: 40,
+        source: C4Entity,
+        particleType: 'minecraft:huge_explosion_emitter',
+        particleCount: 6,
+        obstacleBlocked: false,
+        applyArmorReduction: false,
+    });
 
     UiStateManager.setRoundEndMessage(TeamEnum.Attacker);
     C4Manager.updateState(new C4IdleState());
