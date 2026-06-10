@@ -1,4 +1,3 @@
-import { Vector3Utils } from '@minecraft/math';
 import { Dimension, EntityDamageCause, Player, system, Vector3 } from '@minecraft/server';
 
 import { gameEvents } from '../../../event/EventEmitter';
@@ -7,16 +6,11 @@ import { MemberManager } from '../../player/MemberManager';
 
 const PLAYER_HURT_SOUND_ID = 'game.player.hurt';
 
-export interface FirePoint {
-    location: Vector3;
-    radius: number;
-}
-
 export interface FireAreaOptions {
     dimension: Dimension;
     origin: Vector3;
     duration: number; // in ticks
-    points: FirePoint[];
+    radius: number;
     damageInterval: number; // in ticks
     damagePerTick: number;
     sourcePlayer?: Player;
@@ -27,6 +21,44 @@ export class AreaEffectSystem {
         let elapsedTicks = 0;
         let nextDamageTick = 0;
 
+        const validSurfaces: Vector3[] = [];
+        const maxR = Math.ceil(options.radius);
+        const origin = options.origin;
+        const floorY = Math.floor(origin.y);
+
+        // Pre-calculate all valid top surfaces within the cylinder
+        for (let dx = -maxR; dx <= maxR; dx++) {
+            for (let dz = -maxR; dz <= maxR; dz++) {
+                if (dx * dx + dz * dz > options.radius * options.radius) continue;
+                
+                const x = Math.floor(origin.x) + dx;
+                const z = Math.floor(origin.z) + dz;
+                
+                let bestSurface: Vector3 | null = null;
+                let minDiff = Infinity;
+                
+                for (let dy = 3; dy >= -3; dy--) {
+                    const y = floorY + dy;
+                    const block = options.dimension.getBlock({ x, y, z });
+                    const blockAbove = block?.above();
+                    
+                    if (block && !block.isAir && blockAbove && blockAbove.isAir) {
+                        if ((y + 1) <= origin.y + 3 && (y + 1) >= origin.y - 3) {
+                            const diff = Math.abs((y + 1) - origin.y);
+                            if (diff < minDiff) {
+                                minDiff = diff;
+                                bestSurface = { x: x + 0.5, y: y + 1, z: z + 0.5 };
+                            }
+                        }
+                    }
+                }
+                
+                if (bestSurface) {
+                    validSurfaces.push(bestSurface);
+                }
+            }
+        }
+
         const intervalId = system.runInterval(() => {
             // Check for expiration
             if (elapsedTicks >= options.duration) {
@@ -35,17 +67,16 @@ export class AreaEffectSystem {
             }
 
             // Render visual effects (particles)
-            // Render basic flame particles around each fire point periodically
             if (elapsedTicks % 5 === 0) {
-                for (const point of options.points) {
-                    for (let _=0; _<10; _++) {
-                        const randomOffsetX = (Math.random() - 0.5) * point.radius * 2;
-                        const randomOffsetZ = (Math.random() - 0.5) * point.radius * 2;
-                        
+                for (const surface of validSurfaces) {
+                    const randomOffsetX = (Math.random() - 0.5) * 0.8;
+                    const randomOffsetZ = (Math.random() - 0.5) * 0.8;
+                    
+                    for (let i=0; i<10; i++) {
                         options.dimension.spawnParticle('minecraft:basic_flame_particle', {
-                            x: point.location.x + randomOffsetX,
-                            y: point.location.y,
-                            z: point.location.z + randomOffsetZ,
+                            x: surface.x + randomOffsetX,
+                            y: surface.y,
+                            z: surface.z + randomOffsetZ,
                         });
                     }
                 }
@@ -65,16 +96,12 @@ export class AreaEffectSystem {
         for (const player of MemberManager.getPlayers({ is_alive: true })) {
             if (!player.isValid) continue;
 
-            let inRange = false;
-            for (const point of options.points) {
-                const distance = Vector3Utils.distance(player.location, point.location);
-                if (distance <= point.radius) {
-                    inRange = true;
-                    break;
-                }
-            }
+            const dx = player.location.x - options.origin.x;
+            const dz = player.location.z - options.origin.z;
+            const dy = player.location.y - options.origin.y;
 
-            if (inRange) {
+            // Damage applies if within the radius and within y +/- 3 cylinder
+            if (dx * dx + dz * dz <= options.radius * options.radius && dy >= -3 && dy <= 3) {
                 this.applyDamage(player, options.damagePerTick, options.sourcePlayer);
             }
         }
