@@ -25,9 +25,9 @@ class _MemberManager {
         Sound.play('MEMBER_JOIN', this.getPlayers());
     }
 
-    leaveRoom(player: Player) {
+    leaveRoom(player: Player, playerName = player.name) {
         this.playerTeam.delete(player);
-        const text = FC.Red + L.translate('member.leave', player.name);
+        const text = FC.Red + L.translate('member.leave', playerName);
         HudDriver.chat(text, this.getPlayers());
         Sound.play('MEMBER_LEAVE', this.getPlayers());
     }
@@ -80,5 +80,7 @@ world.afterEvents.playerSpawn.subscribe((ev) => {
 });
 
 world.beforeEvents.playerLeave.subscribe((ev) => {
-    system.run(() => MemberManager.leaveRoom(ev.player));
+    const player = ev.player;
+    const playerName = ev.player.name;
+    system.run(() => MemberManager.leaveRoom(player, playerName));
 });

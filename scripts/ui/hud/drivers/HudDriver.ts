@@ -40,6 +40,11 @@ class _HudDriver {
         ];
         for (const map of maps) {
             for (const [player] of map) {
+                if (!player.isValid) {
+                    map.delete(player);
+                    continue;
+                }
+
                 if (player.name === playerName) map.delete(player);
             }
         }
