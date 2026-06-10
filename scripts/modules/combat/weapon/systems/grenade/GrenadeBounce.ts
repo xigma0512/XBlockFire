@@ -2,6 +2,7 @@ import { Vector3Utils } from '@minecraft/math';
 import { Entity, world } from '@minecraft/server';
 import { Sound } from '../../../../../ui/media/Sound';
 import { GrenadeSystem } from './GrenadeSystem';
+import { IncendiaryGrenadeHandler } from './handlers/IncendiaryGrenade';
 
 import type { Vector3 } from '@minecraft/server';
 
@@ -64,6 +65,13 @@ world.afterEvents.projectileHitBlock.subscribe((ev) => {
     const count = bounces.get(projectile)!;
     const hitBlockInfo = ev.getBlockHit();
     const face = hitBlockInfo.face as GrenadeBounceFace;
+
+    if (handler instanceof IncendiaryGrenadeHandler) {
+        if (face === 'Up') {
+            handler.trigger();
+            return;
+        }
+    }
 
     projectile.teleport(
         Vector3Utils.add(
