@@ -1,14 +1,14 @@
+import { PhaseManager } from '../../../modules/core/gamephase/PhaseManager';
 import { gameroom } from '../../../modules/core/GameRoom';
 import { MemberManager } from '../../../modules/player/MemberManager';
-import { PhaseManager } from '../../../modules/core/gamephase/PhaseManager';
 import { MapRegister } from '../../../modules/world/MapRegister';
 
-import { Language as L } from '../../../utils/Language';
-import { HudDriver } from '../drivers/HudDriver';
-import { RoomInfo } from '../components/RoomInfo';
-import { PlayerList } from '../components/PlayerList';
-import { DebugInfo } from '../components/DebugInfo';
 import { FormatCode as FC } from '../../../utils/FormatCode';
+import { Language as L } from '../../../utils/Language';
+import { DebugInfo } from '../components/DebugInfo';
+import { PlayerList } from '../components/PlayerList';
+import { RoomInfo } from '../components/RoomInfo';
+import { HudDriver } from '../drivers/HudDriver';
 
 import { Config } from '../../../settings/config';
 

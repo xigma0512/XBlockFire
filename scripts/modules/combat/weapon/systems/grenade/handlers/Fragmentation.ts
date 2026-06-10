@@ -1,5 +1,5 @@
-import { EntityActor } from '../../../actors/Actor';
 import { ExplosionSystem } from '../../../../explosion/ExplosionSystem';
+import { EntityActor } from '../../../actors/Actor';
 import { GrenadeHandler } from './GrenadeHandler';
 
 import { system } from '@minecraft/server';

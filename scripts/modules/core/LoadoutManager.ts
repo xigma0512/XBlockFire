@@ -1,8 +1,8 @@
 import { ItemLockMode, Player } from '@minecraft/server';
 
-import { HotbarManager } from '../../ui/hotbar/Hotbar';
-import { ShopCatalogLookup, THROWABLE_TOTAL_LIMIT } from '../../ui/form/shop/ShopCatalog';
+import { ShopCatalogLookup } from '../../ui/form/shop/ShopCatalog';
 import { ArmorShopProduct, ArmorTier, ItemShopProduct, ShopProduct } from '../../ui/form/shop/ShopTypes';
+import { HotbarManager } from '../../ui/hotbar/Hotbar';
 import { ItemStackFactory } from '../../utils/ItemStackFactory';
 
 interface PlayerLoadout {

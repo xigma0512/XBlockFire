@@ -1,6 +1,6 @@
 import { gameroom } from '../../../modules/core/GameRoom';
-import { PhaseManager } from '../../../modules/core/gamephase/PhaseManager';
 import { DeathmatchState } from '../../../modules/core/gamemodes/Deathmatch/DeathmatchState';
+import { PhaseManager } from '../../../modules/core/gamephase/PhaseManager';
 import { MapRegister } from '../../../modules/world/MapRegister';
 
 import { MemberManager } from '../../../modules/player/MemberManager';
@@ -9,10 +9,10 @@ import { InGameHud } from '../../InGameHud';
 import { HudDriver } from '../drivers/HudDriver';
 import { UiStateManager } from '../state/UiState';
 
-import { MatchScore } from '../components/MatchScore';
-import { RoomInfo } from '../components/RoomInfo';
-import { PlayerList } from '../components/PlayerList';
 import { DebugInfo } from '../components/DebugInfo';
+import { MatchScore } from '../components/MatchScore';
+import { PlayerList } from '../components/PlayerList';
+import { RoomInfo } from '../components/RoomInfo';
 
 import { FormatCode as FC } from '../../../utils/FormatCode';
 

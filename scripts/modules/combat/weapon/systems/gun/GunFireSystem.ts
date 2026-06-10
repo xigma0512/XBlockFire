@@ -1,16 +1,16 @@
 import { ItemActor } from '../../actors/Actor';
-import { BulletSystem } from '../bullet/BulletSystem';
 import { ActorManager } from '../ActorManager';
+import { BulletSystem } from '../bullet/BulletSystem';
 import { GunAnimations } from './GunAnimations';
 import { GunRaiseSystem } from './GunRaiseSystem';
 import { gunRuntimeState } from './GunRuntimeState';
 
 import { FireModeEnum } from '../../WeaponEnum';
 
-import { getPlayerHandItem } from '../../../../../utils/others/Entity';
-import { entity_native_property } from '../../../../../utils/Property';
 import { gameEvents } from '../../../../../event/EventEmitter';
 import { Sound } from '../../../../../ui/media/Sound';
+import { getPlayerHandItem } from '../../../../../utils/others/Entity';
+import { entity_native_property } from '../../../../../utils/Property';
 
 import { Player, system, world } from '@minecraft/server';
 

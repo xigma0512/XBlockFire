@@ -1,4 +1,4 @@
-import { ArmorShopProduct, ArmorTier, ItemShopProduct, ShopCategoryId, ShopProduct } from './ShopTypes';
+import { ArmorShopProduct, ArmorTier, ShopCategoryId, ShopProduct } from './ShopTypes';
 
 import { AK47 } from '../../../modules/combat/weapon/actors/item/AK47';
 import { AWP } from '../../../modules/combat/weapon/actors/item/AWP';

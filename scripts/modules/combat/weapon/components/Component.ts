@@ -1,19 +1,19 @@
 import { GunComponent } from './gun/GunComponent';
-import { GunRecoilComponent } from './gun/GunRecoilComponent';
-import { GunFireComponent } from './gun/GunFireComponent';
-import { GunReloadComponent } from './gun/GunReloadComponent';
-import { GunOffsetComponent } from './gun/GunOffsetComponent';
-import { GunMagazineComponent } from './gun/GunMagazineComponent';
 import { GunDamageComponent } from './gun/GunDamageComponent';
+import { GunFireComponent } from './gun/GunFireComponent';
+import { GunMagazineComponent } from './gun/GunMagazineComponent';
+import { GunOffsetComponent } from './gun/GunOffsetComponent';
 import { GunRaiseComponent } from './gun/GunRaiseComponent';
+import { GunRecoilComponent } from './gun/GunRecoilComponent';
+import { GunReloadComponent } from './gun/GunReloadComponent';
 
 import { ItemComponent } from './ItemComponent';
 import { ItemWeightComponent } from './ItemWeightComponent';
 
 import { EntityComponent } from './EntityComponent';
 
-import { ProjectileReboundComponent } from './ProjectileReboundComponent';
 import { GrenadeComponent } from './GrenadeComponent';
+import { ProjectileReboundComponent } from './ProjectileReboundComponent';
 
 export type ComponentTypes = {
     gun: GunComponent;

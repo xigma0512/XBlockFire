@@ -1,12 +1,12 @@
 import { EquipmentSlot, ItemLockMode, Player } from '@minecraft/server';
-import { TeamEnum } from '../../../player/TeamEnum';
-import { MemberManager } from '../../../player/MemberManager';
-import { LoadoutManager } from '../../LoadoutManager';
-import { HotbarManager } from '../../../../ui/hotbar/Hotbar';
 import { ShopCatalogLookup } from '../../../../ui/form/shop/ShopCatalog';
 import { ItemShopProduct } from '../../../../ui/form/shop/ShopTypes';
+import { HotbarManager } from '../../../../ui/hotbar/Hotbar';
 import { ItemStackFactory } from '../../../../utils/ItemStackFactory';
 import { UnCommonItems } from '../../../combat/ItemManager';
+import { MemberManager } from '../../../player/MemberManager';
+import { TeamEnum } from '../../../player/TeamEnum';
+import { LoadoutManager } from '../../LoadoutManager';
 import { DeathmatchConfig } from './DeathmatchConfig';
 import { getDeathmatchThrowableRestocks } from './DeathmatchThrowableRestock';
 

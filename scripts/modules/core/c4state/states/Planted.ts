@@ -1,28 +1,26 @@
-import { PhaseManager } from '../../../../gamephase/PhaseManager';
-import { MemberManager } from '../../../../../player/MemberManager';
+import { ExplosionSystem } from '../../../combat/explosion/ExplosionSystem';
+import { MemberManager } from '../../../player/MemberManager';
+import { PhaseManager } from '../../gamephase/PhaseManager';
 import { C4Manager } from '../C4Manager';
-import { ExplosionSystem } from '../../../../../combat/explosion/ExplosionSystem';
 
+import { C4PlantedPhase } from '../../gamephase/bombplant/C4Planted';
+import { RoundEndPhase } from '../../gamephase/bombplant/RoundEnd';
 import { C4IdleState } from './Idle';
-import { C4PlantedPhase } from '../../phases/C4Planted';
-import { RoundEndPhase } from '../../phases/RoundEnd';
 
+import { TeamEnum } from '../../../player/TeamEnum';
+import { PhaseEnum as BombPlantPhaseEnum } from '../../gamephase/bombplant/BombPlantPhaseEnum';
 import { C4StateEnum } from '../C4StateEnum';
-import { TeamEnum } from '../../../../../player/TeamEnum';
-import { PhaseEnum as BombPlantPhaseEnum } from '../../phases/BombPlantPhaseEnum';
 
-import { set_variable, variable } from '../../../../../../utils/Variable';
-import { HudDriver } from '../../../../../../ui/hud/drivers/HudDriver';
-import { Sound } from '../../../../../../ui/media/Sound';
-import { UiStateManager } from '../../../../../../ui/hud/state/UiState';
-import { Language as L } from '../../../../../../utils/Language';
-import { FormatCode as FC } from '../../../../../../utils/FormatCode';
-import { progressBar } from '../../../../../../utils/others/Format';
+import { HudDriver } from '../../../../ui/hud/drivers/HudDriver';
+import { UiStateManager } from '../../../../ui/hud/state/UiState';
+import { Sound } from '../../../../ui/media/Sound';
+import { FormatCode as FC } from '../../../../utils/FormatCode';
+import { Language as L } from '../../../../utils/Language';
+import { progressBar } from '../../../../utils/others/Format';
+import { set_variable } from '../../../../utils/Variable';
 
 import { Vector3Utils } from '@minecraft/math';
-import { VanillaEntityIdentifier } from '@minecraft/server';
-import { DimensionLocation, Entity, Player, system, world } from '@minecraft/server';
-import { ItemUseBeforeEvent, ItemCompleteUseAfterEvent } from '@minecraft/server';
+import { DimensionLocation, Entity, ItemCompleteUseAfterEvent, ItemUseBeforeEvent, Player, system, VanillaEntityIdentifier, world } from '@minecraft/server';
 
 const DEFUSER_ITEM_ID = 'xblockfire:defuser';
 const PLANTED_C4_ENTITY_ID = 'xblockfire:planted_c4' as VanillaEntityIdentifier;

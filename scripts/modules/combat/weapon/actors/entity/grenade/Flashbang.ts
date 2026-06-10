@@ -1,6 +1,6 @@
-import { EntityActor } from '../../Actor';
-import { ProjectileReboundComponent } from '../../../components/ProjectileReboundComponent';
 import { entity_native_property } from '../../../../../../utils/Property';
+import { ProjectileReboundComponent } from '../../../components/ProjectileReboundComponent';
+import { EntityActor } from '../../Actor';
 
 import { Entity } from '@minecraft/server';
 import { GrenadeComponent } from '../../../components/GrenadeComponent';

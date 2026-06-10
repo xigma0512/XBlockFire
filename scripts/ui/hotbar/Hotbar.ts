@@ -1,6 +1,6 @@
+import { ItemActor } from '../../modules/combat/weapon/actors/Actor';
 import { Glock17 } from '../../modules/combat/weapon/actors/item/Glock17';
 import { ActorManager } from '../../modules/combat/weapon/systems/ActorManager';
-import { ItemActor } from '../../modules/combat/weapon/actors/Actor';
 import { ItemStackFactory } from '../../utils/ItemStackFactory';
 
 import { ItemLockMode, ItemStack, Player } from '@minecraft/server';

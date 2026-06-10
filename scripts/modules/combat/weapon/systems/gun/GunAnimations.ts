@@ -1,5 +1,5 @@
-import { ItemActor } from '../../actors/Actor';
 import { Sound } from '../../../../../ui/media/Sound';
+import { ItemActor } from '../../actors/Actor';
 
 import { Player, world } from '@minecraft/server';
 

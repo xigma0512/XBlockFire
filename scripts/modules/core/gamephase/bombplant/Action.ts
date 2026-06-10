@@ -1,19 +1,18 @@
-import { MemberManager } from '../../../../player/MemberManager';
-import { PhaseManager } from '../../../gamephase/PhaseManager';
+import { MemberManager } from '../../../player/MemberManager';
+import { PhaseManager } from '../PhaseManager';
 
+import { ActionView as ActionHud } from '../../../../ui/hud/views/ActionView';
 import { GameOverPhase } from './Gameover';
 import { RoundEndPhase } from './RoundEnd';
-import { ActionView as ActionHud } from '../../../../../ui/hud/views/ActionView';
 
+import { TeamEnum } from '../../../player/TeamEnum';
 import { PhaseEnum as BombPlantPhaseEnum } from './BombPlantPhaseEnum';
-import { TeamEnum } from '../../../../player/TeamEnum';
 
-import { Sound } from '../../../../../ui/media/Sound';
-import { UiStateManager } from '../../../../../ui/hud/state/UiState';
-import { set_variable } from '../../../../../utils/Variable';
-import { LanguageKey } from '../../../../../types/Language';
+import { UiStateManager } from '../../../../ui/hud/state/UiState';
+import { Sound } from '../../../../ui/media/Sound';
+import { set_variable } from '../../../../utils/Variable';
 
-import { BombPlantConfig } from '../BombPlantConfig';
+import { BombPlantConfig } from '../../gamemodes/BombPlant/BombPlantConfig';
 
 const THIRTY_SEC_LEFT_SOUND_ID = 'xblockfire.30_sec_left';
 

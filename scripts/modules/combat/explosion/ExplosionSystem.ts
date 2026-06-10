@@ -3,7 +3,6 @@ import { Dimension, Entity, EntityDamageCause, Player, Vector3 } from '@minecraf
 
 import { gameEvents } from '../../../event/EventEmitter';
 import { Sound } from '../../../ui/media/Sound';
-import { LoadoutManager } from '../../core/LoadoutManager';
 import { MemberManager } from '../../player/MemberManager';
 import { calculateExplosionDamage } from './ExplosionDamage';
 

@@ -16,4 +16,4 @@ function reset_variables() {
     variables.clear();
 }
 
-export { variable, set_variable, clear_variable, reset_variables };
+export { clear_variable, reset_variables, set_variable, variable };

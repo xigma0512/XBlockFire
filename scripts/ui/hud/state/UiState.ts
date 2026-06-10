@@ -1,11 +1,11 @@
 import { Player, system } from '@minecraft/server';
 import { PhaseManager } from '../../../modules/core/gamephase/PhaseManager';
-import { PhaseEnum as BombPlantPhaseEnum } from '../../../modules/core/gamemodes/BombPlant/phases/BombPlantPhaseEnum';
-import { DeathmatchPhaseEnum } from '../../../modules/core/gamemodes/Deathmatch/phases/DeathmatchPhaseEnum';
-import { TeamEnum } from '../../../modules/player/TeamEnum';
+import { PhaseEnum as BombPlantPhaseEnum } from '../../../modules/core/gamephase/bombplant/BombPlantPhaseEnum';
+import { DeathmatchPhaseEnum } from '../../../modules/core/gamephase/deathmatch/DeathmatchPhaseEnum';
 import { MemberManager } from '../../../modules/player/MemberManager';
-import { Language as L } from '../../../utils/Language';
+import { TeamEnum } from '../../../modules/player/TeamEnum';
 import { FormatCode as FC } from '../../../utils/FormatCode';
+import { Language as L } from '../../../utils/Language';
 
 export interface UiMessage {
     text: string;

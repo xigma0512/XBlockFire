@@ -1,6 +1,6 @@
 import { Player } from '@minecraft/server';
-import { TeamEnum } from '../../../player/TeamEnum';
 import { reset_variables, set_variable, variable } from '../../../../utils/Variable';
+import { TeamEnum } from '../../../player/TeamEnum';
 
 const ATTACKER_SCORE = 'attacker_score';
 const DEFENDER_SCORE = 'defender_score';

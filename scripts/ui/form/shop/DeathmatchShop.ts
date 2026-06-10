@@ -1,8 +1,8 @@
 import { Player, system } from '@minecraft/server';
 import { LoadoutError, LoadoutManager } from '../../../modules/core/LoadoutManager';
 import { DeathmatchLoadout } from '../../../modules/core/gamemodes/Deathmatch/DeathmatchLoadout';
-import { entity_dynamic_property } from '../../../utils/Property';
 import { FormatCode as FC } from '../../../utils/FormatCode';
+import { entity_dynamic_property } from '../../../utils/Property';
 import { Sound } from '../../media/Sound';
 import { TabbedActionForm } from '../common/TabbedActionForm';
 import { ShopCatalogLookup } from './ShopCatalog';

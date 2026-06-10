@@ -1,8 +1,7 @@
 import { entity_dynamic_property, set_entity_dynamic_property } from '../../../../utils/Property';
 import { ActorType } from '../actors/Actor';
 
-import { system, world } from '@minecraft/server';
-import { Entity, ItemStack } from '@minecraft/server';
+import { Entity, ItemStack, system, world } from '@minecraft/server';
 
 export class ActorManager {
     private static _entities = new Map<string, ActorType>();

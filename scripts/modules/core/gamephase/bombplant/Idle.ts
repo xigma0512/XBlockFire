@@ -1,25 +1,25 @@
-import { MemberManager } from '../../../../player/MemberManager';
-import { LoadoutManager } from '../../../LoadoutManager';
-import { PhaseManager } from '../../../gamephase/PhaseManager';
-import { HotbarManager, HotbarTemplate } from '../../../../../ui/hotbar/Hotbar';
-import { WaitingView as WaitingHud } from '../../../../../ui/hud/views/WaitingView';
+import { HotbarManager, HotbarTemplate } from '../../../../ui/hotbar/Hotbar';
+import { WaitingView as WaitingHud } from '../../../../ui/hud/views/WaitingView';
+import { MemberManager } from '../../../player/MemberManager';
+import { LoadoutManager } from '../../LoadoutManager';
+import { PhaseManager } from '../PhaseManager';
 
 import { BuyingPhase } from './Buying';
 
+import { TeamEnum } from '../../../player/TeamEnum';
 import { PhaseEnum as BombPlantPhaseEnum } from './BombPlantPhaseEnum';
-import { TeamEnum } from '../../../../player/TeamEnum';
 
-import { Language as L } from '../../../../../utils/Language';
-import { reset_variables, set_variable } from '../../../../../utils/Variable';
-import { ItemStackFactory } from '../../../../../utils/ItemStackFactory';
-import { Sound } from '../../../../../ui/media/Sound';
-import { FormatCode as FC } from '../../../../../utils/FormatCode';
+import { Sound } from '../../../../ui/media/Sound';
+import { FormatCode as FC } from '../../../../utils/FormatCode';
+import { ItemStackFactory } from '../../../../utils/ItemStackFactory';
+import { Language as L } from '../../../../utils/Language';
+import { reset_variables, set_variable } from '../../../../utils/Variable';
 
 import { ItemLockMode } from '@minecraft/server';
 
-import { Config } from '../../../../../settings/config';
+import { Config } from '../../../../settings/config';
 
-import { BombPlantConfig } from '../BombPlantConfig';
+import { BombPlantConfig } from '../../gamemodes/BombPlant/BombPlantConfig';
 
 const WAITING_COUNTDOWN_START_SOUND_ID = 'random.toast';
 const WAITING_COUNTDOWN_CANCEL_SOUND_ID = 'block.false_permissions';

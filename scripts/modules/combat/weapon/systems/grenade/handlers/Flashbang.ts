@@ -3,8 +3,8 @@ import { GrenadeHandler } from './GrenadeHandler';
 
 import { EntityActor } from '../../../actors/Actor';
 
-import { Player, system } from '@minecraft/server';
 import { Vector3Builder, Vector3Utils } from '@minecraft/math';
+import { Player, system } from '@minecraft/server';
 import { calculateFacingAngleDegrees } from '../FlashbangBlind';
 
 export class FlashbangHandler extends GrenadeHandler {

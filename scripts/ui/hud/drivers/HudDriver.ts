@@ -1,6 +1,6 @@
-import { Player, system, world, DisplaySlotId, ScoreboardObjective } from '@minecraft/server';
-import { Language as L } from '../../../utils/Language';
+import { DisplaySlotId, Player, ScoreboardObjective, system, world } from '@minecraft/server';
 import { FormatCode as FC } from '../../../utils/FormatCode';
+import { Language as L } from '../../../utils/Language';
 
 export interface HudMessage {
     text: string;

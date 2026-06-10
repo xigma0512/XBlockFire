@@ -1,5 +1,4 @@
 import { ItemStack } from '@minecraft/server';
-import { ItemActor } from '../Actor';
 import { ItemComponent } from '../../components/ItemComponent';
 import { ItemWeightComponent } from '../../components/ItemWeightComponent';
 import { GunComponent } from '../../components/gun/GunComponent';
@@ -11,6 +10,7 @@ import { GunRaiseComponent } from '../../components/gun/GunRaiseComponent';
 import { GunRecoilComponent } from '../../components/gun/GunRecoilComponent';
 import { GunReloadComponent } from '../../components/gun/GunReloadComponent';
 import { GunConfigType } from '../../config/gun/GunConfigType';
+import { ItemActor } from '../Actor';
 
 export abstract class GunActor extends ItemActor {
     constructor(config: GunConfigType) {

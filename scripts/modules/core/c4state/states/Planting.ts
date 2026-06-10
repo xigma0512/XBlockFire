@@ -1,18 +1,17 @@
-import { PhaseManager } from '../../../../gamephase/PhaseManager';
-import { MemberManager } from '../../../../../player/MemberManager';
+import { MemberManager } from '../../../player/MemberManager';
+import { PhaseManager } from '../../gamephase/PhaseManager';
 import { C4Manager } from '../C4Manager';
 
-import { C4PlantedState } from './Planted';
 import { C4IdleState } from './Idle';
+import { C4PlantedState } from './Planted';
 
+import { HudDriver } from '../../../../ui/hud/drivers/HudDriver';
+import { Sound } from '../../../../ui/media/Sound';
+import { progressBar } from '../../../../utils/others/Format';
+import { PhaseEnum as BombPlantPhaseEnum } from '../../gamephase/bombplant/BombPlantPhaseEnum';
 import { C4StateEnum } from '../C4StateEnum';
-import { PhaseEnum as BombPlantPhaseEnum } from '../../phases/BombPlantPhaseEnum';
-import { HudDriver } from '../../../../../../ui/hud/drivers/HudDriver';
-import { Sound } from '../../../../../../ui/media/Sound';
-import { progressBar } from '../../../../../../utils/others/Format';
 
-import { ItemCompleteUseAfterEvent, ItemStopUseAfterEvent } from '@minecraft/server';
-import { Player, world } from '@minecraft/server';
+import { ItemCompleteUseAfterEvent, ItemStopUseAfterEvent, Player, world } from '@minecraft/server';
 
 const C4_ITEM_ID = 'xblockfire:c4';
 const C4_PLANTING_TIME = 4 * 20;

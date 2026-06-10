@@ -1,5 +1,4 @@
-import { system } from '@minecraft/server';
-import { CustomCommandRegistry, CustomCommand, CustomCommandOrigin, CustomCommandResult } from '@minecraft/server';
+import { CustomCommand, CustomCommandOrigin, CustomCommandRegistry, CustomCommandResult, system } from '@minecraft/server';
 
 import * as RoomCommand from './handlers/Rooms';
 

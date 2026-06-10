@@ -1,31 +1,31 @@
 import { GameMode, InputPermissionCategory, Player, PlayerLeaveAfterEvent, system, world } from '@minecraft/server';
 
-import { gameroom } from '../../../GameRoom';
-import { GameModeEnum } from '../../../GameModeEnum';
-import { PhaseManager } from '../../../gamephase/PhaseManager';
+import { GameModeEnum } from '../../GameModeEnum';
+import { gameroom } from '../../GameRoom';
+import { PhaseManager } from '../PhaseManager';
 
+import { DeathmatchConfig } from '../../gamemodes/Deathmatch/DeathmatchConfig';
+import { DeathmatchLoadout } from '../../gamemodes/Deathmatch/DeathmatchLoadout';
+import { DeathmatchSpawn } from '../../gamemodes/Deathmatch/DeathmatchSpawn';
+import { DeathmatchState } from '../../gamemodes/Deathmatch/DeathmatchState';
 import { DeathmatchPhaseEnum } from './DeathmatchPhaseEnum';
 import { DeathmatchGameOverPhase } from './Gameover';
-import { DeathmatchConfig } from '../DeathmatchConfig';
-import { DeathmatchState } from '../DeathmatchState';
-import { DeathmatchSpawn } from '../DeathmatchSpawn';
-import { DeathmatchLoadout } from '../DeathmatchLoadout';
 
-import { MemberManager } from '../../../../player/MemberManager';
-import { TeamEnum } from '../../../../player/TeamEnum';
-import { InvincibilitySystem } from '../../../../combat/InvincibilitySystem';
+import { InvincibilitySystem } from '../../../combat/InvincibilitySystem';
+import { MemberManager } from '../../../player/MemberManager';
+import { TeamEnum } from '../../../player/TeamEnum';
 
-import { DeathmatchActionView } from '../../../../../ui/hud/views/DeathmatchActionView';
-import { HudDriver } from '../../../../../ui/hud/drivers/HudDriver';
+import { HudDriver } from '../../../../ui/hud/drivers/HudDriver';
+import { DeathmatchActionView } from '../../../../ui/hud/views/DeathmatchActionView';
 
-import { Language as L } from '../../../../../utils/Language';
-import { Sound } from '../../../../../ui/media/Sound';
-import { FormatCode as FC } from '../../../../../utils/FormatCode';
+import { Sound } from '../../../../ui/media/Sound';
+import { FormatCode as FC } from '../../../../utils/FormatCode';
+import { Language as L } from '../../../../utils/Language';
 import {
-    set_entity_dynamic_property,
     entity_dynamic_property,
+    set_entity_dynamic_property,
     set_entity_native_property,
-} from '../../../../../utils/Property';
+} from '../../../../utils/Property';
 
 interface RespawnTask {
     countdownTaskId: number;

@@ -1,7 +1,7 @@
 import { GameModeEnum } from '../GameModeEnum';
-import { IGameMode } from './IGameMode';
 import { BombPlantMode } from './BombPlant/BombPlantMode';
 import { DeathmatchMode } from './Deathmatch/DeathmatchMode';
+import { IGameMode } from './IGameMode';
 
 export class GameModeRegistry {
     private static modes = new Map<GameModeEnum, IGameMode>([

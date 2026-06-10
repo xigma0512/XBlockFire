@@ -1,15 +1,15 @@
-import { ActorManager } from '../ActorManager';
-import { ItemActor } from '../../actors/Actor';
-import { set_entity_native_property, entity_native_property } from '../../../../../utils/Property';
+import { entity_native_property, set_entity_native_property } from '../../../../../utils/Property';
 import { getPlayerHandItem } from '../../../../../utils/others/Entity';
 import { progressBar } from '../../../../../utils/others/Format';
+import { ItemActor } from '../../actors/Actor';
+import { ActorManager } from '../ActorManager';
 
 import { Player, system, world } from '@minecraft/server';
+import { GameModeEnum } from '../../../../core/GameModeEnum';
+import { gameroom } from '../../../../core/GameRoom';
 import { GunAnimations } from './GunAnimations';
 import { GunRaiseSystem } from './GunRaiseSystem';
 import { gunRuntimeState } from './GunRuntimeState';
-import { gameroom } from '../../../../core/GameRoom';
-import { GameModeEnum } from '../../../../core/GameModeEnum';
 
 class GunReloadSystem {
     private player: Player;

@@ -1,10 +1,9 @@
 import { system, world } from '@minecraft/server';
 
-import { ActorManager } from '../../../modules/combat/weapon/systems/ActorManager';
-import { GunRaiseSystem } from '../../../modules/combat/weapon/systems/gun/GunRaiseSystem';
 import { InvincibilitySystem } from '../../../modules/combat/InvincibilitySystem';
-import { gameroom } from '../../../modules/core/GameRoom';
+import { ActorManager } from '../../../modules/combat/weapon/systems/ActorManager';
 import { GameModeEnum } from '../../../modules/core/GameModeEnum';
+import { gameroom } from '../../../modules/core/GameRoom';
 
 import { InGameHud } from '../../InGameHud';
 import { HudDriver } from '../drivers/HudDriver';

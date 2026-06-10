@@ -1,18 +1,16 @@
-import { MemberManager } from '../../../../../player/MemberManager';
+import { MemberManager } from '../../../player/MemberManager';
 import { C4Manager } from '../C4Manager';
 
 import { C4IdleState } from './Idle';
 
+import { TeamEnum } from '../../../player/TeamEnum';
 import { C4StateEnum } from '../C4StateEnum';
-import { TeamEnum } from '../../../../../player/TeamEnum';
 
-import { HudDriver } from '../../../../../../ui/hud/drivers/HudDriver';
-import { Language as L } from '../../../../../../utils/Language';
-import { FormatCode as FC } from '../../../../../../utils/FormatCode';
+import { HudDriver } from '../../../../ui/hud/drivers/HudDriver';
+import { FormatCode as FC } from '../../../../utils/FormatCode';
+import { Language as L } from '../../../../utils/Language';
 
-import { Entity, ItemStack, Player, world } from '@minecraft/server';
-import { EntityHitEntityAfterEvent } from '@minecraft/server';
-import { VanillaEntityIdentifier, Vector3 } from '@minecraft/server';
+import { Entity, EntityHitEntityAfterEvent, ItemStack, Player, VanillaEntityIdentifier, Vector3, world } from '@minecraft/server';
 
 const DROPPED_C4_ENTITY_ID = 'xblockfire:dropped_c4' as VanillaEntityIdentifier;
 const C4_ITEM_ID = 'xblockfire:c4';

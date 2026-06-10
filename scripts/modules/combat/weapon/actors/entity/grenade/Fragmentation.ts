@@ -1,10 +1,10 @@
 import { Entity } from '@minecraft/server';
 
 import { entity_native_property } from '../../../../../../utils/Property';
-import { EntityActor } from '../../Actor';
 import { GrenadeComponent } from '../../../components/GrenadeComponent';
 import { ProjectileReboundComponent } from '../../../components/ProjectileReboundComponent';
 import { GrenadeTypeEnum } from '../../../WeaponEnum';
+import { EntityActor } from '../../Actor';
 
 export class Fragmentation extends EntityActor {
     constructor(entity: Entity) {

@@ -7,9 +7,9 @@ import { GameModeEnum } from '../../modules/core/GameModeEnum';
 import { FormatCode as FC } from '../../utils/FormatCode';
 
 import { TeamEnum } from '../../modules/player/TeamEnum';
+import { MapRegister } from '../../modules/world/MapRegister';
 import { HudDriver } from '../../ui/hud/drivers/HudDriver';
 import { Language as L } from '../../utils/Language';
-import { MapRegister } from '../../modules/world/MapRegister';
 
 import { CommandPermissionLevel, CustomCommandOrigin, CustomCommandParamType, Player } from '@minecraft/server';
 import { CommandRegistry } from '../CommandRegistry';

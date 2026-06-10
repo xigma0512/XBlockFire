@@ -79,12 +79,5 @@ function set_entity_native_property<T extends EntityNativePropertyId>(
 }
 
 export {
-    world_property,
-    set_world_property,
-    entity_dynamic_property,
-    set_entity_dynamic_property,
-    scoreboard_property,
-    set_scoreboard_property,
-    entity_native_property,
-    set_entity_native_property,
+    entity_dynamic_property, entity_native_property, scoreboard_property, set_entity_dynamic_property, set_entity_native_property, set_scoreboard_property, set_world_property, world_property
 };

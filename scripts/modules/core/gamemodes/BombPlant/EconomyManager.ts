@@ -1,7 +1,7 @@
 import { Player } from '@minecraft/server';
 import { ShopCatalogLookup, THROWABLE_TOTAL_LIMIT } from '../../../../ui/form/shop/ShopCatalog';
 import { ArmorTier, ShopProduct } from '../../../../ui/form/shop/ShopTypes';
-import { LoadoutManager, LoadoutError } from '../../LoadoutManager';
+import { LoadoutError, LoadoutManager } from '../../LoadoutManager';
 
 export class EconomyManager {
     static getUsedPoints(player: Player) {

@@ -1,6 +1,5 @@
 import { FormatCode as FC } from '../../../utils/FormatCode';
 import { Language as L } from '../../../utils/Language';
-import { variable } from '../../../utils/Variable';
 
 export class RoomInfo {
     /**

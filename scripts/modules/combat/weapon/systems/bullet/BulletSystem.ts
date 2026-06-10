@@ -1,9 +1,9 @@
-import { ItemActor } from '../../actors/Actor';
-import { OffsetCalculator } from './OffsetCaculator';
-import { getPlayerGunOffset } from '../gun/GunOffsetSystem';
-import { DamageSystem } from './BulletDamage';
-import { BulletAnimation } from './BulletAnimation';
 import { InvincibilitySystem } from '../../../InvincibilitySystem';
+import { ItemActor } from '../../actors/Actor';
+import { getPlayerGunOffset } from '../gun/GunOffsetSystem';
+import { BulletAnimation } from './BulletAnimation';
+import { DamageSystem } from './BulletDamage';
+import { OffsetCalculator } from './OffsetCaculator';
 
 import { entity_dynamic_property } from '../../../../../utils/Property';
 

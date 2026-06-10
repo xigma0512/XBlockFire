@@ -1,7 +1,7 @@
-import { GameModeEnum } from './GameModeEnum';
-import { IGameMode } from './gamemodes/IGameMode';
-import { GameModeRegistry } from './gamemodes/GameModeRegistry';
 import { system } from '@minecraft/server';
+import { GameModeEnum } from './GameModeEnum';
+import { GameModeRegistry } from './gamemodes/GameModeRegistry';
+import { IGameMode } from './gamemodes/IGameMode';
 
 class GameRoom {
     static gameroom: GameRoom;

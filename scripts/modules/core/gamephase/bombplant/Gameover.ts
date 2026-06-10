@@ -1,23 +1,22 @@
-import { PhaseManager } from '../../../gamephase/PhaseManager';
-import { MemberManager } from '../../../../player/MemberManager';
-import { C4Manager } from '../c4state/C4Manager';
+import { MemberManager } from '../../../player/MemberManager';
+import { C4Manager } from '../../c4state/C4Manager';
+import { PhaseManager } from '../PhaseManager';
 
-import { ActionView as ActionHud } from '../../../../../ui/hud/views/ActionView';
-import { C4IdleState } from '../c4state/states/Idle';
+import { ActionView as ActionHud } from '../../../../ui/hud/views/ActionView';
+import { C4IdleState } from '../../c4state/states/Idle';
 import { IdlePhase } from './Idle';
 
-import { TeamEnum } from '../../../../player/TeamEnum';
+import { TeamEnum } from '../../../player/TeamEnum';
 import { PhaseEnum as BombPlantPhaseEnum } from './BombPlantPhaseEnum';
 
-import { HudDriver } from '../../../../../ui/hud/drivers/HudDriver';
-import { Sound } from '../../../../../ui/media/Sound';
-import { UiStateManager } from '../../../../../ui/hud/state/UiState';
-import { Language as L } from '../../../../../utils/Language';
-import { variable } from '../../../../../utils/Variable';
+import { HudDriver } from '../../../../ui/hud/drivers/HudDriver';
+import { UiStateManager } from '../../../../ui/hud/state/UiState';
+import { Sound } from '../../../../ui/media/Sound';
+import { variable } from '../../../../utils/Variable';
 
 import { GameMode, world } from '@minecraft/server';
 
-import { BombPlantConfig } from '../BombPlantConfig';
+import { BombPlantConfig } from '../../gamemodes/BombPlant/BombPlantConfig';
 
 const ROUND_END_SOUND_ID = 'mob.wolf.whine';
 

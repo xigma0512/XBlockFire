@@ -1,14 +1,14 @@
-import { MemberManager } from '../../../../player/MemberManager';
-import { LoadoutManager } from '../../../LoadoutManager';
-import { PhaseManager } from '../../../gamephase/PhaseManager';
-import { WaitingView as WaitingHud } from '../../../../../ui/hud/views/WaitingView';
-import { DeathmatchPreStartPhase } from './PreStart';
+import { Config } from '../../../../settings/config';
+import { WaitingView as WaitingHud } from '../../../../ui/hud/views/WaitingView';
+import { Sound } from '../../../../ui/media/Sound';
+import { Language as L } from '../../../../utils/Language';
+import { MemberManager } from '../../../player/MemberManager';
+import { TeamEnum } from '../../../player/TeamEnum';
+import { DeathmatchState } from '../../gamemodes/Deathmatch/DeathmatchState';
+import { LoadoutManager } from '../../LoadoutManager';
+import { PhaseManager } from '../PhaseManager';
 import { DeathmatchPhaseEnum } from './DeathmatchPhaseEnum';
-import { TeamEnum } from '../../../../player/TeamEnum';
-import { Language as L } from '../../../../../utils/Language';
-import { Sound } from '../../../../../ui/media/Sound';
-import { Config } from '../../../../../settings/config';
-import { DeathmatchState } from '../DeathmatchState';
+import { DeathmatchPreStartPhase } from './PreStart';
 
 const COUNTDOWN_TIME = 20 * 20;
 const WAITING_COUNTDOWN_START_SOUND_ID = 'random.toast';

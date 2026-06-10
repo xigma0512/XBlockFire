@@ -1,5 +1,5 @@
-import { EntityActor } from '../../../actors/Actor';
 import { Sound } from '../../../../../../ui/media/Sound';
+import { EntityActor } from '../../../actors/Actor';
 import { GrenadeSystem } from '../GrenadeSystem';
 
 import { system } from '@minecraft/server';

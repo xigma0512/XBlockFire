@@ -1,22 +1,22 @@
-import { GameModeEnum } from '../../GameModeEnum';
-import { IGameMode } from '../IGameMode';
-import { IdlePhase } from './phases/Idle';
-import { PreRoundStartPhase } from './phases/PreRoundStart';
-import { AlliesMarker } from '../../../player/AlliesMarker';
-import { system, Player, GameMode, ItemStack } from '@minecraft/server';
-import { C4Manager } from './c4state/C4Manager';
-import { C4DroppedState } from './c4state/states/Dropped';
-import { EquipmentPointManager } from './EquipmentPointManager';
-import { TeamEnum } from '../../../player/TeamEnum';
-import { MemberManager } from '../../../player/MemberManager';
-import { C4StateEnum } from './c4state/C4StateEnum';
 import { Vector3Utils } from '@minecraft/math';
-import { PhaseManager } from '../../gamephase/PhaseManager';
-import { PhaseEnum as BombPlantPhaseEnum } from './phases/BombPlantPhaseEnum';
+import { GameMode, ItemStack, Player, system } from '@minecraft/server';
 import { Shop } from '../../../../ui/form/shop/BombPlantShop';
-import { Language as L } from '../../../../utils/Language';
 import { FormatCode as FC } from '../../../../utils/FormatCode';
+import { Language as L } from '../../../../utils/Language';
+import { AlliesMarker } from '../../../player/AlliesMarker';
+import { MemberManager } from '../../../player/MemberManager';
+import { TeamEnum } from '../../../player/TeamEnum';
+import { GameModeEnum } from '../../GameModeEnum';
 import { LoadoutManager } from '../../LoadoutManager';
+import { C4Manager } from '../../c4state/C4Manager';
+import { C4StateEnum } from '../../c4state/C4StateEnum';
+import { C4DroppedState } from '../../c4state/states/Dropped';
+import { PhaseManager } from '../../gamephase/PhaseManager';
+import { PhaseEnum as BombPlantPhaseEnum } from '../../gamephase/bombplant/BombPlantPhaseEnum';
+import { IdlePhase } from '../../gamephase/bombplant/Idle';
+import { PreRoundStartPhase } from '../../gamephase/bombplant/PreRoundStart';
+import { IGameMode } from '../IGameMode';
+import { EquipmentPointManager } from './EquipmentPointManager';
 
 export class BombPlantMode implements IGameMode {
     readonly modeId = GameModeEnum.BombPlant;

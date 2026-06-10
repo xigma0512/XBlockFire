@@ -1,22 +1,21 @@
 import { GameMode, world } from '@minecraft/server';
 
-import { PhaseManager } from '../../../gamephase/PhaseManager';
+import { PhaseManager } from '../PhaseManager';
 
+import { DeathmatchConfig } from '../../gamemodes/Deathmatch/DeathmatchConfig';
+import { DeathmatchState } from '../../gamemodes/Deathmatch/DeathmatchState';
 import { DeathmatchPhaseEnum } from './DeathmatchPhaseEnum';
 import { DeathmatchIdlePhase } from './Idle';
-import { DeathmatchConfig } from '../DeathmatchConfig';
-import { DeathmatchState } from '../DeathmatchState';
 
-import { MemberManager } from '../../../../player/MemberManager';
-import { TeamEnum } from '../../../../player/TeamEnum';
+import { MemberManager } from '../../../player/MemberManager';
+import { TeamEnum } from '../../../player/TeamEnum';
 
-import { DeathmatchActionView } from '../../../../../ui/hud/views/DeathmatchActionView';
-import { HudDriver } from '../../../../../ui/hud/drivers/HudDriver';
-import { UiStateManager } from '../../../../../ui/hud/state/UiState';
-import { Sound } from '../../../../../ui/media/Sound';
+import { HudDriver } from '../../../../ui/hud/drivers/HudDriver';
+import { UiStateManager } from '../../../../ui/hud/state/UiState';
+import { DeathmatchActionView } from '../../../../ui/hud/views/DeathmatchActionView';
+import { Sound } from '../../../../ui/media/Sound';
 
-import { Language as L } from '../../../../../utils/Language';
-import { set_entity_dynamic_property, set_entity_native_property } from '../../../../../utils/Property';
+import { set_entity_dynamic_property, set_entity_native_property } from '../../../../utils/Property';
 
 const ROUND_END_SOUND_ID = 'mob.wolf.whine';
 const ROUND_WIN_SOUND_ID = 'random.levelup';

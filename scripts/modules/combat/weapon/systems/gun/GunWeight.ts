@@ -1,4 +1,4 @@
-import { system, world } from '@minecraft/server';
+import { world } from '@minecraft/server';
 import { ActorManager } from '../ActorManager';
 
 world.afterEvents.playerHotbarSelectedSlotChange.subscribe((ev) => {

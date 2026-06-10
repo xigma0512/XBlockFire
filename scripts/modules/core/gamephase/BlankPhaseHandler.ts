@@ -1,6 +1,6 @@
+import { InGameHud } from '../../../ui/InGameHud';
 import { gameroom } from '../GameRoom';
 import { PhaseManager } from './PhaseManager';
-import { InGameHud } from '../../../ui/InGameHud';
 
 export class BlankPhase implements IPhaseHandler {
     readonly phaseId = 'blank';

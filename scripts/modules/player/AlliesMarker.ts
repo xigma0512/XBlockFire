@@ -1,5 +1,5 @@
-import { MemberManager } from './MemberManager';
 import { gameroom } from '../core/GameRoom';
+import { MemberManager } from './MemberManager';
 
 import { Vector3Builder, Vector3Utils } from '@minecraft/math';
 import { Direction, MolangVariableMap, Player, RGBA } from '@minecraft/server';

@@ -1,16 +1,15 @@
-import { MemberManager } from './MemberManager';
 import { gameEvents } from '../../event/EventEmitter';
+import { MemberManager } from './MemberManager';
 
 import { TeamEnum } from './TeamEnum';
 
 import { HudDriver } from '../../ui/hud/drivers/HudDriver';
 import { Sound } from '../../ui/media/Sound';
-import { Language as L } from '../../utils/Language';
 import { FormatCode as FC } from '../../utils/FormatCode';
+import { Language as L } from '../../utils/Language';
 import { set_entity_dynamic_property } from '../../utils/Property';
 import { set_variable, variable } from '../../utils/Variable';
 
-import { GameMode } from '@minecraft/server';
 import { Player, system, world } from '@minecraft/server';
 
 import { gameroom } from '../core/GameRoom';

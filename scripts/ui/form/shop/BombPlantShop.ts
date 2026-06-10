@@ -1,6 +1,6 @@
+import { EconomyManager } from '../../../modules/core/gamemodes/BombPlant/EconomyManager';
 import { EquipmentPointManager } from '../../../modules/core/gamemodes/BombPlant/EquipmentPointManager';
 import { LoadoutError, LoadoutManager } from '../../../modules/core/LoadoutManager';
-import { EconomyManager } from '../../../modules/core/gamemodes/BombPlant/EconomyManager';
 
 import { FormatCode as FC } from '../../../utils/FormatCode';
 import { Language as L } from '../../../utils/Language';

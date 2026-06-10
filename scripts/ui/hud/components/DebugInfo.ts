@@ -1,6 +1,6 @@
-import { Performance } from '../../../utils/others/Performance';
-import { FormatCode as FC } from '../../../utils/FormatCode';
 import { Config } from '../../../settings/config';
+import { FormatCode as FC } from '../../../utils/FormatCode';
+import { Performance } from '../../../utils/others/Performance';
 
 export class DebugInfo {
     /**

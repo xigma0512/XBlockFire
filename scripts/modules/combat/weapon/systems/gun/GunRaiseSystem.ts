@@ -1,12 +1,11 @@
+import { set_entity_native_property } from '../../../../../utils/Property';
 import { ItemActor } from '../../actors/Actor';
 import { ActorManager } from '../ActorManager';
-import { progressBar } from '../../../../../utils/others/Format';
-import { set_entity_native_property } from '../../../../../utils/Property';
 import { gunRuntimeState } from './GunRuntimeState';
 
-import { Player, system, world } from '@minecraft/server';
-import { GunAnimations } from './GunAnimations';
+import { Player, world } from '@minecraft/server';
 import { GunFireCooldownView } from '../../../../../ui/hud/views/GunFireCooldownView';
+import { GunAnimations } from './GunAnimations';
 
 export const GUN_RAISE_COOLDOWN_CATEGORY = 'xblockfire:raise_gun';
 const DEFAULT_RAISE_TIME = 8;

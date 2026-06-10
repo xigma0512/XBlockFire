@@ -1,9 +1,9 @@
 import { Player } from '@minecraft/server';
-import { TeamEnum } from '../../../modules/player/TeamEnum';
 import { MemberManager } from '../../../modules/player/MemberManager';
+import { TeamEnum } from '../../../modules/player/TeamEnum';
 import { FormatCode as FC } from '../../../utils/FormatCode';
-import { variable } from '../../../utils/Variable';
 import { Language as L } from '../../../utils/Language';
+import { variable } from '../../../utils/Variable';
 
 export class PlayerList {
     /**

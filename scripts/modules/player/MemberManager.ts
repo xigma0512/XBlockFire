@@ -1,9 +1,9 @@
 import { Player, system, world } from '@minecraft/server';
-import { TeamEnum } from './TeamEnum';
 import { HudDriver } from '../../ui/hud/drivers/HudDriver';
 import { Sound } from '../../ui/media/Sound';
-import { Language as L } from '../../utils/Language';
 import { FormatCode as FC } from '../../utils/FormatCode';
+import { Language as L } from '../../utils/Language';
+import { TeamEnum } from './TeamEnum';
 
 const MEMBER_JOIN_SOUND_ID = 'random.pop';
 const MEMBER_LEAVE_SOUND_ID = 'random.pop2';

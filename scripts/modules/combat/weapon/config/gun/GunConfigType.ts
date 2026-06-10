@@ -1,6 +1,6 @@
+import { ItemLockMode } from '@minecraft/server';
 import { FireModeEnum, GunTypeEnum } from '../../WeaponEnum';
 import { ComponentTypes } from '../../components/Component';
-import { ItemLockMode } from '@minecraft/server';
 
 type DamageTable = {
     head: number;

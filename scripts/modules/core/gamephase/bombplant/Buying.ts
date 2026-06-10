@@ -1,20 +1,20 @@
-import { MemberManager } from '../../../../player/MemberManager';
-import { PhaseManager } from '../../../gamephase/PhaseManager';
-import { ActionView as ActionHud } from '../../../../../ui/hud/views/ActionView';
-import { HotbarManager } from '../../../../../ui/hotbar/Hotbar';
+import { HotbarManager } from '../../../../ui/hotbar/Hotbar';
+import { ActionView as ActionHud } from '../../../../ui/hud/views/ActionView';
+import { MemberManager } from '../../../player/MemberManager';
+import { PhaseManager } from '../PhaseManager';
 
 import { ActionPhase } from './Action';
 
 import { PhaseEnum as BombPlantPhaseEnum } from './BombPlantPhaseEnum';
 
-import { Sound } from '../../../../../ui/media/Sound';
-import { set_entity_native_property } from '../../../../../utils/Property';
-import { ItemStackFactory } from '../../../../../utils/ItemStackFactory';
+import { Sound } from '../../../../ui/media/Sound';
+import { ItemStackFactory } from '../../../../utils/ItemStackFactory';
+import { set_entity_native_property } from '../../../../utils/Property';
 
 import { InputPermissionCategory, ItemLockMode } from '@minecraft/server';
 import { uiManager } from '@minecraft/server-ui';
 
-import { BombPlantConfig } from '../BombPlantConfig';
+import { BombPlantConfig } from '../../gamemodes/BombPlant/BombPlantConfig';
 
 const START_ROUND_SOUND_ID = 'mob.villager.idle';
 const ACTION_START_SOUND_ID = 'mob.blaze.shoot';

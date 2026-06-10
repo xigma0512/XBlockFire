@@ -1,8 +1,8 @@
+import './InvincibilitySystem';
+import './weapon/systems/bullet/BulletSystem';
+import './weapon/systems/grenade/GrenadeBounce';
+import './weapon/systems/grenade/GrenadeSystem';
 import './weapon/systems/gun/GunFireSystem';
 import './weapon/systems/gun/GunRaiseSystem';
 import './weapon/systems/gun/GunReloadSystem';
 import './weapon/systems/gun/GunWeight';
-import './weapon/systems/bullet/BulletSystem';
-import './weapon/systems/grenade/GrenadeSystem';
-import './weapon/systems/grenade/GrenadeBounce';
-import './InvincibilitySystem';

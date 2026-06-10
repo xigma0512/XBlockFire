@@ -1,6 +1,6 @@
-import { EntityActor } from '../../Actor';
-import { ProjectileReboundComponent } from '../../../components/ProjectileReboundComponent';
 import { entity_native_property } from '../../../../../../utils/Property';
+import { ProjectileReboundComponent } from '../../../components/ProjectileReboundComponent';
+import { EntityActor } from '../../Actor';
 
 import { GrenadeComponent } from '../../../components/GrenadeComponent';
 import { GrenadeTypeEnum } from '../../../WeaponEnum';

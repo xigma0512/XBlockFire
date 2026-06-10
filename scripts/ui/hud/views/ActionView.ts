@@ -1,23 +1,23 @@
 import { PhaseManager } from '../../../modules/core/gamephase/PhaseManager';
+import { gameroom } from '../../../modules/core/GameRoom';
 import { MemberManager } from '../../../modules/player/MemberManager';
 import { TeamEnum } from '../../../modules/player/TeamEnum';
-import { gameroom } from '../../../modules/core/GameRoom';
 import { MapRegister } from '../../../modules/world/MapRegister';
 
+import { DebugInfo } from '../components/DebugInfo';
+import { MatchScore } from '../components/MatchScore';
+import { PlayerList } from '../components/PlayerList';
+import { RoomInfo } from '../components/RoomInfo';
+import { SurvivalIcons } from '../components/SurvivalIcons';
 import { HudDriver } from '../drivers/HudDriver';
 import { UiStateManager } from '../state/UiState';
-import { SurvivalIcons } from '../components/SurvivalIcons';
-import { MatchScore } from '../components/MatchScore';
-import { RoomInfo } from '../components/RoomInfo';
-import { PlayerList } from '../components/PlayerList';
-import { DebugInfo } from '../components/DebugInfo';
 
 import { variable } from '../../../utils/Variable';
 
-import { InGameHud } from '../../InGameHud';
-import { PhaseEnum } from '../../../modules/core/gamemodes/BombPlant/phases/BombPlantPhaseEnum';
-import { Language } from '../../../utils/Language';
+import { PhaseEnum } from '../../../modules/core/gamephase/bombplant/BombPlantPhaseEnum';
 import { FormatCode as FC } from '../../../utils/FormatCode';
+import { Language } from '../../../utils/Language';
+import { InGameHud } from '../../InGameHud';
 
 export class ActionView implements InGameHud {
     update() {

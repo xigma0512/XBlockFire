@@ -1,21 +1,19 @@
-import { PhaseManager } from '../../../gamephase/PhaseManager';
-import { MemberManager } from '../../../../player/MemberManager';
-import { ActionView as ActionHud } from '../../../../../ui/hud/views/ActionView';
+import { ActionView as ActionHud } from '../../../../ui/hud/views/ActionView';
+import { MemberManager } from '../../../player/MemberManager';
+import { PhaseManager } from '../PhaseManager';
 
-import { TeamEnum } from '../../../../player/TeamEnum';
+import { TeamEnum } from '../../../player/TeamEnum';
 import { PhaseEnum } from './BombPlantPhaseEnum';
 
-import { set_variable } from '../../../../../utils/Variable';
-import { HudDriver } from '../../../../../ui/hud/drivers/HudDriver';
-import { UiStateManager } from '../../../../../ui/hud/state/UiState';
-import { Language as L } from '../../../../../utils/Language';
-import { LanguageKey } from '../../../../../types/Language';
-import { FormatCode as FC } from '../../../../../utils/FormatCode';
+import { UiStateManager } from '../../../../ui/hud/state/UiState';
+import { FormatCode as FC } from '../../../../utils/FormatCode';
+import { Language as L } from '../../../../utils/Language';
+import { set_variable } from '../../../../utils/Variable';
 
-import { RoundEndPhase } from './RoundEnd';
 import { GameOverPhase } from './Gameover';
+import { RoundEndPhase } from './RoundEnd';
 
-import { BombPlantConfig } from '../BombPlantConfig';
+import { BombPlantConfig } from '../../gamemodes/BombPlant/BombPlantConfig';
 
 const enum EndReasonEnum {
     'Time-up' = 1,

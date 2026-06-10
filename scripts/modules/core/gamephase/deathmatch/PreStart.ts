@@ -1,21 +1,20 @@
 import { GameMode, InputPermissionCategory } from '@minecraft/server';
 
-import { gameroom } from '../../../GameRoom';
-import { PhaseManager } from '../../../gamephase/PhaseManager';
+import { gameroom } from '../../GameRoom';
+import { PhaseManager } from '../PhaseManager';
 
-import { DeathmatchPhaseEnum } from './DeathmatchPhaseEnum';
+import { DeathmatchSpawn } from '../../gamemodes/Deathmatch/DeathmatchSpawn';
 import { DeathmatchActionPhase } from './Action';
-import { DeathmatchSpawn } from '../DeathmatchSpawn';
-import { DeathmatchLoadout } from '../DeathmatchLoadout';
+import { DeathmatchPhaseEnum } from './DeathmatchPhaseEnum';
 
-import { MemberManager } from '../../../../player/MemberManager';
-import { TeamEnum } from '../../../../player/TeamEnum';
-import { InvincibilitySystem } from '../../../../combat/InvincibilitySystem';
+import { InvincibilitySystem } from '../../../combat/InvincibilitySystem';
+import { MemberManager } from '../../../player/MemberManager';
+import { TeamEnum } from '../../../player/TeamEnum';
 
-import { DeathmatchActionView } from '../../../../../ui/hud/views/DeathmatchActionView';
-import { Sound } from '../../../../../ui/media/Sound';
+import { DeathmatchActionView } from '../../../../ui/hud/views/DeathmatchActionView';
+import { Sound } from '../../../../ui/media/Sound';
 
-import { set_entity_dynamic_property, set_entity_native_property } from '../../../../../utils/Property';
+import { set_entity_dynamic_property, set_entity_native_property } from '../../../../utils/Property';
 
 const START_ROUND_SOUND_ID = 'mob.villager.idle';
 const ACTION_START_SOUND_ID = 'mob.blaze.shoot';

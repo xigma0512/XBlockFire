@@ -1,18 +1,17 @@
-import { MemberManager } from '../../../../../player/MemberManager';
+import { HudDriver } from '../../../../ui/hud/drivers/HudDriver';
+import { MemberManager } from '../../../player/MemberManager';
 import { C4Manager } from '../C4Manager';
-import { HudDriver } from '../../../../../../ui/hud/drivers/HudDriver';
 
 import { C4DroppedState } from './Dropped';
 import { C4PlantingState } from './Planting';
 
+import { TeamEnum } from '../../../player/TeamEnum';
 import { C4StateEnum } from '../C4StateEnum';
-import { TeamEnum } from '../../../../../player/TeamEnum';
 
-import { Language as L } from '../../../../../../utils/Language';
-import { FormatCode as FC } from '../../../../../../utils/FormatCode';
+import { FormatCode as FC } from '../../../../utils/FormatCode';
+import { Language as L } from '../../../../utils/Language';
 
-import { Player, system, world } from '@minecraft/server';
-import { EntitySpawnAfterEvent, ItemUseBeforeEvent } from '@minecraft/server';
+import { EntitySpawnAfterEvent, ItemUseBeforeEvent, Player, system, world } from '@minecraft/server';
 
 const C4_ITEM_ID = 'xblockfire:c4';
 

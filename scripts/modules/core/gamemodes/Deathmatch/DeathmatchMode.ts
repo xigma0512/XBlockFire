@@ -1,21 +1,21 @@
-import { system, Player, GameMode } from '@minecraft/server';
+import { GameMode, Player, system } from '@minecraft/server';
 
 import { GameModeEnum } from '../../GameModeEnum';
+import { DeathmatchActionPhase } from '../../gamephase/deathmatch/Action';
+import { DeathmatchPhaseEnum } from '../../gamephase/deathmatch/DeathmatchPhaseEnum';
+import { DeathmatchIdlePhase } from '../../gamephase/deathmatch/Idle';
+import { DeathmatchPreStartPhase } from '../../gamephase/deathmatch/PreStart';
 import { IGameMode } from '../IGameMode';
-import { DeathmatchPhaseEnum } from './phases/DeathmatchPhaseEnum';
-import { DeathmatchIdlePhase } from './phases/Idle';
-import { DeathmatchPreStartPhase } from './phases/PreStart';
-import { DeathmatchActionPhase } from './phases/Action';
 
+import { DeathmatchShop } from '../../../../ui/form/shop/DeathmatchShop';
+import { FormatCode as FC } from '../../../../utils/FormatCode';
 import { AlliesMarker } from '../../../player/AlliesMarker';
 import { MemberManager } from '../../../player/MemberManager';
 import { TeamEnum } from '../../../player/TeamEnum';
 import { PhaseManager } from '../../gamephase/PhaseManager';
-import { DeathmatchShop } from '../../../../ui/form/shop/DeathmatchShop';
-import { DeathmatchLoadout } from './DeathmatchLoadout';
 import { DeathmatchConfig } from './DeathmatchConfig';
+import { DeathmatchLoadout } from './DeathmatchLoadout';
 import { DeathmatchState } from './DeathmatchState';
-import { FormatCode as FC } from '../../../../utils/FormatCode';
 
 export class DeathmatchMode implements IGameMode {
     readonly modeId = GameModeEnum.Deathmatch;

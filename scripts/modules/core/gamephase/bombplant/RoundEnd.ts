@@ -1,21 +1,21 @@
-import { MemberManager } from '../../../../player/MemberManager';
-import { PhaseManager } from '../../../gamephase/PhaseManager';
-import { ActionView as ActionHud } from '../../../../../ui/hud/views/ActionView';
+import { ActionView as ActionHud } from '../../../../ui/hud/views/ActionView';
+import { MemberManager } from '../../../player/MemberManager';
+import { PhaseManager } from '../PhaseManager';
 
 import { GameOverPhase } from './Gameover';
 import { PreRoundStartPhase } from './PreRoundStart';
 
+import { TeamEnum } from '../../../player/TeamEnum';
 import { PhaseEnum as BombPlantPhaseEnum } from './BombPlantPhaseEnum';
-import { TeamEnum } from '../../../../player/TeamEnum';
 
-import { set_entity_dynamic_property } from '../../../../../utils/Property';
-import { set_variable, variable } from '../../../../../utils/Variable';
-import { Sound } from '../../../../../ui/media/Sound';
-import { Language as L } from '../../../../../utils/Language';
-import { FormatCode as FC } from '../../../../../utils/FormatCode';
+import { Sound } from '../../../../ui/media/Sound';
+import { FormatCode as FC } from '../../../../utils/FormatCode';
+import { Language as L } from '../../../../utils/Language';
+import { set_entity_dynamic_property } from '../../../../utils/Property';
+import { set_variable, variable } from '../../../../utils/Variable';
 
-import { UiStateManager } from '../../../../../ui/hud/state/UiState';
-import { BombPlantConfig } from '../BombPlantConfig';
+import { UiStateManager } from '../../../../ui/hud/state/UiState';
+import { BombPlantConfig } from '../../gamemodes/BombPlant/BombPlantConfig';
 
 const ROUND_END_SOUND_ID = 'mob.wolf.whine';
 const SWITCH_SIDE_SOUND_ID = 'beacon.activate';

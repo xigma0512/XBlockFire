@@ -1,7 +1,7 @@
-import { world, HudElement, system } from '@minecraft/server';
-import { Language as L } from '../../utils/Language';
-import { FormatCode as FC } from '../../utils/FormatCode';
+import { HudElement, system, world } from '@minecraft/server';
 import { Sound } from '../../ui/media/Sound';
+import { FormatCode as FC } from '../../utils/FormatCode';
+import { Language as L } from '../../utils/Language';
 
 world.afterEvents.playerSpawn.subscribe((ev) => {
     if (ev.initialSpawn) {
