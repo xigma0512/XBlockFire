@@ -1,0 +1,27 @@
+{
+    "format_version": "1.20.80",
+    "minecraft:item": {
+        "description": {
+            "identifier": "xblockfire:incendiary_grenade_item",
+            "menu_category": {
+                "category": "equipment"
+            }
+        },
+        "components": {
+            "minecraft:tags": {
+                "tags": ["xblockfire:grenade", "xblockfire:incendiary_grenade"]
+            },
+            "minecraft:max_stack_size": 16,
+            "minecraft:icon": "incendiary_grenade_item",
+            "minecraft:display_name": {
+                "value": "Incendiary Grenade"
+            },
+            "minecraft:food": {
+                "can_always_eat": true
+            },
+            "minecraft:use_modifiers": {
+                "use_duration": 4000
+            }
+        }
+    }
+}

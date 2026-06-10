@@ -14,7 +14,8 @@
                     "player_gun_holding",
                     "throwing_flashbang",
                     "throwing_smoke_grenade",
-                    "throwing_fragmentation"
+                    "throwing_fragmentation",
+                    "throwing_incendiary_grenade"
                 ]
             },
             "animations": {
@@ -24,7 +25,8 @@
                 "player_gun_holding": "controller.animation.player.gun_holding",
                 "throwing_flashbang": "controller.animation.player.grenade.flashbang",
                 "throwing_smoke_grenade": "controller.animation.player.grenade.smoke_grenade",
-                "throwing_fragmentation": "controller.animation.player.grenade.fragmentation"
+                "throwing_fragmentation": "controller.animation.player.grenade.fragmentation",
+                "throwing_incendiary_grenade": "controller.animation.player.grenade.incendiary_grenade"
             },
             "properties": {
                 "player:state.reload": {
@@ -158,6 +160,42 @@
                         }
                     ]
                 }
+            },
+            "throwing_incendiary_grenade": {
+                "minecraft:spawn_entity": {
+                    "entities": [
+                        {
+                            "filters": [
+                                {
+                                    "test": "is_sneaking",
+                                    "operator": "==",
+                                    "value": false
+                                }
+                            ],
+                            "min_wait_time": 0,
+                            "max_wait_time": 0,
+                            "single_use": true,
+                            "spawn_entity": "xblockfire:incendiary_grenade",
+                            "spawn_event": "set_overhand",
+                            "num_to_spawn": 1
+                        },
+                        {
+                            "filters": [
+                                {
+                                    "test": "is_sneaking",
+                                    "operator": "==",
+                                    "value": true
+                                }
+                            ],
+                            "min_wait_time": 0,
+                            "max_wait_time": 0,
+                            "single_use": true,
+                            "spawn_entity": "xblockfire:incendiary_grenade",
+                            "spawn_event": "set_underhand",
+                            "num_to_spawn": 1
+                        }
+                    ]
+                }
             }
         },
         "components": {
@@ -246,6 +284,14 @@
                 },
                 "queue_command": {
                     "command": ["clear @s xblockfire:fragmentation_item 0 1"]
+                }
+            },
+            "event:throwing_incendiary_grenade": {
+                "add": {
+                    "component_groups": ["throwing_incendiary_grenade"]
+                },
+                "queue_command": {
+                    "command": ["clear @s xblockfire:incendiary_grenade_item 0 1"]
                 }
             },
             "property:state.reload.idle": {

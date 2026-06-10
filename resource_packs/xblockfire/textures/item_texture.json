@@ -11,6 +11,9 @@
         "fragmentation_item": {
             "textures": "textures/items/grenade/flashbang_item"
         },
+        "incendiary_grenade_item": {
+            "textures": "textures/items/grenade/flashbang_item"
+        },
 
         "spyglass": {
             "textures": "textures/items/gun/awp"

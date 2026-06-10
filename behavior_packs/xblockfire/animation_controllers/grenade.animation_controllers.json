@@ -99,6 +99,39 @@
                     ]
                 }
             }
+        },
+        "controller.animation.player.grenade.incendiary_grenade": {
+            "initial_state": "idle",
+            "states": {
+                "idle": {
+                    "transitions": [
+                        {
+                            "pull": "q.property('player:can_use_item')&&q.main_hand_item_use_duration&&q.equipped_item_all_tags('slot.weapon.mainhand', 'xblockfire:incendiary_grenade')"
+                        }
+                    ]
+                },
+                "pull": {
+                    "transitions": [
+                        {
+                            "idle": "!q.property('player:can_use_item')"
+                        },
+                        {
+                            "idle": "!q.main_hand_item_use_duration&&!q.equipped_item_all_tags('slot.weapon.mainhand', 'xblockfire:incendiary_grenade')"
+                        },
+                        {
+                            "throw": "!q.main_hand_item_use_duration&&q.equipped_item_all_tags('slot.weapon.mainhand', 'xblockfire:incendiary_grenade')"
+                        }
+                    ]
+                },
+                "throw": {
+                    "on_entry": ["/event entity @s event:throwing_incendiary_grenade"],
+                    "transitions": [
+                        {
+                            "idle": "1"
+                        }
+                    ]
+                }
+            }
         }
     }
 }

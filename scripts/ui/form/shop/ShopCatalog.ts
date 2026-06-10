@@ -119,6 +119,16 @@ export const ShopCatalog: readonly ShopProduct[] = [
         iconPath: 'textures/items/grenade/flashbang_item',
     },
     {
+        productId: 'incendiary_grenade',
+        category: 'throwable',
+        name: `燃燒手雷`,
+        pointCost: 2,
+        slot: 7,
+        maxAmount: 1,
+        itemStackTypeId: 'xblockfire:incendiary_grenade_item',
+        iconPath: 'textures/items/grenade/flashbang_item',
+    },
+    {
         productId: 'armor_none',
         category: 'armor',
         name: `無護甲`,

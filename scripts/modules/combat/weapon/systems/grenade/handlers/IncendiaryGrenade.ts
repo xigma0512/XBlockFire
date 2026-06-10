@@ -1,4 +1,5 @@
-import { AreaEffectSystem, FirePoint } from '../../../area_effect/AreaEffectSystem';
+import { AreaEffectSystem } from '../../../../area_effect/AreaEffectSystem';
+import type { FirePoint } from '../../../../area_effect/AreaEffectSystem';
 import { EntityActor } from '../../../actors/Actor';
 import { GrenadeHandler } from './GrenadeHandler';
 
