@@ -3,6 +3,7 @@ import { HudDriver } from '../../ui/hud/drivers/HudDriver';
 import { Sound } from '../../ui/media/Sound';
 import { FormatCode as FC } from '../../utils/FormatCode';
 import { Language as L } from '../../utils/Language';
+import { setupLobbyPlayer } from './LobbyInventory';
 import { TeamEnum } from './TeamEnum';
 
 const MEMBER_JOIN_SOUND_ID = 'random.pop';
@@ -79,6 +80,7 @@ world.afterEvents.worldLoad.subscribe(() => {
 world.afterEvents.playerSpawn.subscribe((ev) => {
     if (ev.initialSpawn) {
         MemberManager.joinRoom(ev.player);
+        setupLobbyPlayer(ev.player);
     }
 });
 

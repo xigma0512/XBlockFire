@@ -7,6 +7,7 @@ import { DeathmatchState } from '../../gamemodes/Deathmatch/DeathmatchState';
 import { DeathmatchPhaseEnum } from './DeathmatchPhaseEnum';
 import { DeathmatchIdlePhase } from './Idle';
 
+import { setupLobbyPlayer } from '../../../player/LobbyInventory';
 import { MemberManager } from '../../../player/MemberManager';
 import { TeamEnum } from '../../../player/TeamEnum';
 
@@ -77,6 +78,7 @@ export class DeathmatchGameOverPhase implements IPhaseHandler {
         for (const player of MemberManager.getPlayers()) {
             player.setGameMode(GameMode.Adventure);
             player.teleport(world.getDefaultSpawnLocation());
+            setupLobbyPlayer(player);
             set_entity_dynamic_property(player, 'player:is_alive', false);
             set_entity_native_property(player, 'player:can_use_item', false);
         }

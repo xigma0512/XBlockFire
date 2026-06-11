@@ -22,6 +22,7 @@ function setting_gamemode(origin: CustomCommandOrigin, ...args: any[]) {
     }
 
     GameRoomFactory.createRoom(gamemode as GameModeEnum, gameroom().gameMapId);
+    HudDriver.chat(`${FC.Yellow}遊戲模式 - ${FC.Green}${gamemode}`);
     return { message: `${FC.Gray}>> ${FC.Yellow}設定遊戲模式為 ${FC.Green}${gamemode}`, status: 0 };
 }
 
@@ -33,12 +34,14 @@ function setting_map(origin: CustomCommandOrigin, ...args: any[]) {
 
     const map = MapRegister.getMap(mapId);
     GameRoomFactory.createRoom(gameroom().gameMode, mapId);
+    HudDriver.chat(`$${FC.Yellow}遊戲地圖 - ${FC.Green}${map.name}`);
     return { message: `${FC.Gray}>> ${FC.Yellow}設定遊戲地圖為 ${FC.Green}${map.name}`, status: 0 };
 }
 
 function forcestart(origin: CustomCommandOrigin, ...args: any[]) {
     PhaseManager.updatePhase(gameroom().activeMode.createForceStartPhase());
-    return { message: `${FC.Gray}>> ${FC.LightPurple}Force start.`, status: 0 };
+    HudDriver.chat(`${FC.LightPurple}遊戲已強制開始`);
+    return { message: `${FC.Gray}>> ${FC.LightPurple}強制開始`, status: 0 };
 }
 
 function select_team(origin: CustomCommandOrigin, ...args: any[]) {

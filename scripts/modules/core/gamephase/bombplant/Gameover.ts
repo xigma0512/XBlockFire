@@ -1,4 +1,5 @@
 import { MemberManager } from '../../../player/MemberManager';
+import { setupLobbyPlayer } from '../../../player/LobbyInventory';
 import { C4Manager } from '../../c4state/C4Manager';
 import { PhaseManager } from '../PhaseManager';
 
@@ -67,6 +68,7 @@ function respawnPlayers() {
     for (const player of world.getAllPlayers()) {
         player.setGameMode(GameMode.Adventure);
         player.teleport(world.getDefaultSpawnLocation());
+        setupLobbyPlayer(player);
     }
 }
 
